@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Button, TextField, Container, Typography, Box, FormControl, InputLabel, Select, MenuItem, FormHelperText } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { makeApiRequest } from 'utils/apiRequest';
+import { UserRoutes } from 'utils/types';
 // @ts-ignore
 const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-
-const url = "http://api.stamenic.work:8080/api";
 
 // @ts-ignore
 const validateEmail = (email) => {
@@ -35,10 +35,9 @@ const RegistrationPage = () => {
         // You can add more else if blocks for further steps if needed
     };
 
-
     const handleGenerateCode = async () => {
         try {
-            const result = await fetch(`${url}/korisnik/generate-login`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: userData.email }) });
+            const result = await makeApiRequest(UserRoutes.user_generate_login, "POST", { email: userData.email }, true, true)
             console.log(await result.text());
         }
         catch (e) {
@@ -110,7 +109,7 @@ const RegistrationPage = () => {
         // This would be a good place to validate all fields across all steps
         if (validateFieldsStepOne() && validateFieldsStepTwo() && validateFieldsStepThree()) {
             try {
-                await fetch(`${url}/korisnik/verifikacija`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: userData.email, brojTelefona: userData.telefon, brojRacuna: userData.brojRacuna, password: userData.lozinka, code: userData.aktivacioniKod }) });
+                await makeApiRequest(UserRoutes.user_register, "POST", { email: userData.email, brojTelefona: userData.telefon, brojRacuna: userData.brojRacuna, password: userData.lozinka, code: userData.aktivacioniKod }, true)
                 alert("Uspeh");
                 navigate('/login')
             } catch (e) {
