@@ -36,5 +36,4 @@ export const decodePermissions = (permissions: number) => {
         }
     }
     return decodedPermissions?.join(", ");
-
 }
