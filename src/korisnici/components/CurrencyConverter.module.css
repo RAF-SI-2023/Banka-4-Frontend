@@ -1,0 +1,57 @@
+/* CurrencyConverter.module.css */
+.container {
+  display: flex;
+  flex-direction: row;
+  /* Aligns children in a row instead of a column */
+  align-items: center;
+  /* Vertically centers the children */
+  gap: 20px;
+  /* Keeps some space between the children */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  flex-wrap: wrap;
+  /* Allows items to wrap to the next line if not enough space */
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.input,
+.select {
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+  width: 200px;
+}
+
+.input:focus,
+.select:focus {
+  border-color: #007bff;
+}
+
+.label {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.table {
+  border-collapse: collapse;
+  width: 60%;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.table th {
+  background-color: #f2f2f2;
+}
+
+.error {
+  color: red;
+  font-size: 16px;
+}

@@ -1,4 +1,4 @@
-import { apiUrl } from "./apiUrl";
+import { getApiUrl } from "./apiUrl";
 
 export const getJWT = () => {
     // const token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwZXJhQGdtYWlsLnJzIiwicGVybWlzc2lvbiI6NDE5NDMwMywiaWQiOjEsImV4cCI6MTcxMDQ3NDY2MCwiaWF0IjoxNzEwNDQ1ODYwfQ.zd5ImPnm9PQkFPn6gSfyR8HgW6nX1Irw2ToW_PjhRqo2U7GFJlFI-b7ENQRqruEGlAQmsMxccANf9uwncdSHiw';
@@ -6,22 +6,25 @@ export const getJWT = () => {
     return localStorage.getItem('si_jwt');
 };
 
-export const makeApiRequest = async (route: string, type: string, data?: object, noJson?: boolean) => {
+export const makeApiRequest = async (route: string, type: string, data?: object, noAuth?: boolean, noJson?: boolean) => {
     try {
         const token = getJWT()
+        const apiUrl = getApiUrl(route)
+        const headers: HeadersInit = noAuth ? {
+            'Content-Type': 'application/json',
+        } : {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
         const response = await fetch(`${apiUrl}${route}`, {
             method: type,
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-
-            },
+            headers: headers,
             body: JSON.stringify(data)
         });
         // console.log(response)
 
         if (response.ok) {
-            const res = await response.json()
+            const res = noJson ? response : await response.json()// fix this shit
             return res
         }
         if (!response.ok) {
@@ -33,10 +36,10 @@ export const makeApiRequest = async (route: string, type: string, data?: object,
     }
 }
 
-
 export const makeGetRequest = async (route: string) => {
     try {
         const token = getJWT()
+        const apiUrl = getApiUrl(route)
         const response = await fetch(`${apiUrl}${route}`, {
             method: 'GET',
             headers: {
