@@ -56,6 +56,7 @@ const UserHomePage: React.FC = () => {
       const data = await makeGetRequest(`${BankRoutes.account_find_user_account}/${me.id}`)
       if (data) {
         console.log(data);
+        
         setAccounts(data);
       }
     } catch (error) {

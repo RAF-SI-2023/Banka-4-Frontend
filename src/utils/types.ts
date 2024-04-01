@@ -144,11 +144,11 @@ export type Kredit = {
   id: number;
   type: string;
   amount: string;
-  salary: number;
-  currentEmploymentPeriod: number;
-  loanTerm: number;
+  salary: string;
+  currentEmploymentPeriod: string;
+  loanTerm: string;
   branchOffice: string;
-  bankAccountNumber: number;
+  bankAccountNumber: string;
   loanPurpose: string;
   permanentEmployee: boolean;
   status: string;

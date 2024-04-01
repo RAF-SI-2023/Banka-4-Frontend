@@ -48,7 +48,6 @@ function Zaposlen() {
 
     return (
         <div>
-            <p>Email adresa: {emailKorisnikov}</p>
             <Tabela2 krediti={krediti} onClickRed={handleRedClick}>
                 {(kredit) => (
                     <>

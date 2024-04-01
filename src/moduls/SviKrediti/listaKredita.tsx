@@ -61,9 +61,6 @@ function ListaKredita() {
             {zaposlen ? <div><Zaposlen />
             <Tabela krediti={krediti2} onClickRed={handleRedClick} /> </div>: <div>  <NeZaposlen /> <Tabela krediti={krediti} onClickRed={handleRedClick} /> </div>}
             
-
-            
-            <button onClick={() => posalji()}>Posalji</button>
         </div>
     );
 }
