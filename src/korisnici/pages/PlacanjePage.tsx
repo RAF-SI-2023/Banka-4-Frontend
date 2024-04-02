@@ -36,7 +36,7 @@ const Placanje: React.FC = () => {
             {(selectedOption === 'verifikacija') ? <VerifikacijaPlacanja /> : <DropdownMenu onSelect={setSelectedOption} />}
             {selectedOption === 'novoPlacanje' && <FormaZaPlacanje navigate={navigate} onSave={data => console.log(data)} />}
             {(selectedOption === 'prenos') && <FormaZaPrenos navigate={navigate} onSave={data => console.log(data)} />}
-            {/*(selectedOption === 'primaociPlacanja') && <PrimaociPlacanja></PrimaociPlacanja>*/}
+            {(selectedOption === 'primaociPlacanja') && <PrimaociPlacanja></PrimaociPlacanja>}
             {(selectedOption === 'pregledPlacanja') && <PregledPlacanja></PregledPlacanja>}
         </Container>
     );

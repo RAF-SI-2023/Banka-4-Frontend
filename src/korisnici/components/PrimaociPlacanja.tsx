@@ -9,21 +9,46 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import Swal from 'sweetalert2';
-import { makeApiRequest } from 'utils/apiRequest';
-import { UserRoutes } from 'utils/types';
+import { getJWT, makeApiRequest, makeGetRequest } from 'utils/apiRequest';
+import { BankRoutes, UserRoutes } from 'utils/types';
+import { getMe } from 'utils/getMe';
 
 const MOCK_PRIMAOCI = [
-    { id: 1, naziv: 'John Doe', brojRacuna: '265-0000001234569-78', pozivNaBroj: '12345', sifraPlacanja: '001', svrhaPlacanja: 'Donation' },
-    { id: 2, naziv: 'Jane Doe', brojRacuna: '265-0000001234568-79', pozivNaBroj: '67890', sifraPlacanja: '002', svrhaPlacanja: 'Support' },
+    {
+        "id": 4,
+        "idKorisnika": 2,
+        "idRacunaPosaljioca": null,
+        "nazivPrimaoca": "Kita",
+        "idRacunaPrimaoca": 444000000910000060,
+        "broj": 123,
+        "sifraPlacanja": "SKOEr"
+    }
 ];
 
 export const PrimaociPlacanja = () => {
     const [primaoci, setPrimaoci] = useState(MOCK_PRIMAOCI);
+    const [racuni, setRacuni] = useState([{
+        "id": 2,
+        "brojRacuna": "444000000910000031",
+        "vlasnik": 2,
+        "stanje": 10700,
+        "raspolozivoStanje": 10660,
+        "zaposleni": 22222,
+        "datumKreiranja": 1711985538,
+        "datumIsteka": 1869665538,
+        "currency": "RSD",
+        "aktivan": true
+    }])
 
     useEffect(() => {
         const func = async () => {
-            //Izvlacenje iz kolaca xd
             try {
+                const primaoci2 = await makeGetRequest(`${UserRoutes.favorite_users}/` + getMe()?.id);
+                setPrimaoci(primaoci2);
+
+                const racuni2 = await makeGetRequest(`${BankRoutes.account_find_user_account}/${getMe()?.id}`);
+                setRacuni(racuni2);
+
                 //await makeApiRequest(UserRoutes.favorite_users/id, "POST")
                 // const result = await fetch(`${url}/omiljeni-korisnici/`, { method: "POST", headers: { "Authorization": "", "Content-Type": "application/json" } });
                 // setPrimaoci();
@@ -35,41 +60,51 @@ export const PrimaociPlacanja = () => {
     }, [])
 
     const handleAdd = () => {
+        // Prepare select options from racuni array
+        const racuniOptions = racuni.map(racun => `<option value="${racun.brojRacuna}">${racun.brojRacuna}</option>`).join('');
+
         Swal.fire({
-            title: 'Add new recipient',
+            title: 'Dodaj primaoca',
             html: `
-                <input type="text" id="naziv" class="swal2-input" placeholder="Naziv">
-                <input type="text" id="brojRacuna" class="swal2-input" placeholder="Broj racuna">
-                <input type="text" id="pozivNaBroj" class="swal2-input" placeholder="Poziv na broj">
-                <input type="text" id="sifraPlacanja" class="swal2-input" placeholder="Sifra placanja">
-                <input type="text" id="svrhaPlacanja" class="swal2-input" placeholder="Svrha placanja">`,
+                <label for="idRacunaPosiljaoca">Racun: </label><select id="idRacunaPosiljaoca" class="swal2-input">${racuniOptions}</select>
+                <input type="text" id="nazivPrimaoca" class="swal2-input" placeholder="Naziv">
+                <input type="text" id="idRacunaPrimaoca" class="swal2-input" placeholder="Broj racuna">
+                <input type="text" id="broj" class="swal2-input" placeholder="Poziv na broj">
+                <input type="text" id="sifraPlacanja" class="swal2-input" placeholder="Sifra placanja">`, // Adding the select element here
             focusConfirm: false,
             preConfirm: () => {
                 // @ts-ignore
-                const naziv = document.getElementById('naziv').value;
+                const nazivPrimaoca = document.getElementById('nazivPrimaoca').value;
                 // @ts-ignore
-                const brojRacuna = document.getElementById('brojRacuna').value;
+                const idRacunaPrimaoca = document.getElementById('idRacunaPrimaoca').value;
                 // @ts-ignore
-                const pozivNaBroj = document.getElementById('pozivNaBroj').value;
+                const broj = document.getElementById('broj').value;
                 // @ts-ignore
                 const sifraPlacanja = document.getElementById('sifraPlacanja').value;
                 // @ts-ignore
-                const svrhaPlacanja = document.getElementById('svrhaPlacanja').value;
+                const idRacunaPosiljaoca = document.getElementById('idRacunaPosiljaoca').value; // Get selected value
 
-                if (!naziv || !brojRacuna || !pozivNaBroj || !sifraPlacanja || !svrhaPlacanja) {
+                if (!nazivPrimaoca || !idRacunaPrimaoca || !broj || !sifraPlacanja || !idRacunaPosiljaoca) {
                     Swal.showValidationMessage(`Please fill in all fields.`);
                     return false;
                 }
-                return { naziv, brojRacuna, pozivNaBroj, sifraPlacanja, svrhaPlacanja };
+
+                return { nazivPrimaoca, idRacunaPrimaoca, broj, sifraPlacanja, idRacunaPosiljaoca }; // Return the new attribute as well
             }
         }).then(async (result) => {
             if (result.value) {
                 try {
                     //Dodavanje primaoca
-
-
-                    const apiResult = await makeApiRequest(UserRoutes.favorite_users, "POST")
-                    setPrimaoci(old => [...old, { id: Math.floor(Math.random() * 10000), ...result.value }]);
+                    const apiResult = await makeApiRequest(UserRoutes.favorite_users, "POST", {
+                        id: undefined,
+                        idKorisnika: getMe()?.id,
+                        idRacunaPosiljaoca: result.value.idRacunaPosiljaoca, // Umesto svrhe placanja staviti da biram sa kog svojeg racuna saljem
+                        nazivPrimaoca: result.value.nazivPrimaoca,
+                        idRacunaPrimaoca: result.value.idRacunaPrimaoca,
+                        broj: result.value.broj,
+                        sifraPlacanja: result.value.sifraPlacanja
+                    })
+                    setPrimaoci(old => [...old, { ...result.value, id: apiResult.id, idKorisnika: getMe()?.id }]);
                 } catch (e) {
 
                 }
@@ -79,54 +114,73 @@ export const PrimaociPlacanja = () => {
 
     // @ts-ignore
     const handleEdit = (id) => {
-        let recipientDetails = primaoci.find(rec => rec.id === id); // Find the recipient by ID
+        let recipientDetails = primaoci.map(e => ({
+            id: e.id.toString(),
+            "idKorisnika": e.idKorisnika.toString(),
+            "idRacunaPosaljioca": (e.idRacunaPosaljioca || "").toString(),
+            "nazivPrimaoca": e.nazivPrimaoca.toString(),
+            "idRacunaPrimaoca": e.idRacunaPrimaoca.toString(),
+            "broj": e.broj.toString(),
+            "sifraPlacanja": e.sifraPlacanja.toString()
+        })).find(rec => rec.id == id); // Find the recipient by ID
+
+
         // Provide a fallback if recipientDetails is undefined
-        // @ts-ignore
-        recipientDetails = recipientDetails || { naziv: '', brojRacuna: '', pozivNaBroj: '', sifraPlacanja: '', svrhaPlacanja: '' };
+        recipientDetails = recipientDetails || {
+            "id": "",
+            "idKorisnika": "",
+            "idRacunaPosaljioca": "",
+            "nazivPrimaoca": "",
+            "idRacunaPrimaoca": "",
+            "broj": "",
+            "sifraPlacanja": ""
+        };
+
+
+        // Prepare select options from racuni array
+        const racuniOptions = racuni.map(racun => `<option value="${racun.brojRacuna}"${recipientDetails?.idRacunaPosaljioca === racun.brojRacuna ? ' selected' : ''}>${racun.brojRacuna}</option>`).join('');
 
         Swal.fire({
             title: `Edit recipient with ID: ${id}`,
             html: `
-                <input type="text" id="naziv" class="swal2-input" value="${
-                // @ts-ignore
-                recipientDetails.naziv}" placeholder="Naziv">
-                <input type="text" id="brojRacuna" class="swal2-input" value="${
-                // @ts-ignore
-                recipientDetails.brojRacuna}" placeholder="Broj racuna">
-                <input type="text" id="pozivNaBroj" class="swal2-input" value="${
-                // @ts-ignore
-                recipientDetails.pozivNaBroj}" placeholder="Poziv na broj">
-                <input type="text" id="sifraPlacanja" class="swal2-input" value="${
-                // @ts-ignore
-                recipientDetails.sifraPlacanja}" placeholder="Sifra placanja">
-                <input type="text" id="svrhaPlacanja" class="swal2-input" value="${
-                // @ts-ignore
-                recipientDetails.svrhaPlacanja}" placeholder="Svrha placanja">`,
+                <label for="idRacunaPosiljaoca">Racun: </label><select id="idRacunaPosiljaoca" class="swal2-input">${racuniOptions}</select>
+                <input type="text" id="nazivPrimaoca" class="swal2-input" value="${recipientDetails.nazivPrimaoca}" placeholder="Naziv">
+                <input type="text" id="idRacunaPrimaoca" class="swal2-input" value="${recipientDetails.idRacunaPrimaoca}" placeholder="Broj racuna">
+                <input type="text" id="broj" class="swal2-input" value="${recipientDetails.broj}" placeholder="Poziv na broj">
+                <input type="text" id="sifraPlacanja" class="swal2-input" value="${recipientDetails.sifraPlacanja}" placeholder="Sifra placanja">`, // Adding the select element here
             focusConfirm: false,
             preConfirm: () => {
+                // Fetch values from input and select fields
                 // @ts-ignore
-                const naziv = document.getElementById('naziv').value;
+                const nazivPrimaoca = document.getElementById('nazivPrimaoca').value;
                 // @ts-ignore
-                const brojRacuna = document.getElementById('brojRacuna').value;
+                const idRacunaPrimaoca = document.getElementById('idRacunaPrimaoca').value;
                 // @ts-ignore
-                const pozivNaBroj = document.getElementById('pozivNaBroj').value;
+                const broj = document.getElementById('broj').value;
                 // @ts-ignore
                 const sifraPlacanja = document.getElementById('sifraPlacanja').value;
                 // @ts-ignore
-                const svrhaPlacanja = document.getElementById('svrhaPlacanja').value;
+                const idRacunaPosiljaoca = document.getElementById('idRacunaPosiljaoca').value; // Get selected value
 
-                if (!naziv || !brojRacuna || !pozivNaBroj || !sifraPlacanja || !svrhaPlacanja) {
+                if (!nazivPrimaoca || !idRacunaPrimaoca || !broj || !sifraPlacanja) {
                     Swal.showValidationMessage(`Please fill in all fields.`);
                     return false;
                 }
-                return { naziv, brojRacuna, pozivNaBroj, sifraPlacanja, svrhaPlacanja };
+                return { nazivPrimaoca, idRacunaPrimaoca, broj, sifraPlacanja, idRacunaPosiljaoca }; // Include the new attribute in the return statement
             }
         }).then(async (result) => {
             if (result.value) {
                 try {
-                    //Editovanje  primaoca
-                    // const apiResult = await fetch(`${url}/omiljeni-korisnici/`, { method: "POST", headers: { "Authorization": "", "Content-Type": "application/json" } });
-                    const apiResult = await makeApiRequest(UserRoutes.favorite_users, "POST")
+                    //Dodavanje primaoca
+                    const apiResult = await makeApiRequest(UserRoutes.favorite_users, "POST", {
+                        id,
+                        idKorisnika: getMe()?.id,
+                        idRacunaPosiljaoca: "444000000910000033", // Umesto svrhe placanja staviti da biram sa kog svojeg racuna saljem
+                        nazivPrimaoca: result.value.nazivPrimaoca,
+                        idRacunaPrimaoca: result.value.idRacunaPrimaoca,
+                        broj: result.value.broj,
+                        sifraPlacanja: result.value.sifraPlacanja
+                    })
                     setPrimaoci(old => old.map(prim => (prim.id === id) ? { ...prim, ...result.value } : prim));
                 } catch (e) {
 
@@ -140,9 +194,9 @@ export const PrimaociPlacanja = () => {
     const handleDelete = async (id) => {
         try {
             //Brisanje
-            const apiResult = await makeApiRequest(UserRoutes.favorite_users, "POST")
-            // const apiResult = await fetch(`${url}/omiljeni-korisnici/`, { method: "POST", headers: { "Authorization": "", "Content-Type": "application/json" } });
-            setPrimaoci(primaoci.filter(prim => prim.id !== id));
+            const apiResult = await makeApiRequest(`${UserRoutes.favorite_users}/${id}`, "DELETE", {}, false, true)
+            if (apiResult !== null)
+                setPrimaoci(primaoci.filter(prim => prim.id !== id));
         } catch (e) {
 
         }
@@ -151,29 +205,32 @@ export const PrimaociPlacanja = () => {
     return (
         <Box>
             <Button variant="contained" onClick={handleAdd} sx={{ mb: 2 }}>
-                Add New Recipient
+                Dodaj primaoca
             </Button>
             <List>
-                {primaoci.map((recipient) => (
-                    <ListItem
-                        key={recipient.id}
-                        secondaryAction={
-                            <>
-                                <IconButton edge="end" aria-label="edit" onClick={() => handleEdit(recipient.id)}>
-                                    <EditIcon />
-                                </IconButton>
-                                <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(recipient.id)}>
-                                    <DeleteIcon />
-                                </IconButton>
-                            </>
-                        }
-                    >
-                        <ListItemText
-                            primary={recipient.naziv}
-                            secondary={`Racun: ${recipient.brojRacuna}, PNB: ${recipient.pozivNaBroj}, SP: ${recipient.sifraPlacanja}, Svrh: ${recipient.svrhaPlacanja}`}
-                        />
-                    </ListItem>
-                ))}
+                {!primaoci.length && <p>Nema primalaca</p>}
+                {primaoci.map((recipient) => {
+                    return (
+                        <ListItem
+                            key={recipient.id}
+                            secondaryAction={
+                                <>
+                                    <IconButton edge="end" aria-label="edit" onClick={() => handleEdit(recipient.id)}>
+                                        <EditIcon />
+                                    </IconButton>
+                                    <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(recipient.id)}>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </>
+                            }
+                        >
+                            <ListItemText
+                                primary={recipient.nazivPrimaoca}
+                                secondary={`Racun: ${recipient.idRacunaPrimaoca}, PNB: ${recipient.broj}, SP: ${recipient.sifraPlacanja}`}
+                            />
+                        </ListItem>
+                    )
+                })}
             </List>
         </Box>
     );
