@@ -25,7 +25,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({ onSelect }) => {
         </MenuItem>
         <MenuItem value="novoPlacanje">Novo plaćanje</MenuItem>
         <MenuItem value="prenos">Prenos</MenuItem>
-        {/*<MenuItem value="primaociPlacanja">Primaoci plaćanja</MenuItem>*/}
+        <MenuItem value="primaociPlacanja">Primaoci plaćanja</MenuItem>
         <MenuItem value="pregledPlacanja">Pregled plaćanja</MenuItem>
       </Select>
     </FormControl>

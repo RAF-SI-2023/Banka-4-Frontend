@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Card, Typography } from '@mui/material';
 import Swal from 'sweetalert2'; import { useSearchParams } from 'react-router-dom';
 import { BankRoutes, Kartica, TransakcijaKarticePrikaz } from '../../utils/types';
-import { makeApiRequest, makeGetRequest } from '../../utils/apiRequest';
+import { getJWT, makeApiRequest, makeGetRequest } from '../../utils/apiRequest';
 import ListaTransakcija from './ListaTransakcija';
 import { getMe } from '../../utils/getMe';
 
@@ -14,7 +14,7 @@ const updateKarticaStatus = async (id: number, status: string): Promise<boolean>
 export default function DetaljiKartice() {
   const [kartica, setKartica] = useState<Kartica | null>(null);
   const [showDetails, setShowDetails] = useState(false);
-  const [transakcije, setTransakcije] = useState<TransakcijaKarticePrikaz[] | null>()
+  const [transakcije, setTransakcije] = useState<TransakcijaKarticePrikaz[]>([])
 
   // Ovo će biti ID kartice dobijen iz URL-a
   let [searchParams, setSearchParams] = useSearchParams();
@@ -31,8 +31,9 @@ export default function DetaljiKartice() {
       }
 
       //ne postoje jos uvek
-      makeGetRequest("/cards/transactions/" + id)
+      /*makeGetRequest("/cards/transactions/" + id)
         .then((result) => {
+          console.log(result);
           if (!result)
             return alert("Greška pri preuzimanju transakcija");
 
@@ -40,7 +41,7 @@ export default function DetaljiKartice() {
         })
         .catch((e) => {
           alert("Greška pri preuzimanju transakcija");
-        });
+        });*/
     }
   }, [id]);
 
@@ -57,8 +58,8 @@ export default function DetaljiKartice() {
 
   if (!kartica) return <div>Učitavanje...</div>;
 
-  return (<>
-    <Card style={{ padding: '20px', maxWidth: '600px', margin: 'auto' }}>
+  return (<div style={{ width: "70%", margin: "auto" }}>
+    <Card style={{ padding: '20px', maxWidth: '600px', margin: 'auto', marginBottom: 20, marginTop: 20 }}>
       <Typography variant="h5">{kartica.name}</Typography>
       <Typography>Broj kartice: {showDetails ? kartica.number : `${kartica.number.substring(0, 4)} xxxx xxxx ${kartica.number.substring(12)}`}</Typography>
       <Typography>Vrsta kartice: {kartica.type}</Typography>
@@ -73,7 +74,7 @@ export default function DetaljiKartice() {
       {me?.permission ? kartica.status !== 'deaktivirana' && <Button onClick={() => handleStatusChange('deaktivirana')}>Deaktiviraj</Button> : null}
       {me?.permission ? kartica.status !== 'blokirana' && <Button onClick={() => handleStatusChange('blokirana')}>Blokiraj</Button> : null}
     </Card>
-    {transakcije && <ListaTransakcija transakcije={transakcije}></ListaTransakcija>}
-  </>
+    <ListaTransakcija transakcije={transakcije}></ListaTransakcija>
+  </div>
   );
 }

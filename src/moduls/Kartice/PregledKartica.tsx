@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { BankRoutes, Kartica } from "../../utils/types";
 import { makeGetRequest } from "../../utils/apiRequest";
-import { Button, Card, List, ListItem, ListItemText } from "@mui/material";
+import { Button, Card, List, ListItem, ListItemText, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 import { getMe } from "../../utils/getMe";
+import { StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from "utils/tableStyles";
 
 export default function PregledKartica() {
     const [kartice, setKartice] = useState<Kartica[]>([]);
@@ -21,30 +22,53 @@ export default function PregledKartica() {
             });
     }, []);
 
+    const handleRowClick = (kartica: Kartica) => {
+        localStorage.setItem('selectedKartica', JSON.stringify(kartica));
+        window.location.replace("/kartica?id=" + kartica.id);
+    };
+
     return (
-        <div>
+        <div style={{ width: "80%", margin: "auto" }}>
             {jeZaposleni && (
                 <Button variant="contained" color="primary" href="/dodaj-karticu">
                     Dodaj Karticu
                 </Button>
             )}
-            <List>
-                {kartice?.map((kartica, index) => (
-                    <Card variant="outlined" key={index} style={{ margin: "10px" }}>
-                        <ListItem button onClick={() => {
-                            localStorage.setItem('selectedKartica', JSON.stringify(kartica));
-                            window.location.replace("/kartica?id=" + kartica.id)
-                            }}>
-                            <ListItemText
-                                primary={kartica.name}
-                                secondary={`Broj: ${kartica.number} - Vrsta: ${kartica.type} - Datum isteka: ${new Date(
-                                    kartica.expirationDate
-                                ).toLocaleDateString()} - Status: ${kartica.status}`}
-                            />
-                        </ListItem>
-                    </Card>
-                ))}
-            </List>
+            <TableContainer component={Paper} style={{ margin: '10px' }}>
+                <Table sx={{ minWidth: 650 }}>
+                    <StyledTableHead>
+                        <StyledTableRow>
+                            <StyledHeadTableCell>Broj</StyledHeadTableCell>
+                            <StyledHeadTableCell>Vrsta</StyledHeadTableCell>
+                            <StyledHeadTableCell>Datum isteka</StyledHeadTableCell>
+                            <StyledHeadTableCell>Status</StyledHeadTableCell>
+                        </StyledTableRow>
+                    </StyledTableHead>
+                    <TableBody>
+                        {kartice && kartice.length > 0 ? (
+                            kartice.map((kartica) => (
+                                <StyledTableRow
+                                    key={kartica.id}
+                                    hover
+                                    onClick={() => handleRowClick(kartica)}
+                                    style={{ cursor: 'pointer' }}
+                                >
+                                    <StyledTableCell>{kartica.number}</StyledTableCell>
+                                    <StyledTableCell>{kartica.type}</StyledTableCell>
+                                    <StyledTableCell>{new Date(kartica.expirationDate).toLocaleDateString()}</StyledTableCell>
+                                    <StyledTableCell>{kartica.status}</StyledTableCell>
+                                </StyledTableRow>
+                            ))
+                        ) : (
+                            <TableRow>
+                                <TableCell colSpan={4} style={{ textAlign: 'center' }}>
+                                    Trenutno nema kartica
+                                </TableCell>
+                            </TableRow>
+                        )}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </div>
     );
 }

@@ -3,8 +3,10 @@ import { Button, TextField, FormControl, InputLabel, Select, MenuItem } from '@m
 import Swal from 'sweetalert2';
 import { makeApiRequest, makeGetRequest } from '../../utils/apiRequest';
 import { BankRoutes } from 'utils/types';
+import { useNavigate } from 'react-router-dom';
 
 export default function DodajKarticu() {
+    const navigate = useNavigate();
     const [imena, setImena] = useState(['greska']);
     const [name, setIme] = useState('greska');
     const [type, setVrsta] = useState('debitna');
@@ -53,13 +55,13 @@ export default function DodajKarticu() {
             return;
         }
 
-        const uspesno = await makeApiRequest(BankRoutes.cards_create, 'POST', { name, type, bankAccountNumber, cardLimit });
-        if (uspesno?.ok) {
+        const uspesno = await makeApiRequest(BankRoutes.cards_create, 'POST', { name, type, bankAccountNumber, cardLimit }, false, true);
+        if (await uspesno.text() == "Uspesno kreirana kartica") {
             Swal.fire({
                 icon: 'success',
                 title: 'Uspešno kreirana kartica!',
             }).then(() => {
-                window.location.href = '/kartice';
+                navigate(-1)
             });
         } else {
             Swal.fire({
