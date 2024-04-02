@@ -11,7 +11,8 @@ import { isNovaUplata, isNoviPrenosSredstava } from 'korisnici/utils/korisniciUt
 
 const Placanje: React.FC = () => {
     // Dodati pravu navigaciju
-    const [selectedOption, setSelectedOption] = useState('');
+    const [selectedOption, setSelectedOption] = useState('novoPlacanje');
+    const [defaultProps, setDefaultProps] = useState<Object>({})
 
     useEffect(() => {
         const uplataPodaci = JSON.parse(localStorage.getItem("uplataPodaci") || "null");
@@ -33,10 +34,10 @@ const Placanje: React.FC = () => {
             <Typography variant="h4" component="h1" gutterBottom>
                 Upravljanje Plaćanjima
             </Typography>
-            {(selectedOption === 'verifikacija') ? <VerifikacijaPlacanja /> : <DropdownMenu onSelect={setSelectedOption} />}
-            {selectedOption === 'novoPlacanje' && <FormaZaPlacanje navigate={navigate} onSave={data => console.log(data)} />}
+            {(selectedOption === 'verifikacija') ? <VerifikacijaPlacanja /> : <DropdownMenu selected={selectedOption} onSelect={setSelectedOption} />}
+            {selectedOption === 'novoPlacanje' && <FormaZaPlacanje defaultProps={defaultProps} navigate={navigate} onSave={data => console.log(data)} />}
             {(selectedOption === 'prenos') && <FormaZaPrenos navigate={navigate} onSave={data => console.log(data)} />}
-            {(selectedOption === 'primaociPlacanja') && <PrimaociPlacanja></PrimaociPlacanja>}
+            {(selectedOption === 'primaociPlacanja') && <PrimaociPlacanja setSelectedOption={setSelectedOption} setDefaultProps={setDefaultProps}></PrimaociPlacanja>}
             {(selectedOption === 'pregledPlacanja') && <PregledPlacanja></PregledPlacanja>}
         </Container>
     );

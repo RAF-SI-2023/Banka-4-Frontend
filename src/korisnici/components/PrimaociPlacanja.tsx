@@ -12,6 +12,8 @@ import Swal from 'sweetalert2';
 import { getJWT, makeApiRequest, makeGetRequest } from 'utils/apiRequest';
 import { BankRoutes, UserRoutes } from 'utils/types';
 import { getMe } from 'utils/getMe';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
+import { StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from 'utils/tableStyles';
 
 const MOCK_PRIMAOCI = [
     {
@@ -25,7 +27,12 @@ const MOCK_PRIMAOCI = [
     }
 ];
 
-export const PrimaociPlacanja = () => {
+interface PrimaociPlacanjaProps {
+    setSelectedOption: (option: string) => void;
+    setDefaultProps: (props: { [key: string]: any }) => void;
+}
+
+export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedOption, setDefaultProps }) => {
     const [primaoci, setPrimaoci] = useState(MOCK_PRIMAOCI);
     const [racuni, setRacuni] = useState([{
         "id": 2,
@@ -82,14 +89,16 @@ export const PrimaociPlacanja = () => {
                 // @ts-ignore
                 const sifraPlacanja = document.getElementById('sifraPlacanja').value;
                 // @ts-ignore
-                const idRacunaPosiljaoca = document.getElementById('idRacunaPosiljaoca').value; // Get selected value
+                const idRacunaPosiljaoca = document.getElementById('idRacunaPosiljaoca').value;
 
-                if (!nazivPrimaoca || !idRacunaPrimaoca || !broj || !sifraPlacanja || !idRacunaPosiljaoca) {
-                    Swal.showValidationMessage(`Please fill in all fields.`);
+                // Regular expression for validation
+                const isValidIdRacunaPrimaoca = /^\d{18}$/.test(idRacunaPrimaoca);
+
+                if (!nazivPrimaoca || !idRacunaPrimaoca || !broj || !sifraPlacanja || !isValidIdRacunaPrimaoca) {
+                    Swal.showValidationMessage(`Broj racuna mora da ima 18 cifara.`);
                     return false;
                 }
-
-                return { nazivPrimaoca, idRacunaPrimaoca, broj, sifraPlacanja, idRacunaPosiljaoca }; // Return the new attribute as well
+                return { nazivPrimaoca, idRacunaPrimaoca, broj, sifraPlacanja, idRacunaPosiljaoca };
             }
         }).then(async (result) => {
             if (result.value) {
@@ -207,31 +216,65 @@ export const PrimaociPlacanja = () => {
             <Button variant="contained" onClick={handleAdd} sx={{ mb: 2 }}>
                 Dodaj primaoca
             </Button>
-            <List>
-                {!primaoci.length && <p>Nema primalaca</p>}
-                {primaoci.map((recipient) => {
-                    return (
-                        <ListItem
-                            key={recipient.id}
-                            secondaryAction={
-                                <>
-                                    <IconButton edge="end" aria-label="edit" onClick={() => handleEdit(recipient.id)}>
-                                        <EditIcon />
-                                    </IconButton>
-                                    <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(recipient.id)}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </>
-                            }
-                        >
-                            <ListItemText
-                                primary={recipient.nazivPrimaoca}
-                                secondary={`Racun: ${recipient.idRacunaPrimaoca}, PNB: ${recipient.broj}, SP: ${recipient.sifraPlacanja}`}
-                            />
-                        </ListItem>
-                    )
-                })}
-            </List>
+            <TableContainer component={Paper} style={{ margin: '10px' }}>
+                <Table aria-label="simple table">
+                    <StyledTableHead>
+                        <StyledTableRow>
+                            <StyledHeadTableCell>Naziv Primaoca</StyledHeadTableCell>
+                            <StyledHeadTableCell>Račun Primaoca</StyledHeadTableCell>
+                            <StyledHeadTableCell>Poziv na broj</StyledHeadTableCell>
+                            <StyledHeadTableCell>Šifra Plaćanja</StyledHeadTableCell>
+                            <StyledHeadTableCell>Akcije</StyledHeadTableCell>
+                        </StyledTableRow>
+                    </StyledTableHead>
+                    <TableBody>
+                        {primaoci.length > 0 ? (
+                            primaoci.map((recipient) => (
+                                <StyledTableRow style={{ cursor: "pointer" }} onClick={(e) => {
+                                    setSelectedOption("novoPlacanje");
+                                    setDefaultProps([recipient].map(e => {
+                                        let selectedRacun = 0;
+                                        for (selectedRacun = 0; selectedRacun < racuni.length; selectedRacun++)
+                                            if (racuni[selectedRacun].brojRacuna == recipient.idRacunaPosaljioca)
+                                                break;
+
+                                        return {
+                                            selectedRacun, nazivPrimaoca: recipient.nazivPrimaoca, racunPrimaoca: recipient.idRacunaPrimaoca, pozivNaBroj: recipient.broj, sifraPlacanja: recipient.sifraPlacanja
+                                        };
+                                    })[0]);
+                                }} key={recipient.id}>
+                                    <StyledTableCell component="th" scope="row">
+                                        {recipient.nazivPrimaoca}
+                                    </StyledTableCell>
+                                    <StyledTableCell>{recipient.idRacunaPrimaoca}</StyledTableCell>
+                                    <StyledTableCell>{recipient.broj}</StyledTableCell>
+                                    <StyledTableCell>{recipient.sifraPlacanja}</StyledTableCell>
+                                    <StyledTableCell>
+                                        <IconButton edge="end" aria-label="edit" onClick={(e) => {
+                                            e.stopPropagation()
+                                            handleEdit(recipient.id)
+                                        }}>
+                                            <EditIcon />
+                                        </IconButton>
+                                        <IconButton edge="end" aria-label="delete" onClick={(e) => {
+                                            e.stopPropagation()
+                                            handleDelete(recipient.id)
+                                        }}>
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </StyledTableCell>
+                                </StyledTableRow>
+                            ))
+                        ) : (
+                            <TableRow>
+                                <TableCell style={{ textAlign: 'center' }} colSpan={5}>
+                                    Nema omiljenih korisnika
+                                </TableCell>
+                            </TableRow>
+                        )}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </Box>
     );
 };
