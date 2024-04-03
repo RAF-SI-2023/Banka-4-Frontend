@@ -6,15 +6,15 @@ import { BankRoutes } from 'utils/types';
 
 export default function DodajKarticu() {
     const [imena, setImena] = useState(['greska']);
-    const [ime, setIme] = useState('greska');
-    const [vrsta, setVrsta] = useState('debitna');
-    const [brojRacuna, setBrojRacuna] = useState('');
-    const [limit, setLimit] = useState('5000000');
+    const [name, setIme] = useState('greska');
+    const [type, setVrsta] = useState('debitna');
+    const [bankAccountNumber, setBrojRacuna] = useState('');
+    const [cardLimit, setLimit] = useState('5000000');
     const [error, setError] = useState('');
     const [formValid, setFormValid] = useState(false);
 
     useEffect(() => {
-        makeGetRequest("/cards/allNames").then(result => {
+        makeGetRequest(BankRoutes.cards_names).then(result => {
             if (!result)
                 return;
 
@@ -26,21 +26,21 @@ export default function DodajKarticu() {
     useEffect(() => {
         const validateForm = () => {
             return (
-                (ime ? true : false) &&
-                (vrsta ? true : false) &&
-                brojRacuna.length === 18 &&
-                (limit ? true : false) && !isNaN(Number(limit))
+                (name ? true : false) &&
+                (type ? true : false) &&
+                bankAccountNumber.length === 18 &&
+                (cardLimit ? true : false) && !isNaN(Number(cardLimit))
             );
         };
 
         setFormValid(validateForm());
-    }, [vrsta, brojRacuna, limit, ime]);
+    }, [type, bankAccountNumber, cardLimit, name]);
 
     const validirajPodatke = () => {
-        if (!ime) return 'Odaberite tip kartice';
-        if (!vrsta) return 'Morate odabrati vrstu kartice';
-        if (brojRacuna.length !== 18) return 'Broj računa mora imati 18 cifara';
-        if (!limit || isNaN(Number(limit))) return 'Limit mora biti broj';
+        if (!name) return 'Odaberite tip kartice';
+        if (!type) return 'Morate odabrati vrstu kartice';
+        if (bankAccountNumber.length !== 18) return 'Broj računa mora imati 18 cifara';
+        if (!cardLimit || isNaN(Number(cardLimit))) return 'Limit mora biti broj';
         return '';
     };
 
@@ -53,7 +53,7 @@ export default function DodajKarticu() {
             return;
         }
 
-        const uspesno = await makeApiRequest(BankRoutes.cards_create, 'POST', { ime, vrsta, brojRacuna, limit });
+        const uspesno = await makeApiRequest(BankRoutes.cards_create, 'POST', { name, type, bankAccountNumber, cardLimit });
         if (uspesno?.ok) {
             Swal.fire({
                 icon: 'success',
@@ -77,7 +77,7 @@ export default function DodajKarticu() {
                 <InputLabel id="vrsta-label">Vrsta kartice</InputLabel>
                 <Select
                     labelId="vrsta-label"
-                    value={vrsta}
+                    value={type}
                     label="Vrsta kartice"
                     onChange={(e) => setVrsta(e.target.value)}
                 >
@@ -89,7 +89,7 @@ export default function DodajKarticu() {
                 <InputLabel id="tip-label">Ime kartice</InputLabel>
                 <Select
                     labelId="tip-label"
-                    value={ime}
+                    value={name}
                     label="Tip kartice"
                     onChange={(e) => setIme(e.target.value)}
                 >
@@ -99,21 +99,21 @@ export default function DodajKarticu() {
             <TextField
                 fullWidth
                 label="Broj računa"
-                value={brojRacuna}
+                value={bankAccountNumber}
                 onChange={(e) => setBrojRacuna(e.target.value)}
                 margin="normal"
-                error={brojRacuna.length > 0 && brojRacuna.length !== 18}
-                helperText={brojRacuna.length > 0 && brojRacuna.length !== 18 ? 'Broj računa mora imati 18 cifara' : ''}
+                error={bankAccountNumber.length > 0 && bankAccountNumber.length !== 18}
+                helperText={bankAccountNumber.length > 0 && bankAccountNumber.length !== 18 ? 'Broj računa mora imati 18 cifara' : ''}
             />
             <TextField
                 fullWidth
                 label="Limit"
                 type="number"
-                value={limit}
+                value={cardLimit}
                 onChange={(e) => setLimit(e.target.value)}
                 margin="normal"
-                error={limit.length > 0 && isNaN(Number(limit))}
-                helperText={limit.length > 0 && isNaN(Number(limit)) ? 'Limit mora biti broj' : ''}
+                error={cardLimit.length > 0 && isNaN(Number(cardLimit))}
+                helperText={cardLimit.length > 0 && isNaN(Number(cardLimit)) ? 'Limit mora biti broj' : ''}
             />
             <Button
                 variant="contained"

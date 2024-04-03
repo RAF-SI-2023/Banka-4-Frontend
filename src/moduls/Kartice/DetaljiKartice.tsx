@@ -24,17 +24,11 @@ export default function DetaljiKartice() {
   useEffect(() => {
     if (id) {
       console.log(id);
-      //ne moze preko req
-      makeGetRequest("/kartica/" + id)
-        .then((result) => {
-          if (!result)
-            return alert("Greška pri preuzimanju kartica");
-
-          setKartica(result);
-        })
-        .catch((e) => {
-          alert("Greška pri preuzimanju kartica");
-        });
+      const data = localStorage.getItem('selectedKartica');
+      if (data) {
+        const kartica = JSON.parse(data)
+        setKartica(kartica)
+      }
 
       //ne postoje jos uvek
       makeGetRequest("/cards/transactions/" + id)
@@ -65,14 +59,14 @@ export default function DetaljiKartice() {
 
   return (<>
     <Card style={{ padding: '20px', maxWidth: '600px', margin: 'auto' }}>
-      <Typography variant="h5">{kartica.naziv}</Typography>
-      <Typography>Broj kartice: {showDetails ? kartica.broj : `${kartica.broj.substring(0, 4)} xxxx xxxx ${kartica.broj.substring(12)}`}</Typography>
-      <Typography>Vrsta kartice: {kartica.vrsta}</Typography>
-      <Typography>Datum kreiranja: {new Date(kartica.datum_kreiranja).toLocaleDateString()}</Typography>
-      <Typography>Datum isteka: {new Date(kartica.datum_isteka).toLocaleDateString()}</Typography>
-      <Typography>Broj računa: {kartica.broj_racuna}</Typography>
+      <Typography variant="h5">{kartica.name}</Typography>
+      <Typography>Broj kartice: {showDetails ? kartica.number : `${kartica.number.substring(0, 4)} xxxx xxxx ${kartica.number.substring(12)}`}</Typography>
+      <Typography>Vrsta kartice: {kartica.type}</Typography>
+      <Typography>Datum kreiranja: {new Date(kartica.creationDate).toLocaleDateString()}</Typography>
+      <Typography>Datum isteka: {new Date(kartica.expirationDate).toLocaleDateString()}</Typography>
+      <Typography>Broj računa: {kartica.bankAccountNumber}</Typography>
       <Typography>CVV: {showDetails ? kartica.cvv : 'xxx'}</Typography>
-      <Typography>Limit: {kartica.limit}</Typography>
+      <Typography>Limit: {kartica.cardLimit}</Typography>
       <Typography>Status: {kartica.status}</Typography>
       <Button onClick={() => setShowDetails(!showDetails)}>{showDetails ? "Sakrij informacije" : "Prikaži informacije"}</Button>
       {me?.permission ? kartica.status !== 'aktivna' && <Button onClick={() => handleStatusChange('aktivna')}>Aktiviraj</Button> : null}
@@ -81,6 +75,5 @@ export default function DetaljiKartice() {
     </Card>
     {transakcije && <ListaTransakcija transakcije={transakcije}></ListaTransakcija>}
   </>
-
   );
 }

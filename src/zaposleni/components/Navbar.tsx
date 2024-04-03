@@ -43,6 +43,7 @@ const pages = [
   { name: "Kreiraj zaposlenog", path: "kreirajZaposlenog" },
   { name: "Kreiraj firmu", path: "kreirajFirmu" },
   { name: "Kartice", path: "/kartice" },
+
 ];
 
 const pagesUser = [

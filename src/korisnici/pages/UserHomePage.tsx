@@ -4,7 +4,7 @@ import { makeGetRequest } from "utils/apiRequest";
 import styled from "styled-components";
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { Account } from "utils/types";
+import { Account, BankRoutes } from "utils/types";
 import CurrencyConverter from "korisnici/components/CurrencyConverter";
 
 const PageWrapper = styled.div`
@@ -53,8 +53,9 @@ const UserHomePage: React.FC = () => {
       const me = getMe();
       if (!me)
         return;
-      const data = await makeGetRequest(`/racuni/nadjiRacuneKorisnika/${me.id}`)
+      const data = await makeGetRequest(`${BankRoutes.account_find_user_account}/${me.id}`)
       if (data) {
+        console.log(data);
         setAccounts(data);
       }
     } catch (error) {

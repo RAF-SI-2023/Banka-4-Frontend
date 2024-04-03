@@ -1,26 +1,15 @@
 // @ts-nocheck
 
-import React, { useState, useEffect } from "react";
-import {
-  TextField,
-  MenuItem,
-  Select,
-  FormControl,
-  InputLabel,
-  Typography,
-} from "@mui/material";
-import ExchangeRatesTable from "menjacnica/ExchangeRatesTable";
-
-type CurrencyRate = {
-  code: string;
-  rate: number; // Exchange rate in relation to dinar
-};
+import React, { useState, useEffect } from 'react';
+import { TextField, MenuItem, Select, FormControl, InputLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@mui/material';
+import { BankRoutes, Exchange, ExchangeRate } from 'utils/types';
+import { makeGetRequest } from 'utils/apiRequest';
 
 // Example currency rates
-const MOCK_CURRENCY_RATES: CurrencyRate[] = [
-  { code: "EUR", rate: 117.5 },
-  { code: "USD", rate: 97.3 },
-  { code: "GBP", rate: 137.2 },
+const MOCK_CURRENCY_RATES: ExchangeRate[] = [
+  { currencyCode: 'EUR', rate: 117.5 },
+  { currencyCode: 'USD', rate: 97.3 },
+  { currencyCode: 'GBP', rate: 137.2 },
 ];
 
 const CurrencyConverter: React.FC = () => {
@@ -28,11 +17,16 @@ const CurrencyConverter: React.FC = () => {
   const [fromCurrency, setFromCurrency] = useState<string>("EUR");
   const [toCurrency, setToCurrency] = useState<string>("USD");
   const [convertedAmount, setConvertedAmount] = useState<number>(0);
-  const [currencyRates, setCurrencyRates] =
-    useState<CurrencyRate[]>(MOCK_CURRENCY_RATES);
+  const [currencyRates, setCurrencyRates] = useState<Exchange[]>(MOCK_CURRENCY_RATES);
+
 
   useEffect(() => {
-    // Backend call for exchange rates could be implemented here.
+    const fetchData = async () => {
+      const rates = await makeGetRequest(BankRoutes.exchange);
+
+      setCurrencyRates(rates);
+    }
+    fetchData()
   }, []);
 
   useEffect(() => {
@@ -66,11 +60,10 @@ const CurrencyConverter: React.FC = () => {
 
   const calculateConversion = () => {
     if (!amount) return;
-    const fromRate =
-      currencyRates.find((cr) => cr.code === fromCurrency)?.rate || 1;
-    const toRate =
-      currencyRates.find((cr) => cr.code === toCurrency)?.rate || 1;
-    const result = (parseFloat(amount) * fromRate) / toRate;
+
+    const fromRate = currencyRates?.find((cr) => cr.currencyCode === fromCurrency)?.rate || 1;
+    const toRate = currencyRates?.find((cr) => cr.currencyCode === toCurrency)?.rate || 1;
+    const result = (parseFloat(amount) / fromRate) * toRate;
     setConvertedAmount(result);
   };
 
@@ -86,28 +79,22 @@ const CurrencyConverter: React.FC = () => {
       />
       <FormControl fullWidth margin="normal">
         <InputLabel>From Currency</InputLabel>
-        <Select
-          value={fromCurrency}
-          onChange={handleFromCurrencyChange}
-          label="From Currency"
-        >
-          {currencyRates.map((currency) => (
-            <MenuItem key={currency.code} value={currency.code}>
-              {currency.code}
+
+        <Select value={fromCurrency} onChange={handleFromCurrencyChange} label="From Currency">
+          {currencyRates?.map((currency) => (
+            <MenuItem key={currency.currencyCode} value={currency.currencyCode}>
+              {currency.currencyCode}
             </MenuItem>
           ))}
         </Select>
       </FormControl>
       <FormControl fullWidth margin="normal">
         <InputLabel>To Currency</InputLabel>
-        <Select
-          value={toCurrency}
-          onChange={handleToCurrencyChange}
-          label="To Currency"
-        >
-          {currencyRates.map((currency) => (
-            <MenuItem key={currency.code} value={currency.code}>
-              {currency.code}
+
+        <Select value={toCurrency} onChange={handleToCurrencyChange} label="To Currency">
+          {currencyRates?.map((currency) => (
+            <MenuItem key={currency.currencyCode} value={currency.currencyCode}>
+              {currency.currencyCode}
             </MenuItem>
           ))}
         </Select>
@@ -117,6 +104,7 @@ const CurrencyConverter: React.FC = () => {
       </Typography>
       <ExchangeRatesTable />
       {amount === "" && (
+
         <Typography color="error" style={{ marginTop: 20 }}>
           Please enter an amount.
         </Typography>

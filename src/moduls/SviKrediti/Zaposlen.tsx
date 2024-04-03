@@ -1,9 +1,9 @@
 import { getMe } from '../../utils/getMe';
-import Tabela from './TabelaKrediti';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BankRoutes, Kredit } from './../../utils/types';
 import { makeApiRequest, makeGetRequest } from 'utils/apiRequest';
+import Tabela2 from './TabelaKrediti2';
 
 const auth = getMe();
 let emailKorisnikov = "";
@@ -28,37 +28,35 @@ function Zaposlen() {
 
     const navigate = useNavigate();
 
-    const odobri = async (index: number) => {
-        const kredit = krediti[index];
-        const data = await makeApiRequest(BankRoutes.credit_approve, "POST", { id: kredit.id })
-        console.log(`Odobren kredit za: ${kredit.type}`);
-        console.log(data);
+    const odobri = async (kredit: Kredit) => {
+        const data = await makeGetRequest(BankRoutes.credit_approve+"/"+kredit.id)
+        console.log(`Odobren kredit za: ${kredit.id}`);
+       
 
     };
 
-    const odbij = async (index: number) => {
-        const kredit = krediti[index];
-        const data = await makeApiRequest(BankRoutes.credit_deny, "POST", { id: kredit.id })
-        console.log(`Odbijen kredit za: ${kredit.type}`);
-        console.log(data);
+    const odbij = async (kredit: Kredit) => {
+        const data = await makeGetRequest(BankRoutes.credit_deny +"/"+kredit.id)
+        console.log(`Odbijen kredit za: ${kredit.id}`);
+      
     };
-
 
     const handleRedClick = (kredit: Kredit) => {
-        localStorage.setItem('selectedKredit', JSON.stringify(kredit));
-        navigate(`/pojedinacniKredit`);
+       
+       
     };
 
     return (
         <div>
             <p>Email adresa: {emailKorisnikov}</p>
-            <Tabela krediti={krediti} onClickRed={handleRedClick} />
-            {krediti.map((kredit, index) => (
-                <div key={index}>
-                    <button onClick={() => odobri(index)}>Odobri</button>
-                    <button onClick={() => odbij(index)}>Odbij</button>
-                </div>
-            ))}
+            <Tabela2 krediti={krediti} onClickRed={handleRedClick}>
+                {(kredit) => (
+                    <>
+                        <button onClick={() => odobri(kredit)}>Odobri</button>
+                        <button onClick={() => odbij(kredit)}>Odbij</button>
+                    </>
+                )}
+            </Tabela2>
         </div>
     );
 

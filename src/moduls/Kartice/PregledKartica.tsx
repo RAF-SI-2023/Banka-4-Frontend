@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Kartica } from "../../utils/types";
+import { BankRoutes, Kartica } from "../../utils/types";
 import { makeGetRequest } from "../../utils/apiRequest";
 import { Button, Card, List, ListItem, ListItemText } from "@mui/material";
 import { getMe } from "../../utils/getMe";
@@ -12,7 +12,7 @@ export default function PregledKartica() {
         const me = getMe();
         if (me?.permission)
             setJeZaposleni(true)
-        makeGetRequest("/cards")
+        makeGetRequest(BankRoutes.cards)
             .then((result) => {
                 setKartice(result);
             })
@@ -31,11 +31,14 @@ export default function PregledKartica() {
             <List>
                 {kartice?.map((kartica, index) => (
                     <Card variant="outlined" key={index} style={{ margin: "10px" }}>
-                        <ListItem button onClick={() => window.location.replace("/kartica?id=" + kartica.id)}>
+                        <ListItem button onClick={() => {
+                            localStorage.setItem('selectedKartica', JSON.stringify(kartica));
+                            window.location.replace("/kartica?id=" + kartica.id)
+                            }}>
                             <ListItemText
-                                primary={kartica.naziv}
-                                secondary={`Broj: ${kartica.broj} - Vrsta: ${kartica.vrsta} - Datum isteka: ${new Date(
-                                    kartica.datum_isteka
+                                primary={kartica.name}
+                                secondary={`Broj: ${kartica.number} - Vrsta: ${kartica.type} - Datum isteka: ${new Date(
+                                    kartica.expirationDate
                                 ).toLocaleDateString()} - Status: ${kartica.status}`}
                             />
                         </ListItem>

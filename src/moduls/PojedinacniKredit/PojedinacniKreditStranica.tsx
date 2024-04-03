@@ -21,9 +21,10 @@ const PojedinacniKreditStranica = () => {
 
     const fetchData = async () => {
       try {
-        const data = await makeGetRequest(`${BankRoutes.credit_all}/not_approved`)
-        setKredit(data?.kredit);
-        setTransakcije(data?.transakcije);
+        const data = await makeGetRequest(`${BankRoutes.credit_detailed}/`+parsedKredit.id);
+        setKredit(data);
+        setTransakcije(data?.transakcije);console.log(data);
+        
       } catch (error) {
         console.error('Greška pri preuzimanju podataka:', error);
       }
@@ -36,8 +37,8 @@ const PojedinacniKreditStranica = () => {
 
   return (
     <div>
-      {kredit && <KreditiTabela kredit={kredit} />}
-      {transakcije.length > 0 && <TransakcijeTabela transakcije={transakcije} />}
+       {kredit && <KreditiTabela kredit={kredit} />}
+     
     </div>
   );
 };

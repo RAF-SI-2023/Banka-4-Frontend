@@ -4,6 +4,8 @@ import { TableContainer, Table, TableBody, TableRow, Paper } from '@mui/material
 import { StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from '../../utils/tableStyles';
 
 const KreditiTabela = ({ kredit }: { kredit: KreditPojedinacni }) => {
+  
+  
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -26,19 +28,20 @@ const KreditiTabela = ({ kredit }: { kredit: KreditPojedinacni }) => {
         </StyledTableHead>
         <TableBody>
           <StyledTableRow>
-            <StyledTableCell>{kredit.naziv}</StyledTableCell>
-            <StyledTableCell>{kredit.broj}</StyledTableCell>
-            <StyledTableCell>{kredit.iznos}</StyledTableCell>
-            <StyledTableCell>{kredit.period}</StyledTableCell>
-            <StyledTableCell>{kredit.nominalnaKamatnaStopa}</StyledTableCell>
-            <StyledTableCell>{kredit.efektivnaKamatnaStopa}</StyledTableCell>
-            <StyledTableCell>{kredit.datumUgovaranja}</StyledTableCell>
-            <StyledTableCell>{kredit.datumDospeca}</StyledTableCell>
-            <StyledTableCell>{kredit.iznosRate}</StyledTableCell>
-            <StyledTableCell>{kredit.datumSledeceRate}</StyledTableCell>
-            <StyledTableCell>{kredit.preostaloDugovanje}</StyledTableCell>
-            <StyledTableCell>{kredit.iznosPretplate}</StyledTableCell>
-            <StyledTableCell>{kredit.valuta}</StyledTableCell>
+            <StyledTableCell>{kredit.type}</StyledTableCell>
+            <StyledTableCell>{kredit.bankAccountNumber}</StyledTableCell>
+            <StyledTableCell>{kredit.amount}</StyledTableCell>
+            <StyledTableCell>{kredit.loanTerm}</StyledTableCell>
+            <StyledTableCell>{kredit.nominalInterestRate}</StyledTableCell>
+            <StyledTableCell>{kredit.effectiveInterestRate}</StyledTableCell>
+            <StyledTableCell>{new Date(kredit.contractDate).toLocaleDateString()}</StyledTableCell>
+            <StyledTableCell>{new Date(kredit.loanMaturityDate).toLocaleDateString()}</StyledTableCell>
+            <StyledTableCell>{kredit.installmentAmount}</StyledTableCell>
+            <StyledTableCell>{new Date(kredit.nextInstallmentDate).toLocaleDateString()}</StyledTableCell>
+            <StyledTableCell>{kredit.remainingDebt}</StyledTableCell>
+            <StyledTableCell>{kredit.prepayment}</StyledTableCell>
+            <StyledTableCell>{kredit.currency}</StyledTableCell>
+            
           </StyledTableRow>
         </TableBody>
       </Table>

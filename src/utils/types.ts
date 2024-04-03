@@ -115,15 +115,16 @@ export type CompanyListProps = {
 
 export type Kartica = {
   id: number;
-  naziv: string;
-  broj: string;
-  vrsta: 'kreditna' | 'debitna';
-  datum_kreiranja: number;
-  datum_isteka: number;
-  broj_racuna: string;
+  name: string;
+  number: string;
+  type: 'kreditna' | 'debitna';
+  creationDate: number;
+  expirationDate: number;
+  bankAccountNumber: string;
   cvv: string;
-  limit: number;
+  cardLimit: number;
   status: 'aktivna' | 'deaktivirana' | 'blokirana';
+  blocked: boolean;
 }
 
 export type TransakcijaKarticePrikaz = {
@@ -154,19 +155,19 @@ export type Kredit = {
 }
 
 export type KreditPojedinacni = {
-  naziv: string;
-  broj: string;
-  iznos: number;
-  period: number;
-  nominalnaKamatnaStopa: number;
-  efektivnaKamatnaStopa: number;
-  datumUgovaranja: number;
-  datumDospeca: number;
-  iznosRate: number;
-  datumSledeceRate: number;
-  preostaloDugovanje: number;
-  iznosPretplate: number;
-  valuta: string;
+  amount: number;
+  bankAccountNumber: string;
+  contractDate: number;
+  currency: string;
+  effectiveInterestRate: number;
+  installmentAmount: number;
+  loanMaturityDate: number;
+  loanTerm: number;
+  nextInstallmentDate: number;
+  nominalInterestRate: number;
+  prepayment: number;
+  remainingDebt: number;
+  type: string;
 };
 
 export type Transakcija = {
@@ -198,18 +199,20 @@ export enum UserRoutes {
 export enum BankRoutes {
   transaction_new_payment = "/transaction/nova-uplata",
   transaction_new_transfer = "/transaction/nova-uplata",
+  cards_names = "/cards/names",
   cards = "/cards",
   cards_create = "/cards/create",
   credit_approve = "/credit/approve",
   credit_deny = "/credit/deny",
   credit_apply = "/credit/apply",
   credit_all = "/credit/all",
-  credit_detailed = "/detailed-credit/creditRequestId",
+  credit_detailed = "/credit/detailed-credit/creditRequestId",
   account_add_tekuci = "/racuni/dodajTekuci",
   account_add_devizni = "/racuni/dodajDevizni",
   account_find_by_number = "/racuni/deleteRacunPoBroju",
   account_find_user_account = "/racuni/nadjiRacuneKorisnika",
   company_create = "/racuni/kreirajFirmu",
+  exchange = "/exchange"
 }
 
 export enum StockRoutes {
