@@ -1,16 +1,24 @@
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { makeGetRequest } from "../utils/apiRequest";
 import { ExchangeRate } from "utils/types";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 
 const ExchangeRatesTable = () => {
-  const [exchages, setExhanges] = useState<ExchangeRate[]>([]);
+  const [currencyRates, setCurrencyRates] = useState<ExchangeRate[]>([]);
 
   const fetchExchange = async () => {
     try {
       const data = await makeGetRequest(`/exchange`);
       if (data) {
-        setExhanges(data);
+        setCurrencyRates(data);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -22,32 +30,28 @@ const ExchangeRatesTable = () => {
   }, []);
 
   return (
-    <Fragment>
-      <Typography variant="h6">Kursna lista</Typography>
-      <TableContainer>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Valuta</TableCell>
-              <TableCell>Kurs</TableCell>
+    <TableContainer component={Paper} style={{ marginTop: 20 }}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Currency</TableCell>
+            <TableCell align="right">
+              Exchange rate in relation to dinar
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {currencyRates.map((rate) => (
+            <TableRow key={rate.currencyCode}>
+              <TableCell component="th" scope="row">
+                {rate.currencyCode}
+              </TableCell>
+              <TableCell align="right">{rate.rate}</TableCell>
             </TableRow>
-          </TableHead>
-        
-          <TableBody>
-            {exchages.map((exchange1, index1) =>
-              exchages.slice(index1 + 1).map((exchange2, index2) => (
-                <TableRow key={index2}>
-                  <TableCell>
-                    {exchange1.currencyCode}-{exchange2.currencyCode}
-                  </TableCell>
-                  <TableCell>{exchange2.rate / exchange1.rate}</TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Fragment>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 export default ExchangeRatesTable;
