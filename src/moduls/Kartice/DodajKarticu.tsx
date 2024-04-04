@@ -116,10 +116,12 @@ export default function DodajKarticu() {
                 helperText={cardLimit.length > 0 && isNaN(Number(cardLimit)) ? 'Limit mora biti broj' : ''}
             />
             <Button
+                className="pointy-btn"
                 variant="contained"
                 color="primary"
                 onClick={handleKreiraj}
                 disabled={!formValid}
+                sx={{mt:1}}
             >
                 Kreiraj
             </Button>

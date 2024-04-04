@@ -4,6 +4,8 @@ import { makeGetRequest } from "../../utils/apiRequest";
 import { Button, Card, List, ListItem, ListItemText } from "@mui/material";
 import { getMe } from "../../utils/getMe";
 
+import '../../App.css';
+
 export default function PregledKartica() {
     const [kartice, setKartice] = useState<Kartica[]>([]);
     const [jeZaposleni, setJeZaposleni] = useState(false);
@@ -24,9 +26,17 @@ export default function PregledKartica() {
     return (
         <div>
             {jeZaposleni && (
-                <Button variant="contained" color="primary" href="/dodaj-karticu">
+                <div className="center">
+                <img src={process.env.PUBLIC_URL + '/dunno.jpg'} alt="Dunno" 
+                width={520}
+                height={520}/>
+                <br></br>
+                <Button 
+                className='pointy-btn' variant="contained" color="primary" href="/dodaj-karticu"
+                sx={{ mt: 3, mb: 2, ml:22, fontweight:'bold' }}>
                     Dodaj Karticu
                 </Button>
+                </div>
             )}
             <List>
                 {kartice?.map((kartica, index) => (
