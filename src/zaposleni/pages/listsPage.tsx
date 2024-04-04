@@ -7,10 +7,13 @@ import CompanyList from '../components/companyList';
 import { useEffect, useState } from 'react';
 import { makeGetRequest } from '../../utils/apiRequest';
 
+import '../../App.css';
+
 const StyledTabs = styled(Tabs)`
   background-color: #f2f2f2;
 
 `
+
 const TableWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -30,10 +33,13 @@ const PageWrapper = styled.div`
   align-items: center;
   margin-top: 100px;
   gap: 0px;
+  padding-left:15px;
+  padding-right:15px;
 `
 
 const HeadingText = styled.div`
-  font-size: 45px;
+  font-size: 2.617924rem;
+  font-Family: Georgia , serif;
 `
 
 const HeadingAndButtonWrapper = styled.div`
@@ -45,6 +51,20 @@ const HeadingAndButtonWrapper = styled.div`
   max-width: 1200px; /* Match this with your StyledTable's max-width for alignment */
   margin-bottom: 16px; /* Space between the heading/button and the table below */
 `
+
+const buttonStyle = {
+  backgroundColor: 'var(--secondary-blue)',
+  width: '155px',
+  height: '70px',
+  minWidth: '100px',
+  minHeight: '30px',
+  maxWidth: '200px',
+  maxHeight: '50px',
+  fontSize:'0.81rem',
+  whiteSpace: 'nowrap'
+};
+
+
 
 const UserAndAccountList: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -93,19 +113,19 @@ const UserAndAccountList: React.FC = () => {
     <PageWrapper>
 
       <HeadingAndButtonWrapper>
-        <HeadingText>Liste</HeadingText>
+        <HeadingText>Spiskovi</HeadingText>
         {permissions && selectedTab === 0 && (
-          <Button variant="contained" onClick={handleCreateUser}>
+          <Button variant="contained" onClick={handleCreateUser} sx={buttonStyle} >
             Dodaj Korisnika
           </Button>
         )}
         {permissions3 && selectedTab === 1 && (
-          <Button variant="contained" onClick={handleCreateEmployee}>
+          <Button variant="contained" onClick={handleCreateEmployee} sx={buttonStyle}>
             Dodaj Zaposlenog
           </Button>
         )}
         {permissions4 && selectedTab === 2 && (
-          <Button variant="contained" onClick={handleCreateCompany}>
+          <Button variant="contained" onClick={handleCreateCompany} sx={buttonStyle}>
             Dodaj Firmu
           </Button>
         )}

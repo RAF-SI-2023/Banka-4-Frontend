@@ -4,26 +4,29 @@ import styled from 'styled-components';
 import { makeApiRequest } from '../../utils/apiRequest';
 import { BankRoutes } from 'utils/types';
 
+import '../../App.css';
+
 const PageWrapper = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  margin-top: 100px;
-  gap: 80px;
+  margin-top: 50px;
+  gap: 5px;
 `
 const FormWrapper = styled.div`
     background-color: #fafafa;
-    padding: 30px;
+    padding: 25px;
     border-radius: 18px;
-    width: 400px;
+    width: 600px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 0px;
 `
 
 const HeadingText = styled.div`
-  font-size: 32px;
+  font-size: 4.235rem;
+  font-family:'Georgia, serif'
 `
 
 const StyledButton = styled(Button)`
@@ -33,6 +36,7 @@ const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: 15px;
 `
 const StyledTextField = styled(TextField)`
   background-color: white;
@@ -166,7 +170,7 @@ const CreateCompanyPage: React.FC = () => {
           margin="normal"
         />
         <ButtonContainer>
-          <StyledButton variant="contained" color="primary" onClick={handleSumbit}>
+          <StyledButton className="pointy-btn" variant="contained" color="primary" onClick={handleSumbit}>
             Kreiraj
           </StyledButton>
         </ButtonContainer>

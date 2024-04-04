@@ -6,6 +6,7 @@ import Tabela from './TabelaKrediti';
 import { BankRoutes, Kredit } from './../../utils/types';
 import { useNavigate } from 'react-router-dom';
 import { makeGetRequest } from 'utils/apiRequest';
+import { Button} from '@mui/material';
 import { Console } from 'console';
 
 const auth = getMe();
@@ -61,6 +62,14 @@ function ListaKredita() {
             {zaposlen ? <div><Zaposlen />
             <Tabela krediti={krediti2} onClickRed={handleRedClick} /> </div>: <div>  <NeZaposlen /> <Tabela krediti={krediti} onClickRed={handleRedClick} /> </div>}
             
+            <Button onClick={() => posalji()} 
+                className="pointy-btn"
+                variant="contained"
+                color="primary"
+                sx={{mt:2, ml:1}}
+                >
+                Posalji
+            </Button>
         </div>
     );
 }

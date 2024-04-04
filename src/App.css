@@ -2,6 +2,17 @@
   text-align: center;
 }
 
+:root {
+  --warning-red: #D32F2F;
+  --button-blue: #1976D2;
+  --secondary-blue: #3d88d3;
+  --approval-green: #388E3C;
+  --light-green: #81C784;
+  --auxiliary-beige: #FFF8E1;
+}
+
+
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -35,15 +46,14 @@
 }
 
 /*DUGME CSS*/
-.learn-more-btn {
-  background-color: #3498db; 
+.pointy-btn {
+  background-color: var(--button-blue); 
   color: white; 
   padding: 0px 20px; 
   font-size: 16px;
   border: none; 
   border-radius: 5px; 
   cursor: pointer;
-  font-weight: bold; 
   text-align: center;
   text-decoration: none; 
   display: inline-block;
@@ -51,12 +61,12 @@
   transition: background-color 0.3s; 
 }
 
-.learn-more-btn:hover {
-  background-color: #297cb7; 
+.pointy-btn:hover {
+  background-color: var(--button-blue); 
 }
 
 /* button pointy bit */
-.learn-more-btn::before {
+.pointy-btn::before {
   content: '';
   position: absolute;
   top: -10px; /* up/down */
@@ -65,6 +75,10 @@
   border-left: 10px solid transparent; /* width */
   border-right: 10px solid transparent; /* width */
   border-bottom: 10px solid #3498db; /* Color and size to match the button */
+}
+
+.pointy-btn:disabled::before {
+  border-bottom: 10px solid ; /* Grey color for the pointy bit when disabled */
 }
 
 /*TABELA CSS*/
@@ -159,4 +173,13 @@
   margin-bottom: 0.5rem;
   color: #1A7B99;
   font-weight: bold;
+}
+
+
+.center {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px;
 }

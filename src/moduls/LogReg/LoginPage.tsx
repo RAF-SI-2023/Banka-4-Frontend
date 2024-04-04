@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { makeApiRequest } from 'utils/apiRequest';
 import { UserRoutes } from 'utils/types';
 
+import '../../App.css';
+
+
 const url = "http://api.stamenic.work:8080/api";
 
 interface DecodedToken {
@@ -72,7 +75,7 @@ const LoginPage = () => {
             alignItems: 'center',
             justifyContent: 'center',
             height: '100vh',
-            backgroundColor: '#f9e7e7', // Beige color
+            backgroundColor: 'var(--auxiliary-beige)', // Beige color
             border: '1px solid #dedede',
             borderRadius: '8px',
             boxShadow: 3,
@@ -87,7 +90,7 @@ const LoginPage = () => {
                 `}
             </style>
 
-            <Typography component="h1" variant="h5" sx={{ fontSize: '1.5rem', fontWeight: 'bold', margin: '20px 0' }}>
+            <Typography component="h1" variant="h5" sx={{ fontSize: '2.617924rem', fontFamily: 'Georgia , serif', fontWeight: 'bold', margin: '20px 0' }}>
                 Login
             </Typography>
             <form onSubmit={authenticate}>
@@ -124,11 +127,13 @@ const LoginPage = () => {
                     </Typography>
                 )}
                 <Button
+                    className="pointy-btn"
                     type="submit"
                     fullWidth
                     variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
+                    sx={{ mt: 3, mb: 2, fontweight:'bold' }}
                     disabled={!email || !password}
+                    
                 >
                     Login
                 </Button>

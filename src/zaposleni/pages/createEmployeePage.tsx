@@ -11,8 +11,8 @@ const PageWrapper = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  margin-top: 100px;
-  gap: 80px;
+  margin-top: 50px;
+  gap: 20px;
 `
 const FormWrapper = styled.div`
     background-color: #fafafa;
@@ -21,10 +21,12 @@ const FormWrapper = styled.div`
     width: 600px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
 `
+
 const HeadingText = styled.div`
-  font-size: 32px;
+  font-size: 4.235rem;
+  font-family:'Georgia, serif'
 `
 const CheckBoxForm = styled.div`
   margin-bottom: 40px;
@@ -345,7 +347,7 @@ const CreateEmployeePage: React.FC = () => {
           </Grid>
         </CheckBoxForm>
         <ButtonContainer>
-          <StyledButton variant="contained" color="primary" onClick={handleSumbit}>
+          <StyledButton className="pointy-btn" variant="contained" color="primary" onClick={handleSumbit}>
             Kreiraj
           </StyledButton>
         </ButtonContainer>
