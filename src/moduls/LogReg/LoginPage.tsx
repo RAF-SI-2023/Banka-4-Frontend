@@ -30,8 +30,7 @@ const LoginPage = () => {
         navigate("/resetPassword")
     }
 
-    // @ts-ignore
-    const authenticate = async (e) => {
+    const authenticate = async (e: { preventDefault: () => void }) => {
         e.preventDefault();
         if (!email || !password) {
             setError('Both fields are required');

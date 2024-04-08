@@ -80,16 +80,11 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
                 <input type="text" id="sifraPlacanja" class="swal2-input" placeholder="Sifra placanja">`, // Adding the select element here
             focusConfirm: false,
             preConfirm: () => {
-                // @ts-ignore
-                const nazivPrimaoca = document.getElementById('nazivPrimaoca').value;
-                // @ts-ignore
-                const brojRacunaPrimaoca = document.getElementById('brojRacunaPrimaoca').value;
-                // @ts-ignore
-                const broj = document.getElementById('broj').value;
-                // @ts-ignore
-                const sifraPlacanja = document.getElementById('sifraPlacanja').value;
-                // @ts-ignore
-                const brojRacunaPosiljaoca = document.getElementById('brojRacunaPosiljaoca').value;
+                const nazivPrimaoca = (document.getElementById('nazivPrimaoca') as HTMLInputElement).value;
+                const brojRacunaPrimaoca = (document.getElementById('brojRacunaPrimaoca') as HTMLInputElement).value;
+                const broj = (document.getElementById('broj') as HTMLInputElement).value;
+                const sifraPlacanja = (document.getElementById('sifraPlacanja') as HTMLInputElement).value;
+                const brojRacunaPosiljaoca = (document.getElementById('brojRacunaPosiljaoca') as HTMLSelectElement).value;
 
                 // Regular expression for validation
                 const isValidbrojRacunaPrimaoca = /^\d{18}$/.test(brojRacunaPrimaoca);
@@ -121,8 +116,7 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
         });
     };
 
-    // @ts-ignore
-    const handleEdit = (id) => {
+    const handleEdit = (id: string) => {
         let recipientDetails = primaoci.map(e => ({
             id: e.id.toString(),
             "idKorisnika": e.idKorisnika.toString(),
@@ -159,17 +153,11 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
                 <input type="text" id="sifraPlacanja" class="swal2-input" value="${recipientDetails.sifraPlacanja}" placeholder="Sifra placanja">`, // Adding the select element here
             focusConfirm: false,
             preConfirm: () => {
-                // Fetch values from input and select fields
-                // @ts-ignore
-                const nazivPrimaoca = document.getElementById('nazivPrimaoca').value;
-                // @ts-ignore
-                const brojRacunaPrimaoca = document.getElementById('brojRacunaPrimaoca').value;
-                // @ts-ignore
-                const broj = document.getElementById('broj').value;
-                // @ts-ignore
-                const sifraPlacanja = document.getElementById('sifraPlacanja').value;
-                // @ts-ignore
-                const brojRacunaPosiljaoca = document.getElementById('brojRacunaPosiljaoca').value; // Get selected value
+                const nazivPrimaoca = (document.getElementById('nazivPrimaoca') as HTMLInputElement).value;
+                const brojRacunaPrimaoca = (document.getElementById('brojRacunaPrimaoca') as HTMLInputElement).value;
+                const broj = (document.getElementById('broj') as HTMLInputElement).value;
+                const sifraPlacanja = (document.getElementById('sifraPlacanja') as HTMLInputElement).value;
+                const brojRacunaPosiljaoca = (document.getElementById('brojRacunaPosiljaoca') as HTMLSelectElement).value;
 
                 if (!nazivPrimaoca || !brojRacunaPrimaoca || !broj || !sifraPlacanja) {
                     Swal.showValidationMessage(`Please fill in all fields.`);
@@ -177,7 +165,7 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
                 }
                 return { nazivPrimaoca, brojRacunaPrimaoca, broj, sifraPlacanja, brojRacunaPosiljaoca }; // Include the new attribute in the return statement
             }
-        }).then(async (result) => {
+        }).then(async (result:any) => {
             if (result.value) {
                 try {
                     //Dodavanje primaoca
@@ -190,7 +178,7 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
                         broj: result.value.broj,
                         sifraPlacanja: result.value.sifraPlacanja
                     })
-                    setPrimaoci(old => old.map(prim => (prim.id === id) ? { ...prim, ...result.value } : prim));
+                    setPrimaoci(old => old.map(prim => (prim.id.toString() === id) ? { ...prim, ...result.value } : prim));
                 } catch (e) {
 
                 }
@@ -199,13 +187,12 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
     };
 
 
-    // @ts-ignore
-    const handleDelete = async (id) => {
+    const handleDelete = async (id: string) => {
         try {
             //Brisanje
             const apiResult = await makeApiRequest(`${UserRoutes.favorite_users}/${id}`, "DELETE", {}, false, true)
             if (apiResult !== null)
-                setPrimaoci(primaoci.filter(prim => prim.id !== id));
+                setPrimaoci(primaoci.filter(prim => prim.id.toString() !== id));
         } catch (e) {
 
         }
@@ -252,13 +239,13 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
                                     <StyledTableCell>
                                         <IconButton edge="end" aria-label="edit" onClick={(e) => {
                                             e.stopPropagation()
-                                            handleEdit(recipient.id)
+                                            handleEdit(recipient.id.toString())
                                         }}>
                                             <EditIcon />
                                         </IconButton>
                                         <IconButton edge="end" aria-label="delete" onClick={(e) => {
                                             e.stopPropagation()
-                                            handleDelete(recipient.id)
+                                            handleDelete(recipient.id.toString())
                                         }}>
                                             <DeleteIcon />
                                         </IconButton>

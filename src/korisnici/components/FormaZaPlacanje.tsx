@@ -40,7 +40,7 @@ function svrhaPlacanjaIliTekstSifrePlacanja(svrhaPlacanja: string, sifraPlacanja
 }
 
 export const FormaZaPlacanje: React.FC<PaymentFormProps> = ({ onSave, navigate, defaultProps }) => {
-    const [racuni, setRacuni] = useState<RacunType[]>(RACUNI_PLACEHOLDER);
+    const [racuni, setRacuni] = useState(RACUNI_PLACEHOLDER);
     const [selectedRacun, setSelectedRacun] = useState(defaultProps.selectedRacun || 0);
     const [racun, setRacun] = useState<RacunType>(racuni[0]);
     const [nazivPrimaoca, setNazivPrimaoca] = useState(defaultProps.nazivPrimaoca || '');
@@ -56,8 +56,7 @@ export const FormaZaPlacanje: React.FC<PaymentFormProps> = ({ onSave, navigate, 
             const me = getMe();
 
             if (!me) return;
-            const rac = await makeGetRequest(`/racuni/nadjiRacuneKorisnika/${me.id}`)
-            // @ts-ignore
+            const rac: { brojRacuna: string, raspolozivoStanje: number }[] = await makeGetRequest(`/racuni/nadjiRacuneKorisnika/${me.id}`)
             setRacuni(rac.map(e => ({ naziv: "Racun", broj: e.brojRacuna, raspolozivo: e.raspolozivoStanje })))
         }
         gett();

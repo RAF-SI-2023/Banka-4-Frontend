@@ -60,8 +60,7 @@ const PregledPlacanja = () => {
             const me = getMe();
 
             if (!me) return;
-            const rac = await makeGetRequest(`/racuni/nadjiRacuneKorisnika/${me.id}`);
-            // @ts-ignore
+            const rac: { brojRacuna: string, raspolozivoStanje: number }[] = await makeGetRequest(`/racuni/nadjiRacuneKorisnika/${me.id}`)
             setRacuni(rac.map(e => ({ naziv: "Racun", broj: e.brojRacuna, raspolozivo: e.raspolozivoStanje })))
         }
         gett();

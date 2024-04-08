@@ -71,9 +71,7 @@ export default function DodajKarticu() {
             });
         }
     };
-    // @ts-ignore
     return (
-        // @ts-ignore
         <div style={{ padding: '20px' }}>
             <FormControl fullWidth>
                 <InputLabel id="vrsta-label">Vrsta kartice</InputLabel>

@@ -3,11 +3,8 @@ import { Button, TextField, Container, Typography, Box, FormControl, InputLabel,
 import { useNavigate } from 'react-router-dom';
 import { makeApiRequest } from 'utils/apiRequest';
 import { UserRoutes } from 'utils/types';
-// @ts-ignore
-const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 
-// @ts-ignore
-const validateEmail = (email) => {
+const validateEmail = (email: string) => {
     // Simple email validation pattern
     return /\S+@\S+\.\S+/.test(email);
 };
@@ -22,7 +19,7 @@ const RegistrationPage = () => {
         lozinka: '',
         ponovljenaLozinka: '',
     });
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState<any>({});
     const navigate = useNavigate();
 
     // Add validation and step change logic here
@@ -118,14 +115,12 @@ const RegistrationPage = () => {
         }
     };
 
-    // @ts-ignore
-    const handleFieldChange = (field, value) => {
+    const handleFieldChange = (field: string, value: string) => {
         // Apply transformations like capitalization for names here if necessary
         if (field === 'email' && !validateEmail(value)) {
             setErrors({ ...errors, email: 'Email adresa nije validna.' });
         } else {
             let newErrors = { ...errors };
-            // @ts-ignore
             delete newErrors[field];
             setErrors(newErrors);
         }
@@ -149,9 +144,7 @@ const RegistrationPage = () => {
                         autoComplete="email"
                         value={userData.email}
                         onChange={(e) => handleFieldChange('email', e.target.value)}
-                        // @ts-ignore
                         error={!!errors.email}
-                        // @ts-ignore
                         helperText={errors.email}
                         sx={{ mb: 2 }}
                     />
@@ -164,9 +157,7 @@ const RegistrationPage = () => {
                         autoComplete="tel"
                         value={userData.telefon}
                         onChange={(e) => handleFieldChange('telefon', e.target.value)}
-                        // @ts-ignore
                         error={!!errors.telefon}
-                        // @ts-ignore
                         helperText={errors.telefon}
                         sx={{ mb: 2 }}
                     />
@@ -179,9 +170,7 @@ const RegistrationPage = () => {
                         autoComplete="bank-account"
                         value={userData.brojRacuna}
                         onChange={(e) => handleFieldChange('brojRacuna', e.target.value)}
-                        // @ts-ignore
                         error={!!errors.brojRacuna}
-                        // @ts-ignore
                         helperText={errors.brojRacuna}
                         sx={{ mb: 2 }}
                     />
@@ -204,9 +193,7 @@ const RegistrationPage = () => {
                         name="aktivacioniKod"
                         value={userData.aktivacioniKod}
                         onChange={(e) => handleFieldChange('aktivacioniKod', e.target.value)}
-                        // @ts-ignore
                         error={!!errors.aktivacioniKod}
-                        // @ts-ignore
                         helperText={errors.aktivacioniKod || "Unesite kod koji ste dobili."}
                         sx={{ mb: 2 }}
                     />
@@ -233,9 +220,7 @@ const RegistrationPage = () => {
                         type="password"
                         value={userData.lozinka}
                         onChange={(e) => handleFieldChange('lozinka', e.target.value)}
-                        // @ts-ignore
                         error={!!errors.lozinka}
-                        // @ts-ignore
                         helperText={errors.lozinka}
                         sx={{ mb: 2 }}
                     />
@@ -248,9 +233,7 @@ const RegistrationPage = () => {
                         type="password"
                         value={userData.ponovljenaLozinka}
                         onChange={(e) => handleFieldChange('ponovljenaLozinka', e.target.value)}
-                        // @ts-ignore
                         error={!!errors.ponovljenaLozinka}
-                        // @ts-ignore
                         helperText={errors.ponovljenaLozinka}
                         sx={{ mb: 2 }}
                     />
