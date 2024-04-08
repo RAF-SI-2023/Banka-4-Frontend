@@ -1,6 +1,4 @@
-// @ts-nocheck
-
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import {
   TextField,
   MenuItem,
@@ -8,10 +6,11 @@ import {
   FormControl,
   InputLabel,
   Typography,
+  SelectChangeEvent,
 } from "@mui/material";
-import { BankRoutes, Exchange, ExchangeRate } from "utils/types";
-import { makeGetRequest } from "utils/apiRequest";
-import ExchangeRatesTable from "menjacnica/ExchangeRatesTable";
+import { BankRoutes, ExchangeRate } from "utils/types"; // Assuming this is properly defined elsewhere
+import { makeGetRequest } from "utils/apiRequest"; // This needs to return a Promise<ExchangeRate[]>
+import ExchangeRatesTable from "menjacnica/ExchangeRatesTable"; // Ensure this is properly typed
 
 // Example currency rates
 const MOCK_CURRENCY_RATES: ExchangeRate[] = [
@@ -25,13 +24,11 @@ const CurrencyConverter: React.FC = () => {
   const [fromCurrency, setFromCurrency] = useState<string>("EUR");
   const [toCurrency, setToCurrency] = useState<string>("USD");
   const [convertedAmount, setConvertedAmount] = useState<number>(0);
-  const [currencyRates, setCurrencyRates] =
-    useState<Exchange[]>(MOCK_CURRENCY_RATES);
+  const [currencyRates, setCurrencyRates] = useState<ExchangeRate[]>(MOCK_CURRENCY_RATES);
 
   useEffect(() => {
     const fetchData = async () => {
-      const rates = await makeGetRequest(BankRoutes.exchange);
-
+      const rates: ExchangeRate[] = await makeGetRequest(BankRoutes.exchange);
       setCurrencyRates(rates);
     };
     fetchData();
@@ -41,16 +38,14 @@ const CurrencyConverter: React.FC = () => {
     calculateConversion();
   }, [amount, fromCurrency, toCurrency]);
 
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (!value || /^\d*\.?\d*$/.test(value)) {
       setAmount(value);
     }
   };
 
-  const handleFromCurrencyChange = (
-    e: React.ChangeEvent<{ value: unknown }>
-  ) => {
+  const handleFromCurrencyChange = (e: SelectChangeEvent<string>) => {
     const newFromCurrency = e.target.value as string;
     if (newFromCurrency === toCurrency) {
       setToCurrency(fromCurrency);
@@ -58,7 +53,7 @@ const CurrencyConverter: React.FC = () => {
     setFromCurrency(newFromCurrency);
   };
 
-  const handleToCurrencyChange = (e: React.ChangeEvent<{ value: unknown }>) => {
+  const handleToCurrencyChange = (e: SelectChangeEvent<string>) => {
     const newToCurrency = e.target.value as string;
     if (newToCurrency === fromCurrency) {
       setFromCurrency(toCurrency);
@@ -68,11 +63,8 @@ const CurrencyConverter: React.FC = () => {
 
   const calculateConversion = () => {
     if (!amount) return;
-
-    const fromRate =
-      currencyRates?.find((cr) => cr.currencyCode === fromCurrency)?.rate || 1;
-    const toRate =
-      currencyRates?.find((cr) => cr.currencyCode === toCurrency)?.rate || 1;
+    const fromRate = currencyRates.find((cr) => cr.currencyCode === fromCurrency)?.rate || 1;
+    const toRate = currencyRates.find((cr) => cr.currencyCode === toCurrency)?.rate || 1;
     const result = (parseFloat(amount) / fromRate) * toRate;
     setConvertedAmount(result);
   };
@@ -89,13 +81,12 @@ const CurrencyConverter: React.FC = () => {
       />
       <FormControl fullWidth margin="normal">
         <InputLabel>From Currency</InputLabel>
-
         <Select
           value={fromCurrency}
           onChange={handleFromCurrencyChange}
           label="From Currency"
         >
-          {currencyRates?.map((currency) => (
+          {currencyRates.map((currency) => (
             <MenuItem key={currency.currencyCode} value={currency.currencyCode}>
               {currency.currencyCode}
             </MenuItem>
@@ -104,13 +95,12 @@ const CurrencyConverter: React.FC = () => {
       </FormControl>
       <FormControl fullWidth margin="normal">
         <InputLabel>To Currency</InputLabel>
-
         <Select
           value={toCurrency}
           onChange={handleToCurrencyChange}
           label="To Currency"
         >
-          {currencyRates?.map((currency) => (
+          {currencyRates.map((currency) => (
             <MenuItem key={currency.currencyCode} value={currency.currencyCode}>
               {currency.currencyCode}
             </MenuItem>

@@ -1,39 +1,40 @@
-import React from 'react';
-// import logo from './logo.svg';
+import React, { Suspense, lazy } from 'react';
 import './App.css';
-import UserAndAccountList from './zaposleni/pages/listsPage'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import UserInfoTable from './zaposleni/pages/userPage';
-import Navbar from './zaposleni/components/Navbar';
-import CreateUserPage from './zaposleni/pages/createUserPage';
-import EditUserPage from './zaposleni/pages/editUserPage';
-import CreateAccountPage from './zaposleni/pages/createAccountPage';
-import AccountInfoPage from './zaposleni/pages/accountPage';
-import CreateEmployeePage from './zaposleni/pages/createEmployeePage';
-import EditEmployeePage from './zaposleni/pages/editEmployeePage';
-import CreateCompanyPage from './zaposleni/pages/createCompanyPage';
-import EditCompanyPage from './zaposleni/pages/editCompanyPage';
-import LoginPage from './moduls/LogReg/LoginPage';
-import RegistrationPage from './moduls/LogReg/RegistrationPage';
 import { getMe } from './utils/getMe';
-import Placanje from './korisnici/pages/PlacanjePage';
-import UserHomePage from 'korisnici/pages/UserHomePage';
-import ResetPasswordPage from 'korisnici/pages/ResetPasswordPage';
-import Verifikacija from 'korisnici/pages/StranicaZaVerifikacijuPlacanja';
-import StranicaZaPojedinacniRacunSaPocetneStraniceZaKorisnike from 'korisnici/pages/StranicaZaPojedinacniRacunSaPocetneStraniceZaKorisnike';
-import PregledKartica from 'moduls/Kartice/PregledKartica';
-import DodajKarticu from 'moduls/Kartice/DodajKarticu';
-import DetaljiKartice from 'moduls/Kartice/DetaljiKartice';
-import ListaKredita from 'moduls/SviKrediti/listaKredita';
-import TraziKreditStranica from 'moduls/TrazenjeKredita/TraziKreditOdBanke';
-import PojedinacniKreditStranica from 'moduls/PojedinacniKredit/PojedinacniKreditStranica';
-import OpcijePage from 'berza/pages/OpcijePage';
-import UserOpcijePage from 'berza/pages/UserOptionsPage';
-import Transaction from 'zaposleni/pages/TransactionPage';
-import AkcijePage from 'berza/pages/AkcijePage';
-import DetaljiAkcije from 'berza/pages/DetaljiAkcijePage';
-import ExchangePage from 'menjacnica/ExchangePage';
 import styled from 'styled-components';
+
+// Lazy load all pages and components
+const UserInfoTable = lazy(() => import('./zaposleni/pages/userPage'));
+const Navbar = lazy(() => import('./zaposleni/components/Navbar'));
+const CreateUserPage = lazy(() => import('./zaposleni/pages/createUserPage'));
+const EditUserPage = lazy(() => import('./zaposleni/pages/editUserPage'));
+const CreateAccountPage = lazy(() => import('./zaposleni/pages/createAccountPage'));
+const AccountInfoPage = lazy(() => import('./zaposleni/pages/accountPage'));
+const CreateEmployeePage = lazy(() => import('./zaposleni/pages/createEmployeePage'));
+const EditEmployeePage = lazy(() => import('./zaposleni/pages/editEmployeePage'));
+const CreateCompanyPage = lazy(() => import('./zaposleni/pages/createCompanyPage'));
+const EditCompanyPage = lazy(() => import('./zaposleni/pages/editCompanyPage'));
+const LoginPage = lazy(() => import('./moduls/LogReg/LoginPage'));
+const RegistrationPage = lazy(() => import('./moduls/LogReg/RegistrationPage'));
+const Placanje = lazy(() => import('./korisnici/pages/PlacanjePage'));
+const UserHomePage = lazy(() => import('korisnici/pages/UserHomePage'));
+const ResetPasswordPage = lazy(() => import('korisnici/pages/ResetPasswordPage'));
+const Verifikacija = lazy(() => import('korisnici/pages/StranicaZaVerifikacijuPlacanja'));
+const StranicaZaPojedinacniRacunSaPocetneStraniceZaKorisnike = lazy(() => import('korisnici/pages/StranicaZaPojedinacniRacunSaPocetneStraniceZaKorisnike'));
+const PregledKartica = lazy(() => import('moduls/Kartice/PregledKartica'));
+const DodajKarticu = lazy(() => import('moduls/Kartice/DodajKarticu'));
+const DetaljiKartice = lazy(() => import('moduls/Kartice/DetaljiKartice'));
+const ListaKredita = lazy(() => import('moduls/SviKrediti/listaKredita'));
+const TraziKreditStranica = lazy(() => import('moduls/TrazenjeKredita/TraziKreditOdBanke'));
+const PojedinacniKreditStranica = lazy(() => import('moduls/PojedinacniKredit/PojedinacniKreditStranica'));
+const OpcijePage = lazy(() => import('berza/pages/OpcijePage'));
+const UserOpcijePage = lazy(() => import('berza/pages/UserOptionsPage'));
+const Transaction = lazy(() => import('zaposleni/pages/TransactionPage'));
+const AkcijePage = lazy(() => import('berza/pages/AkcijePage'));
+const DetaljiAkcije = lazy(() => import('berza/pages/DetaljiAkcijePage'));
+const ExchangePage = lazy(() => import('menjacnica/ExchangePage'));
+const UserAndAccountList = lazy(() => import('./zaposleni/pages/listsPage'));
 
 const VideoWrapper = styled.div`
   display: flex;
@@ -55,6 +56,22 @@ function App() {
       } */}
 
       <BrowserRouter>
+      <Suspense fallback={<div style={{
+    color: 'white',
+    backgroundColor: '#333',
+    padding: '20px',
+    borderRadius: '5px',
+    textTransform: 'uppercase',
+    fontWeight: 'bold',
+    fontSize: '20px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '100vh',
+    width: '100%',
+    boxSizing: 'border-box',
+    animation: 'fadeIn 1s ease-out'
+}}>Loading...</div>}>
         {auth?.id && <Navbar></Navbar>}
         <Routes>
           <Route path="/" element={auth?.id ? <UserHomePage /> : <LoginPage />} />
@@ -88,6 +105,7 @@ function App() {
           <Route path="/menjacnica" element={auth?.id ? <ExchangePage /> : <LoginPage />} />
 
         </Routes>
+        </Suspense>
       </BrowserRouter>
     </>
   );
