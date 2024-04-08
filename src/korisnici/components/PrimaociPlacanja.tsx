@@ -19,9 +19,9 @@ const MOCK_PRIMAOCI = [
     {
         "id": 4,
         "idKorisnika": 2,
-        "idRacunaPosaljioca": null,
+        "brojRacunaPosiljaoca": null,
         "nazivPrimaoca": "Kita",
-        "idRacunaPrimaoca": 444000000910000060,
+        "brojRacunaPrimaoca": 444000000910000060,
         "broj": 123,
         "sifraPlacanja": "SKOEr"
     }
@@ -73,9 +73,9 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
         Swal.fire({
             title: 'Dodaj primaoca',
             html: `
-                <label for="idRacunaPosiljaoca">Racun: </label><select id="idRacunaPosiljaoca" class="swal2-input">${racuniOptions}</select>
+                <label for="brojRacunaPosiljaoca">Racun: </label><select id="brojRacunaPosiljaoca" class="swal2-input">${racuniOptions}</select>
                 <input type="text" id="nazivPrimaoca" class="swal2-input" placeholder="Naziv">
-                <input type="text" id="idRacunaPrimaoca" class="swal2-input" placeholder="Broj racuna">
+                <input type="text" id="brojRacunaPrimaoca" class="swal2-input" placeholder="Broj racuna">
                 <input type="text" id="broj" class="swal2-input" placeholder="Poziv na broj">
                 <input type="text" id="sifraPlacanja" class="swal2-input" placeholder="Sifra placanja">`, // Adding the select element here
             focusConfirm: false,
@@ -83,22 +83,22 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
                 // @ts-ignore
                 const nazivPrimaoca = document.getElementById('nazivPrimaoca').value;
                 // @ts-ignore
-                const idRacunaPrimaoca = document.getElementById('idRacunaPrimaoca').value;
+                const brojRacunaPrimaoca = document.getElementById('brojRacunaPrimaoca').value;
                 // @ts-ignore
                 const broj = document.getElementById('broj').value;
                 // @ts-ignore
                 const sifraPlacanja = document.getElementById('sifraPlacanja').value;
                 // @ts-ignore
-                const idRacunaPosiljaoca = document.getElementById('idRacunaPosiljaoca').value;
+                const brojRacunaPosiljaoca = document.getElementById('brojRacunaPosiljaoca').value;
 
                 // Regular expression for validation
-                const isValidIdRacunaPrimaoca = /^\d{18}$/.test(idRacunaPrimaoca);
+                const isValidbrojRacunaPrimaoca = /^\d{18}$/.test(brojRacunaPrimaoca);
 
-                if (!nazivPrimaoca || !idRacunaPrimaoca || !broj || !sifraPlacanja || !isValidIdRacunaPrimaoca) {
+                if (!nazivPrimaoca || !brojRacunaPrimaoca || !broj || !sifraPlacanja || !isValidbrojRacunaPrimaoca) {
                     Swal.showValidationMessage(`Broj racuna mora da ima 18 cifara.`);
                     return false;
                 }
-                return { nazivPrimaoca, idRacunaPrimaoca, broj, sifraPlacanja, idRacunaPosiljaoca };
+                return { nazivPrimaoca, brojRacunaPrimaoca, broj, sifraPlacanja, brojRacunaPosiljaoca };
             }
         }).then(async (result) => {
             if (result.value) {
@@ -107,9 +107,9 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
                     const apiResult = await makeApiRequest(UserRoutes.favorite_users, "POST", {
                         id: undefined,
                         idKorisnika: getMe()?.id,
-                        idRacunaPosiljaoca: result.value.idRacunaPosiljaoca, // Umesto svrhe placanja staviti da biram sa kog svojeg racuna saljem
+                        brojRacunaPosiljaoca: result.value.brojRacunaPosiljaoca, // Umesto svrhe placanja staviti da biram sa kog svojeg racuna saljem
                         nazivPrimaoca: result.value.nazivPrimaoca,
-                        idRacunaPrimaoca: result.value.idRacunaPrimaoca,
+                        brojRacunaPrimaoca: result.value.brojRacunaPrimaoca,
                         broj: result.value.broj,
                         sifraPlacanja: result.value.sifraPlacanja
                     })
@@ -126,9 +126,9 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
         let recipientDetails = primaoci.map(e => ({
             id: e.id.toString(),
             "idKorisnika": e.idKorisnika.toString(),
-            "idRacunaPosaljioca": (e.idRacunaPosaljioca || "").toString(),
+            "brojRacunaPosiljaoca": (e.brojRacunaPosiljaoca || "").toString(),
             "nazivPrimaoca": e.nazivPrimaoca.toString(),
-            "idRacunaPrimaoca": e.idRacunaPrimaoca.toString(),
+            "brojRacunaPrimaoca": e.brojRacunaPrimaoca.toString(),
             "broj": e.broj.toString(),
             "sifraPlacanja": e.sifraPlacanja.toString()
         })).find(rec => rec.id == id); // Find the recipient by ID
@@ -138,23 +138,23 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
         recipientDetails = recipientDetails || {
             "id": "",
             "idKorisnika": "",
-            "idRacunaPosaljioca": "",
+            "brojRacunaPosiljaoca": "",
             "nazivPrimaoca": "",
-            "idRacunaPrimaoca": "",
+            "brojRacunaPrimaoca": "",
             "broj": "",
             "sifraPlacanja": ""
         };
 
 
         // Prepare select options from racuni array
-        const racuniOptions = racuni.map(racun => `<option value="${racun.brojRacuna}"${recipientDetails?.idRacunaPosaljioca === racun.brojRacuna ? ' selected' : ''}>${racun.brojRacuna}</option>`).join('');
+        const racuniOptions = racuni.map(racun => `<option value="${racun.brojRacuna}"${recipientDetails?.brojRacunaPosiljaoca === racun.brojRacuna ? ' selected' : ''}>${racun.brojRacuna}</option>`).join('');
 
         Swal.fire({
             title: `Edit recipient with ID: ${id}`,
             html: `
-                <label for="idRacunaPosiljaoca">Racun: </label><select id="idRacunaPosiljaoca" class="swal2-input">${racuniOptions}</select>
+                <label for="brojRacunaPosiljaoca">Racun: </label><select id="brojRacunaPosiljaoca" class="swal2-input">${racuniOptions}</select>
                 <input type="text" id="nazivPrimaoca" class="swal2-input" value="${recipientDetails.nazivPrimaoca}" placeholder="Naziv">
-                <input type="text" id="idRacunaPrimaoca" class="swal2-input" value="${recipientDetails.idRacunaPrimaoca}" placeholder="Broj racuna">
+                <input type="text" id="brojRacunaPrimaoca" class="swal2-input" value="${recipientDetails.brojRacunaPrimaoca}" placeholder="Broj racuna">
                 <input type="text" id="broj" class="swal2-input" value="${recipientDetails.broj}" placeholder="Poziv na broj">
                 <input type="text" id="sifraPlacanja" class="swal2-input" value="${recipientDetails.sifraPlacanja}" placeholder="Sifra placanja">`, // Adding the select element here
             focusConfirm: false,
@@ -163,19 +163,19 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
                 // @ts-ignore
                 const nazivPrimaoca = document.getElementById('nazivPrimaoca').value;
                 // @ts-ignore
-                const idRacunaPrimaoca = document.getElementById('idRacunaPrimaoca').value;
+                const brojRacunaPrimaoca = document.getElementById('brojRacunaPrimaoca').value;
                 // @ts-ignore
                 const broj = document.getElementById('broj').value;
                 // @ts-ignore
                 const sifraPlacanja = document.getElementById('sifraPlacanja').value;
                 // @ts-ignore
-                const idRacunaPosiljaoca = document.getElementById('idRacunaPosiljaoca').value; // Get selected value
+                const brojRacunaPosiljaoca = document.getElementById('brojRacunaPosiljaoca').value; // Get selected value
 
-                if (!nazivPrimaoca || !idRacunaPrimaoca || !broj || !sifraPlacanja) {
+                if (!nazivPrimaoca || !brojRacunaPrimaoca || !broj || !sifraPlacanja) {
                     Swal.showValidationMessage(`Please fill in all fields.`);
                     return false;
                 }
-                return { nazivPrimaoca, idRacunaPrimaoca, broj, sifraPlacanja, idRacunaPosiljaoca }; // Include the new attribute in the return statement
+                return { nazivPrimaoca, brojRacunaPrimaoca, broj, sifraPlacanja, brojRacunaPosiljaoca }; // Include the new attribute in the return statement
             }
         }).then(async (result) => {
             if (result.value) {
@@ -184,9 +184,9 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
                     const apiResult = await makeApiRequest(UserRoutes.favorite_users, "POST", {
                         id,
                         idKorisnika: getMe()?.id,
-                        idRacunaPosiljaoca: "444000000910000033", // Umesto svrhe placanja staviti da biram sa kog svojeg racuna saljem
+                        brojRacunaPosiljaoca: "444000000910000033", // Umesto svrhe placanja staviti da biram sa kog svojeg racuna saljem
                         nazivPrimaoca: result.value.nazivPrimaoca,
-                        idRacunaPrimaoca: result.value.idRacunaPrimaoca,
+                        brojRacunaPrimaoca: result.value.brojRacunaPrimaoca,
                         broj: result.value.broj,
                         sifraPlacanja: result.value.sifraPlacanja
                     })
@@ -235,18 +235,18 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
                                     setDefaultProps([recipient].map(e => {
                                         let selectedRacun = 0;
                                         for (selectedRacun = 0; selectedRacun < racuni.length; selectedRacun++)
-                                            if (racuni[selectedRacun].brojRacuna == recipient.idRacunaPosaljioca)
+                                            if (racuni[selectedRacun].brojRacuna == recipient.brojRacunaPosiljaoca)
                                                 break;
 
                                         return {
-                                            selectedRacun, nazivPrimaoca: recipient.nazivPrimaoca, racunPrimaoca: recipient.idRacunaPrimaoca, pozivNaBroj: recipient.broj, sifraPlacanja: recipient.sifraPlacanja
+                                            selectedRacun, nazivPrimaoca: recipient.nazivPrimaoca, racunPrimaoca: recipient.brojRacunaPrimaoca, pozivNaBroj: recipient.broj, sifraPlacanja: recipient.sifraPlacanja
                                         };
                                     })[0]);
                                 }} key={recipient.id}>
                                     <StyledTableCell component="th" scope="row">
                                         {recipient.nazivPrimaoca}
                                     </StyledTableCell>
-                                    <StyledTableCell>{recipient.idRacunaPrimaoca}</StyledTableCell>
+                                    <StyledTableCell>{recipient.brojRacunaPrimaoca}</StyledTableCell>
                                     <StyledTableCell>{recipient.broj}</StyledTableCell>
                                     <StyledTableCell>{recipient.sifraPlacanja}</StyledTableCell>
                                     <StyledTableCell>
