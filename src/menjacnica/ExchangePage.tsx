@@ -35,7 +35,7 @@ const ExchangePage = () => {
   };
 
   return (
-    <Container className="main-div">
+    <Container>
       {detaljiTransfera ? (
         <Container>
           <TransferDetails
@@ -60,7 +60,7 @@ const ExchangePage = () => {
           />
         </Container>
       )}
-      <Container className="table-div">
+      <Container>
         <ExchangeRatesTable />
       </Container>
     </Container>
