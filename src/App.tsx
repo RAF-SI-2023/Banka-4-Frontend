@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { getMe } from './utils/getMe';
 import styled from 'styled-components';
 
+
 // Lazy load all pages and components
 const UserInfoTable = lazy(() => import('./zaposleni/pages/userPage'));
 const Navbar = lazy(() => import('./zaposleni/components/Navbar'));
