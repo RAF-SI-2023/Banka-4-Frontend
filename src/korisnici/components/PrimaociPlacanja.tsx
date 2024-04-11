@@ -68,7 +68,7 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
 
     const handleAdd = () => {
         // Prepare select options from racuni array
-        const racuniOptions = racuni.map(racun => `<option value="${racun.brojRacuna}">${racun.brojRacuna}</option>`).join('');
+        const racuniOptions = racuni?.map(racun => `<option value="${racun.brojRacuna}">${racun.brojRacuna}</option>`).join('');
 
         Swal.fire({
             title: 'Dodaj primaoca',
@@ -117,7 +117,7 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
     };
 
     const handleEdit = (id: string) => {
-        let recipientDetails = primaoci.map(e => ({
+        let recipientDetails = primaoci?.map(e => ({
             id: e.id.toString(),
             "idKorisnika": e.idKorisnika.toString(),
             "brojRacunaPosiljaoca": (e.brojRacunaPosiljaoca || "").toString(),
@@ -141,7 +141,7 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
 
 
         // Prepare select options from racuni array
-        const racuniOptions = racuni.map(racun => `<option value="${racun.brojRacuna}"${recipientDetails?.brojRacunaPosiljaoca === racun.brojRacuna ? ' selected' : ''}>${racun.brojRacuna}</option>`).join('');
+        const racuniOptions = racuni?.map(racun => `<option value="${racun.brojRacuna}"${recipientDetails?.brojRacunaPosiljaoca === racun.brojRacuna ? ' selected' : ''}>${racun.brojRacuna}</option>`).join('');
 
         Swal.fire({
             title: `Edit recipient with ID: ${id}`,
@@ -178,7 +178,7 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
                         broj: result.value.broj,
                         sifraPlacanja: result.value.sifraPlacanja
                     })
-                    setPrimaoci(old => old.map(prim => (prim.id.toString() === id) ? { ...prim, ...result.value } : prim));
+                    setPrimaoci(old => old?.map(prim => (prim.id.toString() === id) ? { ...prim, ...result.value } : prim));
                 } catch (e) {
 
                 }
@@ -216,10 +216,10 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
                     </StyledTableHead>
                     <TableBody>
                         {primaoci.length > 0 ? (
-                            primaoci.map((recipient) => (
+                            primaoci?.map((recipient) => (
                                 <StyledTableRow style={{ cursor: "pointer" }} onClick={(e) => {
                                     setSelectedOption("novoPlacanje");
-                                    setDefaultProps([recipient].map(e => {
+                                    setDefaultProps([recipient]?.map(e => {
                                         let selectedRacun = 0;
                                         for (selectedRacun = 0; selectedRacun < racuni.length; selectedRacun++)
                                             if (racuni[selectedRacun].brojRacuna == recipient.brojRacunaPosiljaoca)

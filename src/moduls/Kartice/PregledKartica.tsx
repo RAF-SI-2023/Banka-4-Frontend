@@ -46,7 +46,7 @@ export default function PregledKartica() {
                     </StyledTableHead>
                     <TableBody>
                         {kartice && kartice.length > 0 ? (
-                            kartice.map((kartica) => (
+                            kartice?.map((kartica) => (
                                 <StyledTableRow
                                     key={kartica.id}
                                     hover

@@ -213,7 +213,7 @@ const TraziKreditStranica: React.FC = () => {
           value={formData.bankAccountNumber}
           onChange={handleChange2}
         >
-          {bankAccountNumbers.map((number, index) => (
+          {bankAccountNumbers?.map((number, index) => (
             <MenuItem key={index} value={number}>{number}</MenuItem>
           ))}
         </Select>

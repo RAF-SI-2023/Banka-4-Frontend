@@ -29,7 +29,7 @@ const ListaTransakcija: React.FC<TransactionListProps> = ({ transakcije }) => {
                 </StyledTableHead>
                 <TableBody>
                     {transakcije.length > 0 ? (
-                        transakcije.map((transakcija) => (
+                        transakcije?.map((transakcija) => (
                             <StyledTableRow key={transakcija.id}>
                                 <StyledTableCell component="th" scope="row">
                                     {transakcija.nazivPrimaoca}

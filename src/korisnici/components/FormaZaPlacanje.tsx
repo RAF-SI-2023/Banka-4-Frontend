@@ -57,7 +57,7 @@ export const FormaZaPlacanje: React.FC<PaymentFormProps> = ({ onSave, navigate, 
 
             if (!me) return;
             const rac: { brojRacuna: string, raspolozivoStanje: number }[] = await makeGetRequest(`/racuni/nadjiRacuneKorisnika/${me.id}`)
-            setRacuni(rac.map(e => ({ naziv: "Racun", broj: e.brojRacuna, raspolozivo: e.raspolozivoStanje })))
+            setRacuni(rac?.map(e => ({ naziv: "Racun", broj: e.brojRacuna, raspolozivo: e.raspolozivoStanje })))
         }
         gett();
     }, [])
@@ -100,7 +100,7 @@ export const FormaZaPlacanje: React.FC<PaymentFormProps> = ({ onSave, navigate, 
                     label="Izaberi račun"
                     onChange={(e) => setSelectedRacun(Number(e.target.value))}
                 >
-                    {racuni.map((racun, index) => (
+                    {racuni?.map((racun, index) => (
                         <MenuItem key={index} value={index}>{`${racun.naziv} - ${racun.broj} (${racun.raspolozivo} RSD)`}</MenuItem>
                     ))}
                 </Select>
@@ -159,7 +159,7 @@ export const FormaZaPlacanje: React.FC<PaymentFormProps> = ({ onSave, navigate, 
                     label="Šifra Plaćanja"
                     onChange={(event: SelectChangeEvent) => setSifraPlacanja(Number(event.target.value))}
                 >
-                    {Object.values(sifrePlacanja).map((sifra) => (
+                    {Object.values(sifrePlacanja)?.map((sifra) => (
                         <MenuItem key={sifra.id} value={sifra.id}>{sifra.id} -{sifra.naziv}</MenuItem>
                     ))}
                 </Select>

@@ -31,8 +31,8 @@ function ListaKredita() {
 
             console.log(approvedData);
             let data = [] as Kredit[];
-            data = data.concat(notApprovedData.map(kredit => ({ ...kredit, status: 'ne odobren' })));
-            data = data.concat(approvedData.map(kredit => ({ ...kredit, status: 'odobren' })));
+            data = data.concat(notApprovedData?.map(kredit => ({ ...kredit, status: 'ne odobren' })));
+            data = data.concat(approvedData?.map(kredit => ({ ...kredit, status: 'odobren' })));
 
            
             

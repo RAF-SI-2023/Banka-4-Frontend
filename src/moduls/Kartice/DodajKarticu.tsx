@@ -93,7 +93,7 @@ export default function DodajKarticu() {
                     label="Tip kartice"
                     onChange={(e) => setIme(e.target.value)}
                 >
-                    {imena.map(e => <MenuItem value={e}>{e}</MenuItem>)}
+                    {imena?.map(e => <MenuItem value={e}>{e}</MenuItem>)}
                 </Select>
             </FormControl>
             <TextField

@@ -41,7 +41,7 @@ const ExchangeRatesTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {currencyRates.map((rate) => (
+          {currencyRates?.map((rate) => (
             <TableRow key={rate.currencyCode}>
               <TableCell component="th" scope="row">
                 {rate.currencyCode}

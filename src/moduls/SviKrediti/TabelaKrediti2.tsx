@@ -27,7 +27,7 @@ const Tabela: React.FC<TabelaProps> = ({ krediti, onClickRed, children }) => {
                         </StyledTableRow>
                     </StyledTableHead>
                     <TableBody>
-                        {krediti.map((kredit, index) => (
+                        {krediti?.map((kredit, index) => (
                             <StyledTableRow key={index} onClick={() => onClickRed(kredit)}>
                                 <StyledTableCell>{kredit.type}</StyledTableCell>
                                 <StyledTableCell>{kredit.amount}</StyledTableCell>

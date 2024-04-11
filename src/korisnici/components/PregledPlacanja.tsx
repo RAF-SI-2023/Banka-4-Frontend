@@ -61,7 +61,7 @@ const PregledPlacanja = () => {
 
             if (!me) return;
             const rac: { brojRacuna: string, raspolozivoStanje: number }[] = await makeGetRequest(`/racuni/nadjiRacuneKorisnika/${me.id}`)
-            setRacuni(rac.map(e => ({ naziv: "Racun", broj: e.brojRacuna, raspolozivo: e.raspolozivoStanje })))
+            setRacuni(rac?.map(e => ({ naziv: "Racun", broj: e.brojRacuna, raspolozivo: e.raspolozivoStanje })))
         }
         gett();
     }, [])
@@ -99,7 +99,7 @@ const PregledPlacanja = () => {
                     label="Izaberi račun"
                     onChange={(e) => setSelectedRacun(Number(e.target.value))}
                 >
-                    {racuni.map((racun, index) => (
+                    {racuni?.map((racun, index) => (
                         <MenuItem key={index} value={index}>{`${racun.naziv} - ${racun.broj} (${racun.raspolozivo} RSD)`}</MenuItem>
                     ))}
                 </Select>
@@ -119,7 +119,7 @@ const PregledPlacanja = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {placanja.map((trans) => (
+                        {placanja?.map((trans) => (
                             <TableRow key={trans.racunPosiljaoca} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                 <TableCell component="th" scope="row">
                                     {trans.racunPosiljaoca}

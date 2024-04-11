@@ -133,7 +133,7 @@ const ExchangeMainSection = ({
             <MenuItem disabled value={"Broj racuna..."} key="default">
               Broj racuna...
             </MenuItem>
-            {accounts.map((account) => (
+            {accounts?.map((account) => (
               <MenuItem key={account.brojRacuna} value={account.brojRacuna}>
                 {account.brojRacuna}, {account.currency}
               </MenuItem>
@@ -159,7 +159,7 @@ const ExchangeMainSection = ({
             <MenuItem disabled value={"Broj racuna..."} key="default">
               Broj racuna...
             </MenuItem>
-            {accounts.map((account) => (
+            {accounts?.map((account) => (
               <MenuItem key={account.brojRacuna} value={account.brojRacuna}>
                 {account.brojRacuna}, {account.currency}
               </MenuItem>

@@ -28,7 +28,7 @@ export const FormaZaPrenos: React.FC<TransferFormProps> = ({ onSave, navigate })
 
             if (!me) return;
             const rac: { brojRacuna: string, raspolozivoStanje: number }[] = await makeGetRequest(`/racuni/nadjiRacuneKorisnika/${me.id}`)
-            setRacuni(rac.map(e => ({ naziv: "Racun", broj: e.brojRacuna, raspolozivo: e.raspolozivoStanje })))
+            setRacuni(rac?.map(e => ({ naziv: "Racun", broj: e.brojRacuna, raspolozivo: e.raspolozivoStanje })))
         }
         gett();
     }, [])
@@ -64,7 +64,7 @@ export const FormaZaPrenos: React.FC<TransferFormProps> = ({ onSave, navigate })
                     label="Izaberi račun pošiljaoca"
                     onChange={(e) => setSelectedRacunPosiljaoca(e.target.value)}
                 >
-                    {racuni.map((racun, index) => (
+                    {racuni?.map((racun, index) => (
                         <MenuItem key={index} value={racun.broj}>{`${racun.naziv} - ${racun.broj} (${racun.raspolozivo} RSD)`}</MenuItem>
                     ))}
                 </Select>
@@ -78,7 +78,7 @@ export const FormaZaPrenos: React.FC<TransferFormProps> = ({ onSave, navigate })
                     label="Izaberi račun primaoca"
                     onChange={(e) => setSelectedRacunPrimaoca(e.target.value)}
                 >
-                    {racuni.map((racun, index) => (
+                    {racuni?.map((racun, index) => (
                         <MenuItem key={index} value={racun.broj}>{`${racun.naziv} - ${racun.broj} (${racun.raspolozivo} RSD)`}</MenuItem>
                     ))}
                 </Select>

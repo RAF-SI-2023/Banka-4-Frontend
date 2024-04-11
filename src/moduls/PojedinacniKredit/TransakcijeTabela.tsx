@@ -21,7 +21,7 @@ const TransakcijeTabela = ({ transakcije }: { transakcije: Transakcija[] }) => {
           </StyledTableRow>
         </StyledTableHead>
         <TableBody>
-          {transakcije.map((transakcija, index) => (
+          {transakcije?.map((transakcija, index) => (
             <StyledTableRow key={index}>
               <StyledTableCell>{transakcija.nazivPrimaoca}</StyledTableCell>
               <StyledTableCell>{transakcija.racunPrimaoca}</StyledTableCell>
