@@ -86,7 +86,7 @@ const CurrencyConverter: React.FC = () => {
           onChange={handleFromCurrencyChange}
           label="From Currency"
         >
-          {currencyRates.map((currency) => (
+          {currencyRates?.map((currency) => (
             <MenuItem key={currency.currencyCode} value={currency.currencyCode}>
               {currency.currencyCode}
             </MenuItem>
@@ -100,7 +100,7 @@ const CurrencyConverter: React.FC = () => {
           onChange={handleToCurrencyChange}
           label="To Currency"
         >
-          {currencyRates.map((currency) => (
+          {currencyRates?.map((currency) => (
             <MenuItem key={currency.currencyCode} value={currency.currencyCode}>
               {currency.currencyCode}
             </MenuItem>
