@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-// import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
 import UserListPage from './zaposleni/pages/userListPage'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -38,6 +37,9 @@ import { Box, Dialog, Typography } from '@mui/material';
 import CompanyListPage from 'zaposleni/pages/companyListPage';
 import EmployeeListPage from 'zaposleni/pages/employeeListPage';
 import NotFoundPage from 'moduls/DodatneStranice/NotFoundPage';
+import TerminskiUgovoriPage from 'moduls/TerminskiUgovori/pages/TerminskiUgovoriPage';
+import AgriculturePage from 'moduls/TerminskiUgovori/pages/ContractsPage';
+import SpecificContractListPage from 'moduls/TerminskiUgovori/pages/SpecificContractListPage';
 
 window.addEventListener('beforeunload', () => {
   localStorage.setItem('tokenRemovalTimestamp', Date.now().toString());
@@ -109,8 +111,11 @@ function App() {
           <Route path="/akcije" element={auth?.id ? <AkcijePage /> : <LoginPage />} />
           <Route path="/detaljiAkcije" element={auth?.id ? <DetaljiAkcije /> : <LoginPage />} />
           <Route path="/menjacnica" element={auth?.id ? <ExchangePage /> : <LoginPage />} />
-          <Route path="*" element={<NotFoundPage />} /> 
+          <Route path="/terminski" element={auth?.id ? <TerminskiUgovoriPage /> : <LoginPage />} />
+          <Route path="/contracts" element={auth?.id ? <AgriculturePage /> : <LoginPage />} />
+          <Route path="/specContract" element={auth?.id ? <SpecificContractListPage /> : <LoginPage />} />
 
+          <Route path="*" element={<NotFoundPage />} /> 
         </Routes>
       </BrowserRouter>
     </>

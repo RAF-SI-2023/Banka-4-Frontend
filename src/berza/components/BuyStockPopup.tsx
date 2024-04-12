@@ -4,7 +4,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Checkbox, FormControlLabel, FormGroup, TextField } from '@mui/material';
+import { Checkbox, FormControlLabel, FormGroup, TextField, Typography } from '@mui/material';
 import styled from 'styled-components';
 
 const TipWrapper = styled.div`
@@ -78,12 +78,12 @@ export default function BuyStockPopup() {
             margin="normal"
           />
           <TipWrapper>
-            <p>* Ako su oba 0 onda se radi Market Order</p>
-            <p>* Ako je jedan stavljen, a drugi 0, radi se šta ste odabrali (Limit ili Stop Order)</p>
-            <p>* Ako su oba stavljena, radi se Stop-Limit order</p>
+            <Typography variant='body2'>* Ako su oba 0 onda se radi Market Order</Typography>
+            <Typography variant='body2'>* Ako je jedan stavljen, a drugi 0, radi se šta ste odabrali (Limit ili Stop Order)</Typography>
+            <Typography variant='body2'>* Ako su oba stavljena, radi se Stop-Limit order</Typography>
           </TipWrapper>
           <FormGroup>
-            <FormControlLabel control={<Checkbox checked={margin} onChange={(e) => setMargin(e.target.checked)}/>} label="Marign" />
+            <FormControlLabel control={<Checkbox checked={margin} onChange={(e) => setMargin(e.target.checked)} />} label="Marign" />
             <FormControlLabel control={<Checkbox checked={allOrNone} onChange={(e) => setAllOrNone(e.target.checked)} />} label="AllOrNone" />
           </FormGroup>
         </DialogContent>
