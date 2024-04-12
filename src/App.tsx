@@ -37,6 +37,7 @@ import styled from 'styled-components';
 import { Box, Dialog, Typography } from '@mui/material';
 import CompanyListPage from 'zaposleni/pages/companyListPage';
 import EmployeeListPage from 'zaposleni/pages/employeeListPage';
+import NotFoundPage from 'moduls/DodatneStranice/NotFoundPage';
 
 window.addEventListener('beforeunload', () => {
   localStorage.setItem('tokenRemovalTimestamp', Date.now().toString());
@@ -108,6 +109,8 @@ function App() {
           <Route path="/akcije" element={auth?.id ? <AkcijePage /> : <LoginPage />} />
           <Route path="/detaljiAkcije" element={auth?.id ? <DetaljiAkcije /> : <LoginPage />} />
           <Route path="/menjacnica" element={auth?.id ? <ExchangePage /> : <LoginPage />} />
+          <Route path="*" element={<NotFoundPage />} /> 
+
         </Routes>
       </BrowserRouter>
     </>
