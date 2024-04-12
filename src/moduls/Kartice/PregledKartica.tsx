@@ -3,8 +3,8 @@ import { BankRoutes, Kartica } from "../../utils/types";
 import { makeGetRequest } from "../../utils/apiRequest";
 import { Button, Card, List, ListItem, ListItemText, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 import { getMe } from "../../utils/getMe";
-import { StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from "utils/tableStyles";
-import ScrollableTableBody from "utils/ScrollableTableBody";
+import { ScrollContainer, StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from "utils/tableStyles";
+
 
 export default function PregledKartica() {
     const [kartice, setKartice] = useState<Kartica[]>([]);
@@ -35,7 +35,7 @@ export default function PregledKartica() {
                     Dodaj Karticu
                 </Button>
             )}
-            <TableContainer component={Paper} style={{ margin: '10px' }}>
+            <ScrollContainer style={{ margin: '10px' }}>
                 <Table sx={{ minWidth: 650 }}>
                     <StyledTableHead>
                         <StyledTableRow>
@@ -45,8 +45,6 @@ export default function PregledKartica() {
                             <StyledHeadTableCell>Status</StyledHeadTableCell>
                         </StyledTableRow>
                     </StyledTableHead>
-                </Table>
-                <ScrollableTableBody>
                     <TableBody>
                         {kartice && kartice.length > 0 ? (
                             kartice?.map((kartica) => (
@@ -70,8 +68,8 @@ export default function PregledKartica() {
                             </TableRow>
                         )}
                     </TableBody>
-                </ScrollableTableBody>
-            </TableContainer>
+                </Table>
+            </ScrollContainer>
         </div>
     );
 }

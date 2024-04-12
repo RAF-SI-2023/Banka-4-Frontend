@@ -1,7 +1,7 @@
 import { Paper, Table, TableBody, TableContainer, TableRow } from '@mui/material';
 import styled from 'styled-components';
-import { StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from 'utils/tableStyles';
-import ScrollableTableBody from 'utils/ScrollableTableBody';
+import { ScrollContainer, StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from 'utils/tableStyles';
+
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -49,7 +49,7 @@ const ContractsPage = () => {
         const urlParams = new URLSearchParams(window.location.search);
         setType(urlParams?.get('type') ?? '')
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
@@ -62,7 +62,7 @@ const ContractsPage = () => {
             <TableWrapper>
                 <StyledTable>
 
-                    <TableContainer component={Paper}>
+                    <ScrollContainer>
                         <Table sx={{ minWidth: 650, marginTop: 0 }}>
                             <StyledTableHead>
                                 <TableRow>
@@ -72,8 +72,6 @@ const ContractsPage = () => {
                                     <StyledHeadTableCell>Maintenance Margin</StyledHeadTableCell>
                                 </TableRow>
                             </StyledTableHead>
-                        </Table>
-                        <ScrollableTableBody>
                             <TableBody>
                                 {[]?.map((contract: any) => (
                                     <StyledTableRow key={contract.name} id={contract.name}>
@@ -84,8 +82,8 @@ const ContractsPage = () => {
                                     </StyledTableRow>
                                 ))}
                             </TableBody>
-                        </ScrollableTableBody>
-                    </TableContainer>
+                        </Table>
+                    </ScrollContainer>
                 </StyledTable>
             </TableWrapper>
         </PageWrapper>

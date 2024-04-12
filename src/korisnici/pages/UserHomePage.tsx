@@ -6,7 +6,8 @@ import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
 import { useNavigate } from "react-router-dom";
 import { Account, BankRoutes } from "utils/types";
 import CurrencyConverter from "korisnici/components/CurrencyConverter";
-import ScrollableTableBody from "utils/ScrollableTableBody";
+
+import { ScrollContainer } from "utils/tableStyles";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -81,7 +82,7 @@ const UserHomePage: React.FC = () => {
         Lista Racuna
       </HeadingText>
       <FormWrapper>
-        <TableContainer component={Paper}>
+        <ScrollContainer >
           <Table aria-label="user account table">
             <TableHead>
               <TableRow>
@@ -91,8 +92,6 @@ const UserHomePage: React.FC = () => {
 
               </TableRow>
             </TableHead>
-          </Table>
-          <ScrollableTableBody>
             <TableBody>
               {accounts?.map((account) => (
                 <TableRow key={account.brojRacuna}>
@@ -108,8 +107,8 @@ const UserHomePage: React.FC = () => {
                 </TableRow>
               ))}
             </TableBody>
-          </ScrollableTableBody>
-        </TableContainer>
+          </Table>
+        </ScrollContainer>
         <CurrencyConverter />
       </FormWrapper >
     </PageWrapper >

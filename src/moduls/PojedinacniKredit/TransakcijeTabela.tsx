@@ -1,12 +1,12 @@
 import React from 'react';
 import { Transakcija } from '../../utils/types';
 import { TableContainer, Table, TableBody, TableRow, Paper } from '@mui/material';
-import { StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from '../../utils/tableStyles';
-import ScrollableTableBody from 'utils/ScrollableTableBody';
+import { ScrollContainer, StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from '../../utils/tableStyles';
+
 
 const TransakcijeTabela = ({ transakcije }: { transakcije: Transakcija[] }) => {
   return (
-    <TableContainer component={Paper}>
+    <ScrollContainer>
       <Table>
         <StyledTableHead>
           <StyledTableRow>
@@ -21,8 +21,6 @@ const TransakcijeTabela = ({ transakcije }: { transakcije: Transakcija[] }) => {
             <StyledHeadTableCell>Vreme izvršavanja</StyledHeadTableCell>
           </StyledTableRow>
         </StyledTableHead>
-      </Table>
-      <ScrollableTableBody>
         <TableBody>
           {transakcije?.map((transakcija, index) => (
             <StyledTableRow key={index}>
@@ -38,8 +36,8 @@ const TransakcijeTabela = ({ transakcije }: { transakcije: Transakcija[] }) => {
             </StyledTableRow>
           ))}
         </TableBody>
-      </ScrollableTableBody>
-    </TableContainer>
+      </Table>
+    </ScrollContainer>
   );
 };
 

@@ -1,7 +1,6 @@
 import { AppBar, Paper, Tab, Table, TableBody, TableContainer, TableRow, Tabs } from '@mui/material';
 import styled from 'styled-components';
 import { StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from 'utils/tableStyles';
-import ScrollableTableBody from 'utils/ScrollableTableBody';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BuyStockPopup from 'berza/components/BuyStockPopup';

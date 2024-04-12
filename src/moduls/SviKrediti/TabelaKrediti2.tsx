@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react';
 import { Kredit } from './../../utils/types';
 import { TableContainer, Table, TableBody, TableRow, Paper } from '@mui/material';
-import { StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from '../../utils/tableStyles';
-import ScrollableTableBody from 'utils/ScrollableTableBody';
+import { ScrollContainer, StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from '../../utils/tableStyles';
+
 
 interface TabelaProps {
     krediti: Kredit[];
@@ -13,7 +13,7 @@ interface TabelaProps {
 const Tabela: React.FC<TabelaProps> = ({ krediti, onClickRed, children }) => {
     return (
         <div>
-            <TableContainer component={Paper}>
+            <ScrollContainer>
                 <Table>
                     <StyledTableHead>
                         <StyledTableRow>
@@ -27,8 +27,6 @@ const Tabela: React.FC<TabelaProps> = ({ krediti, onClickRed, children }) => {
 
                         </StyledTableRow>
                     </StyledTableHead>
-                </Table>
-                <ScrollableTableBody>
                     <TableBody>
                         {krediti?.map((kredit, index) => (
                             <StyledTableRow key={index} onClick={() => onClickRed(kredit)}>
@@ -44,8 +42,8 @@ const Tabela: React.FC<TabelaProps> = ({ krediti, onClickRed, children }) => {
                             </StyledTableRow>
                         ))}
                     </TableBody>
-                </ScrollableTableBody>
-            </TableContainer>
+                </Table>
+            </ScrollContainer>
         </div>
     );
 }

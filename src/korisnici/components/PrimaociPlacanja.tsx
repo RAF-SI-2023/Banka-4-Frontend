@@ -13,8 +13,8 @@ import { getJWT, makeApiRequest, makeGetRequest } from 'utils/apiRequest';
 import { BankRoutes, UserRoutes } from 'utils/types';
 import { getMe } from 'utils/getMe';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
-import { StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from 'utils/tableStyles';
-import ScrollableTableBody from 'utils/ScrollableTableBody';
+import { ScrollContainer, StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from 'utils/tableStyles';
+
 
 const MOCK_PRIMAOCI = [
     {
@@ -204,7 +204,7 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
             <Button variant="contained" onClick={handleAdd} sx={{ mb: 2 }}>
                 Dodaj primaoca
             </Button>
-            <TableContainer component={Paper} style={{ margin: '10px' }}>
+            <ScrollContainer style={{ margin: '10px' }}>
                 <Table aria-label="simple table">
                     <StyledTableHead>
                         <StyledTableRow>
@@ -215,8 +215,6 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
                             <StyledHeadTableCell>Akcije</StyledHeadTableCell>
                         </StyledTableRow>
                     </StyledTableHead>
-                </Table>
-                <ScrollableTableBody>
                     <TableBody>
                         {primaoci.length > 0 ? (
                             primaoci?.map((recipient) => (
@@ -263,8 +261,8 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
                             </TableRow>
                         )}
                     </TableBody>
-                </ScrollableTableBody>
-            </TableContainer>
+                </Table>
+            </ScrollContainer>
         </Box>
     );
 };

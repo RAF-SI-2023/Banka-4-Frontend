@@ -25,4 +25,4 @@ export const StyledTableCell = styled(TableCell)`
 export const ScrollContainer = styled(TableContainer)`
     max-height: 400px; 
     overflow-y: auto; 
-`
+    `

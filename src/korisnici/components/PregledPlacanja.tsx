@@ -3,7 +3,8 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import { getJWT, makeGetRequest } from 'utils/apiRequest';
 import { getMe } from 'utils/getMe';
 import { RACUNI_PLACEHOLDER, RacunType } from 'korisnici/data/Racuni';
-import ScrollableTableBody from 'utils/ScrollableTableBody';
+
+import { ScrollContainer } from 'utils/tableStyles';
 
 type UplataDTO = {
     racunPosiljaoca: string;
@@ -105,7 +106,7 @@ const PregledPlacanja = () => {
                     ))}
                 </Select>
             </FormControl>}
-            <TableContainer component={Paper}>
+            <ScrollContainer>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
@@ -119,8 +120,6 @@ const PregledPlacanja = () => {
                             <TableCell align="right">Vreme izvršavanja</TableCell>
                         </TableRow>
                     </TableHead>
-                </Table>
-                <ScrollableTableBody>
                     <TableBody>
                         {placanja?.map((trans) => (
                             <TableRow key={trans.racunPosiljaoca} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
@@ -137,8 +136,8 @@ const PregledPlacanja = () => {
                             </TableRow>
                         ))}
                     </TableBody>
-                </ScrollableTableBody>
-            </TableContainer>
+                </Table>
+            </ScrollContainer>
         </>
     );
 };

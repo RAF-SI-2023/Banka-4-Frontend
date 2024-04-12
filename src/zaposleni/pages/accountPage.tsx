@@ -4,7 +4,7 @@ import { Account } from '../../utils/types';
 import styled from 'styled-components';
 import { makeGetRequest } from '../../utils/apiRequest';
 import { useNavigate } from 'react-router-dom';
-import ScrollableTableBody from 'utils/ScrollableTableBody';
+import { ScrollContainer } from 'utils/tableStyles';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -193,7 +193,7 @@ const AccountInfoPage: React.FC = () => {
         <H2Text>
           Transakcije
         </H2Text>
-        <TableContainer component={Paper}>
+        <ScrollContainer>
           <Table aria-label="user account table">
             <TableHead>
               <TableRow>
@@ -208,43 +208,41 @@ const AccountInfoPage: React.FC = () => {
                 <StyledTableCentered>Datum i vreme izvrsavanja</StyledTableCentered>
               </TableRow>
             </TableHead>
+            <TableBody>
+              {transactions?.map((transakcija) => (
+                <StyledTableRow key={transakcija.sifraPlacanja} onClick={() => handleSelectTransaction(transakcija)}>
+                  <StyledTableCentered component="th" scope="row">
+                    {(transakcija.nazivPrimaoca)}
+                  </StyledTableCentered>
+                  <StyledTableCentered component="th" scope="row">
+                    {(transakcija.racunPrimaoca)}
+                  </StyledTableCentered>
+                  <StyledTableCentered component="th" scope="row">
+                    {(transakcija.iznos.toString())}
+                  </StyledTableCentered>
+                  <StyledTableCentered component="th" scope="row">
+                    {(transakcija.pozivNaBroj)}
+                  </StyledTableCentered>
+                  <StyledTableCentered component="th" scope="row">
+                    {(transakcija.status)}
+                  </StyledTableCentered>
+                  <StyledTableCentered component="th" scope="row">
+                    {(transakcija.sifraPlacanja)}
+                  </StyledTableCentered>
+                  <StyledTableCentered component="th" scope="row">
+                    {(transakcija.svrhaPlacanja)}
+                  </StyledTableCentered>
+                  <StyledTableCentered component="th" scope="row">
+                    {(new Date(transakcija.vremeTransakcije).toDateString())}
+                  </StyledTableCentered>
+                  <StyledTableCentered component="th" scope="row">
+                    {(new Date(transakcija.vremeIzvrsavanja).toDateString())}
+                  </StyledTableCentered>
+                </StyledTableRow>
+              ))}
+            </TableBody>
           </Table>
-          <ScrollableTableBody>
-              <TableBody>
-                {transactions?.map((transakcija) => (
-                  <StyledTableRow key={transakcija.sifraPlacanja} onClick={() => handleSelectTransaction(transakcija)}>
-                    <StyledTableCentered component="th" scope="row">
-                      {(transakcija.nazivPrimaoca)}
-                    </StyledTableCentered>
-                    <StyledTableCentered component="th" scope="row">
-                      {(transakcija.racunPrimaoca)}
-                    </StyledTableCentered>
-                    <StyledTableCentered component="th" scope="row">
-                      {(transakcija.iznos.toString())}
-                    </StyledTableCentered>
-                    <StyledTableCentered component="th" scope="row">
-                      {(transakcija.pozivNaBroj)}
-                    </StyledTableCentered>
-                    <StyledTableCentered component="th" scope="row">
-                      {(transakcija.status)}
-                    </StyledTableCentered>
-                    <StyledTableCentered component="th" scope="row">
-                      {(transakcija.sifraPlacanja)}
-                    </StyledTableCentered>
-                    <StyledTableCentered component="th" scope="row">
-                      {(transakcija.svrhaPlacanja)}
-                    </StyledTableCentered>
-                    <StyledTableCentered component="th" scope="row">
-                      {(new Date(transakcija.vremeTransakcije).toDateString())}
-                    </StyledTableCentered>
-                    <StyledTableCentered component="th" scope="row">
-                      {(new Date(transakcija.vremeIzvrsavanja).toDateString())}
-                    </StyledTableCentered>
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-            </ScrollableTableBody>
-        </TableContainer>
+        </ScrollContainer>
 
       </FormWrapper>
     </PageWrapper>

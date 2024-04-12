@@ -1,9 +1,8 @@
 import { Table, TableBody, TableRow } from "@mui/material"
 import { Akcija, AkcijaList } from "berza/types/types"
-import { StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from '../../utils/tableStyles';
+import { ScrollContainer, StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from '../../utils/tableStyles';
 import BuyOptionPopup from "./BuyOptionPopup";
 import BuyStockPopup from "./BuyStockPopup";
-import ScrollableTableBody from "utils/ScrollableTableBody";
 
 const AkcijeList: React.FC<AkcijaList> = ({ stocks }) => {
 
@@ -13,7 +12,7 @@ const AkcijeList: React.FC<AkcijaList> = ({ stocks }) => {
     };
 
     return (
-        <>
+        <ScrollContainer>
             <Table sx={{ minWidth: 650, marginTop: 0 }}>
                 <StyledTableHead>
                     <TableRow>
@@ -27,8 +26,6 @@ const AkcijeList: React.FC<AkcijaList> = ({ stocks }) => {
                         <StyledHeadTableCell>OTC</StyledHeadTableCell>
                     </TableRow>
                 </StyledTableHead>
-            </Table >
-            <ScrollableTableBody>
                 <TableBody>
                     {stocks?.map((stock: Akcija) => (
                         <StyledTableRow key={stock.oznaka} id={stock.oznaka} onClick={handleSelect}>
@@ -46,8 +43,9 @@ const AkcijeList: React.FC<AkcijaList> = ({ stocks }) => {
                         </StyledTableRow>
                     ))}
                 </TableBody>
-            </ScrollableTableBody>
-        </>
+
+            </Table >
+        </ScrollContainer>
     )
 }
 export default AkcijeList;

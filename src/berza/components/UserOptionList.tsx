@@ -1,8 +1,8 @@
 import { Table, TableBody, TableRow } from "@mui/material"
 import { UserStock, UserStockList } from "berza/types/types"
-import { StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from '../../utils/tableStyles';
+import { ScrollContainer, StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from '../../utils/tableStyles';
 import BuyOptionPopup from "./BuyOptionPopup";
-import ScrollableTableBody from "utils/ScrollableTableBody";
+
 
 
 const UserOptions: React.FC<UserStockList> = ({ stocks }) => {
@@ -13,7 +13,7 @@ const UserOptions: React.FC<UserStockList> = ({ stocks }) => {
     };
 
     return (
-        <>
+        <ScrollContainer>
             <Table sx={{ minWidth: 650, marginTop: 0 }}>
                 <StyledTableHead>
                     <TableRow>
@@ -25,8 +25,6 @@ const UserOptions: React.FC<UserStockList> = ({ stocks }) => {
                         <StyledHeadTableCell>Sell</StyledHeadTableCell>
                     </TableRow>
                 </StyledTableHead>
-            </Table>
-            <ScrollableTableBody>
                 <TableBody>
                     {stocks?.map((stock: UserStock) => (
                         <StyledTableRow key={stock.ticker} id={stock.ticker} onClick={handleSelect}>
@@ -41,8 +39,8 @@ const UserOptions: React.FC<UserStockList> = ({ stocks }) => {
                         </StyledTableRow>
                     ))}
                 </TableBody>
-            </ScrollableTableBody>
-        </>
+            </Table>
+        </ScrollContainer>
     )
 }
 export default UserOptions;

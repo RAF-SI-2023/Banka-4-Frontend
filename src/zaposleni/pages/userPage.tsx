@@ -4,8 +4,8 @@ import { Account, BankRoutes, UserRoutes } from '../../utils/types';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { makeApiRequest, makeGetRequest } from '../../utils/apiRequest';
-import ScrollableTableBody from 'utils/ScrollableTableBody';
 import KAlert from 'utils/alerts';
+import { ScrollContainer } from 'utils/tableStyles';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -168,7 +168,7 @@ const UserInfoTable: React.FC = () => {
         <H2Text>
           Racuni
         </H2Text>
-        <TableContainer component={Paper}>
+        <ScrollContainer>
           <Table aria-label="user account table">
             <TableHead>
               <TableRow>
@@ -179,8 +179,6 @@ const UserInfoTable: React.FC = () => {
                 </StyledTableCentered>
               </TableRow>
             </TableHead>
-          </Table>
-          <ScrollableTableBody>
             <TableBody>
               {accounts?.map((account) => (
                 <TableRow key={account.brojRacuna}>
@@ -199,8 +197,9 @@ const UserInfoTable: React.FC = () => {
                 </TableRow>
               ))}
             </TableBody>
-          </ScrollableTableBody>
-        </TableContainer>
+
+          </Table>
+        </ScrollContainer>
       </FormWrapper >
     </PageWrapper >
   );

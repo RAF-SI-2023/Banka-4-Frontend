@@ -1,8 +1,8 @@
 import { Table, TableBody, TableRow } from "@mui/material"
 import { Stock, StockList } from "berza/types/types"
-import { StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from '../../utils/tableStyles';
+import { ScrollContainer, StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from '../../utils/tableStyles';
 import BuyOptionPopup from "./BuyOptionPopup";
-import ScrollableTableBody from "utils/ScrollableTableBody";
+
 
 const PutsList: React.FC<StockList> = ({ stocks }) => {
 
@@ -14,7 +14,7 @@ const PutsList: React.FC<StockList> = ({ stocks }) => {
 
 
     return (
-        <>
+        <ScrollContainer>
             <Table sx={{ minWidth: 650, marginTop: 0 }}>
                 <StyledTableHead>
                     <TableRow>
@@ -31,10 +31,6 @@ const PutsList: React.FC<StockList> = ({ stocks }) => {
                         <StyledHeadTableCell>Sell</StyledHeadTableCell>
                     </TableRow>
                 </StyledTableHead>
-
-
-            </Table>
-            <ScrollableTableBody>
                 <TableBody>
                     {stocks?.map((stock: Stock) => (
                         <StyledTableRow key={stock.ticker} id={stock.ticker} onClick={handleSelect}>
@@ -54,8 +50,8 @@ const PutsList: React.FC<StockList> = ({ stocks }) => {
                         </StyledTableRow>
                     ))}
                 </TableBody>
-            </ScrollableTableBody>
-        </>
+            </Table>
+        </ScrollContainer>
     )
 }
 export default PutsList;
