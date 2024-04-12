@@ -6,7 +6,6 @@ export const StyledTableRow = styled(TableRow)`
     background-color: #f2f2f2;
   }
 `
-
 export const StyledTableHead = styled(TableHead)`
     background-color: #fafafa;
     border-top: 2px solid #e2e2e2;

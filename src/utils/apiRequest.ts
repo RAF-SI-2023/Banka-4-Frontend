@@ -16,9 +16,19 @@ export const getJWT = () => {
         const decoded: Decoded = jwtDecode(token);
         if (decoded && decoded.exp) {
             const now = new Date().getTime()
-            if(decoded.exp*1000 < now){
+            if (decoded.exp * 1000 < now) {
                 localStorage.removeItem('si_jwt')
             }
+            const tokenRemovalTimestamp = Number(localStorage.getItem('tokenRemovalTimestamp'));
+            const expirationThreshold = 1000 * 10 * 1; // 10 sec
+            if (tokenRemovalTimestamp && Date.now() - tokenRemovalTimestamp > expirationThreshold) {
+                localStorage.removeItem('si_jwt');
+                localStorage.removeItem('tokenRemovalTimestamp');
+            } 
+            else {
+                localStorage.removeItem('tokenRemovalTimestamp');
+            }
+
             return token;
         }
     }
