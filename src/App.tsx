@@ -33,13 +33,14 @@ import AkcijePage from 'berza/pages/AkcijePage';
 import DetaljiAkcije from 'berza/pages/DetaljiAkcijePage';
 import ExchangePage from 'menjacnica/ExchangePage';
 import styled from 'styled-components';
-import { Box, Dialog, Typography } from '@mui/material';
+import { Box, Button, Dialog, Typography } from '@mui/material';
 import CompanyListPage from 'zaposleni/pages/companyListPage';
 import EmployeeListPage from 'zaposleni/pages/employeeListPage';
 import NotFoundPage from 'moduls/DodatneStranice/NotFoundPage';
 import TerminskiUgovoriPage from 'moduls/TerminskiUgovori/pages/TerminskiUgovoriPage';
 import AgriculturePage from 'moduls/TerminskiUgovori/pages/ContractsPage';
 import SpecificContractListPage from 'moduls/TerminskiUgovori/pages/SpecificContractListPage';
+import WSTest from 'WSTest';
 
 window.addEventListener('beforeunload', () => {
   localStorage.setItem('tokenRemovalTimestamp', Date.now().toString());
@@ -73,9 +74,11 @@ function App() {
             <Typography variant="body2" sx={{ mt: 2, marginLeft: 'auto', marginRight: 'auto' }}>
               JWT STOP
             </Typography>
+            <Button id='exitPosionPill' onClick={handleClose}>Exit</Button>
           </Box>
         </Dialog>
       }
+      {/* <WSTest></WSTest> */}
 
       <BrowserRouter>
         {auth?.id && <Navbar></Navbar>}
@@ -115,7 +118,7 @@ function App() {
           <Route path="/contracts" element={auth?.id ? <AgriculturePage /> : <LoginPage />} />
           <Route path="/specContract" element={auth?.id ? <SpecificContractListPage /> : <LoginPage />} />
 
-          <Route path="*" element={<NotFoundPage />} /> 
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
     </>
