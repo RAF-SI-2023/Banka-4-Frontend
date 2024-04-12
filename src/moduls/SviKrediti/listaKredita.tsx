@@ -50,7 +50,7 @@ function ListaKredita() {
     const handleRedClick = (kredit: Kredit) => {
         localStorage.setItem('selectedKredit', JSON.stringify(kredit));
         
-        if(kredit.status != 'ne odobren')
+        if(kredit?.status !== 'ne odobren')
             {
                 navigate(`/pojedinacniKredit`);
             }

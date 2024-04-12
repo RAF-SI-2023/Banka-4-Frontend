@@ -42,7 +42,7 @@ function svrhaPlacanjaIliTekstSifrePlacanja(svrhaPlacanja: string, sifraPlacanja
 export const FormaZaPlacanje: React.FC<PaymentFormProps> = ({ onSave, navigate, defaultProps }) => {
     const [racuni, setRacuni] = useState(RACUNI_PLACEHOLDER);
     const [selectedRacun, setSelectedRacun] = useState(defaultProps.selectedRacun || 0);
-    const [racun, setRacun] = useState<RacunType>(racuni[0]);
+    const [racun, setRacun] = useState<RacunType>({ naziv: "Dragos", broj: '265-0000001234123-12', raspolozivo: 100.11 });
     const [nazivPrimaoca, setNazivPrimaoca] = useState(defaultProps.nazivPrimaoca || '');
     const [racunPrimaoca, setRacunPrimaoca] = useState(defaultProps.racunPrimaoca || '');
     const [iznos, setIznos] = useState('');
@@ -63,7 +63,7 @@ export const FormaZaPlacanje: React.FC<PaymentFormProps> = ({ onSave, navigate, 
     }, [])
 
     useEffect(() => {
-        if (racuni.length > 0) {
+        if (racuni?.length > 0) {
             setSelectedRacun(0);
         }
     }, [racuni]);

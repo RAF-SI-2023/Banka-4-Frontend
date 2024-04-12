@@ -43,7 +43,7 @@ const pages = [
   { name: "Zaposleni", path: "listaZaposlenih" },
   { name: "Firme", path: "listaFirmi" },
   { name: "Kartice", path: "kartice" },
-  { name: "Krediti", path: "trazenjeKredita" },
+  { name: "Krediti", path: "listaKredita" },
 
 
 ];
