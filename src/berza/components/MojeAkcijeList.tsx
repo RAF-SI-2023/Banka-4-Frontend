@@ -2,6 +2,7 @@ import { Table, TableBody, TableRow } from "@mui/material"
 import { Stock, StockList } from "berza/types/types"
 import { StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from '../../utils/tableStyles';
 import BuyOptionPopup from "./BuyOptionPopup";
+import ScrollableTableBody from "utils/ScrollableTableBody";
 
 const MojeAkcijeList: React.FC<StockList> = ({ stocks }) => {
 
@@ -11,32 +12,36 @@ const MojeAkcijeList: React.FC<StockList> = ({ stocks }) => {
     };
 
     return (
-        <Table sx={{ minWidth: 650, marginTop: 0 }}>
-            <StyledTableHead>
-                <TableRow>
+        <>
+            <Table sx={{ minWidth: 650, marginTop: 0 }}>
+                <StyledTableHead>
                     <TableRow>
-                        <StyledHeadTableCell>Oznaka</StyledHeadTableCell>
-                        <StyledHeadTableCell>Cena</StyledHeadTableCell>
-                        <StyledHeadTableCell>Kolicina</StyledHeadTableCell>
-                        <StyledHeadTableCell>Kolicina za prodaju</StyledHeadTableCell>
-                        <StyledHeadTableCell>Kupi</StyledHeadTableCell>
+                        <TableRow>
+                            <StyledHeadTableCell>Oznaka</StyledHeadTableCell>
+                            <StyledHeadTableCell>Cena</StyledHeadTableCell>
+                            <StyledHeadTableCell>Kolicina</StyledHeadTableCell>
+                            <StyledHeadTableCell>Kolicina za prodaju</StyledHeadTableCell>
+                            <StyledHeadTableCell>Kupi</StyledHeadTableCell>
+                        </TableRow>
                     </TableRow>
-                </TableRow>
-            </StyledTableHead>
-            <TableBody>
-                {stocks?.map((stock: Stock) => (
-                    <StyledTableRow key={stock.ticker} id={stock.ticker} onClick={handleSelect}>
-                        <StyledTableCell>{stock.ticker}</StyledTableCell>
-                        <StyledTableCell>{stock.lastPrice}</StyledTableCell>
-                        <StyledTableCell>{stock.contractSize}</StyledTableCell>
-                        <StyledTableCell>{stock.openInterest}</StyledTableCell>
-                        <StyledTableCell>
-                            <BuyOptionPopup />
-                        </StyledTableCell>
-                    </StyledTableRow>
-                ))}
-            </TableBody>
-        </Table >
+                </StyledTableHead>
+            </Table >
+            <ScrollableTableBody>
+                <TableBody>
+                    {stocks?.map((stock: Stock) => (
+                        <StyledTableRow key={stock.ticker} id={stock.ticker} onClick={handleSelect}>
+                            <StyledTableCell>{stock.ticker}</StyledTableCell>
+                            <StyledTableCell>{stock.lastPrice}</StyledTableCell>
+                            <StyledTableCell>{stock.contractSize}</StyledTableCell>
+                            <StyledTableCell>{stock.openInterest}</StyledTableCell>
+                            <StyledTableCell>
+                                <BuyOptionPopup />
+                            </StyledTableCell>
+                        </StyledTableRow>
+                    ))}
+                </TableBody>
+            </ScrollableTableBody>
+        </>
     )
 }
 export default MojeAkcijeList;

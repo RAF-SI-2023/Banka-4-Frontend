@@ -2,6 +2,7 @@ import React from 'react';
 import { Transakcija } from '../../utils/types';
 import { TableContainer, Table, TableBody, TableRow, Paper } from '@mui/material';
 import { StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from '../../utils/tableStyles';
+import ScrollableTableBody from 'utils/ScrollableTableBody';
 
 const TransakcijeTabela = ({ transakcije }: { transakcije: Transakcija[] }) => {
   return (
@@ -20,6 +21,8 @@ const TransakcijeTabela = ({ transakcije }: { transakcije: Transakcija[] }) => {
             <StyledHeadTableCell>Vreme izvršavanja</StyledHeadTableCell>
           </StyledTableRow>
         </StyledTableHead>
+      </Table>
+      <ScrollableTableBody>
         <TableBody>
           {transakcije.map((transakcija, index) => (
             <StyledTableRow key={index}>
@@ -35,7 +38,7 @@ const TransakcijeTabela = ({ transakcije }: { transakcije: Transakcija[] }) => {
             </StyledTableRow>
           ))}
         </TableBody>
-      </Table>
+      </ScrollableTableBody>
     </TableContainer>
   );
 };

@@ -4,6 +4,7 @@ import { makeGetRequest } from "../../utils/apiRequest";
 import { Button, Card, List, ListItem, ListItemText, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 import { getMe } from "../../utils/getMe";
 import { StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from "utils/tableStyles";
+import ScrollableTableBody from "utils/ScrollableTableBody";
 
 export default function PregledKartica() {
     const [kartice, setKartice] = useState<Kartica[]>([]);
@@ -44,6 +45,8 @@ export default function PregledKartica() {
                             <StyledHeadTableCell>Status</StyledHeadTableCell>
                         </StyledTableRow>
                     </StyledTableHead>
+                </Table>
+                <ScrollableTableBody>
                     <TableBody>
                         {kartice && kartice.length > 0 ? (
                             kartice.map((kartica) => (
@@ -67,7 +70,7 @@ export default function PregledKartica() {
                             </TableRow>
                         )}
                     </TableBody>
-                </Table>
+                </ScrollableTableBody>
             </TableContainer>
         </div>
     );

@@ -4,6 +4,7 @@ import { StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow }
 import { useNavigate } from 'react-router-dom';
 import { decodePermissions } from '../../utils/permissions';
 import styled from 'styled-components';
+import ScrollableTableBody from 'utils/ScrollableTableBody';
 
 const StyledTableCellLocal = styled(StyledTableCell)`
   text-align: center!important;
@@ -40,23 +41,25 @@ const EmployeeList: React.FC<EmployeeListProps> = ({ employees }) => {
                         <StyledHeadTableCell>Permisije</StyledHeadTableCell>
                     </TableRow>
                 </StyledTableHead>
-                <TableBody>
-                    {employees?.map((employee: Employee) => (
-                        <StyledTableRow key={employee.email} id={employee.email} onClick={handleSelect}>
-                            <StyledTableCell>{employee.ime}</StyledTableCell>
-                            <StyledTableCell>{employee.prezime}</StyledTableCell>
-                            <StyledTableCell>{employee.jmbg}</StyledTableCell>
-                            <StyledTableCell>{employee.pol}</StyledTableCell>
-                            <StyledTableCell>{employee.adresa}</StyledTableCell>
-                            <StyledTableCell>{employee.email}</StyledTableCell>
-                            <StyledTableCell>{employee.brojTelefona}</StyledTableCell>
-                            <StyledTableCell>{employee.pozicija}</StyledTableCell>
-                            <StyledTableCell>{employee.departman}</StyledTableCell>
-                            <StyledTableCellLocal>{decodePermissions(employee.permisije)}</StyledTableCellLocal>
-                        </StyledTableRow>
-                    ))}
-                </TableBody>
             </Table>
+            <ScrollableTableBody>
+                    <TableBody>
+                        {employees?.map((employee: Employee) => (
+                            <StyledTableRow key={employee.email} id={employee.email} onClick={handleSelect}>
+                                <StyledTableCell>{employee.ime}</StyledTableCell>
+                                <StyledTableCell>{employee.prezime}</StyledTableCell>
+                                <StyledTableCell>{employee.jmbg}</StyledTableCell>
+                                <StyledTableCell>{employee.pol}</StyledTableCell>
+                                <StyledTableCell>{employee.adresa}</StyledTableCell>
+                                <StyledTableCell>{employee.email}</StyledTableCell>
+                                <StyledTableCell>{employee.brojTelefona}</StyledTableCell>
+                                <StyledTableCell>{employee.pozicija}</StyledTableCell>
+                                <StyledTableCell>{employee.departman}</StyledTableCell>
+                                <StyledTableCellLocal>{decodePermissions(employee.permisije)}</StyledTableCellLocal>
+                            </StyledTableRow>
+                        ))}
+                    </TableBody>
+                </ScrollableTableBody>
         </TableContainer>
     );
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { TransakcijaKarticePrikaz } from '../../utils/types';
 import { StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from 'utils/tableStyles';
+import ScrollableTableBody from 'utils/ScrollableTableBody';
 
 interface TransactionListProps {
     transakcije: TransakcijaKarticePrikaz[];
@@ -27,6 +28,8 @@ const ListaTransakcija: React.FC<TransactionListProps> = ({ transakcije }) => {
                         <StyledHeadTableCell align="right">Datum i vreme izvršavanja</StyledHeadTableCell>
                     </StyledTableRow>
                 </StyledTableHead>
+            </Table>
+            <ScrollableTableBody>
                 <TableBody>
                     {transakcije.length > 0 ? (
                         transakcije.map((transakcija) => (
@@ -50,7 +53,7 @@ const ListaTransakcija: React.FC<TransactionListProps> = ({ transakcije }) => {
                         </TableRow>
                     )}
                 </TableBody>
-            </Table>
+            </ScrollableTableBody>
         </TableContainer>
     );
 };

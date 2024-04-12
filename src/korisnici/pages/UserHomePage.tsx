@@ -6,6 +6,7 @@ import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
 import { useNavigate } from "react-router-dom";
 import { Account, BankRoutes } from "utils/types";
 import CurrencyConverter from "korisnici/components/CurrencyConverter";
+import ScrollableTableBody from "utils/ScrollableTableBody";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -56,7 +57,7 @@ const UserHomePage: React.FC = () => {
       const data = await makeGetRequest(`${BankRoutes.account_find_user_account}/${me.id}`)
       if (data) {
         console.log(data);
-        
+
         setAccounts(data);
       }
     } catch (error) {
@@ -90,6 +91,8 @@ const UserHomePage: React.FC = () => {
 
               </TableRow>
             </TableHead>
+          </Table>
+          <ScrollableTableBody>
             <TableBody>
               {accounts?.map((account) => (
                 <TableRow key={account.brojRacuna}>
@@ -105,7 +108,7 @@ const UserHomePage: React.FC = () => {
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
+          </ScrollableTableBody>
         </TableContainer>
         <CurrencyConverter />
       </FormWrapper >

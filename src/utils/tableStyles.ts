@@ -1,4 +1,4 @@
-import { TableHead, TableRow, TableCell } from '@mui/material';
+import { TableHead, TableRow, TableCell, TableContainer } from '@mui/material';
 import styled from 'styled-components';
 
 export const StyledTableRow = styled(TableRow)`
@@ -20,4 +20,9 @@ export const StyledTableCell = styled(TableCell)`
         &:not(:last-child){
         border-right: 1px solid #e2e2e2
     }
+`
+
+export const ScrollContainer = styled(TableContainer)`
+    max-height: 400px; 
+    overflow-y: auto; 
 `

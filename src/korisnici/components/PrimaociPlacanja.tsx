@@ -14,6 +14,7 @@ import { BankRoutes, UserRoutes } from 'utils/types';
 import { getMe } from 'utils/getMe';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 import { StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from 'utils/tableStyles';
+import ScrollableTableBody from 'utils/ScrollableTableBody';
 
 const MOCK_PRIMAOCI = [
     {
@@ -165,7 +166,7 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
                 }
                 return { nazivPrimaoca, brojRacunaPrimaoca, broj, sifraPlacanja, brojRacunaPosiljaoca }; // Include the new attribute in the return statement
             }
-        }).then(async (result:any) => {
+        }).then(async (result: any) => {
             if (result.value) {
                 try {
                     //Dodavanje primaoca
@@ -214,6 +215,8 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
                             <StyledHeadTableCell>Akcije</StyledHeadTableCell>
                         </StyledTableRow>
                     </StyledTableHead>
+                </Table>
+                <ScrollableTableBody>
                     <TableBody>
                         {primaoci.length > 0 ? (
                             primaoci.map((recipient) => (
@@ -222,7 +225,7 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
                                     setDefaultProps([recipient].map(e => {
                                         let selectedRacun = 0;
                                         for (selectedRacun = 0; selectedRacun < racuni.length; selectedRacun++)
-                                            if (racuni[selectedRacun].brojRacuna == recipient.brojRacunaPosiljaoca)
+                                            if (racuni[selectedRacun].brojRacuna === recipient.brojRacunaPosiljaoca)
                                                 break;
 
                                         return {
@@ -260,7 +263,7 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
                             </TableRow>
                         )}
                     </TableBody>
-                </Table>
+                </ScrollableTableBody>
             </TableContainer>
         </Box>
     );
