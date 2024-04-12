@@ -39,10 +39,12 @@ const NavUser = styled(Box)`
 `;
 
 const pages = [
-  { name: "Liste", path: "listaKorisnika" },
-  { name: "Kreiraj zaposlenog", path: "kreirajZaposlenog" },
-  { name: "Kreiraj firmu", path: "kreirajFirmu" },
-  { name: "Kartice", path: "/kartice" },
+  { name: "Korisnici", path: "listaKorisnika" },
+  { name: "Zaposleni", path: "listaZaposlenih" },
+  { name: "Firme", path: "listaFirmi" },
+  { name: "Kartice", path: "kartice" },
+  { name: "Krediti", path: "trazenjeKredita" },
+
 
 ];
 
@@ -109,7 +111,6 @@ function Navbar() {
                   src={process.env.PUBLIC_URL + "/diktator100.png"}
                   sx={{ width: 70, height: 70 }}
                 />{" "}
-                {/* Increased Avatar size */}
               </IconButton>
             </Tooltip>
             <Menu

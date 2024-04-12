@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { makeApiRequest, makeGetRequest } from '../../utils/apiRequest';
 import { getMe } from '../../utils/getMe';
 import { BankRoutes } from 'utils/types';
+import KAlert from 'utils/alerts';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -221,6 +222,9 @@ const CreateAccountPage: React.FC = () => {
       <HeadingText>
         Kreiranje Racuna
       </HeadingText>
+      {fieldWarning !== "" && <KAlert severity="error" exit={() => setFieldWarning('')}>Popunite polje '{fieldWarning}' .</KAlert>}
+      {numbersOnlyWarning && <KAlert severity="error" exit={() => setNumbersOnlyWarning(false)}>Jmbg mora sadrzati iskljucivo 13 cifara.</KAlert>}
+      {successPopup && <KAlert severity="success" exit={() => setSucessPopup(false)}>Uspesno kreiran.</KAlert>}
       <FormWrapper>
         <FormControl variant="outlined" fullWidth margin="normal">
           <InputLabel id="tip-label">Tip</InputLabel>
@@ -310,10 +314,6 @@ const CreateAccountPage: React.FC = () => {
           </StyledButton>
         </ButtonContainer>
       </FormWrapper>
-      {fieldWarning !== "" && <Alert severity="error">Popunite polje '{fieldWarning}' .</Alert>}
-      {numbersOnlyWarning && <Alert severity="error">Jmbg mora sadrzati iskljucivo 13 cifara.</Alert>}
-      {successPopup && <Alert severity="success">Uspesno kreiran.</Alert>}
-
     </PageWrapper>
   );
 };

@@ -5,6 +5,7 @@ import { UserPermissions, UserRoutes } from '../../utils/types';
 import { useNavigate } from 'react-router-dom';
 import { encodePermissions } from '../../utils/permissions';
 import { makeApiRequest } from '../../utils/apiRequest';
+import KAlert from 'utils/alerts';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -198,6 +199,13 @@ const CreateEmployeePage: React.FC = () => {
         Kreiranje zaposlenog
       </HeadingText>
       <FormWrapper>
+      {fieldWarning !== "" && <KAlert severity="error" exit={() => setFieldWarning('')}>Popunite polje '{fieldWarning}' .</KAlert>}
+      {phoneWarning && <KAlert severity="error" exit={() => setPhoneWarning(false)}>Broj telefona je u pogresnom formatu.</KAlert>}
+      {letterOnlyWarning && <KAlert severity="error" exit={() => setLetterOnlyWarning(false)}>Ime i prezime ne sme sadrzati brojeve.</KAlert>}
+      {numbersOnlyWarning && <KAlert severity="error" exit={() => setNumbersOnlyWarning(false)}>Jmbg mora sadrzati iskljucivo 13 cifara.</KAlert>}
+      {emailWarning && <KAlert severity="error" exit={() => setEmailWarning(false)}>Nevazeca mejl adresa.</KAlert>}
+      {passwordWarning && <KAlert severity="error" exit={() => setPasswordWarning(false)}>Lozinke se ne poklapaju.</KAlert>}
+      {successPopup && <KAlert severity="success" exit={() => setSucessPopup(false)}>Uspesno kreiran.</KAlert>}
         <FormSeparator>
           <FormSeparatorRow>
             <StyledTextField
@@ -350,14 +358,6 @@ const CreateEmployeePage: React.FC = () => {
           </StyledButton>
         </ButtonContainer>
       </FormWrapper>
-      {fieldWarning !== "" && <Alert severity="error">Popunite polje '{fieldWarning}' .</Alert>}
-      {phoneWarning && <Alert severity="error">Broj telefona je u pogresnom formatu.</Alert>}
-      {letterOnlyWarning && <Alert severity="error">Ime i prezime ne sme sadrzati brojeve.</Alert>}
-      {numbersOnlyWarning && <Alert severity="error">Jmbg mora sadrzati iskljucivo 13 cifara.</Alert>}
-      {emailWarning && <Alert severity="error">Nevazeca mejl adresa.</Alert>}
-      {passwordWarning && <Alert severity="error">Lozinke se ne poklapaju.</Alert>}
-      {successPopup && <Alert severity="success">Uspesno kreiran.</Alert>}
-
     </PageWrapper>
   );
 };

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 // import logo from './logo.svg';
 import './App.css';
-import UserAndAccountList from './zaposleni/pages/listsPage'
+import UserListPage from './zaposleni/pages/userListPage'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import UserInfoTable from './zaposleni/pages/userPage';
 import Navbar from './zaposleni/components/Navbar';
@@ -34,8 +34,14 @@ import AkcijePage from 'berza/pages/AkcijePage';
 import DetaljiAkcije from 'berza/pages/DetaljiAkcijePage';
 import ExchangePage from 'menjacnica/ExchangePage';
 import styled from 'styled-components';
-import { Box, Dialog, IconButton, Typography } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import { Box, Dialog, Typography } from '@mui/material';
+import CompanyListPage from 'zaposleni/pages/companyListPage';
+import EmployeeListPage from 'zaposleni/pages/employeeListPage';
+import NotFoundPage from 'moduls/DodatneStranice/NotFoundPage';
+
+window.addEventListener('beforeunload', () => {
+  localStorage.setItem('tokenRemovalTimestamp', Date.now().toString());
+});
 
 const VideoWrapper = styled.div`
   display: flex;
@@ -47,20 +53,10 @@ const auth = getMe()
 function App() {
   const [open, setOpen] = useState(true);
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
   const handleClose = () => {
     setOpen(false);
   };
-  useEffect(() => {
-    window.addEventListener('beforeunload', () => {
-      if (window.location.pathname !== '/login') {
-        localStorage.removeItem('si_jwt');
-      }
-    });
-  }, [])
+
   return (
     <>
       {!auth?.id &&
@@ -77,7 +73,6 @@ function App() {
             </Typography>
           </Box>
         </Dialog>
-
       }
 
       <BrowserRouter>
@@ -86,7 +81,9 @@ function App() {
           <Route path="/" element={auth?.id ? <UserHomePage /> : <LoginPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegistrationPage />} />
-          <Route path="/listaKorisnika" element={auth?.id ? <UserAndAccountList /> : <LoginPage />} />
+          <Route path="/listaKorisnika" element={auth?.id ? <UserListPage /> : <LoginPage />} />
+          <Route path="/listaZaposlenih" element={auth?.id ? <EmployeeListPage /> : <LoginPage />} />
+          <Route path="/listaFirmi" element={auth?.id ? <CompanyListPage /> : <LoginPage />} />
           <Route path="/korisnik" element={auth?.id ? <UserInfoTable /> : <LoginPage />} />
           <Route path="/kreirajKorisnika" element={auth?.id ? <CreateUserPage /> : <LoginPage />} />
           <Route path="/izmeniKorisnika" element={auth?.id ? <EditUserPage /> : <LoginPage />} />
@@ -112,6 +109,8 @@ function App() {
           <Route path="/akcije" element={auth?.id ? <AkcijePage /> : <LoginPage />} />
           <Route path="/detaljiAkcije" element={auth?.id ? <DetaljiAkcije /> : <LoginPage />} />
           <Route path="/menjacnica" element={auth?.id ? <ExchangePage /> : <LoginPage />} />
+          <Route path="*" element={<NotFoundPage />} /> 
+
         </Routes>
       </BrowserRouter>
     </>

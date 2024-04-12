@@ -3,6 +3,7 @@ import { TextField, Button, Alert, FormControl, InputLabel, MenuItem, Select } f
 import styled from 'styled-components';
 import { makeApiRequest, makeGetRequest } from '../../utils/apiRequest';
 import { UserRoutes } from 'utils/types';
+import KAlert from 'utils/alerts';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -176,6 +177,10 @@ const EditUserPage: React.FC = () => {
         Izmena korisnika
       </HeadingText>
       <FormWrapper>
+      {phoneWarning && <KAlert severity="error" exit={() => setPhoneWarning(false)}>Broj telefona je u pogresnom formatu.</KAlert>}
+      {passwordWarning && <KAlert severity="error" exit={() => setPasswordWarning(false)}>Lozinke se ne poklapaju.</KAlert>}
+      {successPopup && <KAlert severity="success" exit={() => setSucessPopup(false)}>Uspesno kreiran.</KAlert>}
+      {emptyWarning && <KAlert severity="error" exit={() => setEmptyWarning(false)}>Popunite neko polje.</KAlert>}
         <StyledTextField
           label="Prezime"
           name='prezime'
@@ -243,11 +248,6 @@ const EditUserPage: React.FC = () => {
           </StyledButton>
         </ButtonContainer>
       </FormWrapper>
-      {passwordWarning && <Alert severity="error">Lozinke se ne poklapaju.</Alert>}
-      {emptyWarning && <Alert severity="error">Popunite neko polje.</Alert>}
-      {phoneWarning && <Alert severity="error">Broj telefona je u pogresnom formatu.</Alert>}
-      {successPopup && <Alert severity="success">Uspesno kreiran.</Alert>}
-
     </PageWrapper>
   );
 };

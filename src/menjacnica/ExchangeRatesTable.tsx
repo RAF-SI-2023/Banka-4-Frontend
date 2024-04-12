@@ -10,6 +10,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import ScrollableTableBody from "utils/ScrollableTableBody";
 
 const ExchangeRatesTable = () => {
   const [currencyRates, setCurrencyRates] = useState<ExchangeRate[]>([]);
@@ -40,6 +41,8 @@ const ExchangeRatesTable = () => {
             </TableCell>
           </TableRow>
         </TableHead>
+      </Table>
+      <ScrollableTableBody>
         <TableBody>
           {currencyRates?.map((rate) => (
             <TableRow key={rate.currencyCode}>
@@ -50,7 +53,7 @@ const ExchangeRatesTable = () => {
             </TableRow>
           ))}
         </TableBody>
-      </Table>
+      </ScrollableTableBody>
     </TableContainer>
   );
 };

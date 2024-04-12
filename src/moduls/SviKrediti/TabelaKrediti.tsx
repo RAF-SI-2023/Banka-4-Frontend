@@ -2,6 +2,7 @@ import React from 'react';
 import { Kredit } from './../../utils/types';
 import { TableContainer, Table, TableBody, TableRow, Paper } from '@mui/material';
 import { StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from '../../utils/tableStyles';
+import ScrollableTableBody from 'utils/ScrollableTableBody';
 
 interface TabelaProps {
     krediti: Kredit[];
@@ -21,9 +22,11 @@ const Tabela: React.FC<TabelaProps> = ({ krediti, onClickRed }) => {
                         <StyledHeadTableCell>Zaposlen za stalno</StyledHeadTableCell>
                         <StyledHeadTableCell>Period zaposlenja kod trenutnog poslodavca</StyledHeadTableCell>
                         <StyledHeadTableCell>Ekspozitura</StyledHeadTableCell>
-                        
+
                     </StyledTableRow>
                 </StyledTableHead>
+            </Table>
+            <ScrollableTableBody>
                 <TableBody>
                     {krediti?.map((kredit, index) => (
                         <StyledTableRow key={index} onClick={() => onClickRed(kredit)}>
@@ -37,7 +40,7 @@ const Tabela: React.FC<TabelaProps> = ({ krediti, onClickRed }) => {
                         </StyledTableRow>
                     ))}
                 </TableBody>
-            </Table>
+            </ScrollableTableBody>
         </TableContainer>
     );
 }

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { makeApiRequest } from '../../utils/apiRequest';
 import { UserRoutes } from 'utils/types';
+import KAlert from 'utils/alerts';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -169,6 +170,12 @@ const CreateUserPage: React.FC = () => {
         Kreiranje korisnika
       </HeadingText>
       <FormWrapper>
+        {fieldWarning !== "" && <KAlert severity="error" exit={() => setFieldWarning('')}>Popunite polje '{fieldWarning}' .</KAlert>}
+        {phoneWarning && <KAlert severity="error" exit={() => setPhoneWarning(false)}>Broj telefona je u pogresnom formatu.</KAlert>}
+        {letterOnlyWarning && <KAlert severity="error" exit={() => setLetterOnlyWarning(false)}>Ime i prezime ne sme sadrzati brojeve.</KAlert>}
+        {numbersOnlyWarning && <KAlert severity="error" exit={() => setNumbersOnlyWarning(false)}>Jmbg mora sadrzati iskljucivo 13 cifara.</KAlert>}
+        {emailWarning && <KAlert severity="error" exit={() => setEmailWarning(false)}>Nevazeca mejl adresa.</KAlert>}
+        {successPopup && <KAlert severity="success" exit={() => setSucessPopup(false)}>Uspesno kreiran.</KAlert>}
         <StyledTextField
           label="Ime"
           name="ime"
@@ -256,13 +263,6 @@ const CreateUserPage: React.FC = () => {
           </StyledButton>
         </ButtonContainer>
       </FormWrapper>
-      {fieldWarning !== "" && <Alert severity="error">Popunite polje '{fieldWarning}' .</Alert>}
-      {phoneWarning && <Alert severity="error">Broj telefona je u pogresnom formatu.</Alert>}
-      {letterOnlyWarning && <Alert severity="error">Ime i prezime ne sme sadrzati brojeve.</Alert>}
-      {numbersOnlyWarning && <Alert severity="error">Jmbg mora sadrzati iskljucivo 13 cifara.</Alert>}
-      {emailWarning && <Alert severity="error">Nevazeca mejl adresa.</Alert>}
-      {successPopup && <Alert severity="success">Uspesno kreiran.</Alert>}
-
     </PageWrapper>
   );
 };

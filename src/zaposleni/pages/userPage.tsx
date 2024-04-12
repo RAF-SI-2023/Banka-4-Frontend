@@ -4,6 +4,8 @@ import { Account, BankRoutes, UserRoutes } from '../../utils/types';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { makeApiRequest, makeGetRequest } from '../../utils/apiRequest';
+import ScrollableTableBody from 'utils/ScrollableTableBody';
+import KAlert from 'utils/alerts';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -135,6 +137,7 @@ const UserInfoTable: React.FC = () => {
         Korisnik
       </HeadingText>
       <FormWrapper>
+      {successPopup && <KAlert severity="success" exit={() => setSucessPopup(false)}>Uspesno kreiran.</KAlert>}
         <H2Text>
           Info
         </H2Text>
@@ -176,6 +179,8 @@ const UserInfoTable: React.FC = () => {
                 </StyledTableCentered>
               </TableRow>
             </TableHead>
+          </Table>
+          <ScrollableTableBody>
             <TableBody>
               {accounts?.map((account) => (
                 <TableRow key={account.brojRacuna}>
@@ -194,10 +199,9 @@ const UserInfoTable: React.FC = () => {
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
+          </ScrollableTableBody>
         </TableContainer>
       </FormWrapper >
-      {successPopup && <Alert severity="success">Uspesno deaktiviran.</Alert>}
     </PageWrapper >
   );
 };

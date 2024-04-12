@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { EmployeePermissions, UserRoutes } from '../../utils/types';
 import { makeApiRequest, makeGetRequest } from '../../utils/apiRequest';
 import { encodePermissions } from '../../utils/permissions';
+import KAlert from 'utils/alerts';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -182,9 +183,12 @@ const EditEmployeePage: React.FC = () => {
         Izmena zaposlenog
       </HeadingText>
       <FormWrapper>
+      {phoneWarning && <KAlert severity="error" exit={() => setPhoneWarning(false)}>Broj telefona je u pogresnom formatu.</KAlert>}
+      {passwordWarning && <KAlert severity="error" exit={() => setPasswordWarning(false)}>Lozinke se ne poklapaju.</KAlert>}
+      {successPopup && <KAlert severity="success" exit={() => setSucessPopup(false)}>Uspesno kreiran.</KAlert>}
+      {emptyWarning && <KAlert severity="error" exit={() => setEmptyWarning(false)}>Popunite neko polje.</KAlert>}
         <FormSeparator>
           <FormSeparatorRow>
-
             <StyledTextField
               label="Prezime"
               name='prezime'
@@ -289,11 +293,6 @@ const EditEmployeePage: React.FC = () => {
           </StyledButton>
         </ButtonContainer>
       </FormWrapper>
-      {passwordWarning && <Alert severity="error">Lozinke se ne poklapaju.</Alert>}
-      {emptyWarning && <Alert severity="error">Popunite neko polje.</Alert>}
-      {phoneWarning && <Alert severity="error">Broj telefona je u pogresnom formatu.</Alert>}
-      {successPopup && <Alert severity="success">Uspesno kreiran.</Alert>}
-
     </PageWrapper>
   );
 };
