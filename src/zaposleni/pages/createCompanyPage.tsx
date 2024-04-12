@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { TextField, Button, Alert } from '@mui/material';
+import { TextField, Button } from '@mui/material';
 import styled from 'styled-components';
 import { makeApiRequest } from '../../utils/apiRequest';
 import { BankRoutes } from 'utils/types';
+import KAlert from 'utils/alerts';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -98,6 +99,8 @@ const CreateCompanyPage: React.FC = () => {
         Kreiranje firme
       </HeadingText>
       <FormWrapper>
+      {fieldWarning !== "" && <KAlert severity="error" exit={() => setFieldWarning('')}>Popunite polje '{fieldWarning}' .</KAlert>}
+      {successPopup && <KAlert severity="success" exit={() => setSucessPopup(false)}>Uspesno kreiran.</KAlert>}
         <StyledTextField
           label="Naziv"
           name='nazivPreduzeca'
@@ -172,9 +175,6 @@ const CreateCompanyPage: React.FC = () => {
         </ButtonContainer>
 
       </FormWrapper>
-      {fieldWarning !== "" && <Alert severity="error">Popunite polje '{fieldWarning}' .</Alert>}
-      {successPopup && <Alert severity="success">Uspesno kreiran.</Alert>}
-
     </PageWrapper>
   );
 };

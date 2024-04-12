@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { TextField, Button, Alert } from '@mui/material'; //pre-designed
 import styled from 'styled-components';
+import KAlert from 'utils/alerts';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -114,6 +115,7 @@ const EditCompanyPage: React.FC = () => {
         Izmena firme
       </HeadingText>
       <FormWrapper>
+      {fieldWarning !== "" && <KAlert severity="error" exit={() => setFieldWarning('')}>Popunite polje '{fieldWarning}' .</KAlert>}
         <StyledTextField
           label="Naziv"
           name='naziv'
@@ -184,7 +186,6 @@ const EditCompanyPage: React.FC = () => {
         </ButtonContainer>
 
       </FormWrapper>
-      {fieldWarning !== "" && <Alert severity="error">Popunite polje '{fieldWarning}' .</Alert>}
     </PageWrapper>
   );
 };
