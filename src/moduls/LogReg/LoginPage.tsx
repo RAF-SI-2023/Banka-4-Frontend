@@ -4,6 +4,7 @@ import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 import { makeApiRequest } from 'utils/apiRequest';
 import { UserRoutes } from 'utils/types';
+import { Palette, PointyButton } from '../../utils/globalStyles';
 
 const url = "http://api.stamenic.work:8080/api";
 
@@ -71,8 +72,8 @@ const LoginPage = () => {
             alignItems: 'center',
             justifyContent: 'center',
             height: '100vh',
-            backgroundColor: '#f9e7e7', // Beige color
-            border: '1px solid #dedede',
+            backgroundColor: 'white', // Beige color
+            border: '5px solid #dedede',
             borderRadius: '8px',
             boxShadow: 3,
             marginTop: '-8vh',
@@ -81,12 +82,12 @@ const LoginPage = () => {
             <style type="text/css">
                 {`
                     body {
-                        background-color: #82b2ff;
+                        background-color: ${Palette.SecondaryBlue};
                     }
                 `}
             </style>
 
-            <Typography component="h1" variant="h5" sx={{ fontSize: '1.5rem', fontWeight: 'bold', margin: '20px 0' }}>
+            <Typography component="h1" variant="h5" sx={{ fontFamily:'Verdana', fontSize: '1.618rem', fontWeight: 'bold', margin: '16px 0' }}>
                 Login
             </Typography>
             <form onSubmit={authenticate}>
@@ -122,15 +123,18 @@ const LoginPage = () => {
                         {error}
                     </Typography>
                 )}
-                <Button
+                <PointyButton
                     type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
+                    //variant="contained"
+                    style={{
+                        marginTop: '12px', // mt: 3 is approximately 12px
+                        marginBottom: '16px', // mb: 2 is approximately 16px
+                        width: '100%' // For fullWidth
+                      }}
                     disabled={!email || !password}
                 >
                     Login
-                </Button>
+                </PointyButton>
                 <Link onClick={handleForgot} variant="body2">
                     {"Zaboravio si šifru?"}
                 </Link>
