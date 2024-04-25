@@ -1,9 +1,9 @@
 import { Table, TableBody, TableRow } from "@mui/material"
-import { Stock, StockList } from "berza/types/types"
+import { OptionsList, Options } from "berza/types/types"
 import { ScrollContainer, StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from '../../utils/tableStyles';
 import BuyOptionPopup from "./BuyOptionPopup";
 
-const CallsList: React.FC<StockList> = ({ stocks }) => {
+const CallsList: React.FC<OptionsList> = ({ options }) => {
 
     const handleSelect = (event: any) => {
         const id = event.currentTarget.id;
@@ -29,18 +29,18 @@ const CallsList: React.FC<StockList> = ({ stocks }) => {
                     </TableRow>
                 </StyledTableHead>
                 <TableBody>
-                    {stocks?.map((stock: Stock) => (
-                        <StyledTableRow key={stock.ticker} id={stock.ticker} onClick={handleSelect}>
-                            <StyledTableCell>{stock.ticker}</StyledTableCell>
-                            <StyledTableCell>{stock.strike}</StyledTableCell>
-                            <StyledTableCell>{stock.lastPrice}</StyledTableCell>
-                            <StyledTableCell>{stock.bid}</StyledTableCell>
-                            <StyledTableCell>{stock.ask}</StyledTableCell>
-                            <StyledTableCell>{stock.change}</StyledTableCell>
-                            <StyledTableCell>{stock.changePercent}</StyledTableCell>
-                            <StyledTableCell>{stock.contractSize}</StyledTableCell>
-                            <StyledTableCell>{stock.openInterest}</StyledTableCell>
-                            <StyledTableCell>{stock.impliedVolatility}</StyledTableCell>
+                    {options?.map((option: Options) => (
+                        <StyledTableRow key={option.ticker} id={option.ticker} onClick={handleSelect}>
+                            <StyledTableCell>{option.ticker}</StyledTableCell>
+                            <StyledTableCell>{option.strikePrice}</StyledTableCell>
+                            <StyledTableCell>{option.lastPrice}</StyledTableCell>
+                            <StyledTableCell>{option.bid}</StyledTableCell>
+                            <StyledTableCell>{option.ask}</StyledTableCell>
+                            <StyledTableCell>{option.change}</StyledTableCell>
+                            <StyledTableCell>{option.percentChange}</StyledTableCell>
+                            <StyledTableCell>{option.contractSize}</StyledTableCell>
+                            <StyledTableCell>{option.openInterest}</StyledTableCell>
+                            <StyledTableCell>{option.impliedVolatility}</StyledTableCell>
                             <StyledTableCell>
                                 <BuyOptionPopup />
                             </StyledTableCell>

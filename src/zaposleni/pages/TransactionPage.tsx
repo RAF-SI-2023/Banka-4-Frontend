@@ -132,13 +132,13 @@ const Transaction: React.FC = () => {
                 <StyledTableCell component="th" scope="row">
                   Datum i vreme transakcije
                 </StyledTableCell>
-                <StyledTableCell>{(new Date(transakcija.vremeTransakcije).toDateString())}</StyledTableCell>
+                <StyledTableCell>{(new Date(transakcija.vremeTransakcije).toLocaleDateString("en-de"))}</StyledTableCell>
               </TableRow>
               <TableRow key={'Datum i vreme izvrsavanja'}>
                 <StyledTableCell component="th" scope="row">
                   Datum i vreme izvrsavanja
                 </StyledTableCell>
-                <StyledTableCell>{(new Date(transakcija.vremeIzvrsavanja).toDateString())}</StyledTableCell>
+                <StyledTableCell>{(new Date(transakcija.vremeIzvrsavanja).toLocaleDateString("en-de"))}</StyledTableCell>
               </TableRow>
             </TableBody>
           </Table>

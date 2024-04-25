@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { TextField, Button } from '@mui/material';
 import styled from 'styled-components';
 import { makeApiRequest } from '../../utils/apiRequest';
 import { BankRoutes } from 'utils/types';
 import KAlert from 'utils/alerts';
+import { Context } from 'App';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -62,6 +63,7 @@ const CreateCompanyPage: React.FC = () => {
 
   const [fieldWarning, setFieldWarning] = useState<string>('');
   const [successPopup, setSucessPopup] = useState<boolean>(false);
+  const ctx = useContext(Context);
 
   // const navigate = useNavigate();
 
@@ -72,7 +74,7 @@ const CreateCompanyPage: React.FC = () => {
         return;
       }
     }
-    const res = await makeApiRequest(BankRoutes.company_create, 'POST', formData)
+    const res = await makeApiRequest(BankRoutes.company_create, 'POST', formData, false, false, ctx)
     if (res) {
       setSucessPopup(true)
     }

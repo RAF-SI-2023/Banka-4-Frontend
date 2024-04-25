@@ -49,6 +49,8 @@ export const FormaZaPlacanje: React.FC<PaymentFormProps> = ({ onSave, navigate, 
     const [pozivNaBroj, setPozivNaBroj] = useState(defaultProps.pozivNaBroj || '');
     const [sifraPlacanja, setSifraPlacanja] = useState<number>(defaultProps.sifraPlacanja || 289);
     const [svrhaPlacanja, setSvrhaPlacanja] = useState("");
+    const [errors, setErrors] = useState({ racunPrimaoca: '', iznos: '', pozivNaBroj: '' });
+
 
     useEffect(() => {
         const gett = async () => {
@@ -57,36 +59,62 @@ export const FormaZaPlacanje: React.FC<PaymentFormProps> = ({ onSave, navigate, 
 
             if (!me) return;
             const rac: { brojRacuna: string, raspolozivoStanje: number }[] = await makeGetRequest(`/racuni/nadjiRacuneKorisnika/${me.id}`)
-            setRacuni(rac?.map(e => ({ naziv: "Racun", broj: e.brojRacuna, raspolozivo: e.raspolozivoStanje })))
+            setRacuni(() => rac?.map(e => ({ naziv: "Racun", broj: e.brojRacuna, raspolozivo: e.raspolozivoStanje })))
         }
         gett();
     }, [])
 
     useEffect(() => {
         if (racuni?.length > 0) {
-            setSelectedRacun(0);
+            setSelectedRacun(() => 0);
+            setRacun(() => racuni[0]);
         }
     }, [racuni]);
 
-    useEffect(() => {
-        setRacun(racuni[selectedRacun]);
-    }, [selectedRacun])
+    const validateForm = () => {
+        let isValid = true;
+        const newErrors = { racunPrimaoca: '', iznos: '', pozivNaBroj: '' };
+
+        if (!/^\d{18}$/.test(racunPrimaoca)) {
+            newErrors.racunPrimaoca = 'Račun primaoca mora imati tačno 18 cifara.';
+            isValid = false;
+        }
+
+        if (!(parseFloat(iznos) > 0)) {
+            newErrors.iznos = 'Morate uneti iznos.';
+            isValid = false;
+        }
+        else if (parseFloat(iznos) > racun.raspolozivo) {
+            newErrors.iznos = 'Nemate dovoljno sredstava';
+            isValid = false;
+        }
+
+        if (pozivNaBroj && !/^\d+$/.test(pozivNaBroj)) {
+            newErrors.pozivNaBroj = 'Poziv na broj mora biti prazan ili sadržati samo cifre.';
+            isValid = false;
+        }
+
+        setErrors(newErrors);
+        return isValid;
+    };
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
         if (!racun)
             return;
-        event.preventDefault();
-        localStorage.setItem("uplataPodaci", JSON.stringify({
-            racunPosiljaoca: racun.broj,
-            nazivPrimaoca,
-            racunPrimaoca,
-            iznos,
-            pozivNaBroj,
-            sifraPlacanja,
-            svrhaPlacanja: svrhaPlacanjaIliTekstSifrePlacanja(svrhaPlacanja, sifraPlacanja)
-        }))
-        localStorage.removeItem("prenosPodaci");
-        navigate("verifikacija")
+        if (validateForm()) {
+            localStorage.setItem("uplataPodaci", JSON.stringify({
+                racunPosiljaoca: racun.broj,
+                nazivPrimaoca,
+                racunPrimaoca,
+                iznos,
+                pozivNaBroj,
+                sifraPlacanja,
+                svrhaPlacanja: svrhaPlacanjaIliTekstSifrePlacanja(svrhaPlacanja, sifraPlacanja)
+            }))
+            localStorage.removeItem("prenosPodaci");
+            navigate("verifikacija")
+        }
     };
 
     return (
@@ -98,7 +126,10 @@ export const FormaZaPlacanje: React.FC<PaymentFormProps> = ({ onSave, navigate, 
                     id="selectRacun"
                     value={selectedRacun}
                     label="Izaberi račun"
-                    onChange={(e) => setSelectedRacun(Number(e.target.value))}
+                    onChange={(e) => {
+                        setSelectedRacun(Number(e.target.value))
+                        setRacun(racuni[Number(e.target.value)])
+                    }}
                 >
                     {racuni?.map((racun, index) => (
                         <MenuItem key={index} value={index}>{`${racun.naziv} - ${racun.broj} (${racun.raspolozivo} RSD)`}</MenuItem>
@@ -127,6 +158,8 @@ export const FormaZaPlacanje: React.FC<PaymentFormProps> = ({ onSave, navigate, 
                 autoComplete="iznos"
                 value={iznos}
                 onChange={(e) => setIznos(e.target.value)}
+                error={!!errors.iznos}
+                helperText={errors.iznos}
             />
             <TextField
                 margin="normal"
@@ -138,6 +171,8 @@ export const FormaZaPlacanje: React.FC<PaymentFormProps> = ({ onSave, navigate, 
                 autoComplete="racun-primaoca"
                 value={racunPrimaoca}
                 onChange={(e) => setRacunPrimaoca(e.target.value)}
+                error={!!errors.racunPrimaoca}
+                helperText={errors.racunPrimaoca}
             />
             <TextField
                 margin="normal"
@@ -149,6 +184,8 @@ export const FormaZaPlacanje: React.FC<PaymentFormProps> = ({ onSave, navigate, 
                 autoComplete="poziv-na-broj"
                 value={pozivNaBroj}
                 onChange={(e) => setPozivNaBroj(e.target.value)}
+                error={!!errors.pozivNaBroj}
+                helperText={errors.pozivNaBroj}
             />
             <FormControl fullWidth margin="normal">
                 <InputLabel id="sifra-placanja-label">Šifra Plaćanja</InputLabel>
@@ -175,7 +212,7 @@ export const FormaZaPlacanje: React.FC<PaymentFormProps> = ({ onSave, navigate, 
                 value={svrhaPlacanja}
                 onChange={(e) => setSvrhaPlacanja(e.target.value)}
             />
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+            <Button id="submitbuttonpaymentform" type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                 Plati
             </Button>
         </Box>

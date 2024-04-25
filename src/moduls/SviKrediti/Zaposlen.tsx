@@ -4,6 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import { BankRoutes, Kredit } from './../../utils/types';
 import { makeApiRequest, makeGetRequest } from 'utils/apiRequest';
 import Tabela2 from './TabelaKrediti2';
+import { Button } from '@mui/material';
+import styled from 'styled-components';
+
+export const ButtonStyle = styled(Button)`
+    margin: 5px !important;
+  
+`;
 
 const auth = getMe();
 let emailKorisnikov = "";
@@ -51,8 +58,8 @@ function Zaposlen() {
             <Tabela2 krediti={krediti} onClickRed={handleRedClick}>
                 {(kredit) => (
                     <>
-                        <button onClick={() => odobri(kredit)}>Odobri</button>
-                        <button onClick={() => odbij(kredit)}>Odbij</button>
+                        <ButtonStyle id="Odobri" variant="contained" onClick={() => odobri(kredit)}>Odobri</ButtonStyle>
+                        <ButtonStyle id="Odbij" variant="contained" onClick={() => odbij(kredit)}>Odbij</ButtonStyle>
                     </>
                 )}
             </Tabela2>

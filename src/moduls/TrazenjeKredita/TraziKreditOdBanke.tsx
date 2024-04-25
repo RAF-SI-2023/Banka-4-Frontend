@@ -6,6 +6,24 @@ import { Kredit } from 'utils/types';
 import { useNavigate } from 'react-router-dom';
 import { getMe } from '../../utils/getMe';
 import { makeGetRequest } from "utils/apiRequest";
+import styled from 'styled-components';
+
+
+export const StyledFormControl = styled(FormControl)`
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin: 20px !important;
+  
+`;
+
+export const StyledInputLabel = styled(InputLabel)`
+min-width: 200px !important; /* Ovdje postavi željenu fiksnu širinu */
+`;
+
+export const StyledFormControl2 = styled(FormControl)`
+  width: 220px;
+`;
 
 const TraziKreditStranica: React.FC = () => {
   const navigate = useNavigate();
@@ -138,10 +156,10 @@ const TraziKreditStranica: React.FC = () => {
   
 
   return (
-    <div>
+    <StyledFormControl>
       <h2>Forma za traženje kredita</h2>
-      <FormControl>
-        <InputLabel id="vrstaKredita-label">Vrsta kredita</InputLabel>
+      <StyledFormControl2>
+        <StyledInputLabel id="vrstaKredita-label">Vrsta kredita</StyledInputLabel>
         <Select
           labelId="vrstaKredita-label"
           id="vrstaKredita"
@@ -154,7 +172,7 @@ const TraziKreditStranica: React.FC = () => {
           <MenuItem value="auto">Auto</MenuItem>
           <MenuItem value="refinansirajuci">Refinansirajući</MenuItem>
         </Select>
-      </FormControl>
+      </StyledFormControl2>
       <br />
      
       <TextField
@@ -204,8 +222,8 @@ const TraziKreditStranica: React.FC = () => {
         onChange={handleChange}
       />
       <br />
-      <FormControl>
-        <InputLabel id="bankAccountNumber-label">Broj Bankovnog racuna</InputLabel>
+      <StyledFormControl2>
+        <StyledInputLabel id="bankAccountNumber-label">Broj Bankovnog racuna</StyledInputLabel>
         <Select
           labelId="bankAccountNumber-label"
           id="bankAccountNumber"
@@ -217,7 +235,7 @@ const TraziKreditStranica: React.FC = () => {
             <MenuItem key={index} value={number}>{number}</MenuItem>
           ))}
         </Select>
-      </FormControl>
+      </StyledFormControl2>
       <br />
       <TextField
         label="Ekspozitura"
@@ -227,8 +245,8 @@ const TraziKreditStranica: React.FC = () => {
       />
        {poruka && <p>{poruka}</p>}
       <br />
-      <Button variant="contained" onClick={handlePosalji} disabled={loading}>Pošalji</Button>
-    </div>
+      <Button id="kwiknimeUwU" variant="contained" onClick={handlePosalji} disabled={loading}>Pošalji</Button>
+    </StyledFormControl>
   );
 };
 

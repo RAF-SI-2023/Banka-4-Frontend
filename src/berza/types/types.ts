@@ -24,13 +24,34 @@ export type UserStockList = {
     stocks: UserStock[]
 }
 export type Akcija = {
-    oznaka: string,
-    cena: string,
+    ticker: string,
+    price: string,
     volume: string,
-    promena: string,
-    promenaProcenat: string,
-    poslednjeAzuriranje: string
+    change: string,
+    dividendYield: string,
+    lastRefresh: string,
+    nameDescription: string,
+    high: string,
+    low: string,
+    outstandingShares: string,
 }
 export type AkcijaList = {
     stocks: Akcija[]
+}
+
+export type Options = {
+    ticker: string,
+    lastPrice: string,
+    strikePrice: string,
+    bid: string,
+    ask: string,
+    change: string,
+    percentChange: string,
+    contractSize: string,
+    openInterest: string,
+    impliedVolatility: string
+}
+
+export type OptionsList = {
+    options: Options[]
 }

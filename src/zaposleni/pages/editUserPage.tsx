@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { TextField, Button, Alert, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import styled from 'styled-components';
 import { makeApiRequest, makeGetRequest } from '../../utils/apiRequest';
 import { UserRoutes } from 'utils/types';
 import KAlert from 'utils/alerts';
+import { Context } from 'App';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -65,6 +66,7 @@ const EditUserPage: React.FC = () => {
     password: '',
     pol: ''
   });
+  const ctx = useContext(Context);
 
   const [passwordWarning, setPasswordWarning] = useState<boolean>(false);
   const [emptyWarning, setEmptyWarning] = useState<boolean>(false);
@@ -158,12 +160,12 @@ const EditUserPage: React.FC = () => {
           brojTelefona: formData.brojTelefona,
           pol: formData.pol
         }
-        const res = await makeApiRequest(UserRoutes.user, 'PUT', { ...formDataNoPW, id: uid, povezaniRacuni, aktivan: true })
+        const res = await makeApiRequest(UserRoutes.user, 'PUT', { ...formDataNoPW, id: uid, povezaniRacuni, aktivan: true }, false, false, ctx)
         if (res) {
           setSucessPopup(true)
         }
       } else {
-        const res = await makeApiRequest(UserRoutes.user, 'PUT', { ...formData, id: uid, povezaniRacuni, aktivan: true })
+        const res = await makeApiRequest(UserRoutes.user, 'PUT', { ...formData, id: uid, povezaniRacuni, aktivan: true }, false, false, ctx)
         if (res) {
           setSucessPopup(true)
         }

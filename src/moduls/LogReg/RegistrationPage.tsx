@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, TextField, Container, Typography, Box, FormControl, InputLabel, Select, MenuItem, FormHelperText } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { makeApiRequest } from 'utils/apiRequest';
 import { UserRoutes } from 'utils/types';
+import { StyledContainerLogReg } from 'utils/logRegStyles';
+import { Context } from 'App';
+import styled from 'styled-components';
+
+const StyledTitle = styled(Typography)`
+    padding: 30px 0px;
+`
 
 const validateEmail = (email: string) => {
     // Simple email validation pattern
@@ -11,6 +18,12 @@ const validateEmail = (email: string) => {
 
 const RegistrationPage = () => {
     const [currentStep, setCurrentStep] = useState(1);
+    const [eightChar, setEightchar] = useState(false);
+    const [capitalLetter, setCapitalLetter] = useState(false);
+    const [lowerLetter, setLowerLetter] = useState(false);
+    const [twoNumbers, setTwoNumbers] = useState(false);
+    const [specChar, setSpecChar] = useState(false);
+
     const [userData, setUserData] = useState({
         email: '',
         telefon: '',
@@ -21,7 +34,7 @@ const RegistrationPage = () => {
     });
     const [errors, setErrors] = useState<any>({});
     const navigate = useNavigate();
-
+    const ctx = useContext(Context);
     // Add validation and step change logic here
     const handleNextStep = () => {
         if (currentStep === 1 && validateFieldsStepOne()) {
@@ -34,7 +47,7 @@ const RegistrationPage = () => {
 
     const handleGenerateCode = async () => {
         try {
-            const result = await makeApiRequest(UserRoutes.user_generate_login, "POST", { email: userData.email }, true, true)
+            const result = await makeApiRequest(UserRoutes.user_generate_login, "POST", { email: userData.email }, true, true, ctx)
             console.log(await result.text());
         }
         catch (e) {
@@ -73,6 +86,34 @@ const RegistrationPage = () => {
         return Object.keys(newErrors).length === 0;
     };
 
+    const validatePassword = (password: string) => {
+        if (password.length < 8) {
+            setEightchar(false)
+        } else{
+            setEightchar(true)
+        }
+        if (!/^(?=.*[A-Z]).+$/.test(password)) {
+            setCapitalLetter(false)
+        }else{
+            setCapitalLetter(true)
+        }
+        if (!/^(?=.*[a-z]).+$/.test(password)) {
+            setLowerLetter(false)
+        }else{
+            setLowerLetter(true)
+        }
+        if (!/(?=.*\d.*\d)/.test(password)) {
+            setTwoNumbers(false)
+        }else{
+            setTwoNumbers(true)
+        }
+        if (!/(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>/?])/.test(password)) {
+            setSpecChar(false)
+        }else{
+            setSpecChar(true)
+        }
+    };
+
     const validateFieldsStepThree = () => {
         let newErrors = {};
         // Password validation
@@ -91,7 +132,7 @@ const RegistrationPage = () => {
         if (!/(?=.*\d.*\d)/.test(userData.lozinka)) {
             newErrors = { ...newErrors, lozinka: 'Lozinka mora imati bar dva broja.' };
         }
-        if (!/(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>\/?])/.test(userData.lozinka)) {
+        if (!/(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>/?])/.test(userData.lozinka)) {
             newErrors = { ...newErrors, lozinka: 'Lozinka mora imati bar jedan specijalni karakter.' };
         }
         if (userData.lozinka !== userData.ponovljenaLozinka) {
@@ -106,7 +147,7 @@ const RegistrationPage = () => {
         // This would be a good place to validate all fields across all steps
         if (validateFieldsStepOne() && validateFieldsStepTwo() && validateFieldsStepThree()) {
             try {
-                await makeApiRequest(UserRoutes.user_register, "POST", { email: userData.email, brojTelefona: userData.telefon, brojRacuna: userData.brojRacuna, password: userData.lozinka, code: userData.aktivacioniKod }, true)
+                await makeApiRequest(UserRoutes.user_register, "POST", { email: userData.email, brojTelefona: userData.telefon, brojRacuna: userData.brojRacuna, password: userData.lozinka, code: userData.aktivacioniKod }, true, false, ctx)
                 alert("Uspeh");
                 navigate('/login')
             } catch (e) {
@@ -116,6 +157,9 @@ const RegistrationPage = () => {
     };
 
     const handleFieldChange = (field: string, value: string) => {
+        if(field === 'lozinka'){
+            validatePassword(value)
+        }
         // Apply transformations like capitalization for names here if necessary
         if (field === 'email' && !validateEmail(value)) {
             setErrors({ ...errors, email: 'Email adresa nije validna.' });
@@ -132,7 +176,14 @@ const RegistrationPage = () => {
 
     if (currentStep === 1) {
         return (
-            <Container component="main" maxWidth="sm">
+            <StyledContainerLogReg component="main" maxWidth="sm">
+            <style type="text/css">
+                {`
+                    body {
+                        background-color: #82b2ff;
+                    }
+                `}
+            </style>
                 <Typography component="h1" variant="h5">Registracija korisnika - Korak 1</Typography>
                 <Box component="form" noValidate sx={{ mt: 1 }}>
                     <TextField
@@ -178,7 +229,7 @@ const RegistrationPage = () => {
                         Nastavi
                     </Button>
                 </Box>
-            </Container>
+            </StyledContainerLogReg>
         );
     } else if (currentStep === 2) {
         return (
@@ -209,7 +260,13 @@ const RegistrationPage = () => {
     } else if (currentStep === 3) {
         return (
             <Container component="main" maxWidth="sm">
-                <Typography component="h1" variant="h5">Registracija korisnika - Korak 3</Typography>
+                <StyledTitle variant="h5">Registracija korisnika - Korak 3</StyledTitle>
+                <Typography fontWeight={'bold'} color={eightChar?'green':'red'} variant="body1">Lozinka mora imati bar 8 karaktera</Typography>
+                <Typography fontWeight={'bold'} color={capitalLetter?'green':'red'} variant="body1">Lozinka mora imati bar jedno veliko slovo</Typography>
+                <Typography fontWeight={'bold'} color={lowerLetter?'green':'red'} variant="body1">Lozinka mora imati bar jedno malo slovo</Typography>
+                <Typography fontWeight={'bold'} color={twoNumbers?'green':'red'} variant="body1">Lozinka mora imati bar dva broja</Typography>
+                <Typography fontWeight={'bold'} color={specChar?'green':'red'} variant="body1">Lozinka mora imati bar jedan specijalni karakter</Typography>
+
                 <Box component="form" noValidate sx={{ mt: 3 }}>
                     <TextField
                         required

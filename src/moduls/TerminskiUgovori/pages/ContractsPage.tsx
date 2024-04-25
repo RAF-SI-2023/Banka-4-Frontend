@@ -4,6 +4,8 @@ import { ScrollContainer, StyledHeadTableCell, StyledTableCell, StyledTableHead,
 
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { makeGetRequest } from 'utils/apiRequest';
+import BuyOptionPopup from 'berza/components/BuyOptionPopup';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -43,6 +45,7 @@ const HeadingAndButtonWrapper = styled.div`
 
 const ContractsPage = () => {
     const [type, setType] = useState('');
+    const [contracts, setContracts] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -52,6 +55,22 @@ const ContractsPage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    useEffect(() => {
+        const fetchData = async () => {
+            if (type) {
+                try {
+                    const con = await makeGetRequest(`/futures/type/${type.toUpperCase()}`);
+                    if (con) {
+                        setContracts(con)
+                    }
+                } catch (error) {
+                    console.error('Error fetching user list:', error);
+                }
+            }
+        };
+        fetchData();
+
+    }, [type]);
 
     return (
         <PageWrapper>
@@ -70,15 +89,21 @@ const ContractsPage = () => {
                                     <StyledHeadTableCell>Contract unit</StyledHeadTableCell>
                                     <StyledHeadTableCell>Contract Size</StyledHeadTableCell>
                                     <StyledHeadTableCell>Maintenance Margin</StyledHeadTableCell>
+                                    <StyledHeadTableCell>Buy</StyledHeadTableCell>
+
                                 </TableRow>
                             </StyledTableHead>
                             <TableBody>
-                                {[]?.map((contract: any) => (
+                                {contracts?.map((contract: any) => (
                                     <StyledTableRow key={contract.name} id={contract.name}>
                                         <StyledTableCell>{contract.name}</StyledTableCell>
-                                        <StyledTableCell>{contract.unit}</StyledTableCell>
-                                        <StyledTableCell>{contract.size}</StyledTableCell>
-                                        <StyledTableCell>{contract.margin}</StyledTableCell>
+                                        <StyledTableCell>{contract.contractUnit}</StyledTableCell>
+                                        <StyledTableCell>{contract.contractSize}</StyledTableCell>
+                                        <StyledTableCell>{contract.maintenanceMargin}</StyledTableCell>
+                                        <StyledTableCell>
+                                            <BuyOptionPopup />
+                                        </StyledTableCell>
+
                                     </StyledTableRow>
                                 ))}
                             </TableBody>

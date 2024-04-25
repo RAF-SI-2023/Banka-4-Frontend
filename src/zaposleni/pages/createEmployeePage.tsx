@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { TextField, Button, FormControl, InputLabel, Alert, Select, MenuItem, Grid, FormControlLabel, Checkbox } from '@mui/material';
 import styled from 'styled-components';
 import { UserPermissions, UserRoutes } from '../../utils/types';
@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { encodePermissions } from '../../utils/permissions';
 import { makeApiRequest } from '../../utils/apiRequest';
 import KAlert from 'utils/alerts';
+import { Context } from 'App';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -101,6 +102,7 @@ const CreateEmployeePage: React.FC = () => {
     { naziv: UserPermissions.brisanje_racuna, vrednost: false }
   ])
   const navigate = useNavigate();
+  const ctx = useContext(Context);
 
   const [fieldWarning, setFieldWarning] = useState<string>('');
   const [phoneWarning, setPhoneWarning] = useState<boolean>(false);
@@ -186,7 +188,7 @@ const CreateEmployeePage: React.FC = () => {
       setEmailWarning(false)
     }
     const data = { ...formData, datumRodjenja: new Date(formData.datumRodjenja).getTime(), aktivan: true }
-    const res = await makeApiRequest(UserRoutes.worker, 'POST', data)
+    const res = await makeApiRequest(UserRoutes.worker, 'POST', data, false, false, ctx)
     if (res) {
       setSucessPopup(true)
     }
@@ -281,6 +283,7 @@ const CreateEmployeePage: React.FC = () => {
               <InputLabel id="sex-label">Pol</InputLabel>
               <StyledSelect
                 labelId="sex-label"
+                id="PolId"
                 name="Pol"
                 value={formData.pol}
                 onChange={handleSexChange}

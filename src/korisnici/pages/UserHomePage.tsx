@@ -93,9 +93,9 @@ const UserHomePage: React.FC = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {accounts?.map((account) => (
+              {accounts?.map((account, index) => (
                 <TableRow key={account.brojRacuna}>
-                  <HighlightableStyledTableCentered id={account.brojRacuna} component="th" scope="row" onClick={() => handleSelect(account)}>
+                  <HighlightableStyledTableCentered className={"idRacunaTd"+index} id={account.brojRacuna} component="th" scope="row" onClick={() => handleSelect(account)}>
                     {account.brojRacuna}
                   </HighlightableStyledTableCentered>
                   <StyledTableCentered component="th" scope="row">

@@ -55,74 +55,85 @@ const StyledTabs = styled(Tabs)`
 
 `
 
+
 const OpcijePage: React.FC = () => {
-    const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
-    const [selectedTab, setSelectedTab] = useState(0);
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [selectedTab, setSelectedTab] = useState(0);
+  const [ticker, setTicker] = useState('');
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
+  const [puts, setPuts] = useState([])
+  const [calls, setCalls] = useState([])
 
-    const handleChange = (event: React.SyntheticEvent<unknown>, newValue: number) => {
-      setSelectedTab(newValue);
+  const handleChange = (event: React.SyntheticEvent<unknown>, newValue: number) => {
+    setSelectedTab(newValue);
+  };
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        setTicker(urlParams?.get('ticker') ?? '')
+        setName(urlParams?.get('name') ?? '')
+        setPrice(urlParams?.get('price') ?? '')
+        if (ticker) {
+          const res = await makeGetRequest(`/opcija/opcije/${ticker}`);
+          if (res.puts && res.calls) {
+            setPuts(res.puts)
+            setCalls(res.calls)
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching user list:', error);
+      }
     };
+    fetchData();
 
+  }, [ticker]);
 
-    //   useEffect(() => {
-    //     const fetchData = async () => {
-    //       try {
-    //         const users = await makeGetRequest('/korisnik');
-    //         setUsrs(users);
-    //         const employees = await makeGetRequest('/radnik');
-    //         setEmployees(employees)
-    //         const companies = await makeGetRequest('/racuni/izlistajSveFirme');
-    //         setCompanies(companies)
-    //       } catch (error) {
-    //         console.error('Error fetching user list:', error);
-    //       }
-    //     };
-    //     fetchData();
-    // 
-    //   }, []);
-
-    return (
-        <PageWrapper>
-            <StockWrapper>
-                <TitleContainer>
-                    <HeadingText>
-                        Apple Inc.
-                    </HeadingText>
-                    <Heading2Text>
-                        AAPL
-                    </Heading2Text>
-                </TitleContainer>
-                <Heading3Text>
-                    $123
-                </Heading3Text>
-                <TextField
-                    name="date"
-                    label="Datum"
-                    type="date"
-                    variant="standard"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                    fullWidth
-                    margin="normal"
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                />
-            </StockWrapper>
-            <TableContainer>
-                    <StyledTable>
-                        <AppBar position="static" >
-                            <StyledTabs value={selectedTab} onChange={handleChange}>
-                                <Tab label="Calls" />
-                                <Tab label="Puts" />
-                            </StyledTabs>
-                        </AppBar>
-                        {selectedTab === 0 && <CallsList stocks={[]}/>}
-                        {selectedTab === 1 && <PutsList stocks={[]}/>}
-                    </StyledTable>
-            </TableContainer>
-        </PageWrapper>
-    );
+  return (
+    <PageWrapper>
+      <StockWrapper>
+        <TitleContainer>
+          <HeadingText>
+            {name}
+          </HeadingText>
+          <Heading2Text>
+            {ticker}
+          </Heading2Text>
+        </TitleContainer>
+        <Heading3Text>
+          ${price}
+        </Heading3Text>
+        <TextField
+          name="date"
+          label="Datum"
+          type="date"
+          variant="standard"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          fullWidth
+          margin="normal"
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+      </StockWrapper>
+      <TableContainer>
+        { <StyledTable>
+          <AppBar position="static" >
+            <StyledTabs value={selectedTab} onChange={handleChange}>
+              <Tab label="Calls" />
+              <Tab label="Puts" />
+            </StyledTabs>
+          </AppBar>
+          {selectedTab === 0 && <CallsList options={calls} />}
+          {selectedTab === 1 && <PutsList options={puts} />}
+        </StyledTable>}
+      </TableContainer>
+    </PageWrapper>
+  );
 };
 
 export default OpcijePage;

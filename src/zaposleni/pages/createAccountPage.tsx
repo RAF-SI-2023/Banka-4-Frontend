@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { TextField, Button, Alert, FormControl, InputLabel, MenuItem, Select, Grid, FormControlLabel, Checkbox, Radio, FormLabel, RadioGroup } from '@mui/material';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
@@ -6,6 +6,7 @@ import { makeApiRequest, makeGetRequest } from '../../utils/apiRequest';
 import { getMe } from '../../utils/getMe';
 import { BankRoutes } from 'utils/types';
 import KAlert from 'utils/alerts';
+import { Context } from 'App';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -100,6 +101,7 @@ const CreateAccountPage: React.FC = () => {
   const [successPopup, setSucessPopup] = useState<boolean>(false);
 
   const navigate = useNavigate();
+  const ctx = useContext(Context);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -145,7 +147,7 @@ const CreateAccountPage: React.FC = () => {
         zaposleni: zaposleniId,
         vrstaRacuna: formData.vrstaRacuna
       }
-      const res = await makeApiRequest(BankRoutes.account_add_tekuci, 'POST', data);
+      const res = await makeApiRequest(BankRoutes.account_add_tekuci, 'POST', data, false, false, ctx);
       if (res) {
         setSucessPopup(true)
       }
@@ -168,7 +170,7 @@ const CreateAccountPage: React.FC = () => {
         defaultCurrency: formData.defaultCurrency,
         brojDozvoljenihValuta: 7
       }
-      const res = await makeApiRequest(BankRoutes.account_add_devizni, 'POST', data);
+      const res = await makeApiRequest(BankRoutes.account_add_devizni, 'POST', data, false, false, ctx);
       if (res) {
         setSucessPopup(true)
       }
@@ -207,7 +209,7 @@ const CreateAccountPage: React.FC = () => {
   };
 
   const handlePretragaKorisnika = async () => {
-    const res = await makeGetRequest(`/korisnik/jmbg/${formData.jmbg}`);
+    const res = await makeGetRequest(`/korisnik/jmbg/${formData.jmbg}`, ctx);
     if (res && res.id) {
       setIdVlasnika(res.id)
       setUserNotFoundWarning(false)

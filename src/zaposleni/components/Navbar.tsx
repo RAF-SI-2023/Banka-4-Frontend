@@ -12,7 +12,6 @@ import MenuItem from "@mui/material/MenuItem";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { getMe } from "../../utils/getMe";
-
 const StyledAppBar = styled(AppBar)`
   background-color: #23395b !important;
 `;
@@ -38,6 +37,32 @@ const NavUser = styled(Box)`
   flex-grow: 0;
 `;
 
+const StyledImage = styled.img`
+  width: 100%;
+  height: 100%;
+`;
+
+const ImgContainer = styled.div`
+  height: 96px;
+  width: 96px;
+  min-width: 96px;
+`
+
+const DropdownButton = styled.div`
+  color: white!important;
+  font-size: 25px!important;
+  text-decoration: none!important;
+  padding: 4px 10px!important;
+  font-weight: normal!important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif!important;
+  &:hover {
+    background-color: #2c4975ea;
+    padding-bottom: 4px; // To avoid jumping when adding border
+    border-bottom: 2px solid white;
+  }
+
+`
+
 const pages = [
   { name: "Korisnici", path: "listaKorisnika" },
   { name: "Zaposleni", path: "listaZaposlenih" },
@@ -60,6 +85,13 @@ const pagesUser = [
 const auth = getMe();
 const user = auth?.permission === 0 ? true : false;
 function Navbar() {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -83,8 +115,11 @@ function Navbar() {
     <StyledAppBar position="static">
       <Container maxWidth="xl">
         <Toolbar>
-          <img src={process.env.PUBLIC_URL + "/logo.webp"} alt="Logo" />
-
+          <ImgContainer>
+            {/* <StyledImage src={process.env.PUBLIC_URL + "/logo.webp"} alt="Logo" /> */}
+            <StyledImage src={process.env.PUBLIC_URL + "/logo2.jpeg"} alt="Logo" />
+            {/* <StyledImage src={process.env.PUBLIC_URL + "/logo3.jpeg"} alt="Logo" /> */}
+          </ImgContainer>
           <NavItems>
             {user &&
               pagesUser?.map((page) => (
@@ -98,6 +133,31 @@ function Navbar() {
                   {page.name}
                 </StyledLink>
               ))}
+            <DropdownButton
+
+              id="basic-button"
+              aria-controls={open ? 'basic-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              style={{ textTransform: 'none' }}
+              onClick={handleClick}
+            >
+              Berza
+            </DropdownButton>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={() => setAnchorEl(null)}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}
+            >
+              <MenuItem onClick={() => { navigate('/akcije'); setAnchorEl(null) }}>Akcije</MenuItem>
+              {/* <MenuItem onClick={() => { navigate('/opcije'); setAnchorEl(null) }}>Opcije</MenuItem> */}
+              <MenuItem onClick={() => { navigate('/terminski'); setAnchorEl(null) }}>Terminski</MenuItem>
+            </Menu>
+
           </NavItems>
 
           <NavUser>
@@ -142,7 +202,7 @@ function Navbar() {
           </NavUser>
         </Toolbar>
       </Container>
-    </StyledAppBar>
+    </StyledAppBar >
   );
 }
 

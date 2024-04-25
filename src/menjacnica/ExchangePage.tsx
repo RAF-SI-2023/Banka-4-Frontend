@@ -7,6 +7,11 @@ import { makeGetRequest } from "../utils/apiRequest";
 import { getMe } from "../utils/getMe";
 import { User } from "../utils/types";
 import { Container } from "@mui/material";
+import styled from "styled-components";
+
+const ContainerStyled = styled.div`
+  display: flex;
+`;
 
 const ExchangePage = () => {
   const [iznos, setIznos] = useState<string>();
@@ -33,9 +38,10 @@ const ExchangePage = () => {
       console.error("Error fetching data:", error);
     }
   };
+  console.log("detaljiTransfera: ", detaljiTransfera);
 
   return (
-    <Container>
+    <ContainerStyled>
       {detaljiTransfera ? (
         <Container>
           <TransferDetails
@@ -63,7 +69,7 @@ const ExchangePage = () => {
       <Container>
         <ExchangeRatesTable />
       </Container>
-    </Container>
+    </ContainerStyled>
   );
 };
 export default ExchangePage;

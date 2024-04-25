@@ -1,11 +1,13 @@
 import { jwtDecode } from "jwt-decode";
 import { getApiUrl } from "./apiUrl";
+import { Context, Dispatch, SetStateAction, createContext, useContext, useState } from "react";
+import { ContextType } from "App";
+
 
 type Decoded = {
     permission: number;
     exp: number;
 }
-
 
 
 export const getJWT = () => {
@@ -24,7 +26,7 @@ export const getJWT = () => {
             if (tokenRemovalTimestamp && Date.now() - tokenRemovalTimestamp > expirationThreshold) {
                 localStorage.removeItem('si_jwt');
                 localStorage.removeItem('tokenRemovalTimestamp');
-            } 
+            }
             else {
                 localStorage.removeItem('tokenRemovalTimestamp');
             }
@@ -34,8 +36,16 @@ export const getJWT = () => {
     }
 };
 
-export const makeApiRequest = async (route: string, type: string, data?: object, noAuth?: boolean, noJson?: boolean) => {
+export const makeApiRequest = async (
+    route: string,
+    type: string,
+    data?: object,
+    noAuth?: boolean,
+    noJson?: boolean,
+    ctx?: ContextType | null
+) => {
     try {
+        const errs = []
         const token = getJWT()
         const apiUrl = getApiUrl(route)
         const headers: HeadersInit = noAuth ? {
@@ -49,14 +59,30 @@ export const makeApiRequest = async (route: string, type: string, data?: object,
             headers: headers,
             body: JSON.stringify(data)
         });
-        // console.log(response)
 
         if (response.ok) {
             const res = noJson ? response : await response.json()// fix this shit
             return res
         }
         if (!response.ok) {
-            throw new Error('Error goes errrrr');
+            const contentType = response.headers.get('Content-Type');
+            if (contentType && contentType.includes('application/json')) {
+                const res = await response.json();
+                for (const key in res) {
+                    if (Object.hasOwnProperty.call(res, key)) {
+                        const value = res[key];
+                        errs.push(value)
+                        // throw new Error(value);
+                    }
+                }
+                if (errs) {
+                    ctx?.setErrors?.([...ctx?.errors, ...errs])
+                }
+            } else {
+                const res = await response.text();
+                ctx?.setErrors?.([...ctx?.errors, res])
+                // throw new Error(res);
+            }
         }
         console.log('Big YAY');
     } catch (error) {
@@ -64,9 +90,10 @@ export const makeApiRequest = async (route: string, type: string, data?: object,
     }
 }
 
-export const makeGetRequest = async (route: string) => {
+export const makeGetRequest = async (route: string, ctx?: ContextType | null) => {
     try {
         const token = getJWT()
+        const errs = []
         const apiUrl = getApiUrl(route)
         const response = await fetch(`${apiUrl}${route}`, {
             method: 'GET',
@@ -77,8 +104,26 @@ export const makeGetRequest = async (route: string) => {
 
         });
         if (!response.ok) {
-            throw new Error('Error goes errrrr');
+            const contentType = response.headers.get('Content-Type');
+            if (contentType && contentType.includes('application/json')) {
+                const res = await response.json();
+                for (const key in res) {
+                    if (Object.hasOwnProperty.call(res, key)) {
+                        const value = res[key];
+                        errs.push(value)
+                        // throw new Error(value);
+                    }
+                }
+                if (errs) {
+                    ctx?.setErrors?.([...ctx?.errors, ...errs])
+                }
+            } else {
+                const res = await response.text();
+                ctx?.setErrors?.([...ctx?.errors, res])
+                // throw new Error(res);
+            }
         }
+
         return await response.json()
     } catch (error) {
         console.error('BIG SAD:', error);

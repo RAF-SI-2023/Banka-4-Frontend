@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { makeApiRequest } from 'utils/apiRequest';
 import styled from 'styled-components';
 import { Button, TextField } from '@mui/material';
 import { UserRoutes } from 'utils/types';
+import { Context } from 'App';
 
 
 const PageWrapper = styled.div`
@@ -39,7 +40,7 @@ const ResetPasswordPage = () => {
   const [emailValid, setEmailValid] = useState(false);
   const [activationCodeValid, setActivationCodeValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
-
+  const ctx = useContext(Context)
   const validateEmail = () => {
     setEmailValid(emailRegex.test(email));
   };
@@ -54,7 +55,10 @@ const ResetPasswordPage = () => {
 
   const sendRequest = async () => {
     try {
-      await makeApiRequest(UserRoutes.user_generate_reset, "POST", { email }, true, true)
+      await makeApiRequest(UserRoutes.user_generate_reset, "POST", { email }, true, true, ctx)
+      if (ctx) {
+        ctx.setErrors([...ctx.errors, "Our Success: Kod je uspesno poslat na mejl"])
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -62,7 +66,10 @@ const ResetPasswordPage = () => {
 
   const resetPassword = async () => {
     try {
-      await makeApiRequest(UserRoutes.user_reset_password, "POST", { email, sifra: newPassword, kod: activationCode, }, true, true)
+      await makeApiRequest(UserRoutes.user_reset_password, "POST", { email, sifra: newPassword, kod: activationCode, }, true, true, ctx)
+      if (ctx) {
+        ctx.setErrors([...ctx.errors, "Our Success: Lozinka je uspesno resetovana"])
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
     }

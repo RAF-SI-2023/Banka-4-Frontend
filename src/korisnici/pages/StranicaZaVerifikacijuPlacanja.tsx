@@ -68,7 +68,7 @@ const Verifikacija: React.FC = () => {
       <FormWrapper>
         <h1>Verifikacija</h1>
         <p>Ispod možete generisati verifikacioni kod</p>
-        <Button onClick={() => sendOtpWithEmail()}>
+        <Button id="generisiVerKod" onClick={() => sendOtpWithEmail()}>
           Generiši verifikacioni kod
         </Button>
         {verificationSuccess && (

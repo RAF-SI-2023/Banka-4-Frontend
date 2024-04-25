@@ -6,8 +6,9 @@ import { getJWT, makeApiRequest, makeGetRequest } from '../../utils/apiRequest';
 import ListaTransakcija from './ListaTransakcija';
 import { getMe } from '../../utils/getMe';
 
-const updateKarticaStatus = async (id: number, status: string): Promise<boolean> => {
-  const result = await makeApiRequest(`${BankRoutes.cards}/${status}/${id}`, "GET");
+const updateKarticaStatus = async (number: string, status: string): Promise<boolean> => {
+  const result = await makeApiRequest(`${BankRoutes.cards}/${status}/${number}`, "GET", undefined, undefined, true);
+  console.log(result);
   return result ? true : false
 };
 
@@ -18,12 +19,13 @@ export default function DetaljiKartice() {
 
   // Ovo će biti ID kartice dobijen iz URL-a
   let [searchParams, setSearchParams] = useSearchParams();
-  const id = searchParams.get("id");
+  const number = searchParams.get("number");
   const me = getMe();
 
+  
   useEffect(() => {
-    if (id) {
-      console.log(id);
+    if (number) {
+      console.log(number);
       const data = localStorage.getItem('selectedKartica');
       if (data) {
         const kartica = JSON.parse(data)
@@ -43,10 +45,10 @@ export default function DetaljiKartice() {
           alert("Greška pri preuzimanju transakcija");
         });*/
     }
-  }, [id]);
+  }, [number]);
 
   const handleStatusChange = async (newStatus: string) => {
-    if (kartica && await updateKarticaStatus(kartica.id, newStatus)) {
+    if (kartica && await updateKarticaStatus(kartica.number, newStatus)) {
       Swal.fire('Uspeh!', `Kartica je ${newStatus}.`, 'success');
       if (newStatus != 'blokirana' && newStatus != 'aktivna' && newStatus != 'deaktivirana')
         return;
@@ -72,7 +74,7 @@ export default function DetaljiKartice() {
       <Button onClick={() => setShowDetails(!showDetails)}>{showDetails ? "Sakrij informacije" : "Prikaži informacije"}</Button>
       {me?.permission ? kartica.status !== 'aktivna' && <Button onClick={() => handleStatusChange('aktivna')}>Aktiviraj</Button> : null}
       {me?.permission ? kartica.status !== 'deaktivirana' && <Button onClick={() => handleStatusChange('deaktivirana')}>Deaktiviraj</Button> : null}
-      {me?.permission ? kartica.status !== 'blokirana' && <Button onClick={() => handleStatusChange('blokirana')}>Blokiraj</Button> : null}
+      {kartica.status !== 'blokirana' && <Button onClick={() => handleStatusChange('blokirana')}>Blokiraj</Button>}
     </Card>
     <ListaTransakcija transakcije={transakcije}></ListaTransakcija>
   </div>

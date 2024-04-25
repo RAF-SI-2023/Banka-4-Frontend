@@ -4,6 +4,7 @@ import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 import { makeApiRequest } from 'utils/apiRequest';
 import { UserRoutes } from 'utils/types';
+import { StyledContainerLogReg } from 'utils/logRegStyles';
 
 const url = "http://api.stamenic.work:8080/api";
 
@@ -65,19 +66,7 @@ const LoginPage = () => {
     return (
         //added inline style
 
-        <Container component="main" maxWidth="xs" sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '100vh',
-            backgroundColor: '#f9e7e7', // Beige color
-            border: '1px solid #dedede',
-            borderRadius: '8px',
-            boxShadow: 3,
-            marginTop: '-8vh',
-            padding: '20px' // Add padding to the container
-        }}>
+        <StyledContainerLogReg component="main" maxWidth="sm">
             <style type="text/css">
                 {`
                     body {
@@ -85,7 +74,6 @@ const LoginPage = () => {
                     }
                 `}
             </style>
-
             <Typography component="h1" variant="h5" sx={{ fontSize: '1.5rem', fontWeight: 'bold', margin: '20px 0' }}>
                 Login
             </Typography>
@@ -139,7 +127,7 @@ const LoginPage = () => {
                     {"Nemaš nalog? Registruj se"}
                 </Link>
             </form>
-        </Container>
+        </StyledContainerLogReg>
     );
 };
 

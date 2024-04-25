@@ -1,8 +1,11 @@
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
-import { makeGetRequest } from '../../utils/apiRequest';
+import { SetStateAction, useContext, useEffect, useState } from 'react';
+import { makeApiRequest, makeGetRequest } from '../../utils/apiRequest';
 import { Badge, Button, ButtonGroup, TextField, Typography } from '@mui/material';
 import { LineChart } from '@mui/x-charts/LineChart';
+import { Context } from 'App';
+import { Akcija } from 'berza/types/types';
+import { useNavigate } from 'react-router-dom';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -65,6 +68,23 @@ const DotWrapper = styled(Badge)`
   border: 2px solid #e2e2e2;
   padding: 0px 10px;
 `
+
+const convertObjectToArray = (inputObj: any) => {
+  const result = [];
+
+  for (const date in inputObj) {
+    if (Object.prototype.hasOwnProperty.call(inputObj, date)) {
+      const newObj = {
+        date: date,
+        ...inputObj[date]
+      };
+      result.push(newObj);
+    }
+  }
+
+  return result;
+}
+
 interface DotWithTextProps {
   text: string;
   color: "default" | "error" | "primary" | "secondary" | "success" | undefined;
@@ -93,38 +113,179 @@ const DataWithLabel = ({ label, data }: { label: string, data: string }) => {
   );
 };
 
-
+interface StockHistory {
+  open: string,
+  close: string,
+  high: string,
+  low: string,
+  volume: string
+}
 
 const DetaljiAkcije: React.FC = () => {
+  const [ticker, setTicker] = useState('');
+  const [stock, setStock] = useState<Akcija>();
+  const [daily, setDaily] = useState<Array<StockHistory>>();
+  const [weekly, setWeekly] = useState<Array<StockHistory>>();
+  const [monthly, setMonthly] = useState<Array<StockHistory>>();
+  const [dailyData, setDailyData] = useState<Array<{date: any; value: number;}>>();
+  const [weeklyData, setWeeklyData] = useState<Array<{date: any; value: number;}>>();
+  const [monthlyData, setMonthlyData] = useState<Array<{date: any; value: number;}>>();
+  const [graphData, setGraphData] = useState<Array<number>>()
+  const [graphDataX, setGraphDataX] = useState<Array<Date>>()
 
-  const [trenutnaCena, setTrenutnaCena] = useState('$123')
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       try {
-  //         const users = await makeGetRequest('/korisnik');
-  //         setUsrs(users);
-  //         const employees = await makeGetRequest('/radnik');
-  //         setEmployees(employees)
-  //         const companies = await makeGetRequest('/racuni/izlistajSveFirme');
-  //         setCompanies(companies)
-  //       } catch (error) {
-  //         console.error('Error fetching user list:', error);
-  //       }
-  //     };
-  //     fetchData();
-  // 
-  //   }, []);
+  const ctx = useContext(Context);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        setTicker(urlParams?.get('ticker') ?? '')
+        if (ticker) {
+          const stock = await makeGetRequest(`/stock/${ticker}`, ctx);
+          const daily = await makeGetRequest(`/stock/dailyHistory/${ticker}`, ctx);
+          const weekly = await makeGetRequest(`/stock/weeklyHistory/${ticker}`, ctx);
+          const monthly = await makeGetRequest(`/stock/monthlyHistory/${ticker}`, ctx);
+
+          if (daily) {
+            const dailyArray = convertObjectToArray(daily)
+            setDaily(dailyArray)
+            const averagePricesArray = dailyArray.map(obj => ({
+              date: new Date(obj.date),
+              value: parseFloat(((parseFloat(obj.low) + parseFloat(obj.high)) / 2).toFixed(4))
+            }
+            ));
+            setDailyData(averagePricesArray)
+          }
+          if (stock) {
+            setStock(stock)
+          }
+          if (weekly) {
+            const weeklyArray = convertObjectToArray(weekly)
+            setWeekly(weeklyArray)
+            const averagePricesArray = weeklyArray.map(obj => ({
+              date: new Date(obj.date),
+              value: parseFloat(((parseFloat(obj.low) + parseFloat(obj.high)) / 2).toFixed(4))
+            }
+            ));
+            setWeeklyData(averagePricesArray)
+
+          }
+          if (monthly) {
+            const monthlyArray = convertObjectToArray(monthly)
+            setMonthly(monthlyArray)
+            const averagePricesArray = monthlyArray.map(obj => ({
+              date: new Date(obj.date),
+              value: parseFloat(((parseFloat(obj.low) + parseFloat(obj.high)) / 2).toFixed(4))
+            }
+            ));
+            setMonthlyData(averagePricesArray)
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching user list:', error);
+      }
+    };
+    fetchData();
+
+  }, [ticker]);
+
+
+
+  const oneYearAgo = new Date();
+  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+  const fiveYearsAgo = new Date();
+  fiveYearsAgo.setFullYear(oneYearAgo.getFullYear() - 5);
+
+
+  const oneMonthAgo = new Date();
+  oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+  
+  const threeMonthsAgo = new Date();
+  threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+  
+  const sixMonthsAgo = new Date();
+  sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+  
+
+
+  const handleChangeGraph = (type: string) =>{
+    if(type === "ytd"){
+      const datas = monthlyData?.map(obj => (obj.value));
+      const dates = monthlyData?.map(obj => (obj.date));
+      setGraphData(datas)
+      setGraphDataX(dates)
+    }
+    if(type === "1y"){
+      const filteredData = weeklyData?.filter(obj => {
+        const date = new Date(obj.date);
+        return date >= oneYearAgo;
+    });
+      const datas = filteredData?.map(obj => (obj.value));
+      const dates = filteredData?.map(obj => (obj.date));
+      setGraphData(datas)
+      setGraphDataX(dates)
+    }
+    if(type === "5y"){
+      const filteredData = weeklyData?.filter(obj => {
+        const date = new Date(obj.date);
+        return date >= fiveYearsAgo;
+    });
+      const datas = filteredData?.map(obj => (obj.value));
+      const dates = filteredData?.map(obj => (obj.date));
+      setGraphData(datas)
+      setGraphDataX(dates)
+    }
+    if (type === "1m") {
+      const filteredData = dailyData?.filter(obj => {
+        const date = new Date(obj.date);
+        return date >= oneMonthAgo;
+      });
+      const datas = filteredData?.map(obj => obj.value);
+      const dates = filteredData?.map(obj => obj.date);
+      setGraphData(datas);
+      setGraphDataX(dates);
+    }
+    if (type === "3m") {
+      const filteredData = dailyData?.filter(obj => {
+        const date = new Date(obj.date);
+        return date >= threeMonthsAgo;
+      });
+      const datas = filteredData?.map(obj => obj.value);
+      const dates = filteredData?.map(obj => obj.date);
+      setGraphData(datas);
+      setGraphDataX(dates);
+    }
+    if (type === "6m") {
+      const filteredData = weeklyData?.filter(obj => {
+        const date = new Date(obj.date);
+        return date >= sixMonthsAgo;
+      });
+      const datas = filteredData?.map(obj => obj.value);
+      const dates = filteredData?.map(obj => obj.date);
+      setGraphData(datas);
+      setGraphDataX(dates);
+    }
+  
+  }
+
+  useEffect(() => {
+    if(oneYearAgo && dailyData && !graphData){
+      handleChangeGraph("1m")
+    }
+  },[oneYearAgo, dailyData, graphData])
 
   return (
     <PageWrapper>
       <ContentWrapper>
         <RowWrapper>
           <ImgContainer>
-            <StyledImg src={process.env.PUBLIC_URL + '/www.apple.png'} alt="apple" />
+            <StyledImg src={process.env.PUBLIC_URL + '/ussr.svg'} alt="apple" />
           </ImgContainer>
-          <HeadingText>Apple Inc.</HeadingText>
-          <Heading2Text>AAPL</Heading2Text>
-          <DotWithText text="Berza je neaktivna" color="error" />
+          <HeadingText>{stock?.nameDescription.split(" is ")[0]}</HeadingText>
+          <Heading2Text>{ticker}</Heading2Text>
+          {/* <DotWithText text="Berza je neaktivna" color="error" /> */}
           {/* <DotWithText text="Berza je aktivna" color="success" /> */}
         </RowWrapper>
         <DataRowWrapper>
@@ -132,7 +293,7 @@ const DetaljiAkcije: React.FC = () => {
             label="trenutnaCena"
             name="trenutnaCena"
             variant="outlined"
-            value={trenutnaCena}
+            value={stock?.price || ''}
             disabled
             size='small'
             margin="dense"
@@ -141,7 +302,7 @@ const DetaljiAkcije: React.FC = () => {
             label="highCena"
             name="highCena"
             variant="outlined"
-            value={trenutnaCena}
+            value={stock?.high || ''}
             disabled
             size='small'
             margin="dense"
@@ -150,7 +311,7 @@ const DetaljiAkcije: React.FC = () => {
             label="lowCena"
             name="lowCena"
             variant="outlined"
-            value={trenutnaCena}
+            value={stock?.low || ''}
             disabled
             size='small'
             margin="dense"
@@ -158,21 +319,21 @@ const DetaljiAkcije: React.FC = () => {
         </DataRowWrapper>
         <RowWrapper>
           <ButtonGroup variant="contained" aria-label="Basic button group">
-            <Button>1d</Button>
-            <Button>5d</Button>
-            <Button>1m</Button>
-            <Button>6m</Button>
-            <Button>1y</Button>
-            <Button>ytd</Button>
+            <Button onClick={() => handleChangeGraph("1m")}>1m</Button>
+            <Button onClick={() => handleChangeGraph("3m")}>3m</Button>
+            <Button onClick={() => handleChangeGraph("6m")}>6m</Button>
+            <Button onClick={() => handleChangeGraph("1y")}>1y</Button>
+            <Button onClick={() => handleChangeGraph("5y")}>5y</Button>
+            <Button onClick={() => handleChangeGraph("ytd")}>ytd</Button>
           </ButtonGroup>
         </RowWrapper>
         <RowWrapper>
           <LineChart
-            xAxis={[{ data: [9, 9.5, 10, 10.5, 11, 11.5, 12, 12.5, 13, 13.5, 14, 14.5, 15, 15.5, 16, 16.5, 17, 17.5, 18, 18.5] }]}
-            colors={['#23395b']}
+            xAxis={[{ data: [...graphDataX ?? []], scaleType: 'time', valueFormatter: (date) => date.toDateString() }]}
+            colors={['#951414']}
             series={[
               {
-                data: [130, 129, 131, 128, 162, 131, 143, 130, 129, 170.5, 128, 131, 132, 130, 131.5, 130, 131, 129, 130, 128.5],
+                data: [...graphData ?? []],
                 area: true,
                 showMark: false
               },
@@ -182,16 +343,16 @@ const DetaljiAkcije: React.FC = () => {
           />
         </RowWrapper>
         <DataRowWrapper>
-          <DataWithLabel label="Change" data="$2.53" />
-          <DataWithLabel label="Day Range" data="$140.53 - $170.22" />
-          <DataWithLabel label="Open" data="$154.53" />
+          <DataWithLabel label="Change" data={stock?.change ?? ""} />
+          <DataWithLabel label="Day Range" data={`$${daily && daily.length > 0 ? daily[0]?.low : ''} - $${daily && daily.length > 0 ? daily[0]?.high : ''}`} />
+          <DataWithLabel label="Open" data={daily && daily.length > 0 ? daily[0]?.open : ''} />
         </DataRowWrapper>
         <DataRowWrapper>
-          <DataWithLabel label="Volume" data="51m" />
-          <DataWithLabel label="Outstanding shares" data="16b" />
-          <DataWithLabel label="Previous Close" data="$162.83" />
+          <DataWithLabel label="Volume" data={stock?.volume ?? ""} />
+          <DataWithLabel label="Outstanding shares" data={stock?.outstandingShares ?? ""} />
+          <DataWithLabel label="Previous Close" data={daily && daily.length > 0 ? daily[0]?.close : ''} />
         </DataRowWrapper>
-        <Button variant="contained" color="primary">
+        <Button onClick={() => { navigate(`/opcije?ticker=${ticker}&name=${stock?.nameDescription.split(" is ")[0]}&price=${stock?.price}`) }} variant="contained" color="primary">
           Opcije
         </Button>
       </ContentWrapper>

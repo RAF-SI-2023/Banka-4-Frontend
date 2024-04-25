@@ -97,6 +97,7 @@ export default function DodajKarticu() {
                 </Select>
             </FormControl>
             <TextField
+                id="brojRacunaInputt"
                 fullWidth
                 label="Broj računa"
                 value={bankAccountNumber}
@@ -116,6 +117,7 @@ export default function DodajKarticu() {
                 helperText={cardLimit.length > 0 && isNaN(Number(cardLimit)) ? 'Limit mora biti broj' : ''}
             />
             <Button
+                id="buttonKreiraj"
                 variant="contained"
                 color="primary"
                 onClick={handleKreiraj}

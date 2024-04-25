@@ -111,11 +111,11 @@ const AccountInfoPage: React.FC = () => {
             </TableRow>
             <TableRow className="table-row">
               <TableCell className="table-cell">Datum kad je račun kreiran:</TableCell>
-              <TableCell className="table-cell">{account.datumKreiranja}</TableCell>
+              <TableCell className="table-cell">{new Date(account.datumKreiranja).toLocaleDateString("en-de")}</TableCell>
             </TableRow>
             <TableRow className="table-row">
               <TableCell className="table-cell">Datum kad račun ističe:</TableCell>
-              <TableCell className="table-cell">{account.datumIsteka}</TableCell>
+              <TableCell className="table-cell">{new Date(account.datumIsteka).toLocaleDateString("en-de")}</TableCell>
             </TableRow>
             <TableRow className="table-row">
               <TableCell className="table-cell">Valuta računa:</TableCell>
@@ -162,7 +162,7 @@ const AccountInfoPage: React.FC = () => {
                 <TableCell className="table-cell">{transakcija.racunPrimaoca}</TableCell>
                 <TableCell className="table-cell">{transakcija.iznos.toString()}</TableCell>
                 <TableCell className="table-cell">{transakcija.status}</TableCell>
-                <TableCell className="table-cell">{new Date(transakcija.vremeTransakcije).toDateString()}</TableCell>
+                <TableCell className="table-cell">{new Date(transakcija.vremeTransakcije).toLocaleDateString("en-de")}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -185,8 +185,8 @@ const AccountInfoPage: React.FC = () => {
                 <TableCell className="table-cell">{sredstvo.drugiRacun}</TableCell>
                 <TableCell className="table-cell">{sredstvo.iznos.toString()}</TableCell>
                 <TableCell className="table-cell">{sredstvo.status}</TableCell>
-                <TableCell className="table-cell">{new Date(sredstvo.vreme).toDateString()}</TableCell>
-                <TableCell className="table-cell">{new Date(sredstvo.vremeIzvrsavanja).toDateString()}</TableCell>
+                <TableCell className="table-cell">{new Date(sredstvo.vreme).toLocaleDateString("en-de")}</TableCell>
+                <TableCell className="table-cell">{new Date(sredstvo.vremeIzvrsavanja).toLocaleDateString("en-de")}</TableCell>
               </TableRow>
             ))}
           </TableBody>

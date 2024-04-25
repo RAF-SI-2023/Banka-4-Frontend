@@ -16,15 +16,16 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({ selected, onSelect }
   return (
     <FormControl fullWidth>
       <Select
+        id='dropdownMenuPlacanja'
         value={selected}
         onChange={handleChange}
         displayEmpty
         inputProps={{ 'aria-label': 'Without label' }}
       >
-        <MenuItem value="novoPlacanje">Novo plaćanje</MenuItem>
-        <MenuItem value="prenos">Prenos</MenuItem>
-        <MenuItem value="primaociPlacanja">Primaoci plaćanja</MenuItem>
-        <MenuItem value="pregledPlacanja">Pregled plaćanja</MenuItem>
+        <MenuItem id='dropdownMenuPlacanja1' value="novoPlacanje">Novo plaćanje</MenuItem>
+        <MenuItem id='dropdownMenuPlacanja2' value="prenos">Prenos</MenuItem>
+        <MenuItem id='dropdownMenuPlacanja3' value="primaociPlacanja">Primaoci plaćanja</MenuItem>
+        <MenuItem id='dropdownMenuPlacanja4' value="pregledPlacanja">Pregled plaćanja</MenuItem>
       </Select>
     </FormControl>
   );

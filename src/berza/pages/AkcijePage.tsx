@@ -1,9 +1,11 @@
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
-import { makeGetRequest } from '../../utils/apiRequest';
-import { AppBar, Button, Tab, Tabs, TextField } from '@mui/material';
+import { useContext, useEffect, useState } from 'react';
+import { makeApiRequest, makeGetRequest } from '../../utils/apiRequest';
+import { AppBar, Tab, Tabs, TextField } from '@mui/material';
 import AkcijeList from 'berza/components/AkcijeList';
 import MojeAkcijeList from 'berza/components/MojeAkcijeList';
+import SearchIcon from '@mui/icons-material/Search';
+import { Context } from 'App';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -34,9 +36,28 @@ const StyledTextField = styled(TextField)`
     margin-right: 20px!important;
 `
 
+const SearchWrapper = styled.div`
+  display: flex;
+  color: black;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  margin-right: 10px;
+  &:hover{
+    color: #CC0000;
+    transition: 20ms;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+`
+
 const AkcijePage: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [filter, setFilter] = useState('');
+  const [stocks, setStocks] = useState([]);
+  const [userStocks, setUserStocks] = useState([]);
+  const ctx = useContext(Context);
 
   const handleChange = (event: React.SyntheticEvent<unknown>, newValue: number) => {
     if (newValue !== 0 && newValue !== 1 && event.target instanceof HTMLInputElement) {
@@ -45,28 +66,37 @@ const AkcijePage: React.FC = () => {
     }
     setSelectedTab(newValue);
   };
+
   const handleChangeFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFilter(event.target.value);
   };
 
+  const findStock = async () => {
 
+    await makeApiRequest('/stock', 'POST', { 'ticker': filter }, false, false, ctx);
+    setFilter('');
+    const stocks = await makeGetRequest('/stock/all');
+    if (stocks) {
+      setStocks(stocks);
+    }
 
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       try {
-  //         const users = await makeGetRequest('/korisnik');
-  //         setUsrs(users);
-  //         const employees = await makeGetRequest('/radnik');
-  //         setEmployees(employees)
-  //         const companies = await makeGetRequest('/racuni/izlistajSveFirme');
-  //         setCompanies(companies)
-  //       } catch (error) {
-  //         console.error('Error fetching user list:', error);
-  //       }
-  //     };
-  //     fetchData();
-  // 
-  //   }, []);
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // const s = await makeApiRequest('/stock', 'POST', { 'ticker': 'aapl' });
+        const stocks = await makeGetRequest('/stock/all');
+        if (stocks) {
+          setStocks(stocks);
+        }
+      } catch (error) {
+        console.error('Error fetching user list:', error);
+      }
+    };
+    fetchData();
+
+  }, []);
 
   return (
     <PageWrapper>
@@ -85,10 +115,13 @@ const AkcijePage: React.FC = () => {
                 size='small'
                 sx={{ marginTop: 0, marginBottom: 1 }}
               />
+              <SearchWrapper onClick={findStock}>
+                <SearchIcon ></SearchIcon>
+              </SearchWrapper>
             </StyledTabs>
           </AppBar>
-          {selectedTab === 0 && <AkcijeList stocks={[]} />}
-          {selectedTab === 1 && <MojeAkcijeList stocks={[]} />}
+          {selectedTab === 0 && <AkcijeList stocks={stocks} />}
+          {selectedTab === 1 && <MojeAkcijeList />}
         </StyledTable>
       </TableContainer>
     </PageWrapper>

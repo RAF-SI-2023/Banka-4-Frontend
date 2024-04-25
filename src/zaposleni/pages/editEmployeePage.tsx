@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { TextField, Button, Alert, FormControl, InputLabel, Select, MenuItem, FormControlLabel, Grid, Checkbox } from '@mui/material';
 import styled from 'styled-components';
 import { EmployeePermissions, UserRoutes } from '../../utils/types';
 import { makeApiRequest, makeGetRequest } from '../../utils/apiRequest';
 import { encodePermissions } from '../../utils/permissions';
 import KAlert from 'utils/alerts';
+import { Context } from 'App';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -94,6 +95,7 @@ const EditEmployeePage: React.FC = () => {
     { naziv: EmployeePermissions.editovanje_racuna, vrednost: false },
     { naziv: EmployeePermissions.brisanje_racuna, vrednost: false }
   ])
+  const ctx = useContext(Context);
 
   const [passwordWarning, setPasswordWarning] = useState<boolean>(false);
   const [emptyWarning, setEmptyWarning] = useState<boolean>(false);
@@ -171,7 +173,7 @@ const EditEmployeePage: React.FC = () => {
       }
     }
     const data = { ...formData, aktivan: true }
-    const res = await makeApiRequest(UserRoutes.worker, 'PUT', data)
+    const res = await makeApiRequest(UserRoutes.worker, 'PUT', data, false, false, ctx)
     if (res) {
       setSucessPopup(true)
     }

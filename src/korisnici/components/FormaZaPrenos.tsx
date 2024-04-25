@@ -21,6 +21,7 @@ export const FormaZaPrenos: React.FC<TransferFormProps> = ({ onSave, navigate })
     const [selectedRacunPosiljaoca, setSelectedRacunPosiljaoca] = useState('');
     const [selectedRacunPrimaoca, setSelectedRacunPrimaoca] = useState('');
     const [iznos, setIznos] = useState('');
+    const [errors, setErrors] = useState({ iznos: '' });
 
     useEffect(() => {
         const gett = async () => {
@@ -44,13 +45,29 @@ export const FormaZaPrenos: React.FC<TransferFormProps> = ({ onSave, navigate })
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        localStorage.setItem("prenosPodaci", JSON.stringify({
-            racunPosiljaoca: selectedRacunPosiljaoca,
-            racunPrimaoca: selectedRacunPrimaoca,
-            iznos: parseInt(iznos)
-        }))
-        localStorage.removeItem("uplataPodaci");
-        navigate("verifikacija")
+        if (validateForm()) {
+            localStorage.setItem("prenosPodaci", JSON.stringify({
+                racunPosiljaoca: selectedRacunPosiljaoca,
+                racunPrimaoca: selectedRacunPrimaoca,
+                iznos: parseInt(iznos)
+            }))
+            localStorage.removeItem("uplataPodaci");
+            navigate("verifikacija")
+        }
+    };
+
+
+    const validateForm = () => {
+        let isValid = true;
+        const newErrors = { racunPrimaoca: '', iznos: '', pozivNaBroj: '' };
+
+        if (!(parseFloat(iznos) > 0)) {
+            newErrors.iznos = 'Morate uneti iznos.';
+            isValid = false;
+        }
+
+        setErrors(newErrors);
+        return isValid;
     };
 
     return (
@@ -94,8 +111,10 @@ export const FormaZaPrenos: React.FC<TransferFormProps> = ({ onSave, navigate })
                 autoComplete="iznos"
                 value={iznos}
                 onChange={(e) => setIznos(e.target.value)}
+                error={!!errors.iznos}
+                helperText={errors.iznos}
             />
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+            <Button id="submitbuttontransferform" type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                 Izvrši prenos
             </Button>
         </Box>

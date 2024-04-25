@@ -78,6 +78,7 @@ const CurrencyConverter: React.FC = () => {
         onChange={handleAmountChange}
         fullWidth
         margin="normal"
+        id="conversionRateTf"
       />
       <FormControl fullWidth margin="normal">
         <InputLabel>From Currency</InputLabel>
@@ -85,9 +86,10 @@ const CurrencyConverter: React.FC = () => {
           value={fromCurrency}
           onChange={handleFromCurrencyChange}
           label="From Currency"
+          id="conversionCurrencySelectFrom"
         >
           {currencyRates?.map((currency) => (
-            <MenuItem key={currency.currencyCode} value={currency.currencyCode}>
+            <MenuItem key={currency.currencyCode} id={"rateCurrencyItemFrom"+currency.currencyCode} value={currency.currencyCode}>
               {currency.currencyCode}
             </MenuItem>
           ))}
@@ -99,16 +101,18 @@ const CurrencyConverter: React.FC = () => {
           value={toCurrency}
           onChange={handleToCurrencyChange}
           label="To Currency"
+          id="conversionCurrencySelectTo"
+
         >
           {currencyRates?.map((currency) => (
-            <MenuItem key={currency.currencyCode} value={currency.currencyCode}>
+            <MenuItem key={currency.currencyCode} id={"rateCurrencyItemTo"+currency.currencyCode} value={currency.currencyCode}>
               {currency.currencyCode}
             </MenuItem>
           ))}
         </Select>
       </FormControl>
-      <Typography variant="h6" gutterBottom>
-        Calculated value: {convertedAmount.toFixed(2)}
+      <Typography variant="h6" gutterBottom >
+        Calculated value: <a id="rateValue">{convertedAmount.toFixed(2)}</a>
       </Typography>
       <ExchangeRatesTable />
       {amount === "" && (

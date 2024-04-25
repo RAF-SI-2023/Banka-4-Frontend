@@ -2,8 +2,9 @@ import { AppBar, Tabs, Tab } from '@mui/material';
 import CompanyList from '../components/companyList'
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { makeGetRequest } from '../../utils/apiRequest';
+import { Context } from 'App';
 
 const StyledTabs = styled(Tabs)`
   background-color: #f2f2f2;
@@ -59,11 +60,12 @@ const HeadingAndButtonWrapper = styled.div`
 
 const CompanyListPage: React.FC = () => {
   const [companies, setCompanies] = useState([])
+  const ctx = useContext(Context);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const companies = await makeGetRequest('/racuni/izlistajSveFirme');
+        const companies = await makeGetRequest('/racuni/izlistajSveFirme', ctx);
         setCompanies(companies);
       } catch (error) {
         console.error('Error fetching company list:', error);
