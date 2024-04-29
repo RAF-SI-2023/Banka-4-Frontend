@@ -211,6 +211,7 @@ export enum BankRoutes {
   account_add_devizni = "/racuni/dodajDevizni",
   account_find_by_number = "/racuni/deleteRacunPoBroju",
   account_find_user_account = "/racuni/nadjiRacuneKorisnika",
+  account_find_firm_user = "",
   company_create = "/racuni/kreirajFirmu",
   exchange = "/exchange"
 }
