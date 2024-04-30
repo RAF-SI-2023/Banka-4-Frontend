@@ -21,26 +21,24 @@ export const permissionMap = {
     deactivate_bank_accounts: 0b100000000000000,
 
     list_credits: 0b1000000000000000,
-    manage_credits: 0b10000000000000000,
     accept_redits: 0b10000000000000000,
-    deny_credits: 0b1000000000000000000,
+    deny_credits: 0b100000000000000000,
 
-    list_cards: 0b10000000000000000000,
-    manage_cards: 0b100000000000000000000,
-    activate_cards: 0b1000000000000000000000,
-    deactivate_cards: 0b10000000000000000000000,
-    block_cards: 0b100000000000000000000000,
+    list_cards: 0b1000000000000000000,
+    activate_cards: 0b10000000000000000000,
+    deactivate_cards: 0b100000000000000000000,
+    block_cards: 0b1000000000000000000000,
 
-    list_orders: 0b1000000000000000000000000,
-    accept_orders: 0b10000000000000000000000000,
-    deny_orders: 0b100000000000000000000000000,
+    list_orders: 0b10000000000000000000000,
+    accept_orders: 0b100000000000000000000000,
+    deny_orders: 0b1000000000000000000000000,
 
-    exchange_access: 0b1000000000000000000000000000,
-    payment_access: 0b10000000000000000000000000000,
-    action_access: 0b100000000000000000000000000000,
-    option_access: 0b1000000000000000000000000000000,
-    order_access: 0b10000000000000000000000000000000,
-    termin_access: 0b100000000000000000000000000000000
+    exchange_access: 0b10000000000000000000000000,
+    payment_access: 0b100000000000000000000000000,
+    action_access: 0b1000000000000000000000000000,
+    option_access: 0b10000000000000000000000000000,
+    order_access: 0b100000000000000000000000000000,
+    termin_access: 0b1000000000000000000000000000000
 }
 
 type Permission = {
@@ -108,12 +106,10 @@ export const decodePermissionsObj = (permissions: number) => {
         'deactivate_bank_accounts': false,
 
         'list_credits': false,
-        'manage_credits': false,
         'accept_redits': false,
         'deny_credits': false,
 
         'list_cards': false,
-        'manage_cards': false,
         'activate_cards': false,
         'deactivate_cards': false,
         'block_cards': false,
