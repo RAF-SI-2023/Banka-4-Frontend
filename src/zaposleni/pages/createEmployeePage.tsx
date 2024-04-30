@@ -1,11 +1,10 @@
 import React, { useContext, useState } from 'react';
-import { TextField, Button, FormControl, InputLabel, Alert, Select, MenuItem, Grid, FormControlLabel, Checkbox } from '@mui/material';
+import { TextField, Button, FormControl, InputLabel, Select, MenuItem, Grid, FormControlLabel, Checkbox } from '@mui/material';
 import styled from 'styled-components';
-import { UserPermissions, UserRoutes } from '../../utils/types';
+import { EmployeePermissionsV2, UserRoutes } from '../../utils/types';
 import { useNavigate } from 'react-router-dom';
 import { encodePermissions } from '../../utils/permissions';
 import { makeApiRequest } from '../../utils/apiRequest';
-import KAlert from 'utils/alerts';
 import { Context } from 'App';
 
 const PageWrapper = styled.div`
@@ -54,7 +53,7 @@ const StyledSelect = styled(Select)`
 `
 
 type Permisije = {
-  naziv: UserPermissions,
+  naziv: EmployeePermissionsV2,
   vrednost: boolean
 }
 
@@ -93,25 +92,41 @@ const CreateEmployeePage: React.FC = () => {
     permisije: 0,
   });
   const [permissionCheckboxes, setPermissionCheckboxes] = useState<Permisije[]>([
-    { naziv: UserPermissions.listanje_korisnika, vrednost: false },
-    { naziv: UserPermissions.dodavanje_korisnika, vrednost: false },
-    { naziv: UserPermissions.editovanje_korisnika, vrednost: false },
-    { naziv: UserPermissions.deaktiviranje_korisnika, vrednost: false },
-    { naziv: UserPermissions.kreiranje_racuna, vrednost: false },
-    { naziv: UserPermissions.editovanje_racuna, vrednost: false },
-    { naziv: UserPermissions.brisanje_racuna, vrednost: false }
+    { naziv: EmployeePermissionsV2.list_users, vrednost: false },
+    { naziv: EmployeePermissionsV2.create_users, vrednost: false },
+    { naziv: EmployeePermissionsV2.edit_users, vrednost: false },
+    { naziv: EmployeePermissionsV2.deactivate_users, vrednost: false },
+    { naziv: EmployeePermissionsV2.list_workers, vrednost: false },
+    { naziv: EmployeePermissionsV2.create_workers, vrednost: false },
+    { naziv: EmployeePermissionsV2.edit_workers, vrednost: false },
+    { naziv: EmployeePermissionsV2.deactivate_workers, vrednost: false },
+    { naziv: EmployeePermissionsV2.list_firms, vrednost: false },
+    { naziv: EmployeePermissionsV2.create_firms, vrednost: false },
+    { naziv: EmployeePermissionsV2.edit_firms, vrednost: false },
+    { naziv: EmployeePermissionsV2.deactivate_firms, vrednost: false },
+    { naziv: EmployeePermissionsV2.list_bank_accounts, vrednost: false },
+    { naziv: EmployeePermissionsV2.create_bank_accounts, vrednost: false },
+    { naziv: EmployeePermissionsV2.deactivate_bank_accounts, vrednost: false },
+    { naziv: EmployeePermissionsV2.list_credits, vrednost: false },
+    { naziv: EmployeePermissionsV2.accept_redits, vrednost: false },
+    { naziv: EmployeePermissionsV2.deny_credits, vrednost: false },
+    { naziv: EmployeePermissionsV2.list_cards, vrednost: false },
+    { naziv: EmployeePermissionsV2.activate_cards, vrednost: false },
+    { naziv: EmployeePermissionsV2.deactivate_cards, vrednost: false },
+    { naziv: EmployeePermissionsV2.block_cards, vrednost: false },
+    { naziv: EmployeePermissionsV2.list_orders, vrednost: false },
+    { naziv: EmployeePermissionsV2.accept_orders, vrednost: false },
+    { naziv: EmployeePermissionsV2.deny_orders, vrednost: false },
+    { naziv: EmployeePermissionsV2.exchange_access, vrednost: false },
+    { naziv: EmployeePermissionsV2.payment_access, vrednost: false },
+    { naziv: EmployeePermissionsV2.action_access, vrednost: false },
+    { naziv: EmployeePermissionsV2.option_access, vrednost: false },
+    { naziv: EmployeePermissionsV2.order_access, vrednost: false },
+    { naziv: EmployeePermissionsV2.termin_access, vrednost: false }
   ])
   const navigate = useNavigate();
   const ctx = useContext(Context);
-
-  const [fieldWarning, setFieldWarning] = useState<string>('');
-  const [phoneWarning, setPhoneWarning] = useState<boolean>(false);
-  const [letterOnlyWarning, setLetterOnlyWarning] = useState<boolean>(false);
-  const [numbersOnlyWarning, setNumbersOnlyWarning] = useState<boolean>(false);
-  const [emailWarning, setEmailWarning] = useState<boolean>(false);
-  const [passwordWarning, setPasswordWarning] = useState<boolean>(false);
-  const [successPopup, setSucessPopup] = useState<boolean>(false);
-
+  
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | { name?: string; value: unknown }>) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name as string]: value as string });
@@ -146,53 +161,42 @@ const CreateEmployeePage: React.FC = () => {
   const handleSumbit = async () => {
     for (const [key, value] of Object.entries(formData)) {
       if (key !== 'permisije' && value === '') {
-        setFieldWarning(key);
+        ctx?.setErrors([...ctx.errors, `Our Error: Popunite polje ${key}`])
         return;
       }
     }
-    setFieldWarning('')
     const letterOnlyRegex = /^[a-zA-Z]+$/
     if (!(letterOnlyRegex.test(formData.ime) && letterOnlyRegex.test(formData.prezime))) {
-      setLetterOnlyWarning(true)
-    } else {
-      setLetterOnlyWarning(false)
+      ctx?.setErrors([...ctx.errors, 'Our Error: Prezime se mora sastojati iskljucivo od slova'])
     }
 
     const numbersOnlyRegex = /\d{13}/
     if (!(numbersOnlyRegex.test(formData.jmbg))) {
-      setNumbersOnlyWarning(true)
-    } else {
-      setNumbersOnlyWarning(false)
+      ctx?.setErrors([...ctx.errors, 'Our Error: Jmbg se mora sastojati od 13 cifara'])
     }
 
     if (formData.password !== '' && formData.password !== formData.saltPassword) {
-      setPasswordWarning(true)
+      ctx?.setErrors([...ctx.errors, 'Our Error: Lozinke se ne poklapaju'])
       return
-    } else {
-      setPasswordWarning(false)
     }
 
     if (formData.brojTelefona !== '') {
       const phoneRegex = /^(06|\+)[0-9]+$/; //Change if you want only +... instead of 06....
       if (!phoneRegex.test(formData.brojTelefona)) {
-        setPhoneWarning(true)
+        ctx?.setErrors([...ctx.errors, 'Our Error: Broj telefona nije u dobrom formatu'])
         return
-      } else {
-        setPhoneWarning(false)
       }
     }
     const emailRegex = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/
     if (!(emailRegex.test(formData.email))) {
-      setEmailWarning(true)
-    } else {
-      setEmailWarning(false)
+      ctx?.setErrors([...ctx.errors, 'Our Error: Email mora biti validan'])
     }
     const data = { ...formData, datumRodjenja: new Date(formData.datumRodjenja).getTime(), aktivan: true }
     const res = await makeApiRequest(UserRoutes.worker, 'POST', data, false, false, ctx)
     if (res) {
-      setSucessPopup(true)
+      ctx?.setErrors([...ctx.errors, 'Our Success: Zaposleni je uspesno kreiran'])
     }
-    // navigate(-1)
+    navigate(-1)
   }
 
   return (
@@ -201,13 +205,6 @@ const CreateEmployeePage: React.FC = () => {
         Kreiranje zaposlenog
       </HeadingText>
       <FormWrapper>
-      {fieldWarning !== "" && <KAlert severity="error" exit={() => setFieldWarning('')}>Popunite polje '{fieldWarning}' .</KAlert>}
-      {phoneWarning && <KAlert severity="error" exit={() => setPhoneWarning(false)}>Broj telefona je u pogresnom formatu.</KAlert>}
-      {letterOnlyWarning && <KAlert severity="error" exit={() => setLetterOnlyWarning(false)}>Ime i prezime ne sme sadrzati brojeve.</KAlert>}
-      {numbersOnlyWarning && <KAlert severity="error" exit={() => setNumbersOnlyWarning(false)}>Jmbg mora sadrzati iskljucivo 13 cifara.</KAlert>}
-      {emailWarning && <KAlert severity="error" exit={() => setEmailWarning(false)}>Nevazeca mejl adresa.</KAlert>}
-      {passwordWarning && <KAlert severity="error" exit={() => setPasswordWarning(false)}>Lozinke se ne poklapaju.</KAlert>}
-      {successPopup && <KAlert severity="success" exit={() => setSucessPopup(false)}>Uspesno kreiran.</KAlert>}
         <FormSeparator>
           <FormSeparatorRow>
             <StyledTextField

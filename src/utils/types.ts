@@ -1,25 +1,42 @@
-export enum UserPermissions {
-  listanje_korisnika = 'listanje_korisnika',
-  dodavanje_korisnika = 'dodavanje_korisnika',
-  editovanje_korisnika = 'editovanje_korisnika',
-  deaktiviranje_korisnika = 'deaktiviranje_korisnika',
-  kreiranje_racuna = 'kreiranje_racuna',
-  editovanje_racuna = 'editovanje_racuna',
-  brisanje_racuna = 'brisanje_racuna',
-}
+export enum EmployeePermissionsV2 {
+  list_users = 'list_users',
+  create_users = 'create_users',
+  edit_users = 'edit_users',
+  deactivate_users = 'deactivate_users',
 
-export enum EmployeePermissions {
-  listanje_korisnika = 'listanje_korisnika',
-  dodavanje_korisnika = 'dodavanje_korisnika',
-  editovanje_korisnika = 'editovanje_korisnika',
-  deaktiviranje_korisnika = 'deaktiviranje_korisnika',
-  kreiranje_racuna = 'kreiranje_racuna',
-  editovanje_racuna = 'editovanje_racuna',
-  brisanje_racuna = 'brisanje_racuna',
-  listanje_radnika = 'listanje_radnika',
-  dodavanje_radnika = 'dodavanje_radnika',
-  editovanje_radnika = 'editovanje_radnika',
-  deaktiviranje_radnika = 'deaktiviranje_radnika'
+  list_workers = 'list_workers',
+  create_workers = 'create_workers',
+  edit_workers = 'edit_workers',
+  deactivate_workers = 'deactivate_workers',
+
+  list_firms = 'list_firms',
+  create_firms = 'create_firms',
+  edit_firms = 'edit_firms',
+  deactivate_firms = 'deactivate_firms',
+
+  list_bank_accounts = 'list_bank_accounts',
+  create_bank_accounts = 'create_bank_accounts',
+  deactivate_bank_accounts = 'deactivate_bank_accounts',
+
+  list_credits = 'list_credits',
+  accept_redits = 'accept_redits',
+  deny_credits = 'deny_credits',
+
+  list_cards = 'list_cards',
+  activate_cards = 'activate_cards',
+  deactivate_cards = 'deactivate_cards',
+  block_cards = 'block_cards',
+
+  list_orders = 'list_orders',
+  accept_orders = 'accept_orders',
+  deny_orders = 'deny_orders',
+
+  exchange_access = 'exchange_access',
+  payment_access = 'payment_access',
+  action_access = 'action_access',
+  option_access = 'option_access',
+  order_access = 'order_access',
+  termin_access = 'termin_access'
 }
 
 export type User = {
@@ -31,7 +48,6 @@ export type User = {
   adresa: string;
   email: string;
   brojTelefona: string;
-  permisije: UserPermissions[];
 }
 
 export type UserListProps = {

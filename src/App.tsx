@@ -39,7 +39,7 @@ import NotFoundPage from 'moduls/DodatneStranice/NotFoundPage';
 import TerminskiUgovoriPage from 'moduls/TerminskiUgovori/pages/TerminskiUgovoriPage';
 import AgriculturePage from 'moduls/TerminskiUgovori/pages/ContractsPage';
 import SpecificContractListPage from 'moduls/TerminskiUgovori/pages/SpecificContractListPage';
-import WSTest from 'WSTest';
+// import WSTest from 'WSTest';
 import { Dispatch, SetStateAction, createContext, useEffect, useState } from 'react';
 
 const fadeIn = keyframes`
