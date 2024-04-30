@@ -134,3 +134,8 @@ export const decodePermissionsObj = (permissions: number) => {
     }
     return perms;
 }
+
+export const hasPermission = (permissions: number, requiredPermissions: EmployeePermissionsV2[]): boolean => {
+    const requiredValues = requiredPermissions.map(permission => permissionMap[permission]);
+    return requiredValues.every(value => value !== undefined && (permissions & value) !== 0);
+}
