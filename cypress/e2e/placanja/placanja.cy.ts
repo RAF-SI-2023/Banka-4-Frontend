@@ -12,7 +12,6 @@ describe('Placanja spec', () => {
     cy.get("#submitbuttontransferform").click()
     cy.visit('http://localhost:3000/verifikacija')
     cy.get("button").last().click()
-    cy.wait(300)
     cy.get("input").last().invoke('val').then((value: any) => {
       if (!value) {
         return;
@@ -43,7 +42,6 @@ describe('Placanja spec', () => {
     cy.get("#submitbuttontransferform").click()
     cy.visit('http://localhost:3000/verifikacija')
     cy.get("button").last().click()
-    cy.wait(1000)
     cy.get("input").last().invoke('val').then((value: any) => {
       if (!value) {
         return;
@@ -66,7 +64,6 @@ describe('Placanja spec', () => {
     cy.get("#submitbuttonpaymentform").click()
     cy.visit('http://localhost:3000/verifikacija')
     cy.get("button").last().click()
-    cy.wait(1000)
     cy.get("input").last().invoke('val').then((value: any) => {
       if (!value) {
         return;
@@ -116,7 +113,7 @@ describe('Placanja spec', () => {
     cy.get("#submitbuttonpaymentform").click()
     cy.visit('http://localhost:3000/verifikacija')
     cy.get("button").last().click()
-    cy.wait(1000)
+
     cy.get("input").last().invoke('val').then((value: any) => {
       if (!value) {
         return;
@@ -136,8 +133,6 @@ describe('Placanja spec', () => {
 
     // Dodaj primaoca
     let initialRowCount: any;
-
-    cy.wait(1000);
     cy.get('#root > div > div.MuiBox-root.css-0')
       .find('table')
       .find('tbody')
@@ -155,8 +150,7 @@ describe('Placanja spec', () => {
         cy.get(".swal2-actions").children().get("button.swal2-confirm.swal2-styled").click();
 
         cy.reload()
-        primaociPlacanja(cy)
-        cy.wait(1000);
+        primaociPlacanja(cy);
 
         cy.get('#root > div > div.MuiBox-root.css-0')
           .find('table')
@@ -180,8 +174,7 @@ describe('Placanja spec', () => {
           .should('have.text', '265000000810260305');
 
         cy.reload()
-        primaociPlacanja(cy)
-        cy.wait(1000);
+        primaociPlacanja(cy);
 
         for (let i = 0; i <= initialRowCount; i++) {
           cy.get("#primalacDelete0").click();
