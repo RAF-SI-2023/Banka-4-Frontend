@@ -8,9 +8,9 @@ describe('Provera kursa spec', () => {
     //logout(cy)
   })
   it('Admin dodavanje korisnika', () => {
-   
+
     cy.get('#dodajKorisnikaDugme').click();
-    cy.wait(200);
+
 
     const ime = 'Bogdan';
     const prezime = 'Tomic';
@@ -25,7 +25,7 @@ describe('Provera kursa spec', () => {
     cy.get('input[name="jmbg"]').type(jmbg);
     cy.get('input[name="date"]').type(datumRodjenja);
     cy.get('#PolId').click();
-    cy.contains('Musko').click({force: true});
+    cy.contains('Musko').click({ force: true });
 
     cy.get('input[name="adresa"]').type(adresa);
     cy.get('input[name="email"]').type(email);
@@ -33,13 +33,13 @@ describe('Provera kursa spec', () => {
 
     cy.get('button').contains('Kreiraj').click();
 
-    cy.wait(2000);
+
   })
 
   it('Admin dodavanje korisnika greska no name', () => {
-   
+
     cy.get('#dodajKorisnikaDugme').click();
-    cy.wait(200);
+
 
     const prezime = 'Tomic';
     const jmbg = '2104001710106';
@@ -52,22 +52,22 @@ describe('Provera kursa spec', () => {
     cy.get('input[name="jmbg"]').type(jmbg);
     cy.get('input[name="date"]').type(datumRodjenja);
     cy.get('#PolId').click();
-    cy.wait(200);
-    cy.contains('Musko').click({force: true});
-    
+
+    cy.contains('Musko').click({ force: true });
+
     cy.get('input[name="adresa"]').type(adresa);
     cy.get('input[name="email"]').type(email);
     cy.get('input[name="brojTelefona"]').type(brojTelefona);
 
     cy.get('button').contains('Kreiraj').click();
 
-    cy.wait(2000);
+
   })
 
   it('Admin dodavanje korisnika no surname', () => {
-   
+
     cy.get('#dodajKorisnikaDugme').click();
-    cy.wait(200);
+
 
     const ime = 'Bogdan';
     const jmbg = '2104001710106';
@@ -80,22 +80,22 @@ describe('Provera kursa spec', () => {
     cy.get('input[name="jmbg"]').type(jmbg);
     cy.get('input[name="date"]').type(datumRodjenja);
     cy.get('#PolId').click();
-    cy.wait(200);
-    cy.contains('Musko').click({force: true});
-    
+
+    cy.contains('Musko').click({ force: true });
+
     cy.get('input[name="adresa"]').type(adresa);
     cy.get('input[name="email"]').type(email);
     cy.get('input[name="brojTelefona"]').type(brojTelefona);
 
     cy.get('button').contains('Kreiraj').click();
 
-    cy.wait(2000);
+
   })
 
   it('Admin dodavanje korisnika no jmbg', () => {
-   
+
     cy.get('#dodajKorisnikaDugme').click();
-    cy.wait(200);
+
 
     const ime = 'Bogdan';
     const prezime = 'Tomic';
@@ -108,8 +108,8 @@ describe('Provera kursa spec', () => {
     cy.get('input[name="prezime"]').type(prezime);
     cy.get('input[name="date"]').type(datumRodjenja);
     cy.get('#PolId').click();
-    cy.wait(200);
-    cy.contains('Musko').click({force: true});
+
+    cy.contains('Musko').click({ force: true });
 
     cy.get('input[name="adresa"]').type(adresa);
     cy.get('input[name="email"]').type(email);
@@ -117,13 +117,13 @@ describe('Provera kursa spec', () => {
 
     cy.get('button').contains('Kreiraj').click();
 
-    cy.wait(2000);
+
   })
- 
+
   it('Admin dodavanje korisnika no date', () => {
-   
+
     cy.get('#dodajKorisnikaDugme').click();
-    cy.wait(200);
+
 
     const ime = 'Bogdan';
     const prezime = 'Tomic';
@@ -137,8 +137,8 @@ describe('Provera kursa spec', () => {
     cy.get('input[name="prezime"]').type(prezime);
     cy.get('input[name="jmbg"]').type(jmbg);
     cy.get('#PolId').click();
-    cy.wait(200);
-    cy.contains('Musko').click({force: true});
+
+    cy.contains('Musko').click({ force: true });
 
     cy.get('input[name="adresa"]').type(adresa);
     cy.get('input[name="email"]').type(email);
@@ -146,13 +146,13 @@ describe('Provera kursa spec', () => {
 
     cy.get('button').contains('Kreiraj').click();
 
-    cy.wait(2000);
+
   })
 
   it('Admin dodavanje korisnika no pol', () => {
-   
+
     cy.get('#dodajKorisnikaDugme').click();
-    cy.wait(200);
+
 
     const ime = 'Bogdan';
     const prezime = 'Tomic';
@@ -174,19 +174,19 @@ describe('Provera kursa spec', () => {
 
     cy.get('button').contains('Kreiraj').click();
 
-    cy.wait(2000);
+
   })
 
   it('Admin dodavanje korisnika no adress', () => {
-   
+
     cy.get('#dodajKorisnikaDugme').click();
-    cy.wait(200);
+
 
     const ime = 'Bogdan';
     const prezime = 'Tomic';
     const jmbg = '2104001710106';
     const datumRodjenja = '2001-04-21';
-    
+
     const email = 'john.doe@example.com';
     const brojTelefona = '1234567890';
 
@@ -195,20 +195,20 @@ describe('Provera kursa spec', () => {
     cy.get('input[name="jmbg"]').type(jmbg);
     cy.get('input[name="date"]').type(datumRodjenja);
     cy.get('#PolId').click();
-    cy.contains('Musko').click({force: true});
+    cy.contains('Musko').click({ force: true });
 
     cy.get('input[name="email"]').type(email);
     cy.get('input[name="brojTelefona"]').type(brojTelefona);
 
     cy.get('button').contains('Kreiraj').click();
 
-    cy.wait(2000);
+
   })
 
   it('Admin dodavanje korisnika no email', () => {
-   
+
     cy.get('#dodajKorisnikaDugme').click();
-    cy.wait(200);
+
 
     const ime = 'Bogdan';
     const prezime = 'Tomic';
@@ -222,21 +222,21 @@ describe('Provera kursa spec', () => {
     cy.get('input[name="jmbg"]').type(jmbg);
     cy.get('input[name="date"]').type(datumRodjenja);
     cy.get('#PolId').click();
-    cy.contains('Musko').click({force: true});
+    cy.contains('Musko').click({ force: true });
 
     cy.get('input[name="adresa"]').type(adresa);
     cy.get('input[name="brojTelefona"]').type(brojTelefona);
 
     cy.get('button').contains('Kreiraj').click();
 
-    cy.wait(2000);
+
   })
 
 
   it('Admin dodavanje lose jmbg i esec', () => {
-   
+
     cy.get('#dodajKorisnikaDugme').click();
-    cy.wait(200);
+
 
     const ime = 'Bogdan';
     const prezime = 'Tomic';
@@ -251,7 +251,7 @@ describe('Provera kursa spec', () => {
     cy.get('input[name="jmbg"]').type(jmbg);
     cy.get('input[name="date"]').type(datumRodjenja);
     cy.get('#PolId').click();
-    cy.contains('Musko').click({force: true});
+    cy.contains('Musko').click({ force: true });
 
     cy.get('input[name="adresa"]').type(adresa);
     cy.get('input[name="email"]').type(email);
@@ -259,6 +259,6 @@ describe('Provera kursa spec', () => {
 
     cy.get('button').contains('Kreiraj').click();
 
-    cy.wait(2000);
+
   })
 })
