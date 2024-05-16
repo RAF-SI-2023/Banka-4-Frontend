@@ -13,7 +13,7 @@ describe('Verifikacija spec', () => {
 
     cy.get('#generisiVerKod').click();
 
-    cy.wait(1000);
+
 
     cy.get('#outlined-read-only-input').should('exist');
   })

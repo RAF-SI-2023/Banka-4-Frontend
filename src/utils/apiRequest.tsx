@@ -61,8 +61,13 @@ export const makeApiRequest = async (
         });
 
         if (response.ok) {
-            const res = noJson ? response : await response.json()// fix this shit
-            return res
+            try {
+                const res = noJson ? response : await response.json()// fix this shit
+                return res
+            } catch(e){
+                console.log(e)
+            }
+            return response;
         }
         if (!response.ok) {
             const contentType = response.headers.get('Content-Type');
@@ -82,6 +87,7 @@ export const makeApiRequest = async (
                 const res = await response.text();
                 ctx?.setErrors?.([...ctx?.errors, res])
                 // throw new Error(res);
+                return res
             }
         }
         console.log('Big YAY');
