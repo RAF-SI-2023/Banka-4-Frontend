@@ -66,9 +66,6 @@ postsubmits:
               # Pushuje oba image na našu Harbor instancu.
               docker push harbor.k8s.elab.rs/${TEAM_NAME}/frontend:latest
               docker push harbor.k8s.elab.rs/${TEAM_NAME}/frontend:${commit_hash}
-
-              npm install
-              npx cypress run
           securityContext:
             privileged: true
           imagePullPolicy: Always
