@@ -80,6 +80,7 @@ presubmits:
               ###########################################
               
               # Downloaduje dependency-e potrebne za testove.
+              npm i
               npm start&
               trap collectCypressRecordings EXIT
               npx cypress run
