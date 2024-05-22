@@ -76,7 +76,7 @@ export default function DetaljiKartice() {
 
       {me ? (hasPermission(me.permission, [EmployeePermissionsV2.activate_cards]) ? <Button onClick={() => handleStatusChange('aktivna')}>Aktiviraj</Button> : null) : null}
       {me ? (hasPermission(me.permission, [EmployeePermissionsV2.deactivate_cards]) ? <Button onClick={() => handleStatusChange('deaktivirana')}>Deaktiviraj</Button> : null) : null}
-      {me ? (hasPermission(me.permission, [EmployeePermissionsV2.block_cards]) ? <Button onClick={() => handleStatusChange('blokirana')}>Blokiraj</Button> : null) : null}
+      {me ? (hasPermission(me.permission, [EmployeePermissionsV2.block_cards]) || !me.permission ? <Button onClick={() => handleStatusChange('blokirana')}>Blokiraj</Button> : null) : null}
     </Card>
     <ListaTransakcija transakcije={transakcije}></ListaTransakcija>
   </div>
