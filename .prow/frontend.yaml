@@ -84,7 +84,7 @@ presubmits:
               # Downloaduje dependency-e potrebne za testove.
               npm i
               trap collectCypressRecordings EXIT
-              npm ci
+              npm run ci
               # npx cypress run
               # Pokreće Cypress verifikacije.
               # npm run cy:verify
