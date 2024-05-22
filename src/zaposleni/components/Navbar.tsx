@@ -12,6 +12,8 @@ import MenuItem from "@mui/material/MenuItem";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { getMe } from "../../utils/getMe";
+import { hasPermission } from "utils/permissions";
+import { EmployeePermissionsV2 } from "utils/types";
 const StyledAppBar = styled(AppBar)`
   background-color: #23395b !important;
 `;
@@ -64,23 +66,17 @@ const DropdownButton = styled.div`
 `
 
 const pages = [
-  { name: "Korisnici", path: "listaKorisnika" },
-  { name: "Zaposleni", path: "listaZaposlenih" },
-  { name: "Firme", path: "listaFirmi" },
-  { name: "Kartice", path: "kartice" },
-  { name: "Krediti", path: "listaKredita" },
-
-
+  { name: "Početna", path: "", permissions: [] },
+  { name: "Korisnici", path: "listaKorisnika", permissions: [] },
+  { name: "Zaposleni", path: "listaZaposlenih", permissions: [] },
+  { name: "Firme", path: "listaFirmi", permissions: [] },
+  { name: "Kartice", path: "kartice", permissions: [EmployeePermissionsV2.list_cards] },
+  { name: "Krediti", path: "listaKredita", permissions: [EmployeePermissionsV2.list_credits] },
+  { name: "Plaćanja", path: "/placanja", permissions: [EmployeePermissionsV2.payment_access] },
+  { name: "Verifikacija", path: "/verifikacija", permissions: [EmployeePermissionsV2.payment_access] },
+  { name: "Menjačnica", path: "/menjacnica", permissions: [] },
 ];
 
-const pagesUser = [
-  { name: "Početna", path: "" },
-  { name: "Plaćanja", path: "/placanja" },
-  { name: "Verifikacija", path: "/verifikacija" },
-  { name: "Kartice", path: "/kartice" },
-  { name: "Lista kredita", path: "/listaKredita" },
-  { name: "Menjačnica", path: "/menjacnica" },
-];
 
 const auth = getMe();
 const user = auth?.permission === 0 ? true : false;
@@ -111,6 +107,7 @@ function Navbar() {
   const handleReset = () => {
     navigate("/resetPassword");
   };
+  const jwt = getMe();
   return (
     <StyledAppBar position="static">
       <Container maxWidth="xl">
@@ -121,18 +118,13 @@ function Navbar() {
             {/* <StyledImage src={process.env.PUBLIC_URL + "/logo3.jpeg"} alt="Logo" /> */}
           </ImgContainer>
           <NavItems>
-            {user &&
-              pagesUser?.map((page) => (
+
+            {jwt ? pages?.filter(e => hasPermission(jwt.permission, e.permissions))
+              .map((page) => (
                 <StyledLink key={page.name} to={page.path}>
                   {page.name}
                 </StyledLink>
-              ))}
-            {!user &&
-              pages?.map((page) => (
-                <StyledLink key={page.name} to={page.path}>
-                  {page.name}
-                </StyledLink>
-              ))}
+              )) : null}
             <DropdownButton
 
               id="basic-button"

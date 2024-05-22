@@ -1,11 +1,12 @@
 import { getMe } from '../../utils/getMe';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BankRoutes, Kredit } from './../../utils/types';
+import { BankRoutes, EmployeePermissionsV2, Kredit } from './../../utils/types';
 import { makeApiRequest, makeGetRequest } from 'utils/apiRequest';
 import Tabela2 from './TabelaKrediti2';
 import { Button } from '@mui/material';
 import styled from 'styled-components';
+import { hasPermission } from 'utils/permissions';
 
 export const ButtonStyle = styled(Button)`
     margin: 5px !important;
@@ -36,30 +37,32 @@ function Zaposlen() {
     const navigate = useNavigate();
 
     const odobri = async (kredit: Kredit) => {
-        const data = await makeGetRequest(BankRoutes.credit_approve+"/"+kredit.id)
+        const data = await makeGetRequest(BankRoutes.credit_approve + "/" + kredit.id)
         console.log(`Odobren kredit za: ${kredit.id}`);
-       
+
 
     };
 
     const odbij = async (kredit: Kredit) => {
-        const data = await makeGetRequest(BankRoutes.credit_deny +"/"+kredit.id)
+        const data = await makeGetRequest(BankRoutes.credit_deny + "/" + kredit.id)
         console.log(`Odbijen kredit za: ${kredit.id}`);
-      
+
     };
 
     const handleRedClick = (kredit: Kredit) => {
-       
-       
+
+
     };
+
+    const auth = getMe();
 
     return (
         <div>
             <Tabela2 krediti={krediti} onClickRed={handleRedClick}>
                 {(kredit) => (
                     <>
-                        <ButtonStyle id="Odobri" variant="contained" onClick={() => odobri(kredit)}>Odobri</ButtonStyle>
-                        <ButtonStyle id="Odbij" variant="contained" onClick={() => odbij(kredit)}>Odbij</ButtonStyle>
+                        {auth ? (hasPermission(auth.permission, [EmployeePermissionsV2.accept_redits]) ? <ButtonStyle id="Odobri" variant="contained" onClick={() => odobri(kredit)}>Odobri</ButtonStyle> : null) : null}
+                        {auth ? (hasPermission(auth.permission, [EmployeePermissionsV2.deny_credits]) ? <ButtonStyle id="Odbij" variant="contained" onClick={() => odbij(kredit)}>Odbij</ButtonStyle> : null) : null}
                     </>
                 )}
             </Tabela2>
