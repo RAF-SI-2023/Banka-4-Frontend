@@ -79,6 +79,8 @@ presubmits:
               # npr. drugačije je za Angular i React.
               ###########################################
               
+              export NO_COLOR=1
+
               # Downloaduje dependency-e potrebne za testove.
               npm i
               npm start&
