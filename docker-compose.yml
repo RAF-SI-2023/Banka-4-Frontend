@@ -25,7 +25,7 @@ services:
             - backend-network
     
     user-service:
-        image: commandlinefox/user-service:latest
+        image: harbor.k8s.elab.rs/banka-4/user-service:latest
         environment:
             - SPRING.DATASOURCE.URL=jdbc:postgresql://db:5432/moja_banka_db
         ports:
@@ -36,7 +36,7 @@ services:
             - backend-network
 
     banka-service:
-        image: commandlinefox/banka-service:latest
+        image: harbor.k8s.elab.rs/banka-4/banka-service:latest
         environment:
             - SPRING.DATASOURCE.URL=jdbc:postgresql://db:5432/moja_banka_db
         ports:
@@ -47,7 +47,7 @@ services:
             - backend-network
     
     berza-service:
-        image: commandlinefox/berza-service:latest
+        image: harbor.k8s.elab.rs/banka-4/berza-servis:latest
         environment:
             - SPRING.DATASOURCE.URL=jdbc:postgresql://db:5432/moja_banka_db
         ports:
