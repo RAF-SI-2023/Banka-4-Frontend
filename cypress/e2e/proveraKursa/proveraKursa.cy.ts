@@ -3,6 +3,7 @@ import { loginKorisnik, logout } from "../util/util"
 describe('Provera kursa spec', () => {
   beforeEach(() => {
     loginKorisnik(cy);
+    cy.visit('http://localhost:3000')
   })
   after(() => {
     //logout(cy)
@@ -31,7 +32,7 @@ describe('Provera kursa spec', () => {
       if (!isNaN(rate)) {
         expect(rate).to.be.eq(0);
       } else {
-        expect(text.trim()).to.be.empty;
+        expect(text.trim()).to.equal('');
       }
     });
 

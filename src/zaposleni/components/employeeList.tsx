@@ -1,4 +1,4 @@
-import {  Table, TableBody, TableRow, Paper } from '@mui/material';
+import {  Table, TableBody, TableRow } from '@mui/material';
 import { Employee, EmployeeListProps } from '../../utils/types';
 import { ScrollContainer, StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from '../../utils/tableStyles';
 import { useNavigate } from 'react-router-dom';

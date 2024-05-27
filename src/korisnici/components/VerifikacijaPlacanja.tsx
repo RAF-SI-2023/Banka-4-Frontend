@@ -38,8 +38,14 @@ const VerifikacijaPlacanja = () => {
 
         try {
             const resultOtp = await makeApiRequest(`${UserRoutes.validate_otp}?email=${email}&password=${verifikacioniKod}`, "POST", {}, false, true)
-            if ("Valid OTP" != await resultOtp.text())
-                return Swal.fire("Greška", `<div id="resultfromswal">Pogrešan kod</div>`, "error")
+            console.log("RESOTP", resultOtp)
+            if (resultOtp) {
+                const res = await resultOtp.text()
+                if ("Valid OTP" !== res)
+                    return Swal.fire("Greška", `<div id="resultfromswal">Pogrešan kod</div>`, "error")
+            }else {
+                console.log("resultOtp NOT FOUND", resultOtp)
+              }
         }
         catch (e) {
             return Swal.fire("Greška", `<div id="resultfromswal">Pogrešan kod</div>`, "error")
