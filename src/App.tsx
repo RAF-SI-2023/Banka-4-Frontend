@@ -41,6 +41,7 @@ import AgriculturePage from 'moduls/TerminskiUgovori/pages/ContractsPage';
 import SpecificContractListPage from 'moduls/TerminskiUgovori/pages/SpecificContractListPage';
 // import WSTest from 'WSTest';
 import { Dispatch, SetStateAction, createContext, useEffect, useState } from 'react';
+import CompanyInfoTable from 'zaposleni/pages/companyPage';
 
 const fadeIn = keyframes`
   from {
@@ -162,6 +163,7 @@ function App() {
             <Route path="/listaKorisnika" element={auth?.id ? <UserListPage /> : <LoginPage />} />
             <Route path="/listaZaposlenih" element={auth?.id ? <EmployeeListPage /> : <LoginPage />} />
             <Route path="/listaFirmi" element={auth?.id ? <CompanyListPage /> : <LoginPage />} />
+            <Route path="/firma" element={auth?.id ? <CompanyInfoTable /> : <LoginPage/>}/>
             <Route path="/korisnik" element={auth?.id ? <UserInfoTable /> : <LoginPage />} />
             <Route path="/kreirajKorisnika" element={auth?.id ? <CreateUserPage /> : <LoginPage />} />
             <Route path="/izmeniKorisnika" element={auth?.id ? <EditUserPage /> : <LoginPage />} />
