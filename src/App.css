@@ -160,3 +160,7 @@
   color: #1A7B99;
   font-weight: bold;
 }
+
+.swal2-container{
+  z-index: 9999;
+}
