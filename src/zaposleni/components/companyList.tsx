@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { TableContainer, Table, TableBody, TableRow, Paper } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { Company, CompanyListProps } from '../../utils/types';
 import { ScrollContainer, StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from '../../utils/tableStyles';
 
-
 const CompanyList: React.FC<CompanyListProps> = ({ companies }) => {
-    const handleSelect = (event: any) => {
-        // const id = event.currentTarget.id;
-        // navigate(`/korisnik?id=${id}`)
+    const navigate = useNavigate();
+
+    const handleSelect = (company: Company) => {
+        navigate('/firma', { state: { company } });
     };
 
     return (
@@ -26,7 +27,7 @@ const CompanyList: React.FC<CompanyListProps> = ({ companies }) => {
                 </StyledTableHead>
                 <TableBody>
                     {companies?.map((company: Company) => (
-                        <StyledTableRow key={company.maticniBroj} id={company.maticniBroj} onClick={handleSelect}>
+                        <StyledTableRow key={company.maticniBroj} id={company.maticniBroj} onClick={() => handleSelect(company)}>
                             <StyledTableCell>{company.nazivPreduzeca}</StyledTableCell>
                             <StyledTableCell>{company.brojTelefona}</StyledTableCell>
                             <StyledTableCell>{company.brojFaksa}</StyledTableCell>
