@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { makeGetRequest } from '../../utils/apiRequest';
 import { Context } from 'App';
+import { hasPermission } from 'utils/permissions';
+import { jwtDecode } from 'jwt-decode';
+import { EmployeePermissionsV2 } from 'utils/types';
 
 const StyledTabs = styled(Tabs)`
   background-color: #f2f2f2;
@@ -58,8 +61,13 @@ const HeadingAndButtonWrapper = styled.div`
   margin-bottom: 86px; 
 `
 
+interface DecodedToken {
+  permission: number;
+}
+
 const UserListPage: React.FC = () => {
   const [usrs, setUsrs] = useState([])
+  const [hasAddUserPermission, setHasAddUserPermission] = useState(false)
   const ctx = useContext(Context);
 
   useEffect(() => {
@@ -74,6 +82,25 @@ const UserListPage: React.FC = () => {
     fetchData();
 
   }, []);
+
+  const checkAddUserPermission = () => {
+    const token = localStorage.getItem('si_jwt');
+  
+    // Check if the token is null
+    if (token) {
+      const decodedToken = jwtDecode(token) as DecodedToken;
+  
+      if (hasPermission(decodedToken.permission, [EmployeePermissionsV2.create_users])) {
+        return true
+      }
+      return false
+    } else {
+      // Handle the case where the token is null (optional)
+      return false
+      console.error('No token found');
+    }
+  };
+  
 
   const navigate = useNavigate();
 
@@ -93,8 +120,9 @@ const UserListPage: React.FC = () => {
           <AppBar position="static" >
             <StyledTabs value={0}>
               <Tab label="Lista Korisnika" />
-              <ButtonTab id="dodajKorisnikaDugme" onClick={handleCreateUser}
-                label="Dodaj Korisnika" />
+              {checkAddUserPermission() && <ButtonTab id="dodajKorisnikaDugme" onClick={handleCreateUser}
+                label="Dodaj Korisnika" />}
+              
             </StyledTabs>
           </AppBar>
           <UserList users={usrs} />

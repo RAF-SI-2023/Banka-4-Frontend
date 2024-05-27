@@ -270,7 +270,8 @@ export enum BankRoutes {
   account_find_user_account = "/racuni/nadjiRacuneKorisnika",
   account_find_firm_user = "",
   company_create = "/racuni/kreirajFirmu",
-  exchange = "/exchange"
+  exchange = "/exchange",
+  get_company_accounts = "/company/get-accounts"
 }
 
 export enum StockRoutes {

@@ -14,6 +14,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { getMe } from "../../utils/getMe";
 import { hasPermission } from "utils/permissions";
 import { EmployeePermissionsV2 } from "utils/types";
+import { jwtDecode } from "jwt-decode";
+
 const StyledAppBar = styled(AppBar)`
   background-color: #23395b !important;
 `;
@@ -48,7 +50,7 @@ const ImgContainer = styled.div`
   height: 96px;
   width: 96px;
   min-width: 96px;
-`
+`;
 
 const DropdownButton = styled.div`
   color: white!important;
@@ -62,24 +64,47 @@ const DropdownButton = styled.div`
     padding-bottom: 4px; // To avoid jumping when adding border
     border-bottom: 2px solid white;
   }
+`;
 
-`
+interface DecodedToken {
+  permission: number;
+}
 
 const pages = [
   { name: "Početna", path: "", permissions: [] },
-  { name: "Korisnici", path: "listaKorisnika", permissions: [] },
-  { name: "Zaposleni", path: "listaZaposlenih", permissions: [] },
-  { name: "Firme", path: "listaFirmi", permissions: [] },
+  { name: "Korisnici", path: "listaKorisnika", permissions: [EmployeePermissionsV2.list_users] },
+  { name: "Zaposleni", path: "listaZaposlenih", permissions: [EmployeePermissionsV2.list_workers] },
+  { name: "Firme", path: "listaFirmi", permissions: [EmployeePermissionsV2.list_firms] },
   { name: "Kartice", path: "kartice", permissions: [EmployeePermissionsV2.list_cards] },
   { name: "Krediti", path: "listaKredita", permissions: [EmployeePermissionsV2.list_credits] },
-  { name: "Plaćanja", path: "/placanja", permissions: [EmployeePermissionsV2.payment_access] },
-  { name: "Verifikacija", path: "/verifikacija", permissions: [EmployeePermissionsV2.payment_access] },
-  { name: "Menjačnica", path: "/menjacnica", permissions: [] },
+  { name: "Verifikacija", path: "/verifikacija", permissions: [EmployeePermissionsV2.payment_access] }
+
+
+    //{ name: "Plaćanja", path: "/placanja", permissions: [EmployeePermissionsV2.payment_access] },
+   //{ name: "Menjačnica", path: "/menjacnica", permissions: [] },
 ];
 
+const checkUserPermissions = (requiredPermissions: EmployeePermissionsV2[]) => {
+  const token = localStorage.getItem('si_jwt');
+  if (token) {
+    const decodedToken = jwtDecode(token) as DecodedToken;
+    return hasPermission(decodedToken.permission, requiredPermissions);
+  }
+  return false;
+};
+
+const checkNoPermissions = () =>{
+  const token = localStorage.getItem('si_jwt');
+  if (token) {
+    const decodedToken = jwtDecode(token) as DecodedToken;
+    return !hasPermission(decodedToken.permission, [EmployeePermissionsV2.list_users]);
+  }
+  return false;
+}
 
 const auth = getMe();
 const user = auth?.permission === 0 ? true : false;
+
 function Navbar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -87,10 +112,7 @@ function Navbar() {
     setAnchorEl(event.currentTarget);
   };
 
-
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const navigate = useNavigate();
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -100,33 +122,44 @@ function Navbar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
   const handleLogout = () => {
     localStorage.removeItem("si_jwt");
     window.location.reload();
   };
+
   const handleReset = () => {
     navigate("/resetPassword");
   };
+
   const jwt = getMe();
+
   return (
     <StyledAppBar position="static">
       <Container maxWidth="xl">
         <Toolbar>
           <ImgContainer>
-            {/* <StyledImage src={process.env.PUBLIC_URL + "/logo.webp"} alt="Logo" /> */}
             <StyledImage src={process.env.PUBLIC_URL + "/logo2.jpeg"} alt="Logo" />
-            {/* <StyledImage src={process.env.PUBLIC_URL + "/logo3.jpeg"} alt="Logo" /> */}
           </ImgContainer>
           <NavItems>
-
-            {jwt ? pages?.filter(e => hasPermission(jwt.permission, e.permissions))
-              .map((page) => (
-                <StyledLink key={page.name} to={page.path}>
-                  {page.name}
-                </StyledLink>
-              )) : null}
+            {jwt ? pages.filter(page => checkUserPermissions(page.permissions)).map((page) => (
+              <StyledLink key={page.name} to={page.path}>
+                {page.name}
+              </StyledLink>
+            )) : null}
+            {
+              checkNoPermissions() && ( <StyledLink key={"Plaćanja"} to={"/placanja"}>
+                {"Plaćanja"}
+              </StyledLink>
+            
+            ) }
+           { checkNoPermissions() && ( <StyledLink key={"Menjačnica"} to={"/menjacnica"}>
+                {"Menjačnica"}
+              </StyledLink>
+            
+            )}
+            
             <DropdownButton
-
               id="basic-button"
               aria-controls={open ? 'basic-menu' : undefined}
               aria-haspopup="true"
@@ -146,12 +179,9 @@ function Navbar() {
               }}
             >
               <MenuItem onClick={() => { navigate('/akcije'); setAnchorEl(null) }}>Akcije</MenuItem>
-              {/* <MenuItem onClick={() => { navigate('/opcije'); setAnchorEl(null) }}>Opcije</MenuItem> */}
               <MenuItem onClick={() => { navigate('/terminski'); setAnchorEl(null) }}>Terminski</MenuItem>
             </Menu>
-
           </NavItems>
-
           <NavUser>
             <Tooltip
               title="Nalog"
@@ -162,7 +192,7 @@ function Navbar() {
                   alt="Profile Picture"
                   src={process.env.PUBLIC_URL + "/diktator100.png"}
                   sx={{ width: 70, height: 70 }}
-                />{" "}
+                />
               </IconButton>
             </Tooltip>
             <Menu
@@ -194,7 +224,7 @@ function Navbar() {
           </NavUser>
         </Toolbar>
       </Container>
-    </StyledAppBar >
+    </StyledAppBar>
   );
 }
 
