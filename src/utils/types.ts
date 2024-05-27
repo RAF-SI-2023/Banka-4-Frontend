@@ -64,7 +64,8 @@ export enum AccountType {
   penzionerski = 'penzionerski',
   racun_za_mlade = 'racun_za_mlade',
   devizni = 'devizni',
-  poslovni = 'poslovni '
+  poslovni = 'poslovni ',
+  marzni = 'marzni'
 }
 
 export type Account = {
@@ -81,6 +82,46 @@ export type Account = {
   vlasnik?: number,
   zaposleni?: number
 }
+
+export enum GrupaHartijaOdVrednosti { // Bek moze da im da id
+  Stock = 'stock',
+  Forex = 'forex',
+  Future = 'future',
+  Options = 'options',
+}
+
+export type MarginAccount = {
+  brojRacuna: string;
+  currency: string;
+  grupaHartijaOdVrednosti: GrupaHartijaOdVrednosti;
+  ulozenaSredstva: number;
+  pozajmljenaSredstva: number;
+  marginaOdrzavanja: number;
+  marginCall: boolean;
+  /*datumKreiranja?: string; - Ne pise da treba
+  datumIsteka?: string;
+  aktivan?: boolean;
+  kamatnaStopa?: string; 
+  odrzavanjeRacuna?: string;
+  vlasnik?: number,
+  zaposleni?: number*/
+}
+
+export type MarginTransaction = {
+  brojRacuna: string,
+  vremeTransakcije: string;
+  orderRef: number,
+  korisnik: string,
+  opis: string,
+  currency: string;
+  tipTransakcije: 'uplata' | 'isplata';
+  ulog: number;
+  pozajmljeno: number;
+  marginaOdrzavanja: number;
+  kamata: number; // 5% od pozajmljeno
+}
+
+
 
 export type AccountBasicInfo = {
   brojRacuna: string;
