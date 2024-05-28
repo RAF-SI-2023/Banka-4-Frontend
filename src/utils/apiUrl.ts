@@ -15,12 +15,12 @@ export const getApiUrl = (route: string) => {
     ]
     const isKoisnikRoute = koisnikRoutes.some(prefix => route.startsWith(prefix));
     if (isKoisnikRoute) {
-        return process.env.USER_URL
+        return process.env.REACT_APP_USER_URL
     }
     const isBankaRoute = bankaRoutes.some(prefix => route.startsWith(prefix));
     if (isBankaRoute) {
-        return process.env.BANKA_URL
+        return process.env.REACT_APP_BANKA_URL
     }
     
-    return process.env.BERZA_URL
+    return process.env.REACT_APP_BERZA_URL
 }
