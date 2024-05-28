@@ -35,10 +35,8 @@ const ExchangePage = () => {
         setUser(data);
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
     }
   };
-  console.log("detaljiTransfera: ", detaljiTransfera);
 
   return (
     <ContainerStyled>

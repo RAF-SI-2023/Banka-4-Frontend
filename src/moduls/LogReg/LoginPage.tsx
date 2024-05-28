@@ -61,9 +61,9 @@ const LoginPage = () => {
             setError('Incorrect username or password');
         } else {
             if (isEmployee) {
-                window.location.replace("/listaKorisnika");
+                navigate("/listaKorisnika");
             } else {
-                window.location.replace("/");
+                navigate("/");
             }
         }
     };

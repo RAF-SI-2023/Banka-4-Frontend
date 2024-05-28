@@ -79,8 +79,6 @@ const PregledPlacanja = () => {
                 const result = await makeGetRequest(`/transaction/getAllUplateByBrojRacuna/${br}`);
                 setPlacanja(result);
             } catch (e) {
-                console.log("NE RADI")
-                console.log(e);
             }
         }
         func();

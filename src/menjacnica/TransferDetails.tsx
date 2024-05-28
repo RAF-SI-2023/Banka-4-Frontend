@@ -88,10 +88,8 @@ const TransferDetails = ({
           true
         );
         const rac = await data.text();
-        console.log(rac);
         localStorage.removeItem("prenosPodaci");
       } catch (error) {
-        console.log(error);
       }
     }
     setDetaljiTransfera(false);

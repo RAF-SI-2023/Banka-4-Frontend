@@ -114,7 +114,6 @@ const CreateAccountPage: React.FC = () => {
         setFormData(updatedFormData);
 
       } catch (error) {
-        console.error('Error fetching user:', error);
       }
     };
     fetchData();
@@ -125,7 +124,6 @@ const CreateAccountPage: React.FC = () => {
     for (const [key, value] of Object.entries(formData)) {
       if (value === '') {
         if (key !== 'vrstaRacuna') {
-          console.log(value)
           setFieldWarning(key);
           return;
         }
@@ -154,7 +152,6 @@ const CreateAccountPage: React.FC = () => {
     }
     // else if (formData.tip === 'pravni') {
     //   const res = await makeApiRequest(`/racuni/dodajPravni`, 'POST', data);
-    //   // console.log(res)
     // }
     else if (formData.tip === 'devizni') {
       const jezici: string[] = []

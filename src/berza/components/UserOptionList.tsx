@@ -8,8 +8,7 @@ import BuyOptionPopup from "./BuyOptionPopup";
 const UserOptions: React.FC<UserStockList> = ({ stocks }) => {
 
     const handleSelect = (event: any) => {
-        const id = event.currentTarget.id;
-        console.log(id)
+        //const id = event.currentTarget.id;
     };
 
     return (

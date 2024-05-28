@@ -56,18 +56,14 @@ const TraziKreditStranica: React.FC = () => {
           return;
         const data = await makeGetRequest(`${BankRoutes.account_find_user_account}/${me.id}`)
         if (data) {
-          console.log(data);
           let racuni: string[] = [];
           for (const key in data) {
             let racun = data[key].brojRacuna;
-            console.log(racun);
             racuni.push(racun);
           }
-          console.log(racuni.length);
           setBankAccountNumbers(racuni); // Postavljanje stanja bankAccountNumbers
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
       }
     };
   
@@ -148,10 +144,6 @@ const TraziKreditStranica: React.FC = () => {
     } else {
       setPoruka("GRESKA PRI SLANJU"); // Prikazivanje poruke na stranici
     }
-  
-    console.log(data);
-    // Ispisivanje trenutnog stanja forme u konzoli
-    console.log(formData);
   };
   
 

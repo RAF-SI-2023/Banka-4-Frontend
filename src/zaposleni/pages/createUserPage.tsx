@@ -80,7 +80,6 @@ const CreateUserPage: React.FC = () => {
           setKreiranjeRacuna(`?tip=${tip}`)
         }
       } catch (error) {
-        console.error('Error fetching user:', error);
       }
     };
     fetchData();

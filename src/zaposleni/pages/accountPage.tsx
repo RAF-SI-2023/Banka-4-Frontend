@@ -114,7 +114,6 @@ const AccountInfoPage: React.FC = () => {
           }
         }
       } catch (error) {
-        console.error('Error fetching user:', error);
       }
     };
     fetchData();

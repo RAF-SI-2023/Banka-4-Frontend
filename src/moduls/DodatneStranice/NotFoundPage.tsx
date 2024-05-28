@@ -12,7 +12,6 @@ const GifWrapper = styled.div`
 
 const NotFoundPage = () => {
     const gif = Math.random() < 0.5;
-    console.log(gif)
 
     return (
         <Box sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
