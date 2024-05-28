@@ -16,7 +16,6 @@ if (auth) {
     if (auth.permission)
         zaposlen = true;
 } else {
-    console.error("Nije moguće dobiti informacije o korisniku.");
 }
 
 function ListaKredita() {
@@ -26,20 +25,16 @@ function ListaKredita() {
 
     useEffect(() => {
         const fetchData = async () => {
-            console.log(BankRoutes.credit_all)
             const approvedData = await makeGetRequest(`${BankRoutes.credit_all}/approved`) as Kredit[];
             const notApprovedData = await makeGetRequest(`${BankRoutes.credit_all}/not_approved`) as Kredit[];
 
             setKrediti(approvedData);
 
-            console.log(approvedData);
             let data = [] as Kredit[];
             data = data.concat(notApprovedData?.map(kredit => ({ ...kredit, status: 'ne odobren' })));
             data = data.concat(approvedData?.map(kredit => ({ ...kredit, status: 'odobren' })));
 
             setKredit(data);
-            
-            console.log(notApprovedData);
         }
         fetchData()
     }, []);

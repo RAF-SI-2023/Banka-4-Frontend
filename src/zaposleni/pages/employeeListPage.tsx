@@ -74,7 +74,6 @@ const EmployeeListPage: React.FC = () => {
         const employees = await makeGetRequest('/radnik', ctx);
         setEmp(employees);
       } catch (error) {
-        console.error('Error fetching employee list:', error);
       }
     };
     fetchData();
@@ -94,7 +93,6 @@ const EmployeeListPage: React.FC = () => {
     } else {
       // Handle the case where the token is null (optional)
       return false
-      console.error('No token found');
     }
   };
   const navigate = useNavigate();

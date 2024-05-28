@@ -23,15 +23,13 @@ const MojeAkcijeList: React.FC = () => {
                     setUserStocks(stocks);
                 }
             } catch (error) {
-                console.error('Error fetching user list:', error);
             }
         };
         fetchData();
 
     }, []);
     const handleSelect = (event: any) => {
-        const id = event.currentTarget.id;
-        console.log(id)
+        //const id = event.currentTarget.id;
     };
 
     return (

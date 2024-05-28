@@ -65,7 +65,6 @@ export const makeApiRequest = async (
                 const res = noJson ? response : await response.json()// fix this shit
                 return res
             } catch(e){
-                console.log(e)
             }
             return response;
         }
@@ -90,9 +89,7 @@ export const makeApiRequest = async (
                 return res
             }
         }
-        console.log('Big YAY');
     } catch (error) {
-        console.error('BIG SAD:', error);
     }
 }
 
@@ -132,6 +129,5 @@ export const makeGetRequest = async (route: string, ctx?: ContextType | null) =>
 
         return await response.json()
     } catch (error) {
-        console.error('BIG SAD:', error);
     }
 }

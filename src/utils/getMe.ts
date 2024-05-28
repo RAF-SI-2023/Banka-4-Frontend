@@ -15,7 +15,6 @@ export const getMe = () => {
                 return { permission: decoded.permission, id: decoded.id, sub: decoded.sub }
             }
         } catch (error) {
-            console.error('Error decoding token:', error);
         }
     }
 };

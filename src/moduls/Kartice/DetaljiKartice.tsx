@@ -9,7 +9,6 @@ import { hasPermission } from 'utils/permissions';
 
 const updateKarticaStatus = async (number: string, status: string): Promise<boolean> => {
   const result = await makeApiRequest(`${BankRoutes.cards}/${status}/${number}`, "GET", undefined, undefined, true);
-  console.log(result);
   return result ? true : false
 };
 
@@ -26,7 +25,6 @@ export default function DetaljiKartice() {
 
   useEffect(() => {
     if (number) {
-      console.log(number);
       const data = localStorage.getItem('selectedKartica');
       if (data) {
         const kartica = JSON.parse(data)
@@ -36,7 +34,6 @@ export default function DetaljiKartice() {
       //ne postoje jos uvek
       /*makeGetRequest("/cards/transactions/" + id)
         .then((result) => {
-          console.log(result);
           if (!result)
             return alert("Greška pri preuzimanju transakcija");
 

@@ -91,7 +91,6 @@ const AkcijePage: React.FC = () => {
           setStocks(stocks);
         }
       } catch (error) {
-        console.error('Error fetching user list:', error);
       }
     };
     fetchData();

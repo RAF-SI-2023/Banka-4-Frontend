@@ -6,8 +6,7 @@ import BuyOptionPopup from "./BuyOptionPopup";
 const CallsList: React.FC<OptionsList> = ({ options }) => {
 
     const handleSelect = (event: any) => {
-        const id = event.currentTarget.id;
-        console.log(id)
+        //const id = event.currentTarget.id;
     };
 
     return (

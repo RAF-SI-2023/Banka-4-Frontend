@@ -20,7 +20,6 @@ if (auth) {
     emailKorisnikov = auth.sub;
 
 } else {
-    console.error("Nije moguće dobiti informacije o korisniku.");
 }
 
 function Zaposlen() {
@@ -38,15 +37,12 @@ function Zaposlen() {
 
     const odobri = async (kredit: Kredit) => {
         const data = await makeGetRequest(BankRoutes.credit_approve + "/" + kredit.id)
-        console.log(`Odobren kredit za: ${kredit.id}`);
 
 
     };
 
     const odbij = async (kredit: Kredit) => {
         const data = await makeGetRequest(BankRoutes.credit_deny + "/" + kredit.id)
-        console.log(`Odbijen kredit za: ${kredit.id}`);
-
     };
 
     const handleRedClick = (kredit: Kredit) => {

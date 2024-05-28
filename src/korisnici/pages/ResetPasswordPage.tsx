@@ -60,7 +60,6 @@ const ResetPasswordPage = () => {
         ctx.setErrors([...ctx.errors, "Our Success: Kod je uspesno poslat na mejl"])
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
     }
   };
 
@@ -71,7 +70,6 @@ const ResetPasswordPage = () => {
         ctx.setErrors([...ctx.errors, "Our Success: Lozinka je uspesno resetovana"])
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
     }
   };
 

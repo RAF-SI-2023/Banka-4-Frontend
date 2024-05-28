@@ -76,7 +76,6 @@ const UserListPage: React.FC = () => {
         const users = await makeGetRequest('/korisnik', ctx);
         setUsrs(users);
       } catch (error) {
-        console.error('Error fetching user list:', error);
       }
     };
     fetchData();
@@ -97,7 +96,6 @@ const UserListPage: React.FC = () => {
     } else {
       // Handle the case where the token is null (optional)
       return false
-      console.error('No token found');
     }
   };
   

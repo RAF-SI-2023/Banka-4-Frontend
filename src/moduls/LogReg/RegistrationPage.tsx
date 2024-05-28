@@ -48,10 +48,8 @@ const RegistrationPage = () => {
     const handleGenerateCode = async () => {
         try {
             const result = await makeApiRequest(UserRoutes.user_generate_login, "POST", { email: userData.email }, true, true, ctx)
-            console.log(await result.text());
         }
         catch (e) {
-            console.log(e);
         }
     };
 

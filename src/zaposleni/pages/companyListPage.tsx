@@ -74,7 +74,6 @@ const CompanyListPage: React.FC = () => {
         const companies = await makeGetRequest('/racuni/izlistajSveFirme', ctx);
         setCompanies(companies);
       } catch (error) {
-        console.error('Error fetching company list:', error);
       }
     };
     fetchData();
@@ -94,7 +93,6 @@ const CompanyListPage: React.FC = () => {
     } else {
       // Handle the case where the token is null (optional)
       return false
-      console.error('No token found');
     }
   };
   const navigate = useNavigate();

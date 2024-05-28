@@ -16,17 +16,15 @@ const PojedinacniKreditStranica = () => {
 
     if (storedKredit) {
       parsedKredit = JSON.parse(storedKredit);
-      console.log('Učitani kredit iz local storage-a:', parsedKredit);
     }
 
     const fetchData = async () => {
       try {
         const data = await makeGetRequest(`${BankRoutes.credit_detailed}/`+parsedKredit.id);
         setKredit(data);
-        setTransakcije(data?.transakcije);console.log(data);
+        setTransakcije(data?.transakcije);
         
       } catch (error) {
-        console.error('Greška pri preuzimanju podataka:', error);
       }
     };
 

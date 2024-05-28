@@ -99,7 +99,6 @@ const EditUserPage: React.FC = () => {
           setFormData(updatedFormData);
         }
       } catch (error) {
-        console.error('Error fetching user:', error);
       }
     };
     fetchData();
