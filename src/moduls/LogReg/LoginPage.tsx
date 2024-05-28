@@ -62,8 +62,10 @@ const LoginPage = () => {
         } else {
             if (isEmployee) {
                 navigate("/listaKorisnika");
+                window.location.reload()
             } else {
                 navigate("/");
+                window.location.reload()
             }
         }
     };
