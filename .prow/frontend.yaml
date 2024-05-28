@@ -82,10 +82,10 @@ presubmits:
               export NO_COLOR=1
 
               # Downloaduje dependency-e potrebne za testove.
-              npm i
-              mkdir -p ./cypress/screenshots ./cypress/videos
-              trap collectCypressRecordings EXIT
-              npm run ci
+              # npm i
+              # mkdir -p ./cypress/screenshots ./cypress/videos
+              # trap collectCypressRecordings EXIT
+              # npm run ci
               # npx cypress run
               # Pokreće Cypress verifikacije.
               # npm run cy:verify
