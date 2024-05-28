@@ -61,7 +61,7 @@ presubmits:
               # Pokreće Docker unutar kontejnera u kome se izvršava ova skripta.
               # Docker vam omogućava da koristite Docker Compose kako bi pokrenuli
               # backend servise potrebne za rad frontenda.
-              start-docker.sh
+              # start-docker.sh
 
               # pushd ../backend
               # PROMENITI PRI KOPIRANJU
@@ -69,7 +69,7 @@ presubmits:
               # po potrebi promeniti da se pokreću pojedinačni servisi, npr.
               # docker compose up -d <naziv-servisa>
               # Takođe po potrebi dodati --build flag.
-              docker compose up -d
+              # docker compose up -d
               # popd
 
               ###########################################
