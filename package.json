@@ -16,11 +16,13 @@
     "@types/node": "^16.18.87",
     "@types/react": "^18.2.74",
     "@types/react-dom": "^18.2.21",
+    "dotenv": "^16.4.5",
     "jwt-decode": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "react-use-websocket": "^4.8.1",
+    "serve": "^14.2.3",
     "start-server-and-test": "^2.0.3",
     "styled-components": "^6.1.8",
     "sweetalert2": "^11.10.6",
@@ -33,7 +35,8 @@
     "test": "react-scripts test",
     "cypress": "cypress run",
     "eject": "react-scripts eject",
-    "ci": "start-server-and-test start 3000 cypress"
+    "ci": "start-server-and-test start 3000 cypress",
+    "prod": "npm run build && serve -s build"
   },
   "eslintConfig": {
     "extends": [
