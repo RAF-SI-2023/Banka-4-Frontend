@@ -46,22 +46,23 @@ const ImgContainer = styled.div`
   height: 96px;
   width: 96px;
   min-width: 96px;
-`
+`;
 
 const DropdownButton = styled.div`
-  color: white!important;
-  font-size: 25px!important;
-  text-decoration: none!important;
-  padding: 4px 10px!important;
-  font-weight: normal!important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif!important;
+  color: white !important;
+  font-size: 25px !important;
+  text-decoration: none !important;
+  padding: 4px 10px !important;
+  font-weight: normal !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif !important;
   &:hover {
     background-color: #2c4975ea;
     padding-bottom: 4px; // To avoid jumping when adding border
     border-bottom: 2px solid white;
   }
-
-`
+`;
 
 const pages = [
   { name: "Korisnici", path: "listaKorisnika" },
@@ -69,8 +70,7 @@ const pages = [
   { name: "Firme", path: "listaFirmi" },
   { name: "Kartice", path: "kartice" },
   { name: "Krediti", path: "listaKredita" },
-
-
+  { name: "Hartije od vrednosti", path: "hartije" },
 ];
 
 const pagesUser = [
@@ -90,7 +90,6 @@ function Navbar() {
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     setAnchorEl(event.currentTarget);
   };
-
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
@@ -117,7 +116,10 @@ function Navbar() {
         <Toolbar>
           <ImgContainer>
             {/* <StyledImage src={process.env.PUBLIC_URL + "/logo.webp"} alt="Logo" /> */}
-            <StyledImage src={process.env.PUBLIC_URL + "/logo2.jpeg"} alt="Logo" />
+            <StyledImage
+              src={process.env.PUBLIC_URL + "/logo2.jpeg"}
+              alt="Logo"
+            />
             {/* <StyledImage src={process.env.PUBLIC_URL + "/logo3.jpeg"} alt="Logo" /> */}
           </ImgContainer>
           <NavItems>
@@ -134,12 +136,11 @@ function Navbar() {
                 </StyledLink>
               ))}
             <DropdownButton
-
               id="basic-button"
-              aria-controls={open ? 'basic-menu' : undefined}
+              aria-controls={open ? "basic-menu" : undefined}
               aria-haspopup="true"
-              aria-expanded={open ? 'true' : undefined}
-              style={{ textTransform: 'none' }}
+              aria-expanded={open ? "true" : undefined}
+              style={{ textTransform: "none" }}
               onClick={handleClick}
             >
               Berza
@@ -150,14 +151,27 @@ function Navbar() {
               open={open}
               onClose={() => setAnchorEl(null)}
               MenuListProps={{
-                'aria-labelledby': 'basic-button',
+                "aria-labelledby": "basic-button",
               }}
             >
-              <MenuItem onClick={() => { navigate('/akcije'); setAnchorEl(null) }}>Akcije</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigate("/akcije");
+                  setAnchorEl(null);
+                }}
+              >
+                Akcije
+              </MenuItem>
               {/* <MenuItem onClick={() => { navigate('/opcije'); setAnchorEl(null) }}>Opcije</MenuItem> */}
-              <MenuItem onClick={() => { navigate('/terminski'); setAnchorEl(null) }}>Terminski</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigate("/terminski");
+                  setAnchorEl(null);
+                }}
+              >
+                Terminski
+              </MenuItem>
             </Menu>
-
           </NavItems>
 
           <NavUser>
@@ -202,7 +216,7 @@ function Navbar() {
           </NavUser>
         </Toolbar>
       </Container>
-    </StyledAppBar >
+    </StyledAppBar>
   );
 }
 
