@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-import { getJWT, makeGetRequest } from 'utils/apiRequest';
+import { Table, TableBody, TableCell, TableHead, TableRow, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { makeGetRequest } from 'utils/apiRequest';
 import { getMe } from 'utils/getMe';
 import { RACUNI_PLACEHOLDER, RacunType } from 'korisnici/data/Racuni';
 
@@ -19,35 +19,6 @@ type UplataDTO = {
     vremeIzvrsavanja: string;
 };
 
-const transactions: UplataDTO[] = [
-    // Example transaction data
-    {
-        racunPosiljaoca: '123-4567890123-45',
-        nazivPrimaoca: 'John Doe',
-        racunPrimaoca: '321-9876543210-54',
-        iznos: 1500,
-        pozivNaBroj: 12345,
-        sifraPlacanja: 289,
-        svrhaPlacanja: 'Donation',
-        status: 'uspeh',
-        vremeTransakcije: '2023-01-01T12:00:00',
-        vremeIzvrsavanja: '2023-01-01T12:05:00',
-    },
-    {
-        racunPosiljaoca: '123-4567890124-46',
-        nazivPrimaoca: 'John Does',
-        racunPrimaoca: '321-9876543210-54',
-        iznos: 1501,
-        pozivNaBroj: 12345,
-        sifraPlacanja: 289,
-        svrhaPlacanja: 'Donation',
-        status: 'uspeh',
-        vremeTransakcije: '2023-01-01T12:00:00',
-        vremeIzvrsavanja: '2023-01-01T12:05:00',
-    },
-    // Add more transactions as needed
-];
-
 const PregledPlacanja = () => {
     const [racuni, setRacuni] = useState<RacunType[]>(RACUNI_PLACEHOLDER);
     const [selectedRacun, setSelectedRacun] = useState(0);
@@ -58,7 +29,6 @@ const PregledPlacanja = () => {
     useEffect(() => {
 
         const gett = async () => {
-            const jwt = getJWT();
             const me = getMe();
 
             if (!me) return;
@@ -70,8 +40,7 @@ const PregledPlacanja = () => {
 
     useEffect(() => {
         const func = async () => {
-            const br = racun.broj.replace(/\-/g, '');
-            const jwt = getJWT();
+            const br = racun.broj.replace(/-/g, '');
             const me = getMe();
 
             if (!me) return;
@@ -86,6 +55,7 @@ const PregledPlacanja = () => {
 
     useEffect(() => {
         setRacun(racuni[selectedRacun]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedRacun])
 
     return (

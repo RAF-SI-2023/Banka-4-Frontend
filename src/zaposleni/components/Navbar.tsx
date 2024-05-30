@@ -102,9 +102,6 @@ const checkNoPermissions = () =>{
   return false;
 }
 
-const auth = getMe();
-const user = auth?.permission === 0 ? true : false;
-
 function Navbar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);

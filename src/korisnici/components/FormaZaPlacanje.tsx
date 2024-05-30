@@ -8,7 +8,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { RACUNI_PLACEHOLDER, RacunType } from 'korisnici/data/Racuni';
 import { getMe } from 'utils/getMe';
-import { getJWT, makeGetRequest } from 'utils/apiRequest';
+import { makeGetRequest } from 'utils/apiRequest';
 
 
 interface PaymentFormProps {
@@ -54,7 +54,6 @@ export const FormaZaPlacanje: React.FC<PaymentFormProps> = ({ onSave, navigate, 
 
     useEffect(() => {
         const gett = async () => {
-            const jwt = getJWT();
             const me = getMe();
 
             if (!me) return;

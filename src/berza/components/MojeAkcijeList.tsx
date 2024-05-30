@@ -1,5 +1,5 @@
 import { Table, TableBody, TableRow } from "@mui/material"
-import { Stock, StockList } from "berza/types/types"
+import { Stock } from "berza/types/types"
 import { ScrollContainer, StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from '../../utils/tableStyles';
 import BuyOptionPopup from "./BuyOptionPopup";
 import { useEffect, useState } from "react";
@@ -15,9 +15,9 @@ const MojeAkcijeList: React.FC = () => {
                 "userId": 1,
                 "ticker": "aapl",
                 "quantity": 69
-              }
+            }
             try {
-                const s = await makeApiRequest('/user-stocks', 'PUT', data);
+                await makeApiRequest('/user-stocks', 'PUT', data);
                 const stocks = await makeGetRequest(`/user-stocks/${auth?.id}`);
                 if (stocks) {
                     setUserStocks(stocks);
@@ -27,6 +27,7 @@ const MojeAkcijeList: React.FC = () => {
         };
         fetchData();
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const handleSelect = (event: any) => {
         //const id = event.currentTarget.id;

@@ -1,9 +1,8 @@
-import { Paper, Table, TableBody, TableContainer, TableRow } from '@mui/material';
+import { Table, TableBody, TableRow } from '@mui/material';
 import styled from 'styled-components';
 import { ScrollContainer, StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from 'utils/tableStyles';
 
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { makeGetRequest } from 'utils/apiRequest';
 import BuyOptionPopup from 'berza/components/BuyOptionPopup';
 
@@ -46,7 +45,6 @@ const HeadingAndButtonWrapper = styled.div`
 const ContractsPage = () => {
     const [type, setType] = useState('');
     const [contracts, setContracts] = useState([]);
-    const navigate = useNavigate();
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);

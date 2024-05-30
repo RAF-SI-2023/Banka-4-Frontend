@@ -148,7 +148,6 @@ const EditEmployeePage: React.FC = () => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | { name?: string; value: unknown }>) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name as string]: value as string });
@@ -208,10 +207,10 @@ const EditEmployeePage: React.FC = () => {
         Izmena zaposlenog
       </HeadingText>
       <FormWrapper>
-      {phoneWarning && <KAlert severity="error" exit={() => setPhoneWarning(false)}>Broj telefona je u pogresnom formatu.</KAlert>}
-      {passwordWarning && <KAlert severity="error" exit={() => setPasswordWarning(false)}>Lozinke se ne poklapaju.</KAlert>}
-      {successPopup && <KAlert severity="success" exit={() => setSucessPopup(false)}>Uspesno kreiran.</KAlert>}
-      {emptyWarning && <KAlert severity="error" exit={() => setEmptyWarning(false)}>Popunite neko polje.</KAlert>}
+        {phoneWarning && <KAlert severity="error" exit={() => setPhoneWarning(false)}>Broj telefona je u pogresnom formatu.</KAlert>}
+        {passwordWarning && <KAlert severity="error" exit={() => setPasswordWarning(false)}>Lozinke se ne poklapaju.</KAlert>}
+        {successPopup && <KAlert severity="success" exit={() => setSucessPopup(false)}>Uspesno kreiran.</KAlert>}
+        {emptyWarning && <KAlert severity="error" exit={() => setEmptyWarning(false)}>Popunite neko polje.</KAlert>}
         <FormSeparator>
           <FormSeparatorRow>
             <StyledTextField

@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Button, TextField, Link, Typography, Container, CssBaseline } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Button, TextField, Link, Typography } from '@mui/material';
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 import { makeApiRequest } from 'utils/apiRequest';
 import { EmployeePermissionsV2, UserRoutes } from 'utils/types';
 import { StyledContainerLogReg } from 'utils/logRegStyles';
-import { hasPermission, permissionMap } from 'utils/permissions';
+import { hasPermission } from 'utils/permissions';
 
-const url = "http://api.stamenic.work:8080/api";
+// const url = "http://api.stamenic.work:8080/api";
 
 interface DecodedToken {
     permission: number;
@@ -22,7 +22,7 @@ const LoginPage = () => {
         if (window.location.pathname !== '/login') {
             navigate('/login')
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const handleRegister = () => {
         navigate('/register')
@@ -41,15 +41,14 @@ const LoginPage = () => {
 
         let isAuthenticated = true; // Placeholder for actual authentication logic
         let isEmployee = false; // Placeholder to determine if user is an employee
-     
+
 
         try {
             const data = await makeApiRequest(UserRoutes.user_login, "POST", { username: email, password: password }, true, true)
             const token = await data.text()
             localStorage.setItem('si_jwt', token);
             const decodedToken = jwtDecode(token) as DecodedToken;
-            if(hasPermission(decodedToken.permission,[EmployeePermissionsV2.list_users]))
-            {
+            if (hasPermission(decodedToken.permission, [EmployeePermissionsV2.list_users])) {
                 isEmployee = true;
             }
 

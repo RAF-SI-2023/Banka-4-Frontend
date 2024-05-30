@@ -1,9 +1,5 @@
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
-import { makeGetRequest } from '../../utils/apiRequest';
-import { TextField } from '@mui/material';
 import UserOptions from 'berza/components/UserOptionList';
-import BuyOptionPopup from 'berza/components/BuyOptionPopup';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -45,46 +41,46 @@ const TableContainer = styled.div`
 `
 
 const UserOpcijePage: React.FC = () => {
-    const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  // const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
 
 
 
-    //   useEffect(() => {
-    //     const fetchData = async () => {
-    //       try {
-    //         const users = await makeGetRequest('/korisnik');
-    //         setUsrs(users);
-    //         const employees = await makeGetRequest('/radnik');
-    //         setEmployees(employees)
-    //         const companies = await makeGetRequest('/racuni/izlistajSveFirme');
-    //         setCompanies(companies)
-    //       } catch (error) {
-    //       }
-    //     };
-    //     fetchData();
-    // 
-    //   }, []);
+  //   useEffect(() => {
+  //     const fetchData = async () => {
+  //       try {
+  //         const users = await makeGetRequest('/korisnik');
+  //         setUsrs(users);
+  //         const employees = await makeGetRequest('/radnik');
+  //         setEmployees(employees)
+  //         const companies = await makeGetRequest('/racuni/izlistajSveFirme');
+  //         setCompanies(companies)
+  //       } catch (error) {
+  //       }
+  //     };
+  //     fetchData();
+  // 
+  //   }, []);
 
-    return (
-        <PageWrapper>
-            <StockWrapper>
-                <TitleContainer>
-                    <HeadingText>
-                        Apple Inc.
-                    </HeadingText>
-                    <Heading2Text>
-                        AAPL
-                    </Heading2Text>
-                </TitleContainer>
-                <Heading3Text>
-                    $123
-                </Heading3Text>
-            </StockWrapper>
-            <TableContainer>
-                    <UserOptions stocks={[]}></UserOptions>
-            </TableContainer>
-        </PageWrapper>
-    );
+return (
+  <PageWrapper>
+    <StockWrapper>
+      <TitleContainer>
+        <HeadingText>
+          Apple Inc.
+        </HeadingText>
+        <Heading2Text>
+          AAPL
+        </Heading2Text>
+      </TitleContainer>
+      <Heading3Text>
+        $123
+      </Heading3Text>
+    </StockWrapper>
+    <TableContainer>
+      <UserOptions stocks={[]}></UserOptions>
+    </TableContainer>
+  </PageWrapper>
+);
 };
 
 export default UserOpcijePage;

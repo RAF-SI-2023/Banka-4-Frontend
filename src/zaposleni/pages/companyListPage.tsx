@@ -78,14 +78,15 @@ const CompanyListPage: React.FC = () => {
     };
     fetchData();
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const checkAddCompanyPermission = () => {
     const token = localStorage.getItem('si_jwt');
-  
+
     // Check if the token is null
     if (token) {
       const decodedToken = jwtDecode(token) as DecodedToken;
-  
+
       if (hasPermission(decodedToken.permission, [EmployeePermissionsV2.create_firms])) {
         return true
       }
@@ -113,8 +114,8 @@ const CompanyListPage: React.FC = () => {
           <AppBar position="static" >
             <StyledTabs value={0}>
               <Tab label="Lista Firmi" />
-             {checkAddCompanyPermission()&& <ButtonTab onClick={handleCreateCompany}
-                label="Dodaj Firmu" />} 
+              {checkAddCompanyPermission() && <ButtonTab onClick={handleCreateCompany}
+                label="Dodaj Firmu" />}
             </StyledTabs>
           </AppBar>
           <CompanyList companies={companies} />

@@ -86,7 +86,6 @@ const CreateUserPage: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | { name?: string; value: unknown }>) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name as string]: value as string });
@@ -148,7 +147,7 @@ const CreateUserPage: React.FC = () => {
     }
     if (kreiranjeRacuna) {
       navigate(`/kreirajRacun${kreiranjeRacuna}&jmbg=${formData.jmbg}`)
-    } else{
+    } else {
       navigate(-1)
     }
   }

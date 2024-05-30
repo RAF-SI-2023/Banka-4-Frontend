@@ -1,6 +1,6 @@
 import React from 'react';
 import { Kredit } from './../../utils/types';
-import { TableContainer, Table, TableBody, TableRow, Paper } from '@mui/material';
+import { Table, TableBody } from '@mui/material';
 import { ScrollContainer, StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from '../../utils/tableStyles';
 
 

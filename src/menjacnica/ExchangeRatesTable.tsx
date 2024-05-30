@@ -22,9 +22,10 @@ const ExchangeRatesTable = () => {
     } catch (error) {
     }
   };
-//162
+  //162
   useEffect(() => {
     fetchExchange();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

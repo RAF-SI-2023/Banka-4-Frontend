@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@mui/material';
 import styled from 'styled-components';
-import { makeGetRequest } from '../../utils/apiRequest';
 
 const PageWrapper = styled.div`
   display: flex;

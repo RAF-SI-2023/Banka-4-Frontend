@@ -1,5 +1,5 @@
 import { Alert, AlertColor } from '@mui/material';
-import { ReactElement, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 const fadeIn = keyframes`

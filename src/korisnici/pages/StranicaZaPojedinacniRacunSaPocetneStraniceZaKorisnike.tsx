@@ -87,7 +87,7 @@ const AccountInfoPage: React.FC = () => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  
   return (
     <PageWrapper>
       <h2>Stranica za pojedinacni racun sa pocetnim stanjima</h2>

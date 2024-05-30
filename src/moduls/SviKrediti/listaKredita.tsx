@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Zaposlen from './Zaposlen';
 import NeZaposlen from './NeZaposlen';
 import { getMe } from '../../utils/getMe';
@@ -6,13 +6,12 @@ import Tabela from './TabelaKrediti';
 import { BankRoutes, Kredit } from './../../utils/types';
 import { useNavigate } from 'react-router-dom';
 import { makeGetRequest } from 'utils/apiRequest';
-import { Console } from 'console';
 
 const auth = getMe();
-let emailKorisnikov = "";
+// let emailKorisnikov = "";
 let zaposlen = false;
 if (auth) {
-    emailKorisnikov = auth.sub;
+    // emailKorisnikov = auth.sub;
     if (auth.permission)
         zaposlen = true;
 } else {
@@ -37,16 +36,17 @@ function ListaKredita() {
             setKredit(data);
         }
         fetchData()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const posalji = () => {
-        // Implementacija posalji funkcije
-    };
+    // const posalji = () => {
+    //     // Implementacija posalji funkcije
+    // };
 
     const handleRedClick = (kredit: Kredit) => {
         localStorage.setItem('selectedKredit', JSON.stringify(kredit));
 
-        if (kredit?.status != 'ne odobren') {
+        if (kredit?.status !== 'ne odobren') {
             navigate(`/pojedinacniKredit`);
         }
     };

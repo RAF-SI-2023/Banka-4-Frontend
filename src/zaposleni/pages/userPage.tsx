@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableRow, Paper, TableHead, Button, Alert } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableRow, Paper, TableHead, Button } from '@mui/material';
 import { Account, BankRoutes, UserRoutes } from '../../utils/types';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
@@ -93,6 +93,7 @@ const UserInfoTable: React.FC = () => {
       }
     };
     fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jmbg]);
 
   const navigate = useNavigate();

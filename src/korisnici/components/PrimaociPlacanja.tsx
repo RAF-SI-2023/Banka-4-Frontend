@@ -1,18 +1,13 @@
 import { useEffect, useState } from 'react';
-import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import Swal from 'sweetalert2';
-import { getJWT, makeApiRequest, makeGetRequest } from 'utils/apiRequest';
+import { makeApiRequest, makeGetRequest } from 'utils/apiRequest';
 import { BankRoutes, UserRoutes } from 'utils/types';
 import { getMe } from 'utils/getMe';
-import { AppBar, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableRow, Tabs } from '@mui/material';
+import { AppBar, IconButton, Tab, Table, TableBody, TableCell, TableRow, Tabs } from '@mui/material';
 import { ScrollContainer, StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from 'utils/tableStyles';
 import styled from 'styled-components';
 
@@ -149,7 +144,7 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
             "brojRacunaPrimaoca": e.brojRacunaPrimaoca.toString(),
             "broj": e.broj?.toString() || "",
             "sifraPlacanja": e.sifraPlacanja?.toString() || ""
-        })).find(rec => rec.id == id); // Find the recipient by ID
+        })).find(rec => rec.id === id); // Find the recipient by ID
 
 
         // Provide a fallback if recipientDetails is undefined
@@ -198,7 +193,7 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
             if (result.value) {
                 try {
                     //Dodavanje primaoca
-                    const apiResult = await makeApiRequest(UserRoutes.favorite_users, "POST", {
+                    await makeApiRequest(UserRoutes.favorite_users, "POST", {
                         id,
                         idKorisnika: getMe()?.id,
                         brojRacunaPosiljaoca: "444000000910000033", // Umesto svrhe placanja staviti da biram sa kog svojeg racuna saljem
@@ -270,7 +265,7 @@ export const PrimaociPlacanja: React.FC<PrimaociPlacanjaProps> = ({ setSelectedO
                                     <StyledTableCell>{recipient.broj}</StyledTableCell>
                                     <StyledTableCell>{recipient.sifraPlacanja}</StyledTableCell>
                                     <StyledTableCell>
-                                        <IconButton id={"primalacEdit" + index} edge="end" aria-label="edit" onClick={(e) => {
+                                        <IconButton id={"primalacEdit" + index} edge="end" aria-label="edit" onClick={(e : any) => {
                                             e.stopPropagation()
                                             handleEdit(recipient.id.toString())
                                         }}>

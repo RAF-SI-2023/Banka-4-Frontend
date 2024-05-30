@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect, ChangeEvent } from "react";
 import {
   TextField,
@@ -32,10 +33,12 @@ const CurrencyConverter: React.FC = () => {
       setCurrencyRates(rates);
     };
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     calculateConversion();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [amount, fromCurrency, toCurrency]);
 
   const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -89,7 +92,7 @@ const CurrencyConverter: React.FC = () => {
           id="conversionCurrencySelectFrom"
         >
           {currencyRates?.map((currency) => (
-            <MenuItem key={currency.currencyCode} id={"rateCurrencyItemFrom"+currency.currencyCode} value={currency.currencyCode}>
+            <MenuItem key={currency.currencyCode} id={"rateCurrencyItemFrom" + currency.currencyCode} value={currency.currencyCode}>
               {currency.currencyCode}
             </MenuItem>
           ))}
@@ -105,7 +108,7 @@ const CurrencyConverter: React.FC = () => {
 
         >
           {currencyRates?.map((currency) => (
-            <MenuItem key={currency.currencyCode} id={"rateCurrencyItemTo"+currency.currencyCode} value={currency.currencyCode}>
+            <MenuItem key={currency.currencyCode} id={"rateCurrencyItemTo" + currency.currencyCode} value={currency.currencyCode}>
               {currency.currencyCode}
             </MenuItem>
           ))}

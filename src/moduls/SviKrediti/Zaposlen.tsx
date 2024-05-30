@@ -1,8 +1,7 @@
 import { getMe } from '../../utils/getMe';
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { BankRoutes, EmployeePermissionsV2, Kredit } from './../../utils/types';
-import { makeApiRequest, makeGetRequest } from 'utils/apiRequest';
+import { makeGetRequest } from 'utils/apiRequest';
 import Tabela2 from './TabelaKrediti2';
 import { Button } from '@mui/material';
 import styled from 'styled-components';
@@ -14,10 +13,10 @@ export const ButtonStyle = styled(Button)`
 `;
 
 const auth = getMe();
-let emailKorisnikov = "";
+// let emailKorisnikov = "";
 
 if (auth) {
-    emailKorisnikov = auth.sub;
+    // emailKorisnikov = auth.sub;
 
 } else {
 }
@@ -31,18 +30,19 @@ function Zaposlen() {
             setKrediti(data)
         }
         fetchData()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const odobri = async (kredit: Kredit) => {
-        const data = await makeGetRequest(BankRoutes.credit_approve + "/" + kredit.id)
+        await makeGetRequest(BankRoutes.credit_approve + "/" + kredit.id)
 
 
     };
 
     const odbij = async (kredit: Kredit) => {
-        const data = await makeGetRequest(BankRoutes.credit_deny + "/" + kredit.id)
+        await makeGetRequest(BankRoutes.credit_deny + "/" + kredit.id)
     };
 
     const handleRedClick = (kredit: Kredit) => {

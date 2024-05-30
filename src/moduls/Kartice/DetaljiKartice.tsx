@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { Button, Card, Typography } from '@mui/material';
 import Swal from 'sweetalert2'; import { useSearchParams } from 'react-router-dom';
 import { BankRoutes, EmployeePermissionsV2, Kartica, TransakcijaKarticePrikaz } from '../../utils/types';
-import { getJWT, makeApiRequest, makeGetRequest } from '../../utils/apiRequest';
+import { makeApiRequest } from '../../utils/apiRequest';
 import ListaTransakcija from './ListaTransakcija';
 import { getMe } from '../../utils/getMe';
 import { hasPermission } from 'utils/permissions';
@@ -48,7 +49,7 @@ export default function DetaljiKartice() {
   const handleStatusChange = async (newStatus: string) => {
     if (kartica && await updateKarticaStatus(kartica.number, newStatus)) {
       Swal.fire('Uspeh!', `Kartica je ${newStatus}.`, 'success');
-      if (newStatus != 'blokirana' && newStatus != 'aktivna' && newStatus != 'deaktivirana')
+      if (newStatus !== 'blokirana' && newStatus !== 'aktivna' && newStatus !== 'deaktivirana')
         return;
       setKartica({ ...kartica, status: newStatus });
     } else {
