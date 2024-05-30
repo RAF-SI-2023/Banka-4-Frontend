@@ -47,10 +47,11 @@ const Verifikacija: React.FC = () => {
     if (user && user.sub) {
       setEmailVlasnika(user.sub)
     }
-    const res = await makeApiRequest(`${UserRoutes.generate_otp}?email=${user?.sub}`, "POST")
+    const res = await makeApiRequest(`${UserRoutes.generate_otp}?email=${user?.sub}`, "POST", {}, false, false)
     if (res) {
       setVerificationSuccess(true);
       setGeneratedCode(res);
+    } else {
     }
   }
 

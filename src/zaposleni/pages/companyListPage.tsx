@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { makeGetRequest } from '../../utils/apiRequest';
 import { Context } from 'App';
+import { hasPermission } from 'utils/permissions';
+import { jwtDecode } from 'jwt-decode';
+import { EmployeePermissionsV2 } from 'utils/types';
 
 const StyledTabs = styled(Tabs)`
   background-color: #f2f2f2;
@@ -58,6 +61,9 @@ const HeadingAndButtonWrapper = styled.div`
   margin-bottom: 86px; 
 `
 
+interface DecodedToken {
+  permission: number;
+}
 const CompanyListPage: React.FC = () => {
   const [companies, setCompanies] = useState([])
   const ctx = useContext(Context);
@@ -68,13 +74,27 @@ const CompanyListPage: React.FC = () => {
         const companies = await makeGetRequest('/racuni/izlistajSveFirme', ctx);
         setCompanies(companies);
       } catch (error) {
-        console.error('Error fetching company list:', error);
       }
     };
     fetchData();
 
   }, []);
-
+  const checkAddCompanyPermission = () => {
+    const token = localStorage.getItem('si_jwt');
+  
+    // Check if the token is null
+    if (token) {
+      const decodedToken = jwtDecode(token) as DecodedToken;
+  
+      if (hasPermission(decodedToken.permission, [EmployeePermissionsV2.create_firms])) {
+        return true
+      }
+      return false
+    } else {
+      // Handle the case where the token is null (optional)
+      return false
+    }
+  };
   const navigate = useNavigate();
 
   const handleCreateCompany = (event: any) => {
@@ -93,8 +113,8 @@ const CompanyListPage: React.FC = () => {
           <AppBar position="static" >
             <StyledTabs value={0}>
               <Tab label="Lista Firmi" />
-              <ButtonTab onClick={handleCreateCompany}
-                label="Dodaj Firmu" />
+             {checkAddCompanyPermission()&& <ButtonTab onClick={handleCreateCompany}
+                label="Dodaj Firmu" />} 
             </StyledTabs>
           </AppBar>
           <CompanyList companies={companies} />

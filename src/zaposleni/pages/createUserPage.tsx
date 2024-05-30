@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { TextField, Button, FormControl, InputLabel, Alert, Select, MenuItem } from '@mui/material';
+import { TextField, Button, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { makeApiRequest } from '../../utils/apiRequest';
 import { UserRoutes } from 'utils/types';
-import KAlert from 'utils/alerts';
 import { Context } from 'App';
 
 const PageWrapper = styled.div`
@@ -81,7 +80,6 @@ const CreateUserPage: React.FC = () => {
           setKreiranjeRacuna(`?tip=${tip}`)
         }
       } catch (error) {
-        console.error('Error fetching user:', error);
       }
     };
     fetchData();

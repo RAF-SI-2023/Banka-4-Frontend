@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { TextField, Button, Alert, FormControl, InputLabel, Select, MenuItem, FormControlLabel, Grid, Checkbox } from '@mui/material';
+import { TextField, Button, FormControl, InputLabel, Select, MenuItem, FormControlLabel, Grid, Checkbox } from '@mui/material';
 import styled from 'styled-components';
-import { EmployeePermissions, UserRoutes } from '../../utils/types';
+import { EmployeePermissionsV2, UserRoutes } from '../../utils/types';
 import { makeApiRequest, makeGetRequest } from '../../utils/apiRequest';
 import { encodePermissions } from '../../utils/permissions';
 import KAlert from 'utils/alerts';
@@ -57,7 +57,7 @@ const CheckBoxForm = styled.div`
 `
 
 type Permisije = {
-  naziv: EmployeePermissions,
+  naziv: EmployeePermissionsV2,
   vrednost: boolean
 }
 interface editEmployeeData {
@@ -87,13 +87,37 @@ const EditEmployeePage: React.FC = () => {
     permisije: 0,
   });
   const [permissionCheckboxes, setPermissionCheckboxes] = useState<Permisije[]>([
-    { naziv: EmployeePermissions.listanje_korisnika, vrednost: false },
-    { naziv: EmployeePermissions.dodavanje_korisnika, vrednost: false },
-    { naziv: EmployeePermissions.editovanje_korisnika, vrednost: false },
-    { naziv: EmployeePermissions.deaktiviranje_korisnika, vrednost: false },
-    { naziv: EmployeePermissions.kreiranje_racuna, vrednost: false },
-    { naziv: EmployeePermissions.editovanje_racuna, vrednost: false },
-    { naziv: EmployeePermissions.brisanje_racuna, vrednost: false }
+    { naziv: EmployeePermissionsV2.list_users, vrednost: false },
+    { naziv: EmployeePermissionsV2.create_users, vrednost: false },
+    { naziv: EmployeePermissionsV2.edit_users, vrednost: false },
+    { naziv: EmployeePermissionsV2.deactivate_users, vrednost: false },
+    { naziv: EmployeePermissionsV2.list_workers, vrednost: false },
+    { naziv: EmployeePermissionsV2.create_workers, vrednost: false },
+    { naziv: EmployeePermissionsV2.edit_workers, vrednost: false },
+    { naziv: EmployeePermissionsV2.deactivate_workers, vrednost: false },
+    { naziv: EmployeePermissionsV2.list_firms, vrednost: false },
+    { naziv: EmployeePermissionsV2.create_firms, vrednost: false },
+    { naziv: EmployeePermissionsV2.edit_firms, vrednost: false },
+    { naziv: EmployeePermissionsV2.deactivate_firms, vrednost: false },
+    { naziv: EmployeePermissionsV2.list_bank_accounts, vrednost: false },
+    { naziv: EmployeePermissionsV2.create_bank_accounts, vrednost: false },
+    { naziv: EmployeePermissionsV2.deactivate_bank_accounts, vrednost: false },
+    { naziv: EmployeePermissionsV2.list_credits, vrednost: false },
+    { naziv: EmployeePermissionsV2.accept_redits, vrednost: false },
+    { naziv: EmployeePermissionsV2.deny_credits, vrednost: false },
+    { naziv: EmployeePermissionsV2.list_cards, vrednost: false },
+    { naziv: EmployeePermissionsV2.activate_cards, vrednost: false },
+    { naziv: EmployeePermissionsV2.deactivate_cards, vrednost: false },
+    { naziv: EmployeePermissionsV2.block_cards, vrednost: false },
+    { naziv: EmployeePermissionsV2.list_orders, vrednost: false },
+    { naziv: EmployeePermissionsV2.accept_orders, vrednost: false },
+    { naziv: EmployeePermissionsV2.deny_orders, vrednost: false },
+    { naziv: EmployeePermissionsV2.exchange_access, vrednost: false },
+    { naziv: EmployeePermissionsV2.payment_access, vrednost: false },
+    { naziv: EmployeePermissionsV2.action_access, vrednost: false },
+    { naziv: EmployeePermissionsV2.option_access, vrednost: false },
+    { naziv: EmployeePermissionsV2.order_access, vrednost: false },
+    { naziv: EmployeePermissionsV2.termin_access, vrednost: false }
   ])
   const ctx = useContext(Context);
 
@@ -119,7 +143,6 @@ const EditEmployeePage: React.FC = () => {
         }
 
       } catch (error) {
-        console.error('Error fetching user:', error);
       }
     };
     fetchData();

@@ -61,8 +61,12 @@ export const makeApiRequest = async (
         });
 
         if (response.ok) {
-            const res = noJson ? response : await response.json()// fix this shit
-            return res
+            try {
+                const res = noJson ? response : await response.json()// fix this shit
+                return res
+            } catch(e){
+            }
+            return response;
         }
         if (!response.ok) {
             const contentType = response.headers.get('Content-Type');
@@ -82,11 +86,10 @@ export const makeApiRequest = async (
                 const res = await response.text();
                 ctx?.setErrors?.([...ctx?.errors, res])
                 // throw new Error(res);
+                return res
             }
         }
-        console.log('Big YAY');
     } catch (error) {
-        console.error('BIG SAD:', error);
     }
 }
 
@@ -126,6 +129,5 @@ export const makeGetRequest = async (route: string, ctx?: ContextType | null) =>
 
         return await response.json()
     } catch (error) {
-        console.error('BIG SAD:', error);
     }
 }

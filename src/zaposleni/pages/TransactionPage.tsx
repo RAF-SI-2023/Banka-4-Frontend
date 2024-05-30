@@ -70,7 +70,6 @@ const Transaction: React.FC = () => {
           setTransakcija(transakcija)
         }
       } catch (error) {
-        console.error('Error fetching user:', error);
       }
     };
     fetchData();

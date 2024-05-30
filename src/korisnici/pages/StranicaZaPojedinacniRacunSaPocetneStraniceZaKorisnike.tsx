@@ -79,10 +79,8 @@ const AccountInfoPage: React.FC = () => {
             setSredstva(sredstva);
           }
         } catch (error) {
-          console.error('Error fetching user:', error);
         }
       } else {
-        console.log("Nema podataka o nalogu u Local Storage-u.");
       }
     };
 

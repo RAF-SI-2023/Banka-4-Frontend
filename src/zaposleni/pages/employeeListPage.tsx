@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { makeGetRequest } from '../../utils/apiRequest';
 import { Context } from 'App';
+import { hasPermission } from 'utils/permissions';
+import { jwtDecode } from 'jwt-decode';
+import { EmployeePermissionsV2 } from 'utils/types';
 
 const StyledTabs = styled(Tabs)`
   background-color: #f2f2f2;
@@ -57,6 +60,9 @@ const HeadingAndButtonWrapper = styled.div`
   max-width: 1200px; 
   margin-bottom: 86px; 
 `
+interface DecodedToken {
+  permission: number;
+}
 
 const EmployeeListPage: React.FC = () => {
   const [emp, setEmp] = useState([])
@@ -68,13 +74,27 @@ const EmployeeListPage: React.FC = () => {
         const employees = await makeGetRequest('/radnik', ctx);
         setEmp(employees);
       } catch (error) {
-        console.error('Error fetching employee list:', error);
       }
     };
     fetchData();
 
   }, []);
-
+  const checkAddEmployeePermission = () => {
+    const token = localStorage.getItem('si_jwt');
+  
+    // Check if the token is null
+    if (token) {
+      const decodedToken = jwtDecode(token) as DecodedToken;
+  
+      if (hasPermission(decodedToken.permission, [EmployeePermissionsV2.create_workers])) {
+        return true
+      }
+      return false
+    } else {
+      // Handle the case where the token is null (optional)
+      return false
+    }
+  };
   const navigate = useNavigate();
 
   const handleCreateEmployee = (event: any) => {
@@ -93,7 +113,7 @@ const EmployeeListPage: React.FC = () => {
           <AppBar position="static" >
           <StyledTabs value={0}>
             <Tab label="Lista Zaposlenih" id="lista-zaposlenih-tab" />
-            <ButtonTab onClick={handleCreateEmployee} label="Dodaj Zaposlenog" id="dodaj-zaposlenog-tab" />
+           {checkAddEmployeePermission() && <ButtonTab onClick={handleCreateEmployee} label="Dodaj Zaposlenog" id="dodaj-zaposlenog-tab" />}
           </StyledTabs>
 
           </AppBar>

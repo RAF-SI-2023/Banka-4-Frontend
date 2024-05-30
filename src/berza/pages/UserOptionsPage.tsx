@@ -59,7 +59,6 @@ const UserOpcijePage: React.FC = () => {
     //         const companies = await makeGetRequest('/racuni/izlistajSveFirme');
     //         setCompanies(companies)
     //       } catch (error) {
-    //         console.error('Error fetching user list:', error);
     //       }
     //     };
     //     fetchData();

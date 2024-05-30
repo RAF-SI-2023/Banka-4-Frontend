@@ -105,8 +105,6 @@ const ExchangeMainSection = ({
       } else if (/[^0-9]/.test(iznos2)) { // Provera da li je iznos2 broj
         setError("Iznos mora biti numerička vrednost.");
       } else {
-        console.log("AAAAAAAAAAAAAA");
-        console.log(parseFloat(iznos2.trim()));
       setDetaljiTransfera(true);
       }
 
@@ -118,7 +116,6 @@ const ExchangeMainSection = ({
         setExhanges(data);
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
     }
   };
 
@@ -133,7 +130,6 @@ const ExchangeMainSection = ({
         setAccounts(data);
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
     }
   };
 

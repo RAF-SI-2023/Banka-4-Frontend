@@ -38,8 +38,12 @@ const VerifikacijaPlacanja = () => {
 
         try {
             const resultOtp = await makeApiRequest(`${UserRoutes.validate_otp}?email=${email}&password=${verifikacioniKod}`, "POST", {}, false, true)
-            if ("Valid OTP" != await resultOtp.text())
-                return Swal.fire("Greška", `<div id="resultfromswal">Pogrešan kod</div>`, "error")
+            if (resultOtp) {
+                const res = await resultOtp.text()
+                if ("Valid OTP" !== res)
+                    return Swal.fire("Greška", `<div id="resultfromswal">Pogrešan kod</div>`, "error")
+            }else {
+              }
         }
         catch (e) {
             return Swal.fire("Greška", `<div id="resultfromswal">Pogrešan kod</div>`, "error")
@@ -54,8 +58,7 @@ const VerifikacijaPlacanja = () => {
                 localStorage.removeItem("uplataPodaci")
             }
             else {
-                const rac = await data.text()
-                console.log(rac);
+                //const rac = await data.text()
                 localStorage.removeItem("uplataPodaci")
                 Swal.fire("Uspeh", `<div id="resultfromswal">Uspešno plaćanje</div>`, "success").then(() => {
                     window.location.reload()
@@ -71,8 +74,7 @@ const VerifikacijaPlacanja = () => {
                 localStorage.removeItem("prenosPodaci")
             }
             else {
-                const rac = await data.text()
-                console.log(rac);
+                //const rac = await data.text()
                 localStorage.removeItem("prenosPodaci")
                 Swal.fire("Uspeh", `<div id="resultfromswal">Uspešan prenos</div>`, "success").then(() => {
                     window.location.reload()

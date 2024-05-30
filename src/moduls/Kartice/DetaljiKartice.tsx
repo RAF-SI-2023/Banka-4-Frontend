@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Card, Typography } from '@mui/material';
 import Swal from 'sweetalert2'; import { useSearchParams } from 'react-router-dom';
-import { BankRoutes, Kartica, TransakcijaKarticePrikaz } from '../../utils/types';
+import { BankRoutes, EmployeePermissionsV2, Kartica, TransakcijaKarticePrikaz } from '../../utils/types';
 import { getJWT, makeApiRequest, makeGetRequest } from '../../utils/apiRequest';
 import ListaTransakcija from './ListaTransakcija';
 import { getMe } from '../../utils/getMe';
+import { hasPermission } from 'utils/permissions';
 
 const updateKarticaStatus = async (number: string, status: string): Promise<boolean> => {
   const result = await makeApiRequest(`${BankRoutes.cards}/${status}/${number}`, "GET", undefined, undefined, true);
-  console.log(result);
   return result ? true : false
 };
 
@@ -22,10 +22,9 @@ export default function DetaljiKartice() {
   const number = searchParams.get("number");
   const me = getMe();
 
-  
+
   useEffect(() => {
     if (number) {
-      console.log(number);
       const data = localStorage.getItem('selectedKartica');
       if (data) {
         const kartica = JSON.parse(data)
@@ -35,7 +34,6 @@ export default function DetaljiKartice() {
       //ne postoje jos uvek
       /*makeGetRequest("/cards/transactions/" + id)
         .then((result) => {
-          console.log(result);
           if (!result)
             return alert("Greška pri preuzimanju transakcija");
 
@@ -72,9 +70,10 @@ export default function DetaljiKartice() {
       <Typography>Limit: {kartica.cardLimit}</Typography>
       <Typography>Status: {kartica.status}</Typography>
       <Button onClick={() => setShowDetails(!showDetails)}>{showDetails ? "Sakrij informacije" : "Prikaži informacije"}</Button>
-      {me?.permission ? kartica.status !== 'aktivna' && <Button onClick={() => handleStatusChange('aktivna')}>Aktiviraj</Button> : null}
-      {me?.permission ? kartica.status !== 'deaktivirana' && <Button onClick={() => handleStatusChange('deaktivirana')}>Deaktiviraj</Button> : null}
-      {kartica.status !== 'blokirana' && <Button onClick={() => handleStatusChange('blokirana')}>Blokiraj</Button>}
+
+      {me ? (hasPermission(me.permission, [EmployeePermissionsV2.activate_cards]) ? <Button onClick={() => handleStatusChange('aktivna')}>Aktiviraj</Button> : null) : null}
+      {me ? (hasPermission(me.permission, [EmployeePermissionsV2.deactivate_cards]) ? <Button onClick={() => handleStatusChange('deaktivirana')}>Deaktiviraj</Button> : null) : null}
+      {me ? (hasPermission(me.permission, [EmployeePermissionsV2.block_cards]) || !me.permission ? <Button onClick={() => handleStatusChange('blokirana')}>Blokiraj</Button> : null) : null}
     </Card>
     <ListaTransakcija transakcije={transakcije}></ListaTransakcija>
   </div>

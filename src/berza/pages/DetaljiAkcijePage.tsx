@@ -183,7 +183,6 @@ const DetaljiAkcije: React.FC = () => {
           }
         }
       } catch (error) {
-        console.error('Error fetching user list:', error);
       }
     };
     fetchData();

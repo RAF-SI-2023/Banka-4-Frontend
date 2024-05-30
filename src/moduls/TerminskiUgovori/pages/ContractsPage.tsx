@@ -64,7 +64,6 @@ const ContractsPage = () => {
                         setContracts(con)
                     }
                 } catch (error) {
-                    console.error('Error fetching user list:', error);
                 }
             }
         };

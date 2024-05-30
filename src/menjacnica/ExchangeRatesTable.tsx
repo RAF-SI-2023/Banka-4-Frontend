@@ -20,7 +20,6 @@ const ExchangeRatesTable = () => {
         setCurrencyRates(data);
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
     }
   };
 //162
