@@ -42,6 +42,7 @@ import SpecificContractListPage from 'moduls/TerminskiUgovori/pages/SpecificCont
 // import WSTest from 'WSTest';
 import { Dispatch, SetStateAction, createContext, useEffect, useState } from 'react';
 import CompanyInfoTable from 'zaposleni/pages/companyPage';
+import HartijeOdVrednosti from "berza/pages/HartijeOdVrednosti";
 
 const fadeIn = keyframes`
   from {
@@ -58,8 +59,7 @@ const AlertWrapperWrapper = styled.div`
   position: absolute;
   top: 100px;
   right: 20px;
-
-`
+`;
 const AlertWrapper = styled.div`
   animation: ${fadeIn} 0.3s ease;
   min-width: 300px;
@@ -68,12 +68,11 @@ const AlertWrapper = styled.div`
   padding-left: 20px;
   padding-right: 20px;
   min-height: 50px;
-  background-color: #CC0000; // soviet red tho
-  color: #FFD700;
+  background-color: #cc0000; // soviet red tho
+  color: #ffd700;
   font-weight: bold;
   border-radius: 10px;
-;
-`
+`;
 const SvgImage = styled.img`
   width: 100%;
   height: 100%;
@@ -83,27 +82,25 @@ const ImgContainer = styled.div`
   height: 30px;
   width: 30px;
   padding-bottom: 10px;
-`
+`;
 
-
-window.addEventListener('beforeunload', () => {
-  localStorage.setItem('tokenRemovalTimestamp', Date.now().toString());
+window.addEventListener("beforeunload", () => {
+  localStorage.setItem("tokenRemovalTimestamp", Date.now().toString());
 });
 
 const VideoWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
 export interface ContextType {
   errors: Array<string>;
   setErrors: Dispatch<SetStateAction<Array<string>>>;
 }
 
-
 export const Context = createContext<ContextType | null>(null);
-const auth = getMe()
+const auth = getMe();
 function App() {
   const [open, setOpen] = useState(true);
 
@@ -120,44 +117,58 @@ function App() {
     return () => clearTimeout(timeoutId);
   }, [errors]);
 
-
   return (
     <>
       {/* RIP JWT STOP */}
-      {!auth?.id &&
+      {!auth?.id && (
         <Dialog open={open} onClose={handleClose}>
-          <Box sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+          <Box sx={{ p: 2, display: "flex", flexDirection: "column" }}>
             <VideoWrapper>
               <video autoPlay muted height="300" controls>
-                <source src="https://i.imgur.com/bQh6A8d.mp4" type="video/mp4" />
+                <source
+                  src="https://i.imgur.com/bQh6A8d.mp4"
+                  type="video/mp4"
+                />
                 Your browser does not support the video tag.
               </video>
             </VideoWrapper>
-            <Typography variant="body2" sx={{ mt: 2, marginLeft: 'auto', marginRight: 'auto' }}>
+            <Typography
+              variant="body2"
+              sx={{ mt: 2, marginLeft: "auto", marginRight: "auto" }}
+            >
               JWT STOP
             </Typography>
-            <Button id='exitPosionPill' onClick={handleClose}>Exit</Button>
+            <Button id="exitPosionPill" onClick={handleClose}>
+              Exit
+            </Button>
           </Box>
         </Dialog>
-      }
+      )}
       {/* <WSTest></WSTest> */}
 
       <Context.Provider value={{ errors, setErrors }}>
-
         <AlertWrapperWrapper>
-          {errors.length > 0 && errors[0] !== "" && errors?.map((err: string) => (
-            <AlertWrapper key={err}>
-              <ImgContainer>
-                <SvgImage src={process.env.PUBLIC_URL + "/ussr.svg"} alt="ussr" />
-              </ImgContainer>
-              {err}
-            </AlertWrapper>
-          ))}
+          {errors.length > 0 &&
+            errors[0] !== "" &&
+            errors?.map((err: string) => (
+              <AlertWrapper key={err}>
+                <ImgContainer>
+                  <SvgImage
+                    src={process.env.PUBLIC_URL + "/ussr.svg"}
+                    alt="ussr"
+                  />
+                </ImgContainer>
+                {err}
+              </AlertWrapper>
+            ))}
         </AlertWrapperWrapper>
         <BrowserRouter>
           {auth?.id && <Navbar></Navbar>}
           <Routes>
-            <Route path="/" element={auth?.id ? <UserHomePage /> : <LoginPage />} />
+            <Route
+              path="/"
+              element={auth?.id ? <UserHomePage /> : <LoginPage />}
+            />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegistrationPage />} />
             <Route path="/listaKorisnika" element={auth?.id ? <UserListPage /> : <LoginPage />} />
@@ -174,24 +185,88 @@ function App() {
             <Route path="/kreirajFirmu" element={auth?.id ? <CreateCompanyPage /> : <LoginPage />} />
             <Route path="/izmeniFirmu" element={auth?.id ? <EditCompanyPage /> : <LoginPage />} />
             <Route path="/resetPassword" element={<ResetPasswordPage />} />
-            <Route path="/verifikacija" element={auth?.id ? <Verifikacija /> : <LoginPage />} />
-            <Route path="/listaKredita" element={auth?.id ? <ListaKredita /> : <LoginPage />} />
-            <Route path="/placanja" element={auth?.id ? <Placanje /> : <LoginPage />} />
-            <Route path="/kartice" element={auth?.id ? <PregledKartica /> : <LoginPage />} />
-            <Route path="/dodaj-karticu" element={auth?.id ? <DodajKarticu /> : <LoginPage />} />
-            <Route path="/kartica" element={auth?.id ? <DetaljiKartice /> : <LoginPage />} />
-            <Route path="/trazenjeKredita" element={auth?.id ? <TraziKreditStranica /> : <LoginPage />} />
-            <Route path="/pojedinacniKredit" element={auth?.id ? <PojedinacniKreditStranica /> : <LoginPage />} />
-            <Route path="/stranica-za-pojedinacni-racun" element={auth?.id ? <StranicaZaPojedinacniRacunSaPocetneStraniceZaKorisnike /> : <LoginPage />} />
-            <Route path="/opcije" element={auth?.id ? <OpcijePage /> : <LoginPage />} />
-            <Route path="/userOpcije" element={auth?.id ? <UserOpcijePage /> : <LoginPage />} />
-            <Route path="/transakcija" element={auth?.id ? <Transaction /> : <LoginPage />} />
-            <Route path="/akcije" element={auth?.id ? <AkcijePage /> : <LoginPage />} />
-            <Route path="/detaljiAkcije" element={auth?.id ? <DetaljiAkcije /> : <LoginPage />} />
-            <Route path="/menjacnica" element={auth?.id ? <ExchangePage /> : <LoginPage />} />
-            <Route path="/terminski" element={auth?.id ? <TerminskiUgovoriPage /> : <LoginPage />} />
-            <Route path="/contracts" element={auth?.id ? <AgriculturePage /> : <LoginPage />} />
-            <Route path="/specContract" element={auth?.id ? <SpecificContractListPage /> : <LoginPage />} />
+            <Route
+              path="/verifikacija"
+              element={auth?.id ? <Verifikacija /> : <LoginPage />}
+            />
+            <Route
+              path="/listaKredita"
+              element={auth?.id ? <ListaKredita /> : <LoginPage />}
+            />
+            <Route
+              path="/placanja"
+              element={auth?.id ? <Placanje /> : <LoginPage />}
+            />
+            <Route
+              path="/kartice"
+              element={auth?.id ? <PregledKartica /> : <LoginPage />}
+            />
+            <Route
+              path="/dodaj-karticu"
+              element={auth?.id ? <DodajKarticu /> : <LoginPage />}
+            />
+            <Route
+              path="/kartica"
+              element={auth?.id ? <DetaljiKartice /> : <LoginPage />}
+            />
+            <Route
+              path="/trazenjeKredita"
+              element={auth?.id ? <TraziKreditStranica /> : <LoginPage />}
+            />
+            <Route
+              path="/pojedinacniKredit"
+              element={auth?.id ? <PojedinacniKreditStranica /> : <LoginPage />}
+            />
+            <Route
+              path="/stranica-za-pojedinacni-racun"
+              element={
+                auth?.id ? (
+                  <StranicaZaPojedinacniRacunSaPocetneStraniceZaKorisnike />
+                ) : (
+                  <LoginPage />
+                )
+              }
+            />
+            <Route
+              path="/opcije"
+              element={auth?.id ? <OpcijePage /> : <LoginPage />}
+            />
+            <Route
+              path="/userOpcije"
+              element={auth?.id ? <UserOpcijePage /> : <LoginPage />}
+            />
+            <Route
+              path="/transakcija"
+              element={auth?.id ? <Transaction /> : <LoginPage />}
+            />
+            <Route
+              path="/akcije"
+              element={auth?.id ? <AkcijePage /> : <LoginPage />}
+            />
+            <Route
+              path="/detaljiAkcije"
+              element={auth?.id ? <DetaljiAkcije /> : <LoginPage />}
+            />
+            <Route
+              path="/menjacnica"
+              element={auth?.id ? <ExchangePage /> : <LoginPage />}
+            />
+            <Route
+              path="/terminski"
+              element={auth?.id ? <TerminskiUgovoriPage /> : <LoginPage />}
+            />
+            <Route
+              path="/contracts"
+              element={auth?.id ? <AgriculturePage /> : <LoginPage />}
+            />
+            <Route
+              path="/specContract"
+              element={auth?.id ? <SpecificContractListPage /> : <LoginPage />}
+            />
+            <Route
+              path="/hartije"
+              element={auth?.id ? <HartijeOdVrednosti /> : <LoginPage />}
+            />
 
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
@@ -200,6 +275,5 @@ function App() {
     </>
   );
 }
-
 
 export default App;

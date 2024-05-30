@@ -37,4 +37,3 @@ export const getApiUrl = (route: string) => {
     
     return process.env.REACT_APP_BERZA_URL
 }
->>>>>>> 64c665a (Env update (#182))

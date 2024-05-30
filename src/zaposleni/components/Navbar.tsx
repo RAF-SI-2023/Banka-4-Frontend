@@ -53,12 +53,14 @@ const ImgContainer = styled.div`
 `;
 
 const DropdownButton = styled.div`
-  color: white!important;
-  font-size: 25px!important;
-  text-decoration: none!important;
-  padding: 4px 10px!important;
-  font-weight: normal!important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif!important;
+  color: white !important;
+  font-size: 25px !important;
+  text-decoration: none !important;
+  padding: 4px 10px !important;
+  font-weight: normal !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif !important;
   &:hover {
     background-color: #2c4975ea;
     padding-bottom: 4px; // To avoid jumping when adding border
@@ -78,6 +80,7 @@ const pages = [
   { name: "Kartice", path: "kartice", permissions: [EmployeePermissionsV2.list_cards] },
   { name: "Krediti", path: "listaKredita", permissions: [EmployeePermissionsV2.list_credits] },
   { name: "Verifikacija", path: "/verifikacija", permissions: [EmployeePermissionsV2.payment_access] }
+  { name: "Hartije od vrednosti", path: "hartije" },
 
 
     //{ name: "Plaćanja", path: "/placanja", permissions: [EmployeePermissionsV2.payment_access] },
@@ -161,10 +164,10 @@ function Navbar() {
             
             <DropdownButton
               id="basic-button"
-              aria-controls={open ? 'basic-menu' : undefined}
+              aria-controls={open ? "basic-menu" : undefined}
               aria-haspopup="true"
-              aria-expanded={open ? 'true' : undefined}
-              style={{ textTransform: 'none' }}
+              aria-expanded={open ? "true" : undefined}
+              style={{ textTransform: "none" }}
               onClick={handleClick}
             >
               Berza
@@ -175,7 +178,7 @@ function Navbar() {
               open={open}
               onClose={() => setAnchorEl(null)}
               MenuListProps={{
-                'aria-labelledby': 'basic-button',
+                "aria-labelledby": "basic-button",
               }}
             >
               <MenuItem onClick={() => { navigate('/akcije'); setAnchorEl(null) }}>Akcije</MenuItem>
