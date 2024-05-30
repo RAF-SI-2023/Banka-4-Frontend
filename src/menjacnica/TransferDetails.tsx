@@ -87,7 +87,7 @@ const TransferDetails = ({
           false,
           true
         );
-        const rac = await data.text();
+        await data.text();
         localStorage.removeItem("prenosPodaci");
       } catch (error) {
       }

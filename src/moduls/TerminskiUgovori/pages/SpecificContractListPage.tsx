@@ -2,7 +2,6 @@ import { AppBar, Paper, Tab, Table, TableBody, TableContainer, TableRow, Tabs } 
 import styled from 'styled-components';
 import { StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from 'utils/tableStyles';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import BuyStockPopup from 'berza/components/BuyStockPopup';
 
 const PageWrapper = styled.div`
@@ -62,7 +61,6 @@ const ButtonTab = styled(Tab)`
 
 const SpecificContractListPage = () => {
     const [type, setType] = useState('');
-    const navigate = useNavigate();
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);

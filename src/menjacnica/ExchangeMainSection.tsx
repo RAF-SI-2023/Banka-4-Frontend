@@ -5,7 +5,6 @@ import { makeGetRequest } from "../utils/apiRequest";
 import styled from "styled-components";
 import { Account, BankRoutes, ExchangeRate } from "utils/types";
 import { Box, Button, MenuItem, TextField, Typography } from "@mui/material";
-import { Console } from "console";
 
 const StyledParagraph = styled.p`
   margin-left: 2.5px;
@@ -91,22 +90,23 @@ const ExchangeMainSection = ({
   useEffect(() => {
     fetchAccounts();
     fetchExchange();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSetError = () => {
-     
-      // Provera pojedinačnih polja
-      if (!saRacuna2) {
-        setError("Morate da unesete broj računa sa kog šaljete novac.");
-      } else if (!naRacun2) {
-        setError("Morate da unesete broj računa na koji šaljete novac.");
-      } else if (!iznos2 || iznos2.trim() === '') {
-        setError("Morate da unesete iznos.");
-      } else if (/[^0-9]/.test(iznos2)) { // Provera da li je iznos2 broj
-        setError("Iznos mora biti numerička vrednost.");
-      } else {
+
+    // Provera pojedinačnih polja
+    if (!saRacuna2) {
+      setError("Morate da unesete broj računa sa kog šaljete novac.");
+    } else if (!naRacun2) {
+      setError("Morate da unesete broj računa na koji šaljete novac.");
+    } else if (!iznos2 || iznos2.trim() === '') {
+      setError("Morate da unesete iznos.");
+    } else if (/[^0-9]/.test(iznos2)) { // Provera da li je iznos2 broj
+      setError("Iznos mora biti numerička vrednost.");
+    } else {
       setDetaljiTransfera(true);
-      }
+    }
 
   };
   const fetchExchange = async () => {
@@ -247,7 +247,7 @@ const ExchangeMainSection = ({
           : {findExchangeRate(saRacuna2?.currency, naRacun2?.currency)}
         </StyledDiv>
         <StyledButtonsDiv>
-          
+
           <StyledButton
             type="submit"
             id="nastaviButton"

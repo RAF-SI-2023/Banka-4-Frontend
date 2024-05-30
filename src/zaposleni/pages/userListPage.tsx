@@ -67,7 +67,6 @@ interface DecodedToken {
 
 const UserListPage: React.FC = () => {
   const [usrs, setUsrs] = useState([])
-  const [hasAddUserPermission, setHasAddUserPermission] = useState(false)
   const ctx = useContext(Context);
 
   useEffect(() => {
@@ -80,54 +79,55 @@ const UserListPage: React.FC = () => {
     };
     fetchData();
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const checkAddUserPermission = () => {
-    const token = localStorage.getItem('si_jwt');
-  
-    // Check if the token is null
-    if (token) {
-      const decodedToken = jwtDecode(token) as DecodedToken;
-  
-      if (hasPermission(decodedToken.permission, [EmployeePermissionsV2.create_users])) {
-        return true
-      }
-      return false
-    } else {
-      // Handle the case where the token is null (optional)
-      return false
+const checkAddUserPermission = () => {
+  const token = localStorage.getItem('si_jwt');
+
+  // Check if the token is null
+  if (token) {
+    const decodedToken = jwtDecode(token) as DecodedToken;
+
+    if (hasPermission(decodedToken.permission, [EmployeePermissionsV2.create_users])) {
+      return true
     }
-  };
-  
+    return false
+  } else {
+    // Handle the case where the token is null (optional)
+    return false
+  }
+};
 
-  const navigate = useNavigate();
 
-  const handleCreateUser = (event: any) => {
-    navigate(`/kreirajKorisnika`)
-  };
+const navigate = useNavigate();
 
-  return (
-    <PageWrapper>
+const handleCreateUser = (event: any) => {
+  navigate(`/kreirajKorisnika`)
+};
 
-      <HeadingAndButtonWrapper>
-        <HeadingText>Lista Korisnika</HeadingText>
-      </HeadingAndButtonWrapper>
+return (
+  <PageWrapper>
 
-      <TableWrapper>
-        <StyledTable>
-          <AppBar position="static" >
-            <StyledTabs value={0}>
-              <Tab label="Lista Korisnika" />
-              {checkAddUserPermission() && <ButtonTab id="dodajKorisnikaDugme" onClick={handleCreateUser}
-                label="Dodaj Korisnika" />}
-              
-            </StyledTabs>
-          </AppBar>
-          <UserList users={usrs} />
-        </StyledTable>
-      </TableWrapper>
-    </PageWrapper>
-  );
+    <HeadingAndButtonWrapper>
+      <HeadingText>Lista Korisnika</HeadingText>
+    </HeadingAndButtonWrapper>
+
+    <TableWrapper>
+      <StyledTable>
+        <AppBar position="static" >
+          <StyledTabs value={0}>
+            <Tab label="Lista Korisnika" />
+            {checkAddUserPermission() && <ButtonTab id="dodajKorisnikaDugme" onClick={handleCreateUser}
+              label="Dodaj Korisnika" />}
+
+          </StyledTabs>
+        </AppBar>
+        <UserList users={usrs} />
+      </StyledTable>
+    </TableWrapper>
+  </PageWrapper>
+);
 };
 
 export default UserListPage;

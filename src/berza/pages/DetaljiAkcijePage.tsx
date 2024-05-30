@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import styled from 'styled-components';
-import { SetStateAction, useContext, useEffect, useState } from 'react';
-import { makeApiRequest, makeGetRequest } from '../../utils/apiRequest';
-import { Badge, Button, ButtonGroup, TextField, Typography } from '@mui/material';
+import { useContext, useEffect, useState } from 'react';
+import { makeGetRequest } from '../../utils/apiRequest';
+import { Button, ButtonGroup, TextField, Typography } from '@mui/material';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { Context } from 'App';
 import { Akcija } from 'berza/types/types';
@@ -60,15 +61,6 @@ const DWLWrapper = styled.div`
 const StyledTextField = styled(TextField)`
   width: 100px;
 `
-const DotWrapper = styled(Badge)`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  border-radius: 10px;
-  border: 2px solid #e2e2e2;
-  padding: 0px 10px;
-`
-
 const convertObjectToArray = (inputObj: any) => {
   const result = [];
 
@@ -83,21 +75,6 @@ const convertObjectToArray = (inputObj: any) => {
   }
 
   return result;
-}
-
-interface DotWithTextProps {
-  text: string;
-  color: "default" | "error" | "primary" | "secondary" | "success" | undefined;
-}
-
-const DotWithText = ({ text, color }: DotWithTextProps) => {
-  return (
-    <DotWrapper>
-      <Badge variant="dot" color={color}>
-      </Badge>
-      <p>{text}</p>
-    </DotWrapper>
-  );
 }
 
 const DataWithLabel = ({ label, data }: { label: string, data: string }) => {
@@ -187,6 +164,7 @@ const DetaljiAkcije: React.FC = () => {
     };
     fetchData();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ticker]);
 
 
@@ -273,6 +251,7 @@ const DetaljiAkcije: React.FC = () => {
     if(oneYearAgo && dailyData && !graphData){
       handleChangeGraph("1m")
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[oneYearAgo, dailyData, graphData])
 
   return (

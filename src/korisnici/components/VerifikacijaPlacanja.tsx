@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import { NovaUplata, NoviPrenosSredstava } from '../types/Types';
 import { isNovaUplata, isNoviPrenosSredstava } from 'korisnici/utils/korisniciUtils';
 
-import { getJWT, makeApiRequest } from 'utils/apiRequest';
+import { makeApiRequest } from 'utils/apiRequest';
 import { getMe } from 'utils/getMe';
 import { BankRoutes, UserRoutes } from 'utils/types';
 import Swal from 'sweetalert2';
@@ -31,7 +31,6 @@ const VerifikacijaPlacanja = () => {
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const jwt = getJWT();
         const me = getMe();
         if (!me) return;
         const email = me.sub;

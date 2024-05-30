@@ -90,7 +90,6 @@ const CreateAccountPage: React.FC = () => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   const handleSumbit = async () => {
     for (const [key, value] of Object.entries(formData)) {
       if (value === '') {

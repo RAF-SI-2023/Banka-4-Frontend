@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import Swal from 'sweetalert2';
 import { makeApiRequest, makeGetRequest } from '../../utils/apiRequest';
@@ -56,7 +56,7 @@ export default function DodajKarticu() {
         }
 
         const uspesno = await makeApiRequest(BankRoutes.cards_create, 'POST', { name, type, bankAccountNumber, cardLimit }, false, true);
-        if (await uspesno.text() == "Uspesno kreirana kartica") {
+        if (await uspesno.text() === "Uspesno kreirana kartica") {
             Swal.fire({
                 icon: 'success',
                 title: 'Uspešno kreirana kartica!',

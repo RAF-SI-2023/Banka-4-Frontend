@@ -78,14 +78,15 @@ const EmployeeListPage: React.FC = () => {
     };
     fetchData();
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const checkAddEmployeePermission = () => {
     const token = localStorage.getItem('si_jwt');
-  
+
     // Check if the token is null
     if (token) {
       const decodedToken = jwtDecode(token) as DecodedToken;
-  
+
       if (hasPermission(decodedToken.permission, [EmployeePermissionsV2.create_workers])) {
         return true
       }
@@ -111,10 +112,10 @@ const EmployeeListPage: React.FC = () => {
       <TableWrapper>
         <StyledTable>
           <AppBar position="static" >
-          <StyledTabs value={0}>
-            <Tab label="Lista Zaposlenih" id="lista-zaposlenih-tab" />
-           {checkAddEmployeePermission() && <ButtonTab onClick={handleCreateEmployee} label="Dodaj Zaposlenog" id="dodaj-zaposlenog-tab" />}
-          </StyledTabs>
+            <StyledTabs value={0}>
+              <Tab label="Lista Zaposlenih" id="lista-zaposlenih-tab" />
+              {checkAddEmployeePermission() && <ButtonTab onClick={handleCreateEmployee} label="Dodaj Zaposlenog" id="dodaj-zaposlenog-tab" />}
+            </StyledTabs>
 
           </AppBar>
           <EmployeeList employees={emp} />

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TableContainer, Table, TableBody, TableRow, Paper } from '@mui/material';
+import { Table, TableBody, TableRow } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Company, CompanyListProps } from '../../utils/types';
 import { ScrollContainer, StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from '../../utils/tableStyles';

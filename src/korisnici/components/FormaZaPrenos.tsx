@@ -7,8 +7,8 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { NoviPrenosSredstava } from '../types/Types';
-import { RACUNI_PLACEHOLDER, RacunType, getRacunByBroj } from 'korisnici/data/Racuni';
-import { getJWT, makeGetRequest } from 'utils/apiRequest';
+import { RACUNI_PLACEHOLDER, RacunType } from 'korisnici/data/Racuni';
+import { makeGetRequest } from 'utils/apiRequest';
 import { getMe } from 'utils/getMe';
 
 interface TransferFormProps {

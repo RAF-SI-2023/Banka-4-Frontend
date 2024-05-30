@@ -1,6 +1,6 @@
 import React from 'react';
 import { KreditPojedinacni } from '../../utils/types';
-import { TableContainer, Table, TableBody, TableRow, Paper } from '@mui/material';
+import { TableContainer, Table, TableBody, Paper } from '@mui/material';
 import { StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from '../../utils/tableStyles';
 
 const KreditiTabela = ({ kredit }: { kredit: KreditPojedinacni }) => {

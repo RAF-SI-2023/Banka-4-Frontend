@@ -7,10 +7,10 @@ import { useNavigate } from "react-router-dom";
 
 const AkcijeList: React.FC<AkcijaList> = ({ stocks }) => {
     const navigate = useNavigate()
-    const handleSelect = (event: any) => {
-        const id = event.currentTarget.id;
-        navigate(`/detaljiAkcije?ticker=${id}`)
-    };
+    // const handleSelect = (event: any) => {
+    //     const id = event.currentTarget.id;
+    //     navigate(`/detaljiAkcije?ticker=${id}`)
+    // };
 
     return (
         <ScrollContainer>

@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { getMe } from "utils/getMe";
-import { makeGetRequest } from "utils/apiRequest";
 import styled from "styled-components";
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { Account, BankRoutes } from "utils/types";
+import { Account } from "utils/types";
 import CurrencyConverter from "korisnici/components/CurrencyConverter";
 
 import { ScrollContainer } from "utils/tableStyles";
@@ -47,6 +46,7 @@ const HighlightableStyledTableCentered = styled(StyledTableCentered)`
 `
 
 const UserHomePage: React.FC = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [accounts, setAccounts] = useState<Account[]>([]);
   const navigate = useNavigate();
 
@@ -55,10 +55,10 @@ const UserHomePage: React.FC = () => {
       const me = getMe();
       if (!me)
         return;
-      const data = await makeGetRequest(`${BankRoutes.account_find_user_account}/${me.id}`)
-      if (data) {
-        setAccounts(data);
-      }
+      // const data = await makeGetRequest(`${BankRoutes.account_find_user_account}/${me.id}`)
+      // if (data) {
+      //   setAccounts(data);
+      // }
     } catch (error) {
     }
   };
@@ -71,6 +71,7 @@ const UserHomePage: React.FC = () => {
 
   useEffect(() => {
     fetchAccounts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -92,7 +93,7 @@ const UserHomePage: React.FC = () => {
             <TableBody>
               {accounts?.map((account, index) => (
                 <TableRow key={account.brojRacuna}>
-                  <HighlightableStyledTableCentered className={"idRacunaTd"+index} id={account.brojRacuna} component="th" scope="row" onClick={() => handleSelect(account)}>
+                  <HighlightableStyledTableCentered className={"idRacunaTd" + index} id={account.brojRacuna} component="th" scope="row" onClick={() => handleSelect(account)}>
                     {account.brojRacuna}
                   </HighlightableStyledTableCentered>
                   <StyledTableCentered component="th" scope="row">

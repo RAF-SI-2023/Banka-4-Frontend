@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableRow, Paper, Button } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@mui/material';
 import styled from 'styled-components';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import KAlert from 'utils/alerts';
-import { ScrollContainer } from 'utils/tableStyles';
-import { Company, Account, BankRoutes } from 'utils/types';
-import { makeApiRequest } from '../../utils/apiRequest';
-import { Context } from 'App';
+import { Company } from 'utils/types';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -37,22 +34,6 @@ const H2Text = styled.div`
   margin: 6px 0px;
 `
 
-const StyledTableCentered = styled(TableCell)`
-  text-align: center!important;
-  &:not(:last-child){
-    border-right: 1px solid #e2e2e2;
-  }
-`
-
-const HighlightableStyledTableCentered = styled(StyledTableCentered)`
-  &:hover{
-    background-color: #23395b;
-    transition: 200ms;
-    color: white;
-    cursor: pointer;
-  }
-`
-
 const StyledTableCell = styled(TableCell)`
   text-align: center!important;
   &:not(:last-child){
@@ -71,14 +52,7 @@ const formatTitle = (title: string): string => {
 const CompanyInfoTable: React.FC = () => {
   const location = useLocation();
   const { company } = location.state as { company: Company };
-  const [accounts, setAccounts] = useState([]);
   const [successPopup, setSucessPopup] = useState<boolean>(false);
-
-  const navigate = useNavigate();
-
-
-
- 
 
   return (
     <PageWrapper>

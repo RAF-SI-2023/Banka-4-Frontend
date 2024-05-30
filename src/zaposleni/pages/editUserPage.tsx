@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { TextField, Button, Alert, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { TextField, Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import styled from 'styled-components';
 import { makeApiRequest, makeGetRequest } from '../../utils/apiRequest';
 import { UserRoutes } from 'utils/types';
@@ -105,7 +105,6 @@ const EditUserPage: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
   const handleChangePrezime = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | { name?: string; value: unknown }>) => {
     let { name, value } = event.target;
 
@@ -178,10 +177,10 @@ const EditUserPage: React.FC = () => {
         Izmena korisnika
       </HeadingText>
       <FormWrapper>
-      {phoneWarning && <KAlert severity="error" exit={() => setPhoneWarning(false)}>Broj telefona je u pogresnom formatu.</KAlert>}
-      {passwordWarning && <KAlert severity="error" exit={() => setPasswordWarning(false)}>Lozinke se ne poklapaju.</KAlert>}
-      {successPopup && <KAlert severity="success" exit={() => setSucessPopup(false)}>Uspesno kreiran.</KAlert>}
-      {emptyWarning && <KAlert severity="error" exit={() => setEmptyWarning(false)}>Popunite neko polje.</KAlert>}
+        {phoneWarning && <KAlert severity="error" exit={() => setPhoneWarning(false)}>Broj telefona je u pogresnom formatu.</KAlert>}
+        {passwordWarning && <KAlert severity="error" exit={() => setPasswordWarning(false)}>Lozinke se ne poklapaju.</KAlert>}
+        {successPopup && <KAlert severity="success" exit={() => setSucessPopup(false)}>Uspesno kreiran.</KAlert>}
+        {emptyWarning && <KAlert severity="error" exit={() => setEmptyWarning(false)}>Popunite neko polje.</KAlert>}
         <StyledTextField
           label="Prezime"
           name='prezime'

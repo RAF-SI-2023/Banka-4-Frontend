@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BankRoutes, Kartica } from "../../utils/types";
 import { makeGetRequest } from "../../utils/apiRequest";
-import { Button, Card, List, ListItem, ListItemText, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, AppBar, Tabs, Tab } from "@mui/material";
+import { Table, TableBody, TableCell, TableRow, AppBar, Tabs, Tab } from "@mui/material";
 import { getMe } from "../../utils/getMe";
 import { ScrollContainer, StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from "utils/tableStyles";
 import styled from "styled-components";
@@ -63,6 +63,7 @@ export default function PregledKartica() {
             .catch((e) => {
                 alert("Greška pri preuzimanju kartica");
             });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleRowClick = (kartica: Kartica) => {

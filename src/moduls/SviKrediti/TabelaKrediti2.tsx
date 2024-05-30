@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Kredit } from './../../utils/types';
-import { TableContainer, Table, TableBody, TableRow, Paper } from '@mui/material';
+import { TableContainer, Table, TableBody, TableRow } from '@mui/material';
 import { ScrollContainer, StyledHeadTableCell, StyledTableCell, StyledTableHead } from '../../utils/tableStyles';
 
 import styled from 'styled-components'; // Importuj styled-components
