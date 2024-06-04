@@ -79,12 +79,12 @@ const pages = [
   { name: "Firme", path: "listaFirmi", permissions: [EmployeePermissionsV2.list_firms] },
   { name: "Kartice", path: "kartice", permissions: [EmployeePermissionsV2.list_cards] },
   { name: "Krediti", path: "listaKredita", permissions: [EmployeePermissionsV2.list_credits] },
-  { name: "Verifikacija", path: "/verifikacija", permissions: [EmployeePermissionsV2.payment_access] }
+  { name: "Verifikacija", path: "/verifikacija", permissions: [EmployeePermissionsV2.payment_access] },
   { name: "Hartije od vrednosti", path: "hartije" },
 
 
-    //{ name: "Plaćanja", path: "/placanja", permissions: [EmployeePermissionsV2.payment_access] },
-   //{ name: "Menjačnica", path: "/menjacnica", permissions: [] },
+  //{ name: "Plaćanja", path: "/placanja", permissions: [EmployeePermissionsV2.payment_access] },
+  //{ name: "Menjačnica", path: "/menjacnica", permissions: [] },
 ];
 
 const checkUserPermissions = (requiredPermissions: EmployeePermissionsV2[]) => {
@@ -96,7 +96,7 @@ const checkUserPermissions = (requiredPermissions: EmployeePermissionsV2[]) => {
   return false;
 };
 
-const checkNoPermissions = () =>{
+const checkNoPermissions = () => {
   const token = localStorage.getItem('si_jwt');
   if (token) {
     const decodedToken = jwtDecode(token) as DecodedToken;
@@ -142,23 +142,28 @@ function Navbar() {
             <StyledImage src={process.env.PUBLIC_URL + "/logo2.jpeg"} alt="Logo" />
           </ImgContainer>
           <NavItems>
-            {jwt ? pages.filter(page => checkUserPermissions(page.permissions)).map((page) => (
+            {jwt ? pages.filter(page => page.permissions && checkUserPermissions(page.permissions)).map((page) => (
               <StyledLink key={page.name} to={page.path}>
                 {page.name}
               </StyledLink>
             )) : null}
             {
-              checkNoPermissions() && ( <StyledLink key={"Plaćanja"} to={"/placanja"}>
+              checkNoPermissions() && (<StyledLink key={"Plaćanja"} to={"/placanja"}>
                 {"Plaćanja"}
               </StyledLink>
-            
-            ) }
-           { checkNoPermissions() && ( <StyledLink key={"Menjačnica"} to={"/menjacnica"}>
-                {"Menjačnica"}
-              </StyledLink>
-            
+
+              )}
+            {checkNoPermissions() && (<StyledLink key={"Menjačnica"} to={"/menjacnica"}>
+              {"Menjačnica"}
+            </StyledLink>
+
             )}
-            
+            {
+              checkNoPermissions() && (<StyledLink key={"Verifikacija"} to={"/verifikacija"}>
+                {"Verifikacija"}
+              </StyledLink>
+              )}
+
             <DropdownButton
               id="basic-button"
               aria-controls={open ? "basic-menu" : undefined}
