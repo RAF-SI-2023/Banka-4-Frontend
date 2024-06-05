@@ -255,7 +255,7 @@ export enum UserRoutes {
 
 export enum BankRoutes {
   transaction_new_payment = "/transaction/nova-uplata",
-  transaction_new_transfer = "/transaction/nova-uplata",
+  transaction_new_transfer = "/transaction/novi-prenos",
   cards_names = "/cards/names",
   cards = "/cards",
   cards_create = "/cards/create",
