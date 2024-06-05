@@ -138,8 +138,6 @@ const ExchangeMainSection = ({
     currency2: string | undefined
   ) => {
     if (!currency1 || !currency2) return null;
-    if (currency1 === "Srpski dinar") currency1 = "RSD";
-    if (currency2 === "Srpski dinar") currency1 = "RSD";
 
     const rate1 = exchages.find(
       (exchage) => exchage.currencyCode === currency1
