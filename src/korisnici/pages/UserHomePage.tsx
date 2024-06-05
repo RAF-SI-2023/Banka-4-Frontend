@@ -3,10 +3,11 @@ import { getMe } from "utils/getMe";
 import styled from "styled-components";
 import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { Account } from "utils/types";
+import { Account, BankRoutes } from "utils/types";
 import CurrencyConverter from "korisnici/components/CurrencyConverter";
 
 import { ScrollContainer } from "utils/tableStyles";
+import { makeGetRequest } from "utils/apiRequest";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -55,10 +56,10 @@ const UserHomePage: React.FC = () => {
       const me = getMe();
       if (!me)
         return;
-      // const data = await makeGetRequest(`${BankRoutes.account_find_user_account}/${me.id}`)
-      // if (data) {
-      //   setAccounts(data);
-      // }
+      const data = await makeGetRequest(`${BankRoutes.account_find_user_account}/${me.id}`)
+      if (data) {
+        setAccounts(data);
+      }
     } catch (error) {
     }
   };
