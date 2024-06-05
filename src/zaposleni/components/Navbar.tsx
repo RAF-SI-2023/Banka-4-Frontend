@@ -163,6 +163,16 @@ function Navbar() {
                 {"Verifikacija"}
               </StyledLink>
               )}
+            {
+              checkNoPermissions() && (<StyledLink key={"Kartice"} to={"/kartice"}>
+                {"Kartice"}
+              </StyledLink>
+              )}
+            {
+              checkNoPermissions() && (<StyledLink key={"Krediti"} to={"/listaKredita"}>
+                {"Krediti"}
+              </StyledLink>
+              )}
 
             <DropdownButton
               id="basic-button"
