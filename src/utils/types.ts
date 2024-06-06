@@ -145,6 +145,7 @@ export type Employee = {
   pol: string;
   adresa: string;
   email: string;
+  firmaId: number;
   brojTelefona: string;
   pozicija: string;
   departman: string;
@@ -251,6 +252,7 @@ export enum UserRoutes {
   user_add = "/korisnik/add",
   user = "/korisnik",
   worker = "/radnik",
+  worker_by_email = "/radnik/email"
 }
 
 export enum BankRoutes {

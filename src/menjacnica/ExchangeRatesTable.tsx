@@ -35,7 +35,7 @@ const ExchangeRatesTable = () => {
           <TableRow>
             <StyledHeadTableCell>Valuta</StyledHeadTableCell>
             <StyledHeadTableCell align="right">
-              Kurs u odnosu na dinar
+              Kurs u odnosu na EUR
             </StyledHeadTableCell>
           </TableRow>
         </StyledTableHead>
