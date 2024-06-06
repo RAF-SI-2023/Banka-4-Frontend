@@ -3,11 +3,7 @@ import { getMe } from "utils/getMe";
 import styled from "styled-components";
 import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-<<<<<<< HEAD
 import { Account, BankRoutes, Employee, UserRoutes } from "utils/types";
-=======
-import { Account, BankRoutes } from "utils/types";
->>>>>>> c8a3ee1e9682f8b68c764ee730dba7b6fe9fc49c
 import CurrencyConverter from "korisnici/components/CurrencyConverter";
 
 import { ScrollContainer } from "utils/tableStyles";
@@ -60,7 +56,6 @@ const UserHomePage: React.FC = () => {
       const me = getMe();
       if (!me)
         return;
-<<<<<<< HEAD
       let data;
       if (me.permission) {
         const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${me.sub}`) as Employee
@@ -70,9 +65,7 @@ const UserHomePage: React.FC = () => {
       } else {
         data = await makeGetRequest(`${BankRoutes.account_find_user_account}/${me.id}`);
       }
-=======
-      const data = await makeGetRequest(`${BankRoutes.account_find_user_account}/${me.id}`)
->>>>>>> c8a3ee1e9682f8b68c764ee730dba7b6fe9fc49c
+
       if (data) {
         setAccounts(data);
       }
