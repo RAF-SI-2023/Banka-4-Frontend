@@ -17,6 +17,7 @@
     "@types/react": "^18.2.74",
     "@types/react-dom": "^18.2.21",
     "dotenv": "^16.4.5",
+    "env-cmd": "^10.1.0",
     "jwt-decode": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -30,13 +31,14 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "set PORT=3000 && react-scripts start",
+    "start": "env-cmd -f .env.local set PORT=3000 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "cypress": "cypress run",
     "eject": "react-scripts eject",
     "ci": "start-server-and-test start 3000 cypress",
-    "prod": "npm run build && serve -s build"
+    "prod": "env-cmd -f .env.production npm run build && serve -s build",
+    "dev": "env-cmd -f .env.development npm run build && serve -s build"
   },
   "eslintConfig": {
     "extends": [
