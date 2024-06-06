@@ -62,15 +62,7 @@ type Props = {
   naRacunValuta: string | undefined;
 };
 
-const TransferDetails = ({
-  setDetaljiTransfera,
-  iznos,
-  saRacunaBrRacuna,
-  naRacunBrRacuna,
-  user,
-  saRacunaValuta,
-  naRacunValuta,
-}: Props) => {
+const TransferDetails = ({ setDetaljiTransfera, iznos, saRacunaBrRacuna, naRacunBrRacuna, user, saRacunaValuta, naRacunValuta, }: Props) => {
   const handleSubmit = async () => {
     if (iznos && saRacunaBrRacuna && naRacunBrRacuna) {
       const noviPrenos: NoviPrenosSredstava = {
@@ -80,13 +72,7 @@ const TransferDetails = ({
       };
 
       try {
-        const data = await makeApiRequest(
-          BankRoutes.transaction_new_transfer,
-          "POST",
-          noviPrenos,
-          false,
-          true
-        );
+        const data = await makeApiRequest(BankRoutes.transaction_new_transfer, "POST", noviPrenos, false, true);
         await data.text();
         localStorage.removeItem("prenosPodaci");
       } catch (error) {
