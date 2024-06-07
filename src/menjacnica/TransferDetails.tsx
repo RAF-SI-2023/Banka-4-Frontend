@@ -137,7 +137,8 @@ const TransferDetails = ({
         <StyledDiv>
           <Typography>Iznos:</Typography>
           <StyledParagraph>
-            {iznos && ((parseInt(iznos, 10) / kurs) * provizija).toFixed(3)}{" "}
+            {iznos &&
+              ((parseInt(iznos, 10) / kurs) * (1 - provizija)).toFixed(3)}{" "}
             {naRacunValuta}
           </StyledParagraph>
         </StyledDiv>
