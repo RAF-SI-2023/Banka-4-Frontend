@@ -181,7 +181,7 @@ export type Kartica = {
   bankAccountNumber: string;
   cvv: string;
   cardLimit: number;
-  status: 'aktivna' | 'deaktivirana' | 'blokirana';
+  status: 'active' | 'inactive' | 'blocked';
   blocked: boolean;
 }
 
