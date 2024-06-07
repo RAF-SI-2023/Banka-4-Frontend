@@ -38,7 +38,8 @@ export const permissionMap = {
     action_access: 0b1000000000000000000000000000,
     option_access: 0b10000000000000000000000000000,
     order_access: 0b100000000000000000000000000000,
-    termin_access: 0b1000000000000000000000000000000
+    termin_access: 0b1000000000000000000000000000000,
+    profit_access: 0b10000000000000000000000000000000
 }
 
 type Permission = {
@@ -123,7 +124,8 @@ export const decodePermissionsObj = (permissions: number) => {
         'action_access': false,
         'option_access': false,
         'order_access': false,
-        'termin_access': false
+        'termin_access': false,
+        'profit_access': false
     }
     for (const [name, value] of Object.entries(permissionMap)) {
         if (permissions & value) {
