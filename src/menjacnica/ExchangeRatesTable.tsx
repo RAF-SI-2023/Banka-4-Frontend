@@ -19,8 +19,7 @@ const ExchangeRatesTable = () => {
       if (data) {
         setCurrencyRates(data);
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   };
   //162
   useEffect(() => {
