@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Step 6: Build the application if necessary (this command might change based on your build script)
-RUN npm run build
+RUN npm run prod
 
 # Step 7: Serve Stage - Use an official Nginx image to serve the static files
 FROM nginx:stable-alpine
