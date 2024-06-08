@@ -153,6 +153,11 @@ function Navbar() {
               </StyledLink>
 
               )}
+            {checkNoPermissions() && (<StyledLink key={"ATM"} to={"/atm"}>
+              {"ATM"}
+            </StyledLink>
+
+            )}
             {checkNoPermissions() && (<StyledLink key={"Menjačnica"} to={"/menjacnica"}>
               {"Menjačnica"}
             </StyledLink>

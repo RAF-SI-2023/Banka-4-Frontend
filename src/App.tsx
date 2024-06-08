@@ -43,6 +43,7 @@ import SpecificContractListPage from 'moduls/TerminskiUgovori/pages/SpecificCont
 import { Dispatch, SetStateAction, createContext, useEffect, useState } from 'react';
 import CompanyInfoTable from 'zaposleni/pages/companyPage';
 import HartijeOdVrednosti from "berza/pages/HartijeOdVrednosti";
+import ATMPage from 'korisnici/pages/ATMPage';
 
 const fadeIn = keyframes`
   from {
@@ -196,6 +197,10 @@ function App() {
             <Route
               path="/placanja"
               element={auth?.id ? <Placanje /> : <LoginPage />}
+            />
+            <Route
+              path="/atm"
+              element={auth?.id ? <ATMPage /> : <LoginPage />}
             />
             <Route
               path="/kartice"
