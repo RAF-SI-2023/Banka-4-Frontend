@@ -50,9 +50,9 @@ const StyledParagraph = styled.p`
 `;
 
 const provizija = 0.005;
-const kurs = 117.6926;
 
 type Props = {
+  kurs: number;
   setDetaljiTransfera: (detaljiTransfera: boolean) => void;
   iznos: string | undefined;
   saRacunaBrRacuna: string | undefined;
@@ -62,7 +62,16 @@ type Props = {
   naRacunValuta: string | undefined;
 };
 
-const TransferDetails = ({ setDetaljiTransfera, iznos, saRacunaBrRacuna, naRacunBrRacuna, user, saRacunaValuta, naRacunValuta, }: Props) => {
+const TransferDetails = ({
+  kurs,
+  setDetaljiTransfera,
+  iznos,
+  saRacunaBrRacuna,
+  naRacunBrRacuna,
+  user,
+  saRacunaValuta,
+  naRacunValuta,
+}: Props) => {
   const handleSubmit = async () => {
     if (iznos && saRacunaBrRacuna && naRacunBrRacuna) {
       const noviPrenos: NoviPrenosSredstava = {
@@ -72,14 +81,35 @@ const TransferDetails = ({ setDetaljiTransfera, iznos, saRacunaBrRacuna, naRacun
       };
 
       try {
-        const data = await makeApiRequest(BankRoutes.transaction_new_transfer, "POST", noviPrenos, false, true);
-        await data.text();
+        const data = await makeApiRequest(
+          BankRoutes.transaction_new_transfer,
+          "POST",
+          noviPrenos,
+          false,
+          true
+        );
+        const rac = await data.text();
+        console.log(rac);
         localStorage.removeItem("prenosPodaci");
       } catch (error) {
+        console.log(error);
       }
     }
     setDetaljiTransfera(false);
   };
+
+  // const findExchangeRate = () => {
+  //   const rate1 = exchages.find(
+  //     (exchage) => exchage.currencyCode === saRacunaValuta
+  //   )?.rate;
+
+  //   const rate2 = exchages.find(
+  //     (exchage) => exchage.currencyCode === naRacunValuta
+  //   )?.rate;
+
+  //   if (rate1 && rate2 && iznos) return (parseFloat(iznos) / rate1) * rate2;
+  //   else return null;
+  // };
 
   return (
     <PageWrapper>
@@ -107,12 +137,14 @@ const TransferDetails = ({ setDetaljiTransfera, iznos, saRacunaBrRacuna, naRacun
         <StyledDiv>
           <Typography>Iznos:</Typography>
           <StyledParagraph>
-            {iznos && (parseInt(iznos, 10) / kurs) * provizija} {naRacunValuta}
+            {iznos &&
+              ((parseInt(iznos, 10) / kurs) * (1 - provizija)).toFixed(3)}{" "}
+            {naRacunValuta}
           </StyledParagraph>
         </StyledDiv>
         <StyledDiv>
           <Typography>Kurs:</Typography>
-          <StyledParagraph>{kurs}</StyledParagraph>
+          <StyledParagraph>{kurs.toFixed(3)}</StyledParagraph>
         </StyledDiv>
         <StyledDiv>
           <Typography>Provizija:</Typography>
