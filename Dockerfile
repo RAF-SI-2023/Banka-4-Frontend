@@ -1,6 +1,6 @@
 # Step 1: Build Stage - Use an official Node.js runtime as a parent image
 FROM node:18 as builder
-
+ARG APP_ENV=build-prod
 # Step 2: Set the working directory in the container
 WORKDIR /app
 
@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Step 6: Build the application if necessary (this command might change based on your build script)
-RUN npm run prod
+RUN npm run $APP_ENV
 
 # Step 7: Serve Stage - Use an official Nginx image to serve the static files
 FROM nginx:stable-alpine
