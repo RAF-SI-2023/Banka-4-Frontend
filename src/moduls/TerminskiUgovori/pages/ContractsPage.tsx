@@ -4,7 +4,7 @@ import { ScrollContainer, StyledHeadTableCell, StyledTableCell, StyledTableHead,
 
 import { useEffect, useState } from 'react';
 import { makeGetRequest } from 'utils/apiRequest';
-import BuyOptionPopup from 'berza/components/BuyOptionPopup';
+import BuyOptionPopup from 'berza/components/BuyOptionPopupContract';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -57,8 +57,10 @@ const ContractsPage = () => {
         const fetchData = async () => {
             if (type) {
                 try {
+                    console.log(type);
                     const con = await makeGetRequest(`/futures/type/${type.toUpperCase()}`);
                     if (con) {
+
                         setContracts(con)
                     }
                 } catch (error) {
@@ -98,7 +100,7 @@ const ContractsPage = () => {
                                         <StyledTableCell>{contract.contractSize}</StyledTableCell>
                                         <StyledTableCell>{contract.maintenanceMargin}</StyledTableCell>
                                         <StyledTableCell>
-                                            <BuyOptionPopup />
+                                            <BuyOptionPopup contractId={contract.id || contract.name} />
                                         </StyledTableCell>
 
                                     </StyledTableRow>

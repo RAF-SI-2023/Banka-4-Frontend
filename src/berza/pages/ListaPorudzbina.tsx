@@ -46,7 +46,7 @@ const OrdersPage: React.FC = () => {
         const fetchData = async () => {
             try {
                 const orders = await makeGetRequest(`/orders/all`);
-                const futures = await makeGetRequest(`/futures/kupac`);
+                const futures = await makeGetRequest(`/futures/request`); //futures/kupac
                 console.log(orders, futures);
                 if (orders) {
                     setOrders(orders);
