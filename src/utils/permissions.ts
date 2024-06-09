@@ -125,7 +125,9 @@ export const decodePermissionsObj = (permissions: number) => {
         'option_access': false,
         'order_access': false,
         'termin_access': false,
-        'profit_access': false
+        'profit_access': false,
+        'lista_porudzbina_access': false
+
     }
     for (const [name, value] of Object.entries(permissionMap)) {
         if (permissions & value) {

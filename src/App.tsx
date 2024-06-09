@@ -12,6 +12,9 @@ import EditEmployeePage from './zaposleni/pages/editEmployeePage';
 import CreateCompanyPage from './zaposleni/pages/createCompanyPage';
 import EditCompanyPage from './zaposleni/pages/editCompanyPage';
 import LoginPage from './moduls/LogReg/LoginPage';
+import OrdersPage from 'berza/pages/ListaPorudzbina';
+import OrdersPageKorisnici from 'berza/pages/ListaPorudzbinaKorisnici';
+import NewOrder from 'berza/pages/NewOrder';
 import RegistrationPage from './moduls/LogReg/RegistrationPage';
 import { getMe } from './utils/getMe';
 import Placanje from './korisnici/pages/PlacanjePage';
@@ -43,6 +46,7 @@ import SpecificContractListPage from 'moduls/TerminskiUgovori/pages/SpecificCont
 import { Dispatch, SetStateAction, createContext, useEffect, useState } from 'react';
 import CompanyInfoTable from 'zaposleni/pages/companyPage';
 import HartijeOdVrednosti from "berza/pages/HartijeOdVrednosti";
+import {permissionMap} from 'utils/permissions';
 
 const fadeIn = keyframes`
   from {
@@ -177,6 +181,9 @@ function App() {
             <Route path="/firma" element={auth?.id ? <CompanyInfoTable /> : <LoginPage/>}/>
             <Route path="/korisnik" element={auth?.id ? <UserInfoTable /> : <LoginPage />} />
             <Route path="/kreirajKorisnika" element={auth?.id ? <CreateUserPage /> : <LoginPage />} />
+            <Route path="/listaPorudzbina" element={auth?.id ? <OrdersPage /> : <LoginPage />} />
+            <Route path="/listaPorudzbinaKorisnici" element={auth?.id ? <OrdersPageKorisnici /> : <LoginPage />} />
+            <Route path="/NewOrder" element={auth?.id ? <NewOrder/> : <LoginPage />} />
             <Route path="/izmeniKorisnika" element={auth?.id ? <EditUserPage /> : <LoginPage />} />
             <Route path="/racun" element={auth?.id ? <AccountInfoPage /> : <LoginPage />} />
             <Route path="/kreirajRacun" element={auth?.id ? <CreateAccountPage /> : <LoginPage />} />
