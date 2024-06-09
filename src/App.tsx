@@ -48,7 +48,7 @@ import {
   useState,
 } from "react";
 import CompanyInfoTable from "zaposleni/pages/companyPage";
-// import HartijeOdVrednosti from "berza/pages/HartijeOdVrednosti";
+import HartijeOdVrednosti from "berza/pages/HartijeOdVrednosti";
 import ProfitPage from "profit/ProfitPage";
 
 const fadeIn = keyframes`
@@ -313,10 +313,10 @@ function App() {
               path="/profit"
               element={auth?.id ? <ProfitPage /> : <LoginPage />}
             />
-            {/* <Route
+            <Route
               path="/hartije"
               element={auth?.id ? <HartijeOdVrednosti /> : <LoginPage />}
-            /> */}
+            />
 
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

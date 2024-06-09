@@ -109,7 +109,11 @@ const pages = [
     path: "profit",
     permissions: [EmployeePermissionsV2.profit_access],
   },
-  // { name: "Hartije od vrednosti", path: "hartije" },
+  {
+    name: "Hartije od vrednosti",
+    path: "hartije",
+    permissions: [],
+  },
 
   //{ name: "Plaćanja", path: "/placanja", permissions: [EmployeePermissionsV2.payment_access] },
   //{ name: "Menjačnica", path: "/menjacnica", permissions: [] },
@@ -214,11 +218,11 @@ function Navbar() {
                 {"Krediti"}
               </StyledLink>
             )}
-            {/* {checkNoPermissions() && (
+            {checkNoPermissions() && (
               <StyledLink key={"Hartije"} to={"/hartije"}>
                 {"Hartije"}
               </StyledLink>
-            )} */}
+            )}
 
             <DropdownButton
               id="basic-button"

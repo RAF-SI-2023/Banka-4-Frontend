@@ -1,6 +1,5 @@
 import { Tabs, TextField, AppBar, Tab } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { makeApiRequest, makeGetRequest } from "utils/apiRequest";
 import { getMe } from "utils/getMe";
@@ -8,7 +7,15 @@ import SearchIcon from "@mui/icons-material/Search";
 import { Context } from "App";
 import MojeAkcijeList from "berza/components/MojeAkcijeList";
 import UserOptions from "berza/components/UserOptionList";
+import { hasPermission } from "utils/permissions";
+import { EmployeePermissionsV2 } from "utils/types";
+import { jwtDecode } from "jwt-decode";
+import SpecificContractListPage from "moduls/TerminskiUgovori/pages/SpecificContractListPage";
 const employee = "employee";
+
+interface DecodedToken {
+  permission: number;
+}
 
 const PageWrapper = styled.div`
   display: flex;
@@ -61,7 +68,6 @@ const HartijeOdVrednosti = () => {
   const [stocks, setStocks] = useState([]);
   const [selectedTab, setSelectedTab] = useState(0);
   const [filter, setFilter] = useState("");
-  const navigate = useNavigate();
   const ctx = useContext(Context);
   const auth = getMe();
   auth?.permission && setUserType(employee);
@@ -80,6 +86,50 @@ const HartijeOdVrednosti = () => {
     fetchData();
   });
 
+  const checkAkcijePermissions = () => {
+    const token = localStorage.getItem("si_jwt");
+    if (token) {
+      const decodedToken = jwtDecode(token) as DecodedToken;
+      return !hasPermission(decodedToken.permission, [
+        EmployeePermissionsV2.action_access,
+      ]);
+    }
+    return false;
+  };
+
+  const checkOpcijePermissions = () => {
+    const token = localStorage.getItem("si_jwt");
+    if (token) {
+      const decodedToken = jwtDecode(token) as DecodedToken;
+      return !hasPermission(decodedToken.permission, [
+        EmployeePermissionsV2.option_access,
+      ]);
+    }
+    return false;
+  };
+
+  const checkPorudzbinePermissions = () => {
+    const token = localStorage.getItem("si_jwt");
+    if (token) {
+      const decodedToken = jwtDecode(token) as DecodedToken;
+      return !hasPermission(decodedToken.permission, [
+        EmployeePermissionsV2.order_access,
+      ]);
+    }
+    return false;
+  };
+
+  const checkTerminskiPermissions = () => {
+    const token = localStorage.getItem("si_jwt");
+    if (token) {
+      const decodedToken = jwtDecode(token) as DecodedToken;
+      return !hasPermission(decodedToken.permission, [
+        EmployeePermissionsV2.termin_access,
+      ]);
+    }
+    return false;
+  };
+
   const handleChange = (
     event: React.SyntheticEvent<unknown>,
     newValue: number
@@ -87,8 +137,8 @@ const HartijeOdVrednosti = () => {
     if (
       newValue !== 0 &&
       newValue !== 1 &&
-      // newValue !== 2 &&
-      // newValue !== 3 &&
+      newValue !== 2 &&
+      newValue !== 3 &&
       event.target instanceof HTMLInputElement
     ) {
       handleChangeFilter(event as React.ChangeEvent<HTMLInputElement>);
@@ -140,10 +190,14 @@ const HartijeOdVrednosti = () => {
               </SearchWrapper>
             </StyledTabs>
           </AppBar>
-          {selectedTab === 0 && <MojeAkcijeList />}
-          {selectedTab === 1 && <UserOptions stocks={stocks} />}
+          {checkAkcijePermissions() && selectedTab === 0 && <MojeAkcijeList />}
+          {checkOpcijePermissions() && selectedTab === 1 && (
+            <UserOptions stocks={stocks} />
+          )}
           {/* {selectedTab === 2 && <Porudzbine  />} */}
-          {/* userType === employee && {selectedTab === 3 && <TerminskiUgovori />} */}
+          {checkTerminskiPermissions() &&
+            userType === employee &&
+            selectedTab === 2 && <SpecificContractListPage />}
         </StyledTable>
       </TableContainer>
     </PageWrapper>
