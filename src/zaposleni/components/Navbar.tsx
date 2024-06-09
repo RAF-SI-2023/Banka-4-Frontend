@@ -81,7 +81,7 @@ const pages = [
   { name: "Krediti", path: "listaKredita", permissions: [EmployeePermissionsV2.list_credits] },
   { name: "Verifikacija", path: "/verifikacija", permissions: [EmployeePermissionsV2.payment_access] },
   { name: "Hartije od vrednosti", path: "hartije" },
-  {name: "OTC", path:"otc", permissions: [EmployeePermissionsV2.order_access]},
+  {name: "OTC", path:"otc", permissions: []},
 
 
   //{ name: "Plaćanja", path: "/placanja", permissions: [EmployeePermissionsV2.payment_access] },
