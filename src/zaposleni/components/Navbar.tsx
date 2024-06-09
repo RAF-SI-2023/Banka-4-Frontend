@@ -80,6 +80,7 @@ const pages = [
   { name: "Kartice", path: "kartice", permissions: [EmployeePermissionsV2.list_cards] },
   { name: "Krediti", path: "listaKredita", permissions: [EmployeePermissionsV2.list_credits] },
   { name: "Verifikacija", path: "/verifikacija", permissions: [EmployeePermissionsV2.payment_access] },
+  { name: "Profit", path: "/profit", permissions: [EmployeePermissionsV2.profit_access] },
   { name: "Hartije od vrednosti", path: "hartije" },
   {name: "OTC", path:"otc", permissions: []},
 
