@@ -89,7 +89,7 @@ const pages = [
 ];
 
 const checkUserPermissions = (requiredPermissions: EmployeePermissionsV2[]) => {
-  const token = localStorage.getItem('si_jwt');
+  const token = localStorage.getItem("si_jwt");
   if (token) {
     const decodedToken = jwtDecode(token) as DecodedToken;
     return hasPermission(decodedToken.permission, requiredPermissions);
@@ -105,13 +105,15 @@ const showPorudzbine2 = checkUserPermissions([EmployeePermissionsV2.list_orders]
 
 
 const checkNoPermissions = () => {
-  const token = localStorage.getItem('si_jwt');
+  const token = localStorage.getItem("si_jwt");
   if (token) {
     const decodedToken = jwtDecode(token) as DecodedToken;
-    return !hasPermission(decodedToken.permission, [EmployeePermissionsV2.list_users]);
+    return !hasPermission(decodedToken.permission, [
+      EmployeePermissionsV2.list_users,
+    ]);
   }
   return false;
-}
+};
 
 const auth = getMe();
 const user = auth?.permission === 0 ? true : false;
@@ -124,7 +126,9 @@ function Navbar() {
     setAnchorEl(event.currentTarget);
   };
 
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  );
   const navigate = useNavigate();
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -151,19 +155,28 @@ function Navbar() {
       <Container maxWidth="xl">
         <Toolbar>
           <ImgContainer>
-            <StyledImage src={process.env.PUBLIC_URL + "/logo2.jpeg"} alt="Logo" />
+            <StyledImage
+              src={process.env.PUBLIC_URL + "/logo2.jpeg"}
+              alt="Logo"
+            />
           </ImgContainer>
           <NavItems>
-            {jwt ? pages.filter(page => page.permissions && checkUserPermissions(page.permissions)).map((page) => (
-              <StyledLink key={page.name} to={page.path}>
-                {page.name}
-              </StyledLink>
-            )) : null}
-            {
-              checkNoPermissions() && (<StyledLink key={"Plaćanja"} to={"/placanja"}>
+            {jwt
+              ? pages
+                  .filter(
+                    (page) =>
+                      page.permissions && checkUserPermissions(page.permissions)
+                  )
+                  .map((page) => (
+                    <StyledLink key={page.name} to={page.path}>
+                      {page.name}
+                    </StyledLink>
+                  ))
+              : null}
+            {checkNoPermissions() && (
+              <StyledLink key={"Plaćanja"} to={"/placanja"}>
                 {"Plaćanja"}
               </StyledLink>
-
               )}
             {checkNoPermissions() && (<StyledLink key={"ATM"} to={"/atm"}>
               {"ATM"}
@@ -175,22 +188,31 @@ function Navbar() {
             </StyledLink>
 
             )}
-            {
-              checkNoPermissions() && (<StyledLink key={"Verifikacija"} to={"/verifikacija"}>
+            {checkNoPermissions() && (
+              <StyledLink key={"Menjačnica"} to={"/menjacnica"}>
+                {"Menjačnica"}
+              </StyledLink>
+            )}
+            {checkNoPermissions() && (
+              <StyledLink key={"Verifikacija"} to={"/verifikacija"}>
                 {"Verifikacija"}
               </StyledLink>
-              )}
-            {
-              checkNoPermissions() && (<StyledLink key={"Kartice"} to={"/kartice"}>
+            )}
+            {checkNoPermissions() && (
+              <StyledLink key={"Kartice"} to={"/kartice"}>
                 {"Kartice"}
               </StyledLink>
-              )}
-            {
-              checkNoPermissions() && (<StyledLink key={"Krediti"} to={"/listaKredita"}>
+            )}
+            {checkNoPermissions() && (
+              <StyledLink key={"Krediti"} to={"/listaKredita"}>
                 {"Krediti"}
               </StyledLink>
-              )}
-            
+            )}
+            {checkNoPermissions() && (
+              <StyledLink key={"Hartije"} to={"/hartije"}>
+                {"Hartije"}
+              </StyledLink>
+            )}
             <DropdownButton
               id="basic-button"
               aria-controls={open ? "basic-menu" : undefined}
@@ -211,6 +233,7 @@ function Navbar() {
                 "aria-labelledby": "basic-button",
               }}
             >
+
               <MenuItem onClick={() => { navigate('/akcije'); setAnchorEl(null) }}>Akcije</MenuItem>
               <MenuItem onClick={() => { navigate('/terminski'); setAnchorEl(null) }}>Terminski</MenuItem>
               {showPorudzbine1 && (
@@ -220,8 +243,6 @@ function Navbar() {
             {(showPorudzbine2 || user) && (
                <MenuItem onClick={() => { navigate('/listaPorudzbinaKorisnici'); setAnchorEl(null) }}>Porudzbine 2</MenuItem>
             )}
-
-              
             </Menu>
           </NavItems>
           <NavUser>
