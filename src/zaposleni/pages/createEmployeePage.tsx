@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { TextField, Button, FormControl, InputLabel, Select, MenuItem, Grid, FormControlLabel, Checkbox } from '@mui/material';
 import styled from 'styled-components';
 import { EmployeePermissionsV2, UserRoutes } from '../../utils/types';
@@ -122,11 +122,25 @@ const CreateEmployeePage: React.FC = () => {
     { naziv: EmployeePermissionsV2.action_access, vrednost: false },
     { naziv: EmployeePermissionsV2.option_access, vrednost: false },
     { naziv: EmployeePermissionsV2.order_access, vrednost: false },
-    { naziv: EmployeePermissionsV2.termin_access, vrednost: false }
-  ])
+    { naziv: EmployeePermissionsV2.termin_access, vrednost: false },
+    {naziv:EmployeePermissionsV2.profit_access, vrednost: false}
+  ]);
+  const [groupedPermissions, setGroupedPermissions] = useState<{ [key: string]: Permisije[] }>({});
   const navigate = useNavigate();
   const ctx = useContext(Context);
   
+  useEffect(() => {
+    const grouped = permissionCheckboxes.reduce((acc: { [key: string]: Permisije[] }, perm) => {
+      const lastWord = perm.naziv.split('_').pop();
+      if (lastWord) {
+        if (!acc[lastWord]) acc[lastWord] = [];
+        acc[lastWord].push(perm);
+      }
+      return acc;
+    }, {});
+    setGroupedPermissions(grouped);
+  }, [permissionCheckboxes]);
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | { name?: string; value: unknown }>) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name as string]: value as string });
@@ -151,53 +165,63 @@ const CreateEmployeePage: React.FC = () => {
   };
 
   const handleCheckboxChange = (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    const novePermisije = [...permissionCheckboxes];
-    novePermisije[index].vrednost = event.target.checked;
-    setPermissionCheckboxes(novePermisije);
-    setFormData({ ...formData, permisije: encodePermissions(permissionCheckboxes) })
+    const newPermissions = [...permissionCheckboxes];
+    newPermissions[index].vrednost = event.target.checked;
+    setPermissionCheckboxes(newPermissions);
+    setFormData({ ...formData, permisije: encodePermissions(newPermissions) });
   };
 
+  const handleGroupCheckboxChange = (group: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newPermissions = permissionCheckboxes.map(perm => {
+      if (perm.naziv.endsWith(group)) {
+        return { ...perm, vrednost: event.target.checked };
+      }
+      return perm;
+    });
+    setPermissionCheckboxes(newPermissions);
+    setFormData({ ...formData, permisije: encodePermissions(newPermissions) });
+  };
 
   const handleSumbit = async () => {
     for (const [key, value] of Object.entries(formData)) {
       if (key !== 'permisije' && value === '') {
-        ctx?.setErrors([...ctx.errors, `Our Error: Popunite polje ${key}`])
+        ctx?.setErrors([...ctx.errors, `Our Error: Popunite polje ${key}`]);
         return;
       }
     }
-    const letterOnlyRegex = /^[a-zA-Z]+$/
+    const letterOnlyRegex = /^[a-zA-Z]+$/;
     if (!(letterOnlyRegex.test(formData.ime) && letterOnlyRegex.test(formData.prezime))) {
-      ctx?.setErrors([...ctx.errors, 'Our Error: Prezime se mora sastojati iskljucivo od slova'])
+      ctx?.setErrors([...ctx.errors, 'Our Error: Prezime se mora sastojati iskljucivo od slova']);
     }
 
-    const numbersOnlyRegex = /\d{13}/
+    const numbersOnlyRegex = /\d{13}/;
     if (!(numbersOnlyRegex.test(formData.jmbg))) {
-      ctx?.setErrors([...ctx.errors, 'Our Error: Jmbg se mora sastojati od 13 cifara'])
+      ctx?.setErrors([...ctx.errors, 'Our Error: Jmbg se mora sastojati od 13 cifara']);
     }
 
     if (formData.password !== '' && formData.password !== formData.saltPassword) {
-      ctx?.setErrors([...ctx.errors, 'Our Error: Lozinke se ne poklapaju'])
-      return
+      ctx?.setErrors([...ctx.errors, 'Our Error: Lozinke se ne poklapaju']);
+      return;
     }
 
     if (formData.brojTelefona !== '') {
       const phoneRegex = /^(06|\+)[0-9]+$/; //Change if you want only +... instead of 06....
       if (!phoneRegex.test(formData.brojTelefona)) {
-        ctx?.setErrors([...ctx.errors, 'Our Error: Broj telefona nije u dobrom formatu'])
-        return
+        ctx?.setErrors([...ctx.errors, 'Our Error: Broj telefona nije u dobrom formatu']);
+        return;
       }
     }
-    const emailRegex = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/
+    const emailRegex = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/;
     if (!(emailRegex.test(formData.email))) {
-      ctx?.setErrors([...ctx.errors, 'Our Error: Email mora biti validan'])
+      ctx?.setErrors([...ctx.errors, 'Our Error: Email mora biti validan']);
     }
-    const data = { ...formData, datumRodjenja: new Date(formData.datumRodjenja).getTime(), aktivan: true }
-    const res = await makeApiRequest(UserRoutes.worker, 'POST', data, false, false, ctx)
+    const data = { ...formData, datumRodjenja: new Date(formData.datumRodjenja).getTime(), aktivan: true };
+    const res = await makeApiRequest(UserRoutes.worker, 'POST', data, false, false, ctx);
     if (res) {
-      ctx?.setErrors([...ctx.errors, 'Our Success: Zaposleni je uspesno kreiran'])
+      ctx?.setErrors([...ctx.errors, 'Our Success: Zaposleni je uspesno kreiran']);
     }
-    navigate(-1)
-  }
+    navigate(-1);
+  };
 
   return (
     <PageWrapper>
@@ -342,13 +366,35 @@ const CreateEmployeePage: React.FC = () => {
 
         <CheckBoxForm>
           <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-            {permissionCheckboxes?.map((permisija, index) => (
-              <Grid item xs={6} md={6} lg={6} key={index}>
-                <FormControlLabel
-                  control={<Checkbox checked={permisija.vrednost} onChange={handleCheckboxChange(index)} />}
-                  label={`${permissionCheckboxes[index].naziv.replaceAll("_", " ")}`}
-                />
-              </Grid>
+            {Object.keys(groupedPermissions).map((group, groupIndex) => (
+              <React.Fragment key={groupIndex}>
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={groupedPermissions[group].every(p => p.vrednost)}
+                        onChange={handleGroupCheckboxChange(group)}
+                      />
+                    }
+                    label={group.replaceAll("_", " ")}
+                  />
+                </Grid>
+                {groupedPermissions[group].map((perm, permIndex) => (
+                  <Grid item xs={6} md={6} lg={6} key={perm.naziv}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={perm.vrednost}
+                          onChange={handleCheckboxChange(
+                            permissionCheckboxes.findIndex(p => p.naziv === perm.naziv)
+                          )}
+                        />
+                      }
+                      label={perm.naziv.replaceAll("_", " ")}
+                    />
+                  </Grid>
+                ))}
+              </React.Fragment>
             ))}
           </Grid>
         </CheckBoxForm>

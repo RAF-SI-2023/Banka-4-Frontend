@@ -81,6 +81,7 @@ const pages = [
   { name: "Krediti", path: "listaKredita", permissions: [EmployeePermissionsV2.list_credits] },
   { name: "Verifikacija", path: "/verifikacija", permissions: [EmployeePermissionsV2.payment_access] },
   { name: "Hartije od vrednosti", path: "hartije" },
+  {name: "OTC", path:"otc", permissions: []},
 
 
   //{ name: "Plaćanja", path: "/placanja", permissions: [EmployeePermissionsV2.payment_access] },
@@ -184,7 +185,7 @@ function Navbar() {
                 {"Krediti"}
               </StyledLink>
               )}
-
+            
             <DropdownButton
               id="basic-button"
               aria-controls={open ? "basic-menu" : undefined}
@@ -195,6 +196,7 @@ function Navbar() {
             >
               Berza
             </DropdownButton>
+            
             <Menu
               id="basic-menu"
               anchorEl={anchorEl}
