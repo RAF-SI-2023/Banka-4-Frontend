@@ -15,57 +15,40 @@ postsubmits:
             - |
               set -euo pipefail
 
-              cd ..
-
-              git clone https://github.com/RAF-SI-2023/Banka-4-Infrastructure.git ./Banka-4-Infrastructure
-
-              cd ./Banka-4-Infrastructure
-
-              echo "BACKEND_REPO_ABSOLUTE_PATH=/home/prow/go/src/github.com/RAF-SI-2023/Banka-4-Backend" > .env 
-              echo "INFRA_REPO_ABSOLUTE_PATH=/home/prow/go/src/github.com/RAF-SI-2023/Banka-4-Infrastructure" >> .env
-              echo "FRONTEND_REPO_ABSOLUTE_PATH=/home/prow/go/src/github.com/RAF-SI-2023/Banka-4-Frontend" >> .env
-            
+              # PROMENITI PRI KOPIRANJU
+              # Naziv vašeg tima, može biti "banka-1", "banka-2", "banka-3", ili "banka-4"
               TEAM_NAME="banka-4"
 
-              ENVIRONMENT="development"
-              IMAGE_NAME="frontend-dev"
-
-              if [ "$PULL_BASE_REF" == "main" ]; then
-                ENVIRONMENT="production"
-                IMAGE_NAME="frontend"
-              fi
-
+              # Pokreće Docker unutar kontejnera u kome se izvršava ova skripta.
+              # Docker vam omogućava da buildujete images.
               start-docker.sh
 
+              # Logovanje na našu Harbor instancu na koju ćemo da pushujemo image.
               docker login -u $HARBOR_USERNAME -p $HARBOR_PASSWORD harbor.k8s.elab.rs
 
+              # Hash commit-a za koji se ovaj job pokrenuo. Ovaj hash koristimo da pushujemo
+              # image koji ima ovaj hash kao svoj tag.
               commit_hash=$(git rev-parse HEAD)
-              
-              SERVICE_NAME="frontend"
-              
-<<<<<<< HEAD
+
+              # Builduje Docker image sa "latest" tagom i nazivom takvim da možemo da pushujemo
+              # image na našu Harbor instancu.
+              docker build -t harbor.k8s.elab.rs/${TEAM_NAME}/frontend:latest .
+
               # Pravi kopiju prethodno buildovanog image sa tagom zasnovanim na commit hash-u.
               docker tag harbor.k8s.elab.rs/${TEAM_NAME}/frontend:latest harbor.k8s.elab.rs/${TEAM_NAME}/frontend:${commit_hash}
-              
+
               # Pushuje oba image na našu Harbor instancu.
               docker push harbor.k8s.elab.rs/${TEAM_NAME}/frontend:latest
               docker push harbor.k8s.elab.rs/${TEAM_NAME}/frontend:${commit_hash}
-<<<<<<< HEAD
 
-              helm upgrade --namespace="$TEAM_NAME-dev" --create-namespace --timeout=20m --atomic --install --set imageTag="${commit_hash}" "$TEAM_NAME-frontend" "oci://harbor.k8s.elab.rs/$TEAM_NAME/$TEAM_NAME-frontend/$TEAM_NAME-frontend"
-              if [ "$PULL_BASE_REF" == "main" ]; then
-                helm upgrade --namespace="$TEAM_NAME-prod" --create-namespace --timeout=20m --atomic --install --set imageTag="${commit_hash}",host="$TEAM_NAME.si.raf.edu.rs" "$TEAM_NAME-frontend" "oci://harbor.k8s.elab.rs/$TEAM_NAME/$TEAM_NAME-frontend/$TEAM_NAME-frontend"
-              fi
-              
-=======
->>>>>>> 1c70f86 (Push to correct branch, prow, permission update (#159))
-=======
-              docker build --build-arg ENV=${ENVIRONMENT} -f "./images/${SERVICE_NAME}.Dockerfile" -t harbor.k8s.elab.rs/${TEAM_NAME}/${IMAGE_NAME}:latest ../Banka-4-Frontend/
-            
-              docker tag harbor.k8s.elab.rs/${TEAM_NAME}/${IMAGE_NAME}:latest harbor.k8s.elab.rs/${TEAM_NAME}/${IMAGE_NAME}:${commit_hash}
-            
-              docker push harbor.k8s.elab.rs/${TEAM_NAME}/${IMAGE_NAME}:latest
-              docker push harbor.k8s.elab.rs/${TEAM_NAME}/${IMAGE_NAME}:${commit_hash}
+              docker build --build-arg APP_ENV=build-dev -t harbor.k8s.elab.rs/${TEAM_NAME}/frontend-dev:latest .
+
+              # Pravi kopiju prethodno buildovanog image sa tagom zasnovanim na commit hash-u.
+              docker tag harbor.k8s.elab.rs/${TEAM_NAME}/frontend-dev:latest harbor.k8s.elab.rs/${TEAM_NAME}/frontend-dev:${commit_hash}
+
+              # Pushuje oba image na našu Harbor instancu.
+              docker push harbor.k8s.elab.rs/${TEAM_NAME}/frontend-dev:latest
+              docker push harbor.k8s.elab.rs/${TEAM_NAME}/frontend-dev:${commit_hash}
 
               helm upgrade --namespace="$TEAM_NAME-dev" --create-namespace --timeout=20m --atomic --install --set imageTag="${commit_hash}" "$TEAM_NAME-frontend" "oci://harbor.k8s.elab.rs/$TEAM_NAME/$TEAM_NAME-frontend/$TEAM_NAME-frontend"
               if [ "$PULL_BASE_REF" == "main" ]; then
