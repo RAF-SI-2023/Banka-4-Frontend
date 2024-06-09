@@ -46,6 +46,7 @@ import SpecificContractListPage from 'moduls/TerminskiUgovori/pages/SpecificCont
 import { Dispatch, SetStateAction, createContext, useEffect, useState } from 'react';
 import CompanyInfoTable from 'zaposleni/pages/companyPage';
 import HartijeOdVrednosti from "berza/pages/HartijeOdVrednosti";
+import OtcPage from 'berza/pages/OtcPage';
 import {permissionMap} from 'utils/permissions';
 
 const fadeIn = keyframes`
@@ -250,6 +251,10 @@ function App() {
               path="/akcije"
               element={auth?.id ? <AkcijePage /> : <LoginPage />}
             />
+             <Route
+              path="/otc"
+              element={auth?.id ? <OtcPage /> : <LoginPage />}
+            />
             <Route
               path="/detaljiAkcije"
               element={auth?.id ? <DetaljiAkcije /> : <LoginPage />}
@@ -276,6 +281,7 @@ function App() {
             />
 
             <Route path="*" element={<NotFoundPage />} />
+
           </Routes>
         </BrowserRouter>
       </Context.Provider>

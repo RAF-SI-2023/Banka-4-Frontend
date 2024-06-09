@@ -166,11 +166,23 @@ const EditEmployeePage: React.FC = () => {
     setFormData({ ...formData, pol: event.target.value as string });
   };
 
-  const handleCheckboxChange = (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    const novePermisije = [...permissionCheckboxes];
-    novePermisije[index].vrednost = event.target.checked;
-    setPermissionCheckboxes(novePermisije);
-    setFormData({ ...formData, permisije: encodePermissions(permissionCheckboxes) })
+  const handleCheckboxChange = (group: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = event.target.checked;
+    const updatedPermissions = permissionCheckboxes.map(perm => {
+      if (perm.naziv.endsWith(group)) {
+        return { ...perm, vrednost: checked };
+      }
+      return perm;
+    });
+    setPermissionCheckboxes(updatedPermissions);
+    setFormData({ ...formData, permisije: encodePermissions(updatedPermissions) });
+  };
+
+  const handleSingleCheckboxChange = (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    const updatedPermissions = [...permissionCheckboxes];
+    updatedPermissions[index].vrednost = event.target.checked;
+    setPermissionCheckboxes(updatedPermissions);
+    setFormData({ ...formData, permisije: encodePermissions(updatedPermissions) });
   };
 
   const handleSumbit = async () => {
@@ -200,6 +212,20 @@ const EditEmployeePage: React.FC = () => {
       setSucessPopup(true)
     }
   }
+
+  // Group checkboxes by the last word in their name
+  const groupPermissions = (permissions: Permisije[]) => {
+    return permissions.reduce((acc, perm) => {
+      const lastWord = perm.naziv.split('_').slice(-1)[0];
+      if (!acc[lastWord]) {
+        acc[lastWord] = [];
+      }
+      acc[lastWord].push(perm);
+      return acc;
+    }, {} as Record<string, Permisije[]>);
+  };
+
+  const groupedPermissions = groupPermissions(permissionCheckboxes);
 
   return (
     <PageWrapper>
@@ -292,24 +318,36 @@ const EditEmployeePage: React.FC = () => {
                 <MenuItem value="F">Komplikovano</MenuItem>
               </StyledSelect>
             </FormControl>
-
           </FormSeparatorRow>
         </FormSeparator>
         <CheckBoxForm>
           <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-            {permissionCheckboxes?.map((permisija, index) => (
-              <Grid item xs={6} md={6} lg={6} key={index}>
+            {Object.entries(groupedPermissions).map(([group, perms]) => (
+              <Grid item xs={12} key={group}>
                 <FormControlLabel
-                  control={<Checkbox checked={permisija.vrednost} onChange={handleCheckboxChange(index)} />}
-                  label={`${permissionCheckboxes[index].naziv.replaceAll("_", " ")}`}
+                  control={
+                    <Checkbox
+                      checked={perms.every(perm => perm.vrednost)}
+                      onChange={handleCheckboxChange(group)}
+                    />
+                  }
+                  label={`Select All ${group} permissions`}
                 />
+                {perms.map((permisija, index) => (
+                  <FormControlLabel
+                    key={index}
+                    control={
+                      <Checkbox
+                        checked={permisija.vrednost}
+                        onChange={handleSingleCheckboxChange(permissionCheckboxes.indexOf(permisija))}
+                      />
+                    }
+                    label={`${permisija.naziv.replaceAll("_", " ")}`}
+                  />
+                ))}
               </Grid>
             ))}
           </Grid>
-          {/* <FormControlLabel
-            control={<Checkbox checked={formData.permisije[0].vrednost} onChange={handleCheckboxChange(1)} />}
-            label={`Permisija za `}
-          /> */}
         </CheckBoxForm>
         <ButtonContainer>
           <StyledButton variant="contained" color="primary" onClick={handleSumbit}>
