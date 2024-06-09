@@ -78,9 +78,11 @@ const HartijeOdVrednosti = () => {
 
     const fetchFirm = async () => {
       try {
-        const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${auth?.sub}`) as Employee;
-        if (worker) {
-          setFirmId(worker.firmaId);
+        if(userType === employee) {
+          const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${auth?.sub}`) as Employee;
+          if (worker) {
+            setFirmId(worker.firmaId);
+          }
         }
       } catch (err) {
         console.error("Error fetching employee firm id:", err);

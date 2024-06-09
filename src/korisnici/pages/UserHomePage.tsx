@@ -57,7 +57,7 @@ const UserHomePage: React.FC = () => {
       if (!me)
         return;
       let data;
-      if (me.permission) {
+      if (me.permission === 0) {
         const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${me.sub}`) as Employee
 
         data = await makeGetRequest(`${BankRoutes.account_find_user_account}/${worker.firmaId}`);
