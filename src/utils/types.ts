@@ -1,43 +1,43 @@
 export enum EmployeePermissionsV2 {
-  list_users = 'list_users',
-  create_users = 'create_users',
-  edit_users = 'edit_users',
-  deactivate_users = 'deactivate_users',
+  list_users = "list_users",
+  create_users = "create_users",
+  edit_users = "edit_users",
+  deactivate_users = "deactivate_users",
 
-  list_workers = 'list_workers',
-  create_workers = 'create_workers',
-  edit_workers = 'edit_workers',
-  deactivate_workers = 'deactivate_workers',
+  list_workers = "list_workers",
+  create_workers = "create_workers",
+  edit_workers = "edit_workers",
+  deactivate_workers = "deactivate_workers",
 
-  list_firms = 'list_firms',
-  create_firms = 'create_firms',
-  edit_firms = 'edit_firms',
-  deactivate_firms = 'deactivate_firms',
+  list_firms = "list_firms",
+  create_firms = "create_firms",
+  edit_firms = "edit_firms",
+  deactivate_firms = "deactivate_firms",
 
-  list_bank_accounts = 'list_bank_accounts',
-  create_bank_accounts = 'create_bank_accounts',
-  deactivate_bank_accounts = 'deactivate_bank_accounts',
+  list_bank_accounts = "list_bank_accounts",
+  create_bank_accounts = "create_bank_accounts",
+  deactivate_bank_accounts = "deactivate_bank_accounts",
 
-  list_credits = 'list_credits',
-  accept_redits = 'accept_redits',
-  deny_credits = 'deny_credits',
+  list_credits = "list_credits",
+  accept_redits = "accept_redits",
+  deny_credits = "deny_credits",
 
-  list_cards = 'list_cards',
-  activate_cards = 'activate_cards',
-  deactivate_cards = 'deactivate_cards',
-  block_cards = 'block_cards',
+  list_cards = "list_cards",
+  activate_cards = "activate_cards",
+  deactivate_cards = "deactivate_cards",
+  block_cards = "block_cards",
 
-  list_orders = 'list_orders',
-  accept_orders = 'accept_orders',
-  deny_orders = 'deny_orders',
+  list_orders = "list_orders",
+  accept_orders = "accept_orders",
+  deny_orders = "deny_orders",
 
-  exchange_access = 'exchange_access',
-  payment_access = 'payment_access',
-  action_access = 'action_access',
-  option_access = 'option_access',
-  order_access = 'order_access',
-  termin_access = 'termin_access',
-  profit_access = 'profit_access'
+  exchange_access = "exchange_access",
+  payment_access = "payment_access",
+  action_access = "action_access",
+  option_access = "option_access",
+  order_access = "order_access",
+  termin_access = "termin_access",
+  profit_access = "profit_access",
 }
 
 export type User = {
@@ -49,24 +49,24 @@ export type User = {
   adresa: string;
   email: string;
   brojTelefona: string;
-}
+};
 
 export type UserListProps = {
   users: User[];
-}
+};
 
 export type UserPageProps = {
   user: User;
-}
+};
 
 export enum AccountType {
-  tekuci = 'tekuci',
-  stedni = 'stedni',
-  penzionerski = 'penzionerski',
-  racun_za_mlade = 'racun_za_mlade',
-  devizni = 'devizni',
-  poslovni = 'poslovni ',
-  marzni = 'marzni'
+  tekuci = "tekuci",
+  stedni = "stedni",
+  penzionerski = "penzionerski",
+  racun_za_mlade = "racun_za_mlade",
+  devizni = "devizni",
+  poslovni = "poslovni ",
+  marzni = "marzni",
 }
 
 export type Account = {
@@ -80,15 +80,15 @@ export type Account = {
   aktivan: boolean;
   kamatnaStopa?: string;
   odrzavanjeRacuna?: string;
-  vlasnik?: number,
-  zaposleni?: number
-}
+  vlasnik?: number;
+  zaposleni?: number;
+};
 
 export enum GrupaHartijaOdVrednosti { // Bek moze da im da id
-  Stock = 'stock',
-  Forex = 'forex',
-  Future = 'future',
-  Options = 'options',
+  Stock = "stock",
+  Forex = "forex",
+  Future = "future",
+  Options = "options",
 }
 
 export type MarginAccount = {
@@ -106,36 +106,34 @@ export type MarginAccount = {
   odrzavanjeRacuna?: string;
   vlasnik?: number,
   zaposleni?: number*/
-}
+};
 
 export type MarginTransaction = {
-  brojRacuna: string,
+  brojRacuna: string;
   vremeTransakcije: string;
-  orderRef: number,
-  korisnik: string,
-  opis: string,
+  orderRef: number;
+  korisnik: string;
+  opis: string;
   currency: string;
-  tipTransakcije: 'uplata' | 'isplata';
+  tipTransakcije: "uplata" | "isplata";
   ulog: number;
   pozajmljeno: number;
   marginaOdrzavanja: number;
   kamata: number; // 5% od pozajmljeno
-}
-
-
+};
 
 export type AccountBasicInfo = {
   brojRacuna: string;
   stanje: number;
-}
+};
 
 export type AccountListProps = {
   accounts: Account[];
-}
+};
 
 export type AccountPageProps = {
   account: Account;
-}
+};
 
 export type Employee = {
   ime: string;
@@ -152,11 +150,11 @@ export type Employee = {
   departman: string;
   password: string;
   permisije: number;
-}
+};
 
 export type EmployeeListProps = {
   employees: Employee[];
-}
+};
 
 export type Company = {
   nazivPreduzeca: string;
@@ -166,17 +164,17 @@ export type Company = {
   maticniBroj: string;
   sifraDelatnosti: string;
   registarskiBroj: string;
-}
+};
 
 export type CompanyListProps = {
   companies: Company[];
-}
+};
 
 export type Kartica = {
   id: number;
   name: string;
   number: string;
-  type: 'kreditna' | 'debitna';
+  type: "kreditna" | "debitna";
   creationDate: number;
   expirationDate: number;
   bankAccountNumber: string;
@@ -184,7 +182,7 @@ export type Kartica = {
   cardLimit: number;
   status: 'active' | 'inactive' | 'blocked';
   blocked: boolean;
-}
+};
 
 export type TransakcijaKarticePrikaz = {
   id: number;
@@ -194,10 +192,10 @@ export type TransakcijaKarticePrikaz = {
   sifraPlacanja: string;
   pozivNaBroj: string;
   svrhaPlacanja: string;
-  status: 'U obradi' | 'Uspeh' | 'Neuspeh';
+  status: "U obradi" | "Uspeh" | "Neuspeh";
   vremeTransakcije: number; // JS timestamp
   vremeIzvrsavanja: number;
-}
+};
 
 export type Kredit = {
   id: number;
@@ -211,7 +209,7 @@ export type Kredit = {
   loanPurpose: string;
   permanentEmployee: boolean;
   status: string;
-}
+};
 
 export type KreditPojedinacni = {
   amount: number;
@@ -230,16 +228,16 @@ export type KreditPojedinacni = {
 };
 
 export type Transakcija = {
-  nazivPrimaoca: string,
-  racunPrimaoca: string,
-  iznos: number,
-  pozivNaBroj: string,
-  status: string,
+  nazivPrimaoca: string;
+  racunPrimaoca: string;
+  iznos: number;
+  pozivNaBroj: string;
+  status: string;
   vremeTransakcije: string;
   sifraPlacanja: string;
   svrhaPlacanja: string;
   vremeIzvrsavanja: string;
-}
+};
 
 export enum UserRoutes {
   favorite_users = "/omiljeni-korisnik",
@@ -280,9 +278,7 @@ export enum BankRoutes {
   get_company_accounts = "/company/get-accounts"
 }
 
-export enum StockRoutes {
-
-}
+export enum StockRoutes {}
 
 export type Transaction = {
   senderAccountNumber: string;
@@ -297,4 +293,15 @@ export type Transaction = {
 export type ExchangeRate = {
   currencyCode: string;
   rate: number;
+};
+
+export type Profit = {
+  senderAccount: string;
+  toAccount: string;
+  senderAmount: number;
+  senderCurrency: string;
+  toCurrency: string;
+  exchangeRate: number;
+  profit: number;
+  dateAndTime: number;
 };

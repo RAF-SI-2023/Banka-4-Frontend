@@ -43,9 +43,16 @@ import TerminskiUgovoriPage from 'moduls/TerminskiUgovori/pages/TerminskiUgovori
 import AgriculturePage from 'moduls/TerminskiUgovori/pages/ContractsPage';
 import SpecificContractListPage from 'moduls/TerminskiUgovori/pages/SpecificContractListPage';
 // import WSTest from 'WSTest';
-import { Dispatch, SetStateAction, createContext, useEffect, useState } from 'react';
-import CompanyInfoTable from 'zaposleni/pages/companyPage';
+import {
+  Dispatch,
+  SetStateAction,
+  createContext,
+  useEffect,
+  useState,
+} from "react";
+import CompanyInfoTable from "zaposleni/pages/companyPage";
 import HartijeOdVrednosti from "berza/pages/HartijeOdVrednosti";
+import ProfitPage from "profit/ProfitPage";
 import ATMPage from 'korisnici/pages/ATMPage';
 import OtcPage from 'berza/pages/OtcPage';
 import {permissionMap} from 'utils/permissions';
@@ -279,6 +286,10 @@ function App() {
             <Route
               path="/specContract"
               element={auth?.id ? <SpecificContractListPage /> : <LoginPage />}
+            />
+            <Route
+              path="/profit"
+              element={auth?.id ? <ProfitPage /> : <LoginPage />}
             />
             <Route
               path="/hartije"

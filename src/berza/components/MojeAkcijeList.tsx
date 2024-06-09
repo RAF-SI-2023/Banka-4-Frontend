@@ -3,7 +3,7 @@ import { Stock } from "berza/types/types"
 import { ScrollContainer, StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from '../../utils/tableStyles';
 import BuyOptionPopup from "./BuyOptionPopup";
 import { useEffect, useState } from "react";
-import { makeApiRequest, makeGetRequest } from "utils/apiRequest";
+import { makeGetRequest } from "utils/apiRequest";
 import { getMe } from "utils/getMe";
 
 const MojeAkcijeList: React.FC = () => {
@@ -11,21 +11,17 @@ const MojeAkcijeList: React.FC = () => {
     const auth = getMe()
     useEffect(() => {
         const fetchData = async () => {
-            const data = {
-                "userId": 1,
-                "ticker": "aapl",
-                "quantity": 69
-            }
-            try {
-                await makeApiRequest('/user-stocks', 'PUT', data);
-                const stocks = await makeGetRequest(`/user-stocks/${auth?.id}`);
-                if (stocks) {
-                    setUserStocks(stocks);
+                try {
+                    if(auth?.permission) {
+                        const stocks = await makeGetRequest(`/user-stocks/-1`);
+                        if (stocks) {
+                            setUserStocks(stocks);
+                        }
+                    }
+                } catch (error) {
                 }
-            } catch (error) {
-            }
-        };
-        fetchData();
+            };
+            fetchData();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
