@@ -274,6 +274,7 @@ export enum BankRoutes {
   account_find_firm_user = "",
   company_create = "/racuni/kreirajFirmu",
   exchange = "/exchange",
+  account_add_marzni = "/marzniRacuni",
   get_company_accounts = "/company/get-accounts"
 }
 
