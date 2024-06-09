@@ -74,21 +74,49 @@ interface DecodedToken {
 
 const pages = [
   { name: "Početna", path: "", permissions: [] },
-  { name: "Korisnici", path: "listaKorisnika", permissions: [EmployeePermissionsV2.list_users] },
-  { name: "Zaposleni", path: "listaZaposlenih", permissions: [EmployeePermissionsV2.list_workers] },
-  { name: "Firme", path: "listaFirmi", permissions: [EmployeePermissionsV2.list_firms] },
-  { name: "Kartice", path: "kartice", permissions: [EmployeePermissionsV2.list_cards] },
-  { name: "Krediti", path: "listaKredita", permissions: [EmployeePermissionsV2.list_credits] },
-  { name: "Verifikacija", path: "/verifikacija", permissions: [EmployeePermissionsV2.payment_access] },
-  { name: "Hartije od vrednosti", path: "hartije" },
-
+  {
+    name: "Korisnici",
+    path: "listaKorisnika",
+    permissions: [EmployeePermissionsV2.list_users],
+  },
+  {
+    name: "Zaposleni",
+    path: "listaZaposlenih",
+    permissions: [EmployeePermissionsV2.list_workers],
+  },
+  {
+    name: "Firme",
+    path: "listaFirmi",
+    permissions: [EmployeePermissionsV2.list_firms],
+  },
+  {
+    name: "Kartice",
+    path: "kartice",
+    permissions: [EmployeePermissionsV2.list_cards],
+  },
+  {
+    name: "Krediti",
+    path: "listaKredita",
+    permissions: [EmployeePermissionsV2.list_credits],
+  },
+  {
+    name: "Verifikacija",
+    path: "/verifikacija",
+    permissions: [EmployeePermissionsV2.payment_access],
+  },
+  {
+    name: "Profit",
+    path: "profit",
+    permissions: [EmployeePermissionsV2.profit_access],
+  },
+  // { name: "Hartije od vrednosti", path: "hartije" },
 
   //{ name: "Plaćanja", path: "/placanja", permissions: [EmployeePermissionsV2.payment_access] },
   //{ name: "Menjačnica", path: "/menjacnica", permissions: [] },
 ];
 
 const checkUserPermissions = (requiredPermissions: EmployeePermissionsV2[]) => {
-  const token = localStorage.getItem('si_jwt');
+  const token = localStorage.getItem("si_jwt");
   if (token) {
     const decodedToken = jwtDecode(token) as DecodedToken;
     return hasPermission(decodedToken.permission, requiredPermissions);
@@ -97,13 +125,15 @@ const checkUserPermissions = (requiredPermissions: EmployeePermissionsV2[]) => {
 };
 
 const checkNoPermissions = () => {
-  const token = localStorage.getItem('si_jwt');
+  const token = localStorage.getItem("si_jwt");
   if (token) {
     const decodedToken = jwtDecode(token) as DecodedToken;
-    return !hasPermission(decodedToken.permission, [EmployeePermissionsV2.list_users]);
+    return !hasPermission(decodedToken.permission, [
+      EmployeePermissionsV2.list_users,
+    ]);
   }
   return false;
-}
+};
 
 function Navbar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -112,7 +142,9 @@ function Navbar() {
     setAnchorEl(event.currentTarget);
   };
 
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  );
   const navigate = useNavigate();
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -139,40 +171,54 @@ function Navbar() {
       <Container maxWidth="xl">
         <Toolbar>
           <ImgContainer>
-            <StyledImage src={process.env.PUBLIC_URL + "/logo2.jpeg"} alt="Logo" />
+            <StyledImage
+              src={process.env.PUBLIC_URL + "/logo2.jpeg"}
+              alt="Logo"
+            />
           </ImgContainer>
           <NavItems>
-            {jwt ? pages.filter(page => page.permissions && checkUserPermissions(page.permissions)).map((page) => (
-              <StyledLink key={page.name} to={page.path}>
-                {page.name}
-              </StyledLink>
-            )) : null}
-            {
-              checkNoPermissions() && (<StyledLink key={"Plaćanja"} to={"/placanja"}>
+            {jwt
+              ? pages
+                  .filter(
+                    (page) =>
+                      page.permissions && checkUserPermissions(page.permissions)
+                  )
+                  .map((page) => (
+                    <StyledLink key={page.name} to={page.path}>
+                      {page.name}
+                    </StyledLink>
+                  ))
+              : null}
+            {checkNoPermissions() && (
+              <StyledLink key={"Plaćanja"} to={"/placanja"}>
                 {"Plaćanja"}
               </StyledLink>
-
-              )}
-            {checkNoPermissions() && (<StyledLink key={"Menjačnica"} to={"/menjacnica"}>
-              {"Menjačnica"}
-            </StyledLink>
-
             )}
-            {
-              checkNoPermissions() && (<StyledLink key={"Verifikacija"} to={"/verifikacija"}>
+            {checkNoPermissions() && (
+              <StyledLink key={"Menjačnica"} to={"/menjacnica"}>
+                {"Menjačnica"}
+              </StyledLink>
+            )}
+            {checkNoPermissions() && (
+              <StyledLink key={"Verifikacija"} to={"/verifikacija"}>
                 {"Verifikacija"}
               </StyledLink>
-              )}
-            {
-              checkNoPermissions() && (<StyledLink key={"Kartice"} to={"/kartice"}>
+            )}
+            {checkNoPermissions() && (
+              <StyledLink key={"Kartice"} to={"/kartice"}>
                 {"Kartice"}
               </StyledLink>
-              )}
-            {
-              checkNoPermissions() && (<StyledLink key={"Krediti"} to={"/listaKredita"}>
+            )}
+            {checkNoPermissions() && (
+              <StyledLink key={"Krediti"} to={"/listaKredita"}>
                 {"Krediti"}
               </StyledLink>
-              )}
+            )}
+            {/* {checkNoPermissions() && (
+              <StyledLink key={"Hartije"} to={"/hartije"}>
+                {"Hartije"}
+              </StyledLink>
+            )} */}
 
             <DropdownButton
               id="basic-button"
@@ -193,8 +239,22 @@ function Navbar() {
                 "aria-labelledby": "basic-button",
               }}
             >
-              <MenuItem onClick={() => { navigate('/akcije'); setAnchorEl(null) }}>Akcije</MenuItem>
-              <MenuItem onClick={() => { navigate('/terminski'); setAnchorEl(null) }}>Terminski</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigate("/akcije");
+                  setAnchorEl(null);
+                }}
+              >
+                Akcije
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigate("/terminski");
+                  setAnchorEl(null);
+                }}
+              >
+                Terminski
+              </MenuItem>
             </Menu>
           </NavItems>
           <NavUser>
