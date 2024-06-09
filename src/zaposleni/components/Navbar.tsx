@@ -80,7 +80,7 @@ const pages = [
   { name: "Kartice", path: "kartice", permissions: [EmployeePermissionsV2.list_cards] },
   { name: "Krediti", path: "listaKredita", permissions: [EmployeePermissionsV2.list_credits] },
   { name: "Verifikacija", path: "/verifikacija", permissions: [EmployeePermissionsV2.payment_access] },
-  { name: "Hartije od vrednosti", path: "hartije" },
+  { name: "Profit", path: "/profit", permissions: [EmployeePermissionsV2.profit_access] },
   {name: "OTC", path:"otc", permissions: []},
 
 
@@ -111,6 +111,23 @@ const checkNoPermissions = () => {
     return !hasPermission(decodedToken.permission, [
       EmployeePermissionsV2.list_users,
     ]);
+  }
+  return false;
+};
+
+const checkHartijePermissions = () => {
+  const token = localStorage.getItem("si_jwt");
+  if (token) {
+    const decodedToken = jwtDecode(token) as DecodedToken;
+    return hasPermission(decodedToken.permission, [
+      EmployeePermissionsV2.action_access,
+    ]) || hasPermission(decodedToken.permission, [
+      EmployeePermissionsV2.option_access,
+    ]) || hasPermission(decodedToken.permission, [
+      EmployeePermissionsV2.termin_access,
+    ]) || hasPermission(decodedToken.permission, [
+      EmployeePermissionsV2.order_access,
+    ])
   }
   return false;
 };
@@ -203,7 +220,7 @@ function Navbar() {
                 {"Krediti"}
               </StyledLink>
             )}
-            {checkNoPermissions() && (
+            {(checkNoPermissions() || checkHartijePermissions()) && (
               <StyledLink key={"Hartije"} to={"/hartije"}>
                 {"Hartije"}
               </StyledLink>
@@ -232,11 +249,11 @@ function Navbar() {
               <MenuItem onClick={() => { navigate('/akcije'); setAnchorEl(null) }}>Akcije</MenuItem>
               <MenuItem onClick={() => { navigate('/terminski'); setAnchorEl(null) }}>Terminski</MenuItem>
               {showPorudzbine1 && (
-              <MenuItem onClick={() => { navigate('/listaPorudzbina'); setAnchorEl(null) }}>Porudzbine 1</MenuItem>
+              <MenuItem onClick={() => { navigate('/listaPorudzbina'); setAnchorEl(null) }}>Prihvatanje porudzbina</MenuItem>
             )}
 
             {(showPorudzbine2 || user) && (
-               <MenuItem onClick={() => { navigate('/listaPorudzbinaKorisnici'); setAnchorEl(null) }}>Porudzbine 2</MenuItem>
+               <MenuItem onClick={() => { navigate('/listaPorudzbinaKorisnici'); setAnchorEl(null) }}>Porudzbine</MenuItem>
             )}
             </Menu>
           </NavItems>

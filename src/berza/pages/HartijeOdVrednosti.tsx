@@ -8,9 +8,10 @@ import { Context } from "App";
 import MojeAkcijeList from "berza/components/MojeAkcijeList";
 import UserOptions from "berza/components/UserOptionList";
 import { hasPermission } from "utils/permissions";
-import { EmployeePermissionsV2 } from "utils/types";
+import { Employee, EmployeePermissionsV2, UserRoutes } from "utils/types";
 import { jwtDecode } from "jwt-decode";
 import SpecificContractListPage from "moduls/TerminskiUgovori/pages/SpecificContractListPage";
+import OrdersPageKorisnici from "./ListaPorudzbinaKorisnici";
 const employee = "employee";
 
 interface DecodedToken {
@@ -68,23 +69,41 @@ const HartijeOdVrednosti = () => {
   const [stocks, setStocks] = useState([]);
   const [selectedTab, setSelectedTab] = useState(0);
   const [filter, setFilter] = useState("");
+  const [firmId, setFirmId] = useState<number>(0);
   const ctx = useContext(Context);
   const auth = getMe();
-  auth?.permission && setUserType(employee);
 
   useEffect(() => {
+    if (auth?.permission) setUserType(employee);
+
+    const fetchFirm = async () => {
+      try {
+        if(userType === employee) {
+          const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${auth?.sub}`) as Employee;
+          if (worker) {
+            setFirmId(worker.firmaId);
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching employee firm id:", err);
+      }
+    }
+
     const fetchData = async () => {
       try {
-        const stocks = await makeGetRequest(`/user-stocks/${auth?.id}`);
-        if (stocks) {
+        if(userType === employee) {
+          const stocks = await makeGetRequest(`/user-stocks/-1`);
+          if (stocks) {
           setUserStocks(stocks);
+        }
         }
       } catch (error) {
         console.error("Error fetching user list:", error);
       }
     };
+    fetchFirm();
     fetchData();
-  });
+  }, []);
 
   const checkAkcijePermissions = () => {
     const token = localStorage.getItem("si_jwt");
@@ -176,6 +195,7 @@ const HartijeOdVrednosti = () => {
               <Tab label="Akcije" />
               <Tab label="Opcije" />
               <Tab label="Porudžbine" />
+              {userType === employee && <Tab label="Terminalne porudzbine" />}
               <StyledTextField
                 label="Pretraga"
                 variant="standard"
@@ -194,10 +214,11 @@ const HartijeOdVrednosti = () => {
           {checkOpcijePermissions() && selectedTab === 1 && (
             <UserOptions stocks={stocks} />
           )}
-          {/* {selectedTab === 2 && <Porudzbine  />} */}
-          {checkTerminskiPermissions() &&
+          {checkPorudzbinePermissions() && selectedTab === 2 && <OrdersPageKorisnici  />}
+          {
+          checkTerminskiPermissions() &&
             userType === employee &&
-            selectedTab === 2 && <SpecificContractListPage />}
+            selectedTab === 3 && <SpecificContractListPage />}
         </StyledTable>
       </TableContainer>
     </PageWrapper>

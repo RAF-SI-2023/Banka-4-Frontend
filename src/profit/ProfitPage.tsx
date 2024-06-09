@@ -32,6 +32,15 @@ const StyledButtonsDiv = styled.div`
   align-items: center;
 `;
 
+const StyledManuItem = styled(MenuItem)`
+  width: 10rem;
+`
+
+const StyledDiv = styled.div`
+  display: flex;
+`
+
+
 const ProfitPage = () => {
   const [exchages, setExhanges] = useState<ExchangeRate[]>([]);
   const [selectedCurrecy, setSelectedCurrency] = useState<string>("");
@@ -67,12 +76,12 @@ const ProfitPage = () => {
 
   return (
     <PageWrapper>
-      <Box>
-        <Typography>Valute: </Typography>
+      <StyledDiv>
         <StyledTextField
+          label="Valute:"
           id="valute"
           select
-          defaultValue={"Valute..."}
+          defaultValue={"RSD"}
           onChange={(e) => {
             const selected = exchages.find(
               (exchage: ExchangeRate) => exchage.currencyCode === e.target.value
@@ -80,19 +89,19 @@ const ProfitPage = () => {
             selected && setSelectedCurrency(selected.currencyCode);
           }}
         >
-          <MenuItem disabled value={"RSD"} key="default">
+          <StyledManuItem disabled value={"RSD"} key="default">
             RSD
-          </MenuItem>
+          </StyledManuItem>
           {exchages?.map((exchage: ExchangeRate) => (
-            <MenuItem key={exchage.currencyCode} value={exchage.currencyCode}>
+            <StyledManuItem key={exchage.currencyCode} value={exchage.currencyCode}>
               {exchage.currencyCode}
-            </MenuItem>
+            </StyledManuItem>
           ))}
         </StyledTextField>
         <StyledButtonsDiv>
           <Button onClick={() => fetchProfit()}>Pregledajte profite</Button>
         </StyledButtonsDiv>
-      </Box>
+      </StyledDiv>
       <Container>
         <ProfitTable {...{ profits }} />
       </Container>
