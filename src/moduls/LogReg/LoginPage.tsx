@@ -6,8 +6,19 @@ import { makeApiRequest } from 'utils/apiRequest';
 import { EmployeePermissionsV2, UserRoutes } from 'utils/types';
 import { StyledContainerLogReg } from 'utils/logRegStyles';
 import { hasPermission } from 'utils/permissions';
+import styled from 'styled-components';
 
 // const url = "http://api.stamenic.work:8080/api";
+
+const StyledTextField = styled(TextField)`
+    width: 480px!important;
+`
+const FieldContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+`
 
 interface DecodedToken {
     permission: number;
@@ -22,7 +33,7 @@ const LoginPage = () => {
         if (window.location.pathname !== '/login') {
             navigate('/login')
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const handleRegister = () => {
         navigate('/register')
@@ -84,33 +95,35 @@ const LoginPage = () => {
                 Login
             </Typography>
             <form onSubmit={authenticate}>
-                <TextField
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                    autoFocus
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    sx={{ margin: '5px 0' }} // Reduced margin
-                />
-                <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    sx={{ margin: '5px 0' }} // Reduced margin
-                />
+                <FieldContainer>
+                    <StyledTextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="email"
+                        label="Email Address"
+                        name="email"
+                        autoComplete="email"
+                        autoFocus
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        sx={{ margin: '5px 0' }} // Reduced margin
+                    />
+                    <StyledTextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        name="password"
+                        label="Password"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        sx={{ margin: '5px 0' }} // Reduced margin
+                    />
+                </FieldContainer>
                 {error && (
                     <Typography color="error" variant="body2">
                         {error}
