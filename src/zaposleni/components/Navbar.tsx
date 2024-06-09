@@ -96,6 +96,13 @@ const checkUserPermissions = (requiredPermissions: EmployeePermissionsV2[]) => {
   return false;
 };
 
+
+
+const showPorudzbine1 = checkUserPermissions([EmployeePermissionsV2.order_access]);
+
+const showPorudzbine2 = checkUserPermissions([EmployeePermissionsV2.list_orders]);
+
+
 const checkNoPermissions = () => {
   const token = localStorage.getItem('si_jwt');
   if (token) {
@@ -104,6 +111,10 @@ const checkNoPermissions = () => {
   }
   return false;
 }
+
+const auth = getMe();
+const user = auth?.permission === 0 ? true : false;
+
 
 function Navbar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -195,6 +206,15 @@ function Navbar() {
             >
               <MenuItem onClick={() => { navigate('/akcije'); setAnchorEl(null) }}>Akcije</MenuItem>
               <MenuItem onClick={() => { navigate('/terminski'); setAnchorEl(null) }}>Terminski</MenuItem>
+              {showPorudzbine1 && (
+              <MenuItem onClick={() => { navigate('/listaPorudzbina'); setAnchorEl(null) }}>Porudzbine 1</MenuItem>
+            )}
+
+            {(showPorudzbine2 || user) && (
+               <MenuItem onClick={() => { navigate('/listaPorudzbinaKorisnici'); setAnchorEl(null) }}>Porudzbine 2</MenuItem>
+            )}
+
+              
             </Menu>
           </NavItems>
           <NavUser>
