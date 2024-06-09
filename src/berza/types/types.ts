@@ -38,7 +38,25 @@ export type Akcija = {
 export type AkcijaList = {
     stocks: Akcija[]
 }
+export type IOTC = {
+    ticker: string,
+    amount: number,
+}
+export type IOtcList = {
+    otcs: IOTC[]
+}
 
+export type ForeignOffer = {
+    id : string,
+    ticker: string,
+    quantity: number,
+    amountOffered: number,
+
+}
+
+export type ForeignOfferList = {
+    offers: ForeignOffer[]
+}
 export type Options = {
     ticker: string,
     lastPrice: string,
@@ -54,4 +72,16 @@ export type Options = {
 
 export type OptionsList = {
     options: Options[]
+}
+
+export type Order = {
+    id: string;
+    action: string;
+    ticker: string;
+    quantity: number;
+    pricePerUnit: number;
+    totalPrice: number;
+    createdBy: string;
+    status: 'approved' | 'rejected' | 'pending';
+    approvedBy?: string;
 }

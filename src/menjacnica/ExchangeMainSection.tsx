@@ -5,6 +5,7 @@ import { makeGetRequest } from "../utils/apiRequest";
 import styled from "styled-components";
 import { Account, BankRoutes, ExchangeRate } from "utils/types";
 import { Box, Button, MenuItem, TextField, Typography } from "@mui/material";
+import { forEach } from "cypress/types/lodash";
 
 const StyledParagraph = styled.p`
   margin-left: 2.5px;

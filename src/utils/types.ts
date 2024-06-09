@@ -180,7 +180,7 @@ export type Kartica = {
   bankAccountNumber: string;
   cvv: string;
   cardLimit: number;
-  status: "aktivna" | "deaktivirana" | "blokirana";
+  status: 'active' | 'inactive' | 'blocked';
   blocked: boolean;
 };
 
@@ -252,6 +252,8 @@ export enum UserRoutes {
   user = "/korisnik",
   worker = "/radnik",
   worker_by_email = "/radnik/email",
+  atm = "/racuni/atm",
+  place_order = "/orders/place-order",
 }
 
 export enum BankRoutes {
@@ -272,7 +274,8 @@ export enum BankRoutes {
   account_find_firm_user = "",
   company_create = "/racuni/kreirajFirmu",
   exchange = "/exchange",
-  get_company_accounts = "/company/get-accounts",
+  account_add_marzni = "/marzniRacuni",
+  get_company_accounts = "/company/get-accounts"
 }
 
 export enum StockRoutes {}

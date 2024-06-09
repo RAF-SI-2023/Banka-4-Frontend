@@ -1,44 +1,47 @@
-import "./App.css";
-import UserListPage from "./zaposleni/pages/userListPage";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import UserInfoTable from "./zaposleni/pages/userPage";
-import Navbar from "./zaposleni/components/Navbar";
-import CreateUserPage from "./zaposleni/pages/createUserPage";
-import EditUserPage from "./zaposleni/pages/editUserPage";
-import CreateAccountPage from "./zaposleni/pages/createAccountPage";
-import AccountInfoPage from "./zaposleni/pages/accountPage";
-import CreateEmployeePage from "./zaposleni/pages/createEmployeePage";
-import EditEmployeePage from "./zaposleni/pages/editEmployeePage";
-import CreateCompanyPage from "./zaposleni/pages/createCompanyPage";
-import EditCompanyPage from "./zaposleni/pages/editCompanyPage";
-import LoginPage from "./moduls/LogReg/LoginPage";
-import RegistrationPage from "./moduls/LogReg/RegistrationPage";
-import { getMe } from "./utils/getMe";
-import Placanje from "./korisnici/pages/PlacanjePage";
-import UserHomePage from "korisnici/pages/UserHomePage";
-import ResetPasswordPage from "korisnici/pages/ResetPasswordPage";
-import Verifikacija from "korisnici/pages/StranicaZaVerifikacijuPlacanja";
-import StranicaZaPojedinacniRacunSaPocetneStraniceZaKorisnike from "korisnici/pages/StranicaZaPojedinacniRacunSaPocetneStraniceZaKorisnike";
-import PregledKartica from "moduls/Kartice/PregledKartica";
-import DodajKarticu from "moduls/Kartice/DodajKarticu";
-import DetaljiKartice from "moduls/Kartice/DetaljiKartice";
-import ListaKredita from "moduls/SviKrediti/listaKredita";
-import TraziKreditStranica from "moduls/TrazenjeKredita/TraziKreditOdBanke";
-import PojedinacniKreditStranica from "moduls/PojedinacniKredit/PojedinacniKreditStranica";
-import OpcijePage from "berza/pages/OpcijePage";
-import UserOpcijePage from "berza/pages/UserOptionsPage";
-import Transaction from "zaposleni/pages/TransactionPage";
-import AkcijePage from "berza/pages/AkcijePage";
-import DetaljiAkcije from "berza/pages/DetaljiAkcijePage";
-import ExchangePage from "menjacnica/ExchangePage";
-import styled, { keyframes } from "styled-components";
-import { Box, Button, Dialog, Typography } from "@mui/material";
-import CompanyListPage from "zaposleni/pages/companyListPage";
-import EmployeeListPage from "zaposleni/pages/employeeListPage";
-import NotFoundPage from "moduls/DodatneStranice/NotFoundPage";
-import TerminskiUgovoriPage from "moduls/TerminskiUgovori/pages/TerminskiUgovoriPage";
-import AgriculturePage from "moduls/TerminskiUgovori/pages/ContractsPage";
-import SpecificContractListPage from "moduls/TerminskiUgovori/pages/SpecificContractListPage";
+import './App.css';
+import UserListPage from './zaposleni/pages/userListPage'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import UserInfoTable from './zaposleni/pages/userPage';
+import Navbar from './zaposleni/components/Navbar';
+import CreateUserPage from './zaposleni/pages/createUserPage';
+import EditUserPage from './zaposleni/pages/editUserPage';
+import CreateAccountPage from './zaposleni/pages/createAccountPage';
+import AccountInfoPage from './zaposleni/pages/accountPage';
+import CreateEmployeePage from './zaposleni/pages/createEmployeePage';
+import EditEmployeePage from './zaposleni/pages/editEmployeePage';
+import CreateCompanyPage from './zaposleni/pages/createCompanyPage';
+import EditCompanyPage from './zaposleni/pages/editCompanyPage';
+import LoginPage from './moduls/LogReg/LoginPage';
+import OrdersPage from 'berza/pages/ListaPorudzbina';
+import OrdersPageKorisnici from 'berza/pages/ListaPorudzbinaKorisnici';
+import NewOrder from 'berza/pages/NewOrder';
+import RegistrationPage from './moduls/LogReg/RegistrationPage';
+import { getMe } from './utils/getMe';
+import Placanje from './korisnici/pages/PlacanjePage';
+import UserHomePage from 'korisnici/pages/UserHomePage';
+import ResetPasswordPage from 'korisnici/pages/ResetPasswordPage';
+import Verifikacija from 'korisnici/pages/StranicaZaVerifikacijuPlacanja';
+import StranicaZaPojedinacniRacunSaPocetneStraniceZaKorisnike from 'korisnici/pages/StranicaZaPojedinacniRacunSaPocetneStraniceZaKorisnike';
+import PregledKartica from 'moduls/Kartice/PregledKartica';
+import DodajKarticu from 'moduls/Kartice/DodajKarticu';
+import DetaljiKartice from 'moduls/Kartice/DetaljiKartice';
+import ListaKredita from 'moduls/SviKrediti/listaKredita';
+import TraziKreditStranica from 'moduls/TrazenjeKredita/TraziKreditOdBanke';
+import PojedinacniKreditStranica from 'moduls/PojedinacniKredit/PojedinacniKreditStranica';
+import OpcijePage from 'berza/pages/OpcijePage';
+import UserOpcijePage from 'berza/pages/UserOptionsPage';
+import Transaction from 'zaposleni/pages/TransactionPage';
+import AkcijePage from 'berza/pages/AkcijePage';
+import DetaljiAkcije from 'berza/pages/DetaljiAkcijePage';
+import ExchangePage from 'menjacnica/ExchangePage';
+import styled, { keyframes } from 'styled-components';
+import { Box, Button, Dialog, Typography } from '@mui/material';
+import CompanyListPage from 'zaposleni/pages/companyListPage';
+import EmployeeListPage from 'zaposleni/pages/employeeListPage';
+import NotFoundPage from 'moduls/DodatneStranice/NotFoundPage';
+import TerminskiUgovoriPage from 'moduls/TerminskiUgovori/pages/TerminskiUgovoriPage';
+import AgriculturePage from 'moduls/TerminskiUgovori/pages/ContractsPage';
+import SpecificContractListPage from 'moduls/TerminskiUgovori/pages/SpecificContractListPage';
 // import WSTest from 'WSTest';
 import {
   Dispatch,
@@ -50,6 +53,9 @@ import {
 import CompanyInfoTable from "zaposleni/pages/companyPage";
 import HartijeOdVrednosti from "berza/pages/HartijeOdVrednosti";
 import ProfitPage from "profit/ProfitPage";
+import ATMPage from 'korisnici/pages/ATMPage';
+import OtcPage from 'berza/pages/OtcPage';
+import {permissionMap} from 'utils/permissions';
 
 const fadeIn = keyframes`
   from {
@@ -178,58 +184,22 @@ function App() {
             />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegistrationPage />} />
-            <Route
-              path="/listaKorisnika"
-              element={auth?.id ? <UserListPage /> : <LoginPage />}
-            />
-            <Route
-              path="/listaZaposlenih"
-              element={auth?.id ? <EmployeeListPage /> : <LoginPage />}
-            />
-            <Route
-              path="/listaFirmi"
-              element={auth?.id ? <CompanyListPage /> : <LoginPage />}
-            />
-            <Route
-              path="/firma"
-              element={auth?.id ? <CompanyInfoTable /> : <LoginPage />}
-            />
-            <Route
-              path="/korisnik"
-              element={auth?.id ? <UserInfoTable /> : <LoginPage />}
-            />
-            <Route
-              path="/kreirajKorisnika"
-              element={auth?.id ? <CreateUserPage /> : <LoginPage />}
-            />
-            <Route
-              path="/izmeniKorisnika"
-              element={auth?.id ? <EditUserPage /> : <LoginPage />}
-            />
-            <Route
-              path="/racun"
-              element={auth?.id ? <AccountInfoPage /> : <LoginPage />}
-            />
-            <Route
-              path="/kreirajRacun"
-              element={auth?.id ? <CreateAccountPage /> : <LoginPage />}
-            />
-            <Route
-              path="/kreirajZaposlenog"
-              element={auth?.id ? <CreateEmployeePage /> : <LoginPage />}
-            />
-            <Route
-              path="/izmeniZaposlenog"
-              element={auth?.id ? <EditEmployeePage /> : <LoginPage />}
-            />
-            <Route
-              path="/kreirajFirmu"
-              element={auth?.id ? <CreateCompanyPage /> : <LoginPage />}
-            />
-            <Route
-              path="/izmeniFirmu"
-              element={auth?.id ? <EditCompanyPage /> : <LoginPage />}
-            />
+            <Route path="/listaKorisnika" element={auth?.id ? <UserListPage /> : <LoginPage />} />
+            <Route path="/listaZaposlenih" element={auth?.id ? <EmployeeListPage /> : <LoginPage />} />
+            <Route path="/listaFirmi" element={auth?.id ? <CompanyListPage /> : <LoginPage />} />
+            <Route path="/firma" element={auth?.id ? <CompanyInfoTable /> : <LoginPage/>}/>
+            <Route path="/korisnik" element={auth?.id ? <UserInfoTable /> : <LoginPage />} />
+            <Route path="/kreirajKorisnika" element={auth?.id ? <CreateUserPage /> : <LoginPage />} />
+            <Route path="/listaPorudzbina" element={auth?.id ? <OrdersPage /> : <LoginPage />} />
+            <Route path="/listaPorudzbinaKorisnici" element={auth?.id ? <OrdersPageKorisnici /> : <LoginPage />} />
+            <Route path="/NewOrder" element={auth?.id ? <NewOrder/> : <LoginPage />} />
+            <Route path="/izmeniKorisnika" element={auth?.id ? <EditUserPage /> : <LoginPage />} />
+            <Route path="/racun" element={auth?.id ? <AccountInfoPage /> : <LoginPage />} />
+            <Route path="/kreirajRacun" element={auth?.id ? <CreateAccountPage /> : <LoginPage />} />
+            <Route path="/kreirajZaposlenog" element={auth?.id ? <CreateEmployeePage /> : <LoginPage />} />
+            <Route path="/izmeniZaposlenog" element={auth?.id ? <EditEmployeePage /> : <LoginPage />} />
+            <Route path="/kreirajFirmu" element={auth?.id ? <CreateCompanyPage /> : <LoginPage />} />
+            <Route path="/izmeniFirmu" element={auth?.id ? <EditCompanyPage /> : <LoginPage />} />
             <Route path="/resetPassword" element={<ResetPasswordPage />} />
             <Route
               path="/verifikacija"
@@ -242,6 +212,10 @@ function App() {
             <Route
               path="/placanja"
               element={auth?.id ? <Placanje /> : <LoginPage />}
+            />
+            <Route
+              path="/atm"
+              element={auth?.id ? <ATMPage /> : <LoginPage />}
             />
             <Route
               path="/kartice"
@@ -289,6 +263,10 @@ function App() {
               path="/akcije"
               element={auth?.id ? <AkcijePage /> : <LoginPage />}
             />
+             <Route
+              path="/otc"
+              element={auth?.id ? <OtcPage /> : <LoginPage />}
+            />
             <Route
               path="/detaljiAkcije"
               element={auth?.id ? <DetaljiAkcije /> : <LoginPage />}
@@ -319,6 +297,7 @@ function App() {
             />
 
             <Route path="*" element={<NotFoundPage />} />
+
           </Routes>
         </BrowserRouter>
       </Context.Provider>

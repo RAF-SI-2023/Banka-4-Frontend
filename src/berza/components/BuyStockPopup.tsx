@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useContext, useState } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -6,6 +6,10 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Checkbox, FormControlLabel, FormGroup, TextField, Typography } from '@mui/material';
 import styled from 'styled-components';
+import { Context } from 'App';
+import { getMe } from 'utils/getMe';
+import { makeApiRequest } from 'utils/apiRequest';
+import { UserRoutes } from 'utils/types';
 
 const TipWrapper = styled.div`
   display: flex;
@@ -13,8 +17,12 @@ const TipWrapper = styled.div`
   font-size: 14px;
   line-height: 2px;
 `
+interface BuyStockPopupProps {
+  ticker?: string; // Optional string prop
+}
 
-export default function BuyStockPopup() {
+
+const BuyStockPopup: React.FC<BuyStockPopupProps> = ({ ticker }) => {
   const [open, setOpen] = useState(false);
   const [kolicina, setKolicina] = useState('')
   const [limit, setLimit] = useState('')
@@ -22,7 +30,7 @@ export default function BuyStockPopup() {
   const [margin, setMargin] = useState(false)
   const [allOrNone, setAllOrNone] = useState(false)
 
-
+  const ctx = useContext(Context);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -31,7 +39,26 @@ export default function BuyStockPopup() {
     setOpen(false);
   };
 
-  const handleBuy = () => {
+  const handleBuy = async () => {
+
+    const data = {
+      "userId": getMe()?.id,
+      "ticker": ticker,
+      "quantity": kolicina,
+      "limit": limit,
+      "stop": stop,
+      "allOrNone": allOrNone,
+      "margin": margin,
+      "action": "BUY"
+    }
+    try {
+      const result = await makeApiRequest(UserRoutes.place_order, 'POST', data, false, false, ctx);
+      console.log(result);
+      ctx?.setErrors(["Our Success: Uspesno kupljeno"])
+    }
+    catch (e) {
+      ctx?.setErrors(["Our Error: Neuspesno kupljeno"])
+    }
     setOpen(false);
   };
 
@@ -47,7 +74,7 @@ export default function BuyStockPopup() {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Kupi akciju"}
+          {"Kupi akciju " + (ticker || "")}
         </DialogTitle>
         <DialogContent>
           <TextField
@@ -98,3 +125,5 @@ export default function BuyStockPopup() {
     </Fragment>
   );
 }
+
+export default BuyStockPopup
