@@ -81,7 +81,6 @@ const pages = [
   { name: "Krediti", path: "listaKredita", permissions: [EmployeePermissionsV2.list_credits] },
   { name: "Verifikacija", path: "/verifikacija", permissions: [EmployeePermissionsV2.payment_access] },
   { name: "Profit", path: "/profit", permissions: [EmployeePermissionsV2.profit_access] },
-  { name: "Hartije od vrednosti", path: "hartije" },
   {name: "OTC", path:"otc", permissions: []},
 
 
@@ -112,6 +111,23 @@ const checkNoPermissions = () => {
     return !hasPermission(decodedToken.permission, [
       EmployeePermissionsV2.list_users,
     ]);
+  }
+  return false;
+};
+
+const checkHartijePermissions = () => {
+  const token = localStorage.getItem("si_jwt");
+  if (token) {
+    const decodedToken = jwtDecode(token) as DecodedToken;
+    return hasPermission(decodedToken.permission, [
+      EmployeePermissionsV2.action_access,
+    ]) || hasPermission(decodedToken.permission, [
+      EmployeePermissionsV2.option_access,
+    ]) || hasPermission(decodedToken.permission, [
+      EmployeePermissionsV2.termin_access,
+    ]) || hasPermission(decodedToken.permission, [
+      EmployeePermissionsV2.order_access,
+    ])
   }
   return false;
 };
@@ -204,7 +220,7 @@ function Navbar() {
                 {"Krediti"}
               </StyledLink>
             )}
-            {checkNoPermissions() && (
+            {(checkNoPermissions() || checkHartijePermissions()) && (
               <StyledLink key={"Hartije"} to={"/hartije"}>
                 {"Hartije"}
               </StyledLink>
