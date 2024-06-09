@@ -81,6 +81,7 @@ const pages = [
   { name: "Krediti", path: "listaKredita", permissions: [EmployeePermissionsV2.list_credits] },
   { name: "Verifikacija", path: "/verifikacija", permissions: [EmployeePermissionsV2.payment_access] },
   { name: "Hartije od vrednosti", path: "hartije" },
+  {name: "OTC", path:"otc", permissions: []},
 
 
   //{ name: "Plaćanja", path: "/placanja", permissions: [EmployeePermissionsV2.payment_access] },
@@ -96,6 +97,13 @@ const checkUserPermissions = (requiredPermissions: EmployeePermissionsV2[]) => {
   return false;
 };
 
+
+
+const showPorudzbine1 = checkUserPermissions([EmployeePermissionsV2.order_access]);
+
+const showPorudzbine2 = checkUserPermissions([EmployeePermissionsV2.list_orders]);
+
+
 const checkNoPermissions = () => {
   const token = localStorage.getItem('si_jwt');
   if (token) {
@@ -104,6 +112,10 @@ const checkNoPermissions = () => {
   }
   return false;
 }
+
+const auth = getMe();
+const user = auth?.permission === 0 ? true : false;
+
 
 function Navbar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -178,7 +190,7 @@ function Navbar() {
                 {"Krediti"}
               </StyledLink>
               )}
-
+            
             <DropdownButton
               id="basic-button"
               aria-controls={open ? "basic-menu" : undefined}
@@ -189,6 +201,7 @@ function Navbar() {
             >
               Berza
             </DropdownButton>
+            
             <Menu
               id="basic-menu"
               anchorEl={anchorEl}
@@ -200,6 +213,15 @@ function Navbar() {
             >
               <MenuItem onClick={() => { navigate('/akcije'); setAnchorEl(null) }}>Akcije</MenuItem>
               <MenuItem onClick={() => { navigate('/terminski'); setAnchorEl(null) }}>Terminski</MenuItem>
+              {showPorudzbine1 && (
+              <MenuItem onClick={() => { navigate('/listaPorudzbina'); setAnchorEl(null) }}>Porudzbine 1</MenuItem>
+            )}
+
+            {(showPorudzbine2 || user) && (
+               <MenuItem onClick={() => { navigate('/listaPorudzbinaKorisnici'); setAnchorEl(null) }}>Porudzbine 2</MenuItem>
+            )}
+
+              
             </Menu>
           </NavItems>
           <NavUser>

@@ -15,6 +15,7 @@ const ContainerStyled = styled.div`
 
 const ExchangePage = () => {
   const [iznos, setIznos] = useState<string>();
+  const [kurs, setKurs] = useState<number>(0);
   const [detaljiTransfera, setDetaljiTransfera] = useState<boolean>(false);
   const [saRacunaBrRacuna, setSaRacunaBrRacuna] = useState<string>();
   const [naRacunBrRacuna, setNaRacunBrRacuna] = useState<string>();
@@ -35,8 +36,7 @@ const ExchangePage = () => {
       if (data) {
         setUser(data);
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   return (
@@ -44,24 +44,30 @@ const ExchangePage = () => {
       {detaljiTransfera ? (
         <Container>
           <TransferDetails
-            user={user}
-            setDetaljiTransfera={setDetaljiTransfera}
-            iznos={iznos}
-            saRacunaBrRacuna={saRacunaBrRacuna}
-            naRacunBrRacuna={naRacunBrRacuna}
-            saRacunaValuta={saRacunaValuta}
-            naRacunValuta={naRacunValuta}
+            {...{
+              kurs,
+              user,
+              setDetaljiTransfera,
+              iznos,
+              saRacunaBrRacuna,
+              naRacunBrRacuna,
+              naRacunValuta,
+              saRacunaValuta,
+            }}
           />
         </Container>
       ) : (
         <Container>
           <ExchangeMainSection
-            setNaRacunBrRacuna={setNaRacunBrRacuna}
-            setSaRacunaBrRacuna={setSaRacunaBrRacuna}
-            setDetaljiTransfera={setDetaljiTransfera}
-            setIznos={setIznos}
-            setSaRacunaValuta={setSaRacunaValuta}
-            setNaRacunValuta={setNaRacunValuta}
+            {...{
+              setKurs,
+              setNaRacunBrRacuna,
+              setSaRacunaBrRacuna,
+              setDetaljiTransfera,
+              setIznos,
+              setSaRacunaValuta,
+              setNaRacunValuta,
+            }}
           />
         </Container>
       )}

@@ -36,7 +36,8 @@ export enum EmployeePermissionsV2 {
   action_access = 'action_access',
   option_access = 'option_access',
   order_access = 'order_access',
-  termin_access = 'termin_access'
+  termin_access = 'termin_access',
+  profit_access = 'profit_access'
 }
 
 export type User = {
