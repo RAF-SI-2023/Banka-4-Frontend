@@ -33,6 +33,7 @@
   "scripts": {
     "start": "env-cmd -f .env.local set PORT=3000 && react-scripts start",
     "build": "react-scripts build",
+    "build:prod": "env-cmd -f .env.production npm run build",
     "test": "react-scripts test",
     "cypress": "cypress run",
     "eject": "react-scripts eject",
