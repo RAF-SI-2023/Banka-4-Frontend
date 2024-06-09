@@ -73,3 +73,15 @@ export type Options = {
 export type OptionsList = {
     options: Options[]
 }
+
+export type Order = {
+    id: string;
+    action: string;
+    ticker: string;
+    quantity: number;
+    pricePerUnit: number;
+    totalPrice: number;
+    createdBy: string;
+    status: 'approved' | 'rejected' | 'pending';
+    approvedBy?: string;
+}
