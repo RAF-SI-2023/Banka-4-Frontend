@@ -232,11 +232,11 @@ function Navbar() {
               <MenuItem onClick={() => { navigate('/akcije'); setAnchorEl(null) }}>Akcije</MenuItem>
               <MenuItem onClick={() => { navigate('/terminski'); setAnchorEl(null) }}>Terminski</MenuItem>
               {showPorudzbine1 && (
-              <MenuItem onClick={() => { navigate('/listaPorudzbina'); setAnchorEl(null) }}>Porudzbine 1</MenuItem>
+              <MenuItem onClick={() => { navigate('/listaPorudzbina'); setAnchorEl(null) }}>Prihvatanje porudzbina</MenuItem>
             )}
 
             {(showPorudzbine2 || user) && (
-               <MenuItem onClick={() => { navigate('/listaPorudzbinaKorisnici'); setAnchorEl(null) }}>Porudzbine 2</MenuItem>
+               <MenuItem onClick={() => { navigate('/listaPorudzbinaKorisnici'); setAnchorEl(null) }}>Porudzbine</MenuItem>
             )}
             </Menu>
           </NavItems>
