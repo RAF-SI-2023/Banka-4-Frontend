@@ -189,11 +189,6 @@ function Navbar() {
 
             )}
             {checkNoPermissions() && (
-              <StyledLink key={"Menjačnica"} to={"/menjacnica"}>
-                {"Menjačnica"}
-              </StyledLink>
-            )}
-            {checkNoPermissions() && (
               <StyledLink key={"Verifikacija"} to={"/verifikacija"}>
                 {"Verifikacija"}
               </StyledLink>
