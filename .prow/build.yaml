@@ -54,7 +54,6 @@ postsubmits:
               if [ "$PULL_BASE_REF" == "main" ]; then
                 helm upgrade --namespace="$TEAM_NAME-prod" --create-namespace --timeout=20m --atomic --install --set imageName="frontend",imageTag="${commit_hash}",host="$TEAM_NAME.si.raf.edu.rs" "$TEAM_NAME-frontend" "oci://harbor.k8s.elab.rs/$TEAM_NAME/$TEAM_NAME-frontend/$TEAM_NAME-frontend"
               fi
->>>>>>> 3d196de (Update build.yaml & Dockerfile (#219))
           securityContext:
             privileged: true
           imagePullPolicy: Always
