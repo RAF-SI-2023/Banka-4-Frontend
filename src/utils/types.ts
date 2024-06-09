@@ -255,6 +255,7 @@ export enum UserRoutes {
   worker = "/radnik",
   worker_by_email = "/radnik/email",
   atm = "/racuni/atm",
+  place_order = "/orders/place-order",
 }
 
 export enum BankRoutes {
