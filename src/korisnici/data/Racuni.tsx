@@ -2,6 +2,7 @@ export type RacunType = {
     naziv: string;
     broj: string;
     raspolozivo: number;
+    valuta?: string;
 };
 export const RACUNI_PLACEHOLDER: RacunType[] = [{ naziv: "Dragos", broj: '265-0000001234123-12', raspolozivo: 100.11 }, { naziv: "Drugi", broj: '265-0000001234124-13', raspolozivo: 100000 }]
 

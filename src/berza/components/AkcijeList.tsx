@@ -24,7 +24,6 @@ const AkcijeList: React.FC<AkcijaList> = ({ stocks }) => {
                         <StyledHeadTableCell>Promena%</StyledHeadTableCell>
                         <StyledHeadTableCell>Poslednje azuriranje</StyledHeadTableCell>
                         <StyledHeadTableCell>Kupi</StyledHeadTableCell>
-                        <StyledHeadTableCell>OTC</StyledHeadTableCell>
                         <StyledHeadTableCell>Detalji</StyledHeadTableCell>
                     </TableRow>
                 </StyledTableHead>
@@ -37,11 +36,11 @@ const AkcijeList: React.FC<AkcijaList> = ({ stocks }) => {
                             <StyledTableCell>{stock.change}</StyledTableCell>
                             <StyledTableCell>{stock.dividendYield}</StyledTableCell>
                             <StyledTableCell>{stock.lastRefresh}</StyledTableCell>
-                            <StyledTableCell><BuyStockPopup /></StyledTableCell>
-                            <StyledTableCell><BuyOptionPopup /></StyledTableCell>
+                            <StyledTableCell><BuyStockPopup ticker={stock.ticker} /></StyledTableCell>
                             <StyledTableCell>
-                                <Button onClick={()=>{
-                                    navigate(`/detaljiAkcije?ticker=${stock.ticker}`)}}>
+                                <Button onClick={() => {
+                                    navigate(`/detaljiAkcije?ticker=${stock.ticker}`)
+                                }}>
                                     Detaljni prikaz</Button>
                             </StyledTableCell>
                         </StyledTableRow>
