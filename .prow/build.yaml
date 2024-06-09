@@ -32,7 +32,7 @@ postsubmits:
 
               # Builduje Docker image sa "latest" tagom i nazivom takvim da možemo da pushujemo
               # image na našu Harbor instancu.
-              docker build -t harbor.k8s.elab.rs/${TEAM_NAME}/frontend:latest .
+              docker build --build-arg APP_ENV=build-dev -t harbor.k8s.elab.rs/${TEAM_NAME}/frontend:latest .
 
               # Pravi kopiju prethodno buildovanog image sa tagom zasnovanim na commit hash-u.
               docker tag harbor.k8s.elab.rs/${TEAM_NAME}/frontend:latest harbor.k8s.elab.rs/${TEAM_NAME}/frontend:${commit_hash}

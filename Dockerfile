@@ -1,7 +1,7 @@
 # Step 1: Build Stage - Use an official Node.js runtime as a parent image
 FROM node:18 as builder
 
-ARG APP_ENV=build:prod
+ARG APP_ENV=build-prod
 # Step 2: Set the working directory in the container
 WORKDIR /app
 
