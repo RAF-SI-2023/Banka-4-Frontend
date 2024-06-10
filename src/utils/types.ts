@@ -254,6 +254,7 @@ export enum UserRoutes {
   worker_by_email = "/radnik/email",
   atm = "/racuni/atm",
   place_order = "/orders/place-order",
+  buy_option = "/opcija/kreiraj-opciju-za-korisnika",
 }
 
 export enum BankRoutes {

@@ -1,10 +1,16 @@
-import { Table, TableBody, TableRow } from "@mui/material"
+import { Button, Table, TableBody, TableRow } from "@mui/material"
 import { OptionsList, Options } from "berza/types/types"
 import { ScrollContainer, StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from '../../utils/tableStyles';
 import BuyOptionPopup from "./BuyOptionPopup";
+import { getMe } from "utils/getMe";
+import { useContext } from "react";
+import { Context } from "App";
+import { makeApiRequest } from "utils/apiRequest";
+import { UserRoutes } from "utils/types";
 
 const CallsList: React.FC<OptionsList> = ({ options }) => {
 
+    const ctx = useContext(Context);
     const handleSelect = (event: any) => {
         //const id = event.currentTarget.id;
     };
@@ -41,7 +47,23 @@ const CallsList: React.FC<OptionsList> = ({ options }) => {
                             <StyledTableCell>{option.openInterest}</StyledTableCell>
                             <StyledTableCell>{option.impliedVolatility}</StyledTableCell>
                             <StyledTableCell>
-                                Size 0, can't buy
+                                <Button variant="outlined" onClick={async () => {
+                                    const data = {
+                                        korisnikId: getMe()?.id,
+                                        opcijaId: option.id,
+                                        akcijaId: 0,
+                                        akcijaTickerCenaPrilikomIskoriscenja: option.strikePrice
+                                    }
+                                    try {
+                                        const res = await makeApiRequest(UserRoutes.buy_option, "POST", data, false, false, ctx);
+                                        ctx?.setErrors(["Our success: Uspesna kupovina opcije"])
+                                    }
+                                    catch (e) {
+                                        ctx?.setErrors(["Our success: Uspesna kupovina opcije"])
+                                    }
+                                }}>
+                                    Buy
+                                </Button>
                             </StyledTableCell>
                         </StyledTableRow>
                     ))}

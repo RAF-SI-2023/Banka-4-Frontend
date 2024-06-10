@@ -59,6 +59,7 @@ const StyledTabs = styled(Tabs)`
 const OpcijePage: React.FC = () => {
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [selectedTab, setSelectedTab] = useState(0);
+  const [akcijaId, setAkcijaId] = useState('');
   const [ticker, setTicker] = useState('');
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
@@ -74,15 +75,21 @@ const OpcijePage: React.FC = () => {
     const fetchData = async () => {
       try {
         const urlParams = new URLSearchParams(window.location.search);
+        const allOptions = await makeGetRequest(`/opcija/sve-opcije`);
+        // @ts-ignore
+        const filteredOptions = allOptions.filter(e => (e.ticker == ticker))
+        setAkcijaId(urlParams?.get('id') ?? '')
         setTicker(urlParams?.get('ticker') ?? '')
         setName(urlParams?.get('name') ?? '')
         setPrice(urlParams?.get('price') ?? '')
-        if (ticker) {
-          const res = await makeGetRequest(`/opcija/opcije/${ticker}`);
-          if (res.puts && res.calls) {
-            setPuts(res.puts)
-            setCalls(res.calls)
-          }
+        // @ts-ignore
+        const puts = filteredOptions.filter(e => (e.optionType == "PUT"))
+        // @ts-ignore
+        const calls = filteredOptions.filter(e => (e.optionType == "CALL"))
+        
+        if (puts && calls) {
+          setPuts(puts)
+          setCalls(calls)
         }
       } catch (error) {
       }
@@ -120,7 +127,7 @@ const OpcijePage: React.FC = () => {
         />
       </StockWrapper>
       <TableContainer>
-        { <StyledTable>
+        {<StyledTable>
           <AppBar position="static" >
             <StyledTabs value={selectedTab} onChange={handleChange}>
               <Tab label="Calls" />

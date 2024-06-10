@@ -58,6 +58,7 @@ export type ForeignOfferList = {
     offers: ForeignOffer[]
 }
 export type Options = {
+    id: number | null,
     ticker: string,
     lastPrice: string,
     strikePrice: string,
