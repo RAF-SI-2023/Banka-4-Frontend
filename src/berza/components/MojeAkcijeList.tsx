@@ -5,23 +5,41 @@ import BuyOptionPopup from "./BuyOptionPopup";
 import { useEffect, useState } from "react";
 import { makeGetRequest } from "utils/apiRequest";
 import { getMe } from "utils/getMe";
+import { BankRoutes, Employee, UserRoutes } from "utils/types";
 
 const MojeAkcijeList: React.FC = () => {
     const [userStocks, setUserStocks] = useState([]);
     const auth = getMe()
     useEffect(() => {
         const fetchData = async () => {
-                try {
-                    if(auth?.permission) {
-                        const stocks = await makeGetRequest(`/user-stocks/-1`);
-                        if (stocks) {
-                            setUserStocks(stocks);
-                        }
-                    }
-                } catch (error) {
+            try {
+                console.log("PERMISIJEEE")
+                console.log(auth?.permission)
+                let data;
+                if (auth?.permission !== 0) {
+                    const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${auth?.sub}`) as Employee
+
+                    data = await makeGetRequest(`/user-stocks/${worker.firmaId}`);
+
+                } else {
+                    data = await makeGetRequest(`/user-stocks/${auth?.id}`);
                 }
-            };
-            fetchData();
+                //const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${getMe()?.sub}`) as Employee
+                console.log("DATA JE KURAC");
+                console.log(data);
+                if(data){
+                    setUserStocks(data);
+                }
+                /*if (auth?.permission) {
+                    const stocks = await makeGetRequest(`/user-stocks/-1`);
+                    if (stocks) {
+                        setUserStocks(stocks);
+                    }
+                }*/
+            } catch (error) {
+            }
+        };
+        fetchData();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

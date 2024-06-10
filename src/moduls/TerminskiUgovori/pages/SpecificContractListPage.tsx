@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from 'utils/tableStyles';
 import { useEffect, useState } from 'react';
 import BuyStockPopup from 'berza/components/BuyStockPopup';
+import { makeGetRequest } from 'utils/apiRequest';
+import { getMe } from 'utils/getMe';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -64,8 +66,11 @@ const SpecificContractListPage = () => {
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
-        setType(urlParams?.get('type') ?? '')
+        setType(urlParams?.get('type') ?? '');
 
+        (async () => {
+            const result = await makeGetRequest("/futures/kupac/" + getMe()?.id);
+        })()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 

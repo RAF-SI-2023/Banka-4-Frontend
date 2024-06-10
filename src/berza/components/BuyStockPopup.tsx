@@ -44,16 +44,10 @@ const BuyStockPopup: React.FC<BuyStockPopupProps> = ({ ticker }) => {
     const data = {
       "userId": getMe()?.id,
       "ticker": ticker,
-      "quantity": kolicina,
-      "limit": limit,
-      "stop": stop,
-      "allOrNone": allOrNone,
-      "margin": margin,
-      "action": "BUY"
+      "quantity": kolicina
     }
     try {
-      const result = await makeApiRequest(UserRoutes.place_order, 'POST', data, false, false, ctx);
-      console.log(result);
+      const result = await makeApiRequest("/user-stocks", 'PUT', data, false, false, ctx);
       ctx?.setErrors(["Our Success: Uspesno kupljeno"])
     }
     catch (e) {
