@@ -22,7 +22,7 @@ const Tabela: React.FC<TabelaProps> = ({ krediti, onClickRed }) => {
                         <StyledHeadTableCell>Zaposlen za stalno</StyledHeadTableCell>
                         <StyledHeadTableCell>Period zaposlenja kod trenutnog poslodavca</StyledHeadTableCell>
                         <StyledHeadTableCell>Ekspozitura</StyledHeadTableCell>
-
+                        <StyledHeadTableCell>Status</StyledHeadTableCell>
                     </StyledTableRow>
                 </StyledTableHead>
                 <TableBody>
@@ -35,6 +35,8 @@ const Tabela: React.FC<TabelaProps> = ({ krediti, onClickRed }) => {
                             <StyledTableCell>{kredit.permanentEmployee ? "True" : "False"}</StyledTableCell>
                             <StyledTableCell>{kredit.currentEmploymentPeriod}</StyledTableCell>
                             <StyledTableCell>{kredit.branchOffice}</StyledTableCell>
+                            <StyledTableCell>{kredit.status}</StyledTableCell>
+                            
                         </StyledTableRow>
                     ))}
                 </TableBody>
