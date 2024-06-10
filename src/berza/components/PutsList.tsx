@@ -31,7 +31,7 @@ const PutsList: React.FC<OptionsList> = ({ options }) => {
                     </TableRow>
                 </StyledTableHead>
                 <TableBody>
-                {options?.map((option: Options) => (
+                    {options?.map((option: Options) => (
                         <StyledTableRow key={option.ticker} id={option.ticker} onClick={handleSelect}>
                             <StyledTableCell>{option.ticker}</StyledTableCell>
                             <StyledTableCell>{option.strikePrice}</StyledTableCell>
@@ -44,7 +44,7 @@ const PutsList: React.FC<OptionsList> = ({ options }) => {
                             <StyledTableCell>{option.openInterest}</StyledTableCell>
                             <StyledTableCell>{option.impliedVolatility}</StyledTableCell>
                             <StyledTableCell>
-                                <BuyOptionPopup />
+                                Size 0, can't buy
                             </StyledTableCell>
                         </StyledTableRow>
                     ))}

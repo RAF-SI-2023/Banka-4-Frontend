@@ -41,7 +41,7 @@ const CallsList: React.FC<OptionsList> = ({ options }) => {
                             <StyledTableCell>{option.openInterest}</StyledTableCell>
                             <StyledTableCell>{option.impliedVolatility}</StyledTableCell>
                             <StyledTableCell>
-                                <BuyOptionPopup />
+                                Size 0, can't buy
                             </StyledTableCell>
                         </StyledTableRow>
                     ))}
