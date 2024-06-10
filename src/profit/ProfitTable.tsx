@@ -52,6 +52,12 @@ const ProfitTable = ({ profits }: Props) => {
                 {profit.senderAmount}
               </StyledTableCell>
               <StyledTableCell align="right">
+                {profit.senderCurrency}
+              </StyledTableCell>
+              <StyledTableCell align="right">
+                {profit.toCurrency}
+              </StyledTableCell>
+              <StyledTableCell align="right">
                 {profit.exchangeRate}
               </StyledTableCell>
               <StyledTableCell align="right">{profit.profit}</StyledTableCell>
