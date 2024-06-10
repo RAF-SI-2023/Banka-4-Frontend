@@ -7,8 +7,8 @@ import {
   Container,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { makeGetRequest } from "utils/apiRequest";
-import { ExchangeRate, Profit } from "utils/types";
+import { makeApiRequest, makeGetRequest } from "utils/apiRequest";
+import { BankRoutes, ExchangeRate, Profit } from "utils/types";
 import ProfitTable from "./ProfitTable";
 import styled from "styled-components";
 
@@ -43,11 +43,21 @@ const StyledDiv = styled.div`
 
 const ProfitPage = () => {
   const [exchages, setExhanges] = useState<ExchangeRate[]>([]);
-  const [selectedCurrecy, setSelectedCurrency] = useState<string>("");
+  const [selectedCurrecy, setSelectedCurrency] = useState<string>("RSD");
   const [profits, setProfits] = useState<Profit[]>([]);
+  const [totalProfit, setTotalProfit] = useState(0);
+  const [profitValute, setProfitValute] = useState<null | number>(null)
 
   useEffect(() => {
     fetchExchange();
+    (async () => {
+      try {
+        setTotalProfit(await makeGetRequest(BankRoutes.get_total_profit) || 0);
+      }
+      catch (e) {
+
+      }
+    })()
   }, []);
 
   ///exchange/invoices/{currency}
@@ -57,7 +67,9 @@ const ProfitPage = () => {
         `/exchange/invoices/${selectedCurrecy}`
       );
       data && setProfits(data);
-    } catch (err) {}
+      //@ts-ignore
+      setProfitValute(data.reduce((p, t) => p + t.profit, 0).toFixed(4))
+    } catch (err) { }
   };
 
   const fetchExchange = async () => {
@@ -71,12 +83,35 @@ const ProfitPage = () => {
         );
         setExhanges(uniqueData);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   return (
     <PageWrapper>
       <StyledDiv>
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          bgcolor="#FAFAFA"
+          color="rgba(0, 0, 0, 0.87)"
+          width={"320px"}
+          p={2}
+          paddingRight={"40px"}
+          paddingLeft={"40px"}
+          borderRadius={2}
+        >
+          <Typography variant="h6" mb={1}>
+            Profit banke
+          </Typography>
+          <Typography variant="body1">
+            Maržni računi: {totalProfit} RSD
+          </Typography>
+          {(profitValute === null) ? null : <Typography variant="body1">
+            Selektovana valuta: {profitValute} RSD
+          </Typography>}
+        </Box>
         <StyledTextField
           label="Valute:"
           id="valute"
