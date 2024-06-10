@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from "@mui/material";
 import { IOTC } from "berza/types/types";
+import { makeApiRequest } from "utils/apiRequest";
 
 interface MakeOfferPopupProps {
     open: boolean;
@@ -11,8 +12,14 @@ interface MakeOfferPopupProps {
 const MakeOfferPopup: React.FC<MakeOfferPopupProps> = ({ open, stock, onClose }) => {
     const [offerAmount, setOfferAmount] = useState("");
 
-    const handleMakeOffer = () => {
+    const handleMakeOffer = async () => {
         // Add your make offer logic here
+        const result = await makeApiRequest("/offer/place-offer", "POST", {
+            ticker: stock.ticker,
+            quantity: stock.amount,
+            amountOffered: offerAmount
+        })
+        console.log(result);
         console.log(`Offer made for ${stock.ticker} with amount: ${offerAmount}`);
         onClose();
     };
@@ -22,7 +29,7 @@ const MakeOfferPopup: React.FC<MakeOfferPopupProps> = ({ open, stock, onClose })
             <DialogTitle>Napravi ponudu</DialogTitle>
             <DialogContent>
                 <p>Unseite vasu ponudu za {stock.ticker}:</p>
-                <br/>
+                <br />
                 <TextField
                     label="Offer Amount"
                     value={offerAmount}
