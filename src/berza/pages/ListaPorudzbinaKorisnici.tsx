@@ -48,7 +48,7 @@ const navigate = useNavigate();
                             onClick={() => {
                                 navigate("/NewOrder");
                             }}
-                            label="Dodaj Karticu"
+                            label="Dodaj Porudzbinu"
                             />
             <Typography variant="h4" gutterBottom>Porudžbine</Typography>
             {error && <Alert severity="error">{error}</Alert>}
