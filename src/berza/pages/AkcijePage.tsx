@@ -104,7 +104,6 @@ const AkcijePage: React.FC = () => {
           <AppBar position="static" >
             <StyledTabs value={selectedTab} onChange={handleChange}>
               <Tab label="Akcije" />
-              <Tab label="Moje Akcije" />
               <StyledTextField
                 label="Pretraga"
                 variant="standard"
@@ -120,7 +119,6 @@ const AkcijePage: React.FC = () => {
             </StyledTabs>
           </AppBar>
           {selectedTab === 0 && <AkcijeList stocks={stocks} />}
-          {selectedTab === 1 && <MojeAkcijeList />}
         </StyledTable>
       </TableContainer>
     </PageWrapper>
