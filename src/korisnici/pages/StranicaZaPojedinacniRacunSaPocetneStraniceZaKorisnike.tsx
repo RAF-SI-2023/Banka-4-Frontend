@@ -5,6 +5,25 @@ import { Account } from 'utils/types';
 import { getMe } from 'utils/getMe';
 import { makeGetRequest } from 'utils/apiRequest';
 
+function formatDate(date: string | null): string {
+  if (date == null) {
+    return "";
+  }
+
+  const dateObj = /^\d+$/.test(date) ? new Date(Number(date)) : new Date(date);
+
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric', 
+    month: 'short',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false  
+  };
+  return new Intl.DateTimeFormat('en-US', options).format(dateObj);
+}
+
 const TableWrapper = styled.div`
    text-align: 'center';
 `
@@ -160,7 +179,7 @@ const AccountInfoPage: React.FC = () => {
                 <TableCell className="table-cell">{transakcija.racunPrimaoca}</TableCell>
                 <TableCell className="table-cell">{transakcija.iznos.toString()}</TableCell>
                 <TableCell className="table-cell">{transakcija.status}</TableCell>
-                <TableCell className="table-cell">{new Date(transakcija.vremeTransakcije).toLocaleDateString("en-de")}</TableCell>
+                <TableCell className="table-cell">{formatDate(transakcija.vremeTransakcije)}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -183,8 +202,8 @@ const AccountInfoPage: React.FC = () => {
                 <TableCell className="table-cell">{sredstvo.drugiRacun}</TableCell>
                 <TableCell className="table-cell">{sredstvo.iznos.toString()}</TableCell>
                 <TableCell className="table-cell">{sredstvo.status}</TableCell>
-                <TableCell className="table-cell">{new Date(sredstvo.vreme).toLocaleDateString("en-de")}</TableCell>
-                <TableCell className="table-cell">{new Date(sredstvo.vremeIzvrsavanja).toLocaleDateString("en-de")}</TableCell>
+                <TableCell className="table-cell">{formatDate(sredstvo.vreme)}</TableCell>
+                <TableCell className="table-cell">{formatDate(sredstvo.vremeIzvrsavanja)}</TableCell>
               </TableRow>
             ))}
           </TableBody>

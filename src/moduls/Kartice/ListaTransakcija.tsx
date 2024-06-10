@@ -7,10 +7,26 @@ import { ScrollContainer, StyledHeadTableCell, StyledTableCell, StyledTableHead,
 interface TransactionListProps {
     transakcije: TransakcijaKarticePrikaz[];
 }
-const ListaTransakcija: React.FC<TransactionListProps> = ({ transakcije }) => {
-    const formatDate = (timestamp: number) => {
-        return new Date(timestamp).toLocaleString();
+function formatDate(date: string | null): string {
+    if (date == null) {
+      return "";
+    }
+  
+    const dateObj = /^\d+$/.test(date) ? new Date(Number(date)) : new Date(date);
+  
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric', 
+      month: 'short',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false  
     };
+    return new Intl.DateTimeFormat('en-US', options).format(dateObj);
+  }
+
+const ListaTransakcija: React.FC<TransactionListProps> = ({ transakcije }) => {
 
     return (
         <ScrollContainer>
@@ -41,8 +57,8 @@ const ListaTransakcija: React.FC<TransactionListProps> = ({ transakcije }) => {
                                 <StyledTableCell align="right">{transakcija.pozivNaBroj}</StyledTableCell>
                                 <StyledTableCell align="right">{transakcija.svrhaPlacanja}</StyledTableCell>
                                 <StyledTableCell align="right">{transakcija.status}</StyledTableCell>
-                                <StyledTableCell align="right">{formatDate(transakcija.vremeTransakcije)}</StyledTableCell>
-                                <StyledTableCell align="right">{formatDate(transakcija.vremeIzvrsavanja)}</StyledTableCell>
+                                <StyledTableCell align="right">{formatDate(transakcija.vremeTransakcije.toString())}</StyledTableCell>
+                                <StyledTableCell align="right">{formatDate(transakcija.vremeIzvrsavanja.toString())}</StyledTableCell>
                             </StyledTableRow>
                         ))
                     ) : (

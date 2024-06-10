@@ -67,6 +67,26 @@ type Transakcija = {
   vremeIzvrsavanja: string;
 }
 
+function formatDate(date: string | null): string {
+  if (date == null) {
+    return "";
+  }
+
+  const dateObj = /^\d+$/.test(date) ? new Date(Number(date)) : new Date(date);
+
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric', 
+    month: 'short',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false  
+  };
+  return new Intl.DateTimeFormat('en-US', options).format(dateObj);
+}
+
+
 //TODO add a conditionals to display buttons only with permissions
 const AccountInfoPage: React.FC = () => {
 
@@ -233,10 +253,10 @@ const AccountInfoPage: React.FC = () => {
                     {(transakcija.svrhaPlacanja)}
                   </StyledTableCentered>
                   <StyledTableCentered component="th" scope="row">
-                    {(new Date(transakcija.vremeTransakcije).toLocaleDateString("en-de"))}
+                    {formatDate(transakcija.vremeTransakcije)}
                   </StyledTableCentered>
                   <StyledTableCentered component="th" scope="row">
-                    {(new Date(transakcija.vremeIzvrsavanja).toLocaleDateString("en-de"))}
+                    {formatDate(transakcija.vremeIzvrsavanja)}
                   </StyledTableCentered>
                 </StyledTableRow>
               ))}

@@ -18,7 +18,26 @@ type UplataDTO = {
     vremeTransakcije: string;
     vremeIzvrsavanja: string;
 };
+function formatDate(date: string | null): string {
+    if (date == null) {
+      return "";
+    }
+  
+    const dateObj = /^\d+$/.test(date) ? new Date(Number(date)) : new Date(date);
+  
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric', 
+      month: 'short',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false  
+    };
+    return new Intl.DateTimeFormat('en-US', options).format(dateObj);
+  }
 
+  
 const PregledPlacanja = () => {
     const [racuni, setRacuni] = useState<RacunType[]>(RACUNI_PLACEHOLDER);
     const [selectedRacun, setSelectedRacun] = useState(0);
@@ -99,8 +118,8 @@ const PregledPlacanja = () => {
                                 <TableCell align="right">{trans.iznos}</TableCell>
                                 <TableCell align="right">{trans.pozivNaBroj}</TableCell>
                                 <TableCell align="right">{trans.status}</TableCell>
-                                <TableCell align="right">{trans.vremeTransakcije}</TableCell>
-                                <TableCell align="right">{trans.vremeIzvrsavanja}</TableCell>
+                                <TableCell align="right">{formatDate(trans.vremeTransakcije)}</TableCell>
+                                <TableCell align="right">{formatDate(trans.vremeIzvrsavanja)}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

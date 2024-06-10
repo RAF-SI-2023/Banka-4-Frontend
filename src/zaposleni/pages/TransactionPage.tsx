@@ -45,6 +45,25 @@ type Transakcija = {
   vremeIzvrsavanja: string;
 }
 
+function formatDate(date: string | null): string {
+  if (date == null) {
+    return "";
+  }
+
+  const dateObj = /^\d+$/.test(date) ? new Date(Number(date)) : new Date(date);
+
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric', 
+    month: 'short',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false  
+  };
+  return new Intl.DateTimeFormat('en-US', options).format(dateObj);
+}
+
 //TODO add a conditionals to display buttons only with permissions
 const Transaction: React.FC = () => {
 
@@ -130,13 +149,13 @@ const Transaction: React.FC = () => {
                 <StyledTableCell component="th" scope="row">
                   Datum i vreme transakcije
                 </StyledTableCell>
-                <StyledTableCell>{(new Date(transakcija.vremeTransakcije).toLocaleDateString("en-de"))}</StyledTableCell>
+                <StyledTableCell>{formatDate(transakcija.vremeTransakcije)}</StyledTableCell>
               </TableRow>
               <TableRow key={'Datum i vreme izvrsavanja'}>
                 <StyledTableCell component="th" scope="row">
                   Datum i vreme izvrsavanja
                 </StyledTableCell>
-                <StyledTableCell>{(new Date(transakcija.vremeIzvrsavanja).toLocaleDateString("en-de"))}</StyledTableCell>
+                <StyledTableCell>{formatDate(transakcija.vremeIzvrsavanja)}</StyledTableCell>
               </TableRow>
             </TableBody>
           </Table>
