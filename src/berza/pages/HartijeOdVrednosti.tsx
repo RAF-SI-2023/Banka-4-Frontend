@@ -142,7 +142,7 @@ const HartijeOdVrednosti = () => {
     const token = localStorage.getItem("si_jwt");
     if (token) {
       const decodedToken = jwtDecode(token) as DecodedToken;
-      return !hasPermission(decodedToken.permission, [
+      return hasPermission(decodedToken.permission, [
         EmployeePermissionsV2.termin_access,
       ]);
     }
@@ -185,6 +185,10 @@ const HartijeOdVrednosti = () => {
       setStocks(stocks);
     }
   };
+
+  console.log("VARS")
+  console.log(checkTerminskiPermissions())
+  console.log(userType === employee)
 
   return (
     <PageWrapper>

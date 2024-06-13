@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import BuyStockPopup from 'berza/components/BuyStockPopup';
 import { makeGetRequest } from 'utils/apiRequest';
 import { getMe } from 'utils/getMe';
+import { Employee, UserRoutes } from 'utils/types';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -69,7 +70,12 @@ const SpecificContractListPage = () => {
         setType(urlParams?.get('type') ?? '');
 
         (async () => {
-            const result = await makeGetRequest("/futures/kupac/" + getMe()?.id);
+            const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${getMe()?.sub}`) as Employee
+            const firmaId = worker.firmaId;
+            
+            const result = await makeGetRequest("/futures/kupac/" +firmaId);
+            console.log("Kupljeni contracti")
+            console.log(result)
         })()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -89,7 +95,6 @@ const SpecificContractListPage = () => {
                 <StyledTable>
                     <AppBar position="static" >
                         <StyledTabs value={0}>
-                            <Tab label="Terminski ugovori" />
                             <Tab label="Moji terminski ugovori" />
 
                         </StyledTabs>
