@@ -2,7 +2,7 @@ import './App.css';
 import UserListPage from './zaposleni/pages/userListPage'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import UserInfoTable from './zaposleni/pages/userPage';
-import Navbar from './zaposleni/components/Navbar';
+import Navbar from './zaposleni/components/NavbarJovan';
 import CreateUserPage from './zaposleni/pages/createUserPage';
 import EditUserPage from './zaposleni/pages/editUserPage';
 import CreateAccountPage from './zaposleni/pages/createAccountPage';
@@ -139,7 +139,8 @@ function App() {
             <VideoWrapper>
               <video autoPlay muted height="300" controls>
                 <source
-                  src="https://i.imgur.com/bQh6A8d.mp4"
+                
+                  src="https://imgur.com/sqCNZHS.mp4"
                   type="video/mp4"
                 />
                 Your browser does not support the video tag.
@@ -151,7 +152,7 @@ function App() {
             >
               JWT STOP
             </Typography>
-            <Button id="exitPosionPill" onClick={handleClose}>
+            <Button id="exitPosionPill" onClick={handleClose} sx={{color:'red', textDecoration: 'none', '&:hover': {  backgroundColor: '#FFDDDD', }}}>
               Exit
             </Button>
           </Box>

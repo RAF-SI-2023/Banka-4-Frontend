@@ -7,12 +7,41 @@ import { EmployeePermissionsV2, UserRoutes } from 'utils/types';
 import { StyledContainerLogReg } from 'utils/logRegStyles';
 import { hasPermission } from 'utils/permissions';
 import styled from 'styled-components';
+import GlobalStyles from "@mui/material/GlobalStyles";
+import { css } from '@emotion/react';
+
+
+
+
+
+  
 
 // const url = "http://api.stamenic.work:8080/api";
 
-const StyledTextField = styled(TextField)`
-    width: 480px!important;
-`
+const StyledTextField = styled(TextField)(({ theme }) => ({
+    width: '480px !important',
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: 'initial',
+      },
+      '&:hover fieldset': {
+        borderColor: '#EF2C1A', // Boja obruba prilikom hover-a
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: '#EF2C1A', // Boja obruba prilikom fokusa
+      },
+      '&.Mui-focused': {
+        backgroundColor: 'transparent', // Boja obruba prilikom fokusa
+    },
+    },
+    '& .MuiInputLabel-root': {
+      color: 'initial',
+    },
+    '& .MuiInputLabel-root.Mui-focused': {
+      color: '#EF2C1A', // Boja label-e prilikom fokusa
+    },
+  }));
+
 const FieldContainer = styled.div`
     display: flex;
     justify-content: center;
@@ -83,15 +112,16 @@ const LoginPage = () => {
     return (
         //added inline style
 
-        <StyledContainerLogReg component="main" maxWidth="sm">
+        <StyledContainerLogReg component="main" maxWidth="sm"  >
             <style type="text/css">
                 {`
                     body {
-                        background-color: #82b2ff;
+                         background-image: url("backgground.jpg");
+                          background-size: cover;
                     }
                 `}
             </style>
-            <Typography component="h1" variant="h5" sx={{ fontSize: '1.5rem', fontWeight: 'bold', margin: '20px 0' }}>
+            <Typography component="h1" variant="h5" sx={{ fontSize: '1.5rem', fontWeight: 'bold', margin: '20px 0', color:"red" }}>
                 Login
             </Typography>
             <form onSubmit={authenticate}>
@@ -108,7 +138,7 @@ const LoginPage = () => {
                         autoFocus
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        sx={{ margin: '5px 0' }} // Reduced margin
+                        sx={{ margin: '5px 0',color:'red' }} // Reduced margin
                     />
                     <StyledTextField
                         variant="outlined"
@@ -121,7 +151,7 @@ const LoginPage = () => {
                         autoComplete="current-password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        sx={{ margin: '5px 0' }} // Reduced margin
+                        sx={{  margin: '5px 0', color:'red' }} // Reduced margin
                     />
                 </FieldContainer>
                 {error && (
@@ -133,16 +163,21 @@ const LoginPage = () => {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
                     disabled={!email || !password}
+                    sx={{ mt: 3, mb: 2, color:'white', backgroundColor:'#AC190C',
+                        '&:hover': {
+                            backgroundColor: '#EF2C1A', 
+                          },
+                     }}
+                    
                 >
                     Login
                 </Button>
-                <Link onClick={handleForgot} variant="body2">
+                <Link onClick={handleForgot} variant="body2" sx={{color:'red', textDecoration: 'none', '&:hover': { textDecoration: 'underline' }}}>
                     {"Zaboravio si šifru?"}
                 </Link>
                 <br />
-                <Link onClick={handleRegister} variant="body2">
+                <Link onClick={handleRegister} variant="body2" sx={{color:'red', textDecoration: 'none', '&:hover': { textDecoration: 'underline' }}}>
                     {"Nemaš nalog? Registruj se"}
                 </Link>
             </form>
