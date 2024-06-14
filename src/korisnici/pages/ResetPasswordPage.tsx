@@ -153,17 +153,26 @@ const ResetPasswordPage = () => {
               onChange={(e) => setNewPassword(e.target.value)}
               onBlur={validatePassword}
             />
-            <Button
-              //disabled={!activationCodeValid || !passwordValid}
-              onClick={resetPassword}
-              sx={{ mt: 3, mb: 2  ,color:'white', backgroundColor:'#AC190C',
-                '&:hover': {
-                    backgroundColor: '#EF2C1A', 
-                  },
+           <Button
+            disabled={!activationCodeValid || !passwordValid}
+            onClick={resetPassword}
+            sx={{
+              mt: 3,
+              mb: 2,
+              color: 'white',
+              backgroundColor: '#AC190C',
+              '&:hover': {
+                backgroundColor: '#EF2C1A',
+              },
+              '&.Mui-disabled': {
+                backgroundColor: '#DBCBCB', // Siva boja kada je dugme onemogućeno
+                color: 'light-gray', // Boja teksta kada je dugme onemogućeno
+              },
             }}
-            >
-              Restartuj šifru
-            </Button>
+          >
+            Restartuj šifru
+          </Button>
+
           
         </PageWrapper>
     </StyledContainerLogReg>
