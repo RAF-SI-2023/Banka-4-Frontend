@@ -6,6 +6,36 @@ import Tabela from './TabelaKrediti';
 import { BankRoutes, Kredit } from './../../utils/types';
 import { useNavigate } from 'react-router-dom';
 import { makeGetRequest } from 'utils/apiRequest';
+import styled from 'styled-components';
+import { AppBar, Tabs, Tab } from '@mui/material';
+
+const TableWrapper = styled.div`
+  padding-top:5%;
+  width: 100%;
+  display: flex!important;
+  justify-content: center;
+`
+const StyledTable = styled.div`
+  display: flex;
+  max-width: 1200px;
+  flex-grow: 1;
+  flex-direction: column;
+`
+
+const StyledTabs = styled(Tabs)`
+  background-color: #f2f2f2;
+  & > * > * {
+    display: flex !important;
+    justify-content: space-between !important;
+    margin: 6px !important;
+  }
+
+  /* Dodaj stil za aktivni tab i donju crtu */
+  .MuiTabs-indicator {  /* Zameni sa odgovarajućom CSS klasom ako je drugačija */
+    background-color: red; /* Boja donje crte */
+  }
+`
+
 
 const auth = getMe();
 // let emailKorisnikov = "";
@@ -52,8 +82,42 @@ function ListaKredita() {
 
     return (
         <div>
-            {zaposlen ? <div><Zaposlen />
-                <Tabela krediti={krediti2} onClickRed={handleRedClick} /> </div> : <div>  <NeZaposlen /> <Tabela krediti={krediti} onClickRed={handleRedClick} /> </div>}
+            {zaposlen ? <div>
+             <TableWrapper>
+                <StyledTable>
+
+                    <Zaposlen />
+                    <AppBar position="static" >
+                    <StyledTabs value={0}>
+                        <Tab label="Istorija" style={{ color: 'red' }}/>
+                    
+
+                    </StyledTabs>
+                    </AppBar>
+                    <Tabela krediti={krediti2} onClickRed={handleRedClick} /> 
+                </StyledTable>
+            </TableWrapper>
+            </div> : 
+            <div> 
+               
+                 <TableWrapper>
+                    <StyledTable>
+                    
+                    
+                    
+                        
+                        <AppBar position="static" >
+                        <StyledTabs value={0}>
+                            <Tab label="Krediti" style={{ color: 'red' }}/>
+                        
+                            <NeZaposlen />
+                        </StyledTabs>
+                        </AppBar>
+                        <Tabela krediti={krediti} onClickRed={handleRedClick} /> 
+                    </StyledTable>
+                 </TableWrapper>
+                 
+                  </div>}
 
         </div>
     );
