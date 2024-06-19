@@ -35,6 +35,7 @@ const EmployeeList: React.FC<EmployeeListProps> = ({ employees }) => {
                         <StyledHeadTableCell>Adresa</StyledHeadTableCell>
                         <StyledHeadTableCell>Mejl adresa</StyledHeadTableCell>
                         <StyledHeadTableCell>Broj telefona</StyledHeadTableCell>
+                        <StyledHeadTableCell>Limit</StyledHeadTableCell>
                         <StyledHeadTableCell>Pozicija</StyledHeadTableCell>
                         <StyledHeadTableCell>Departman</StyledHeadTableCell>
                         <StyledHeadTableCell>Permisije</StyledHeadTableCell>
@@ -50,6 +51,7 @@ const EmployeeList: React.FC<EmployeeListProps> = ({ employees }) => {
                             <StyledTableCell>{employee.adresa}</StyledTableCell>
                             <StyledTableCell>{employee.email}</StyledTableCell>
                             <StyledTableCell>{employee.brojTelefona}</StyledTableCell>
+                            <StyledTableCell>{employee.dailyLimit}</StyledTableCell>
                             <StyledTableCell>{employee.pozicija}</StyledTableCell>
                             <StyledTableCell>{employee.departman}</StyledTableCell>
                             <StyledTableCellLocal>{decodePermissions(employee.permisije)}</StyledTableCellLocal>

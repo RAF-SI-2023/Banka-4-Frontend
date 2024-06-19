@@ -143,6 +143,7 @@ export type Employee = {
   datumRodjenja: string;
   pol: string;
   adresa: string;
+  dailyLimit: string;
   email: string;
   firmaId: number;
   brojTelefona: string;
@@ -161,6 +162,7 @@ export type Company = {
   brojTelefona: string;
   brojFaksa: string;
   pib: string;
+  id: string;
   maticniBroj: string;
   sifraDelatnosti: string;
   registarskiBroj: string;
