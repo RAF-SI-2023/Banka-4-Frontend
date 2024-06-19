@@ -109,7 +109,7 @@ const CreateAccountPage: React.FC = () => {
     for (const [key, value] of Object.entries(formData)) {
       if (value === '') {
         if (key !== 'vrstaRacuna') {
-          if (formData.tip != 'devizni' && key == 'defaultCurrency')
+          if (formData.tip !== 'devizni' && key === 'defaultCurrency')
             continue;
           setFieldWarning(key);
           return;

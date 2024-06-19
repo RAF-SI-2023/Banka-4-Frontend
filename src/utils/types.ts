@@ -161,6 +161,7 @@ export type Company = {
   brojTelefona: string;
   brojFaksa: string;
   pib: string;
+  id: string;
   maticniBroj: string;
   sifraDelatnosti: string;
   registarskiBroj: string;
