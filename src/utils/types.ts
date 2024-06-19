@@ -143,6 +143,7 @@ export type Employee = {
   datumRodjenja: string;
   pol: string;
   adresa: string;
+  dailyLimit: string;
   email: string;
   firmaId: number;
   brojTelefona: string;
