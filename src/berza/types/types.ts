@@ -85,4 +85,5 @@ export type Order = {
     createdBy: string;
     status: 'approved' | 'rejected' | 'pending';
     approvedBy?: string;
+    userId: string;
 }

@@ -20,7 +20,7 @@ import styled from 'styled-components';
 import { hasPermission } from "utils/permissions";
 import { EmployeePermissionsV2 } from "utils/types";
 import { jwtDecode } from "jwt-decode";
-import { Employee, UserRoutes } from "utils/types";
+import { Employee, UserRoutes, BankRoutes } from "utils/types";
 
 interface DecodedToken {
   permission: number;
@@ -57,24 +57,14 @@ const PageContainer = styled(Container)`
   padding: 20px;
 `;
 
-const checkUserPermissions = (requiredPermissions: EmployeePermissionsV2[]) => {
-  const token = localStorage.getItem('si_jwt');
-  if (token) {
-    const decodedToken = jwtDecode(token) as DecodedToken;
-    console.log(decodedToken);
-    return hasPermission(decodedToken.permission, requiredPermissions);
-  }
-  return false;
-};
-
-const permission_odobri = checkUserPermissions([EmployeePermissionsV2.accept_orders]);
-const permission_odbij = checkUserPermissions([EmployeePermissionsV2.deny_orders]);
-
 const OrdersPage: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [futures, setFutures] = useState<any[]>([]);
   const [futures2, setFutures2] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [permission_odobri, setPermissionOdobri] = useState<boolean>(false);
+  const [permission_odbij, setPermissionOdbij] = useState<boolean>(false);
+  const [emails, setEmails] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,6 +75,7 @@ const OrdersPage: React.FC = () => {
         const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${me.sub}`) as Employee;
 
         const orders = await makeGetRequest(`/orders/all`);
+
         const futures = await makeGetRequest(`/futures/kupac/` + worker.firmaId);
         const futures2 = await makeGetRequest(`/futures/request?userId=` + worker.firmaId);
 
@@ -98,6 +89,23 @@ const OrdersPage: React.FC = () => {
         if (futures2) {
           setFutures2(futures2);
         }
+
+        const token = localStorage.getItem('si_jwt');
+        if (token) {
+          const decodedToken = jwtDecode(token) as DecodedToken;
+          console.log(decodedToken);
+          setPermissionOdobri(hasPermission(decodedToken.permission, [EmployeePermissionsV2.accept_orders]));
+          setPermissionOdbij(hasPermission(decodedToken.permission, [EmployeePermissionsV2.deny_orders]));
+        }
+
+        // Fetch emails for orders
+        const emailMap: { [key: string]: string } = {};
+        for (const order of orders) {
+          const email = await generateemailofid(order.id);
+          emailMap[order.id] = email;
+        }
+        setEmails(emailMap);
+
       } catch (error) {
         setError("Failed to fetch data");
       }
@@ -157,6 +165,13 @@ const OrdersPage: React.FC = () => {
     }
   };
 
+  async function generateemailofid(orderId: string): Promise<string> {
+    let data = await makeGetRequest(`${UserRoutes.user}/id/${orderId}`);
+    // Na primer, dodajemo prefiks "Order-" ispred ID-a
+    //console.log(data);
+    return data.email;
+  }
+
   return (
     <PageContainer maxWidth="lg">
       <StyledHeading variant="h4">Porudžbine</StyledHeading>
@@ -169,6 +184,7 @@ const OrdersPage: React.FC = () => {
               <StyledTableCell>Tiker</StyledTableCell>
               <StyledTableCell>Količina</StyledTableCell>
               <StyledTableCell>Status</StyledTableCell>
+              <StyledTableCell>Korisnik</StyledTableCell>
               <StyledTableCell></StyledTableCell>
             </TableRow>
           </TableHead>
@@ -179,6 +195,7 @@ const OrdersPage: React.FC = () => {
                 <TableCell>{order.ticker}</TableCell>
                 <TableCell>{order.quantity}</TableCell>
                 <TableCell>{order.status}</TableCell>
+                <TableCell>{emails[order.userId]}</TableCell>
                 <TableCell>
                   {order.status.toLowerCase() === 'pending' && (
                     <>

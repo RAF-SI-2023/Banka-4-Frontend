@@ -12,18 +12,23 @@ import { EmployeePermissionsV2 } from 'utils/types';
 const StyledTabs = styled(Tabs)`
   background-color: #f2f2f2;
   & > * > * {
-    display: flex!important;
-    justify-content: space-between!important;
-    margin: 6px!important;
+    display: flex !important;
+    justify-content: space-between !important;
+    margin: 6px !important;
   }
 
+  /* Dodaj stil za aktivni tab i donju crtu */
+  .MuiTabs-indicator {  /* Zameni sa odgovarajućom CSS klasom ako je drugačija */
+    background-color: red; /* Boja donje crte */
+  }
 `
 const ButtonTab = styled(Tab)`
-  background-color: #718bb0!important;
+  background-color: #AC190C!important;
   color: white!important;
   border-radius: 13px!important;
+  
   &:hover{
-    background-color: #39547a!important;
+    background-color: #EF2C1A!important;
   }
 `
 const TableWrapper = styled.div`
@@ -113,7 +118,7 @@ const EmployeeListPage: React.FC = () => {
         <StyledTable>
           <AppBar position="static" >
             <StyledTabs value={0}>
-              <Tab label="Lista Zaposlenih" id="lista-zaposlenih-tab" />
+              <Tab label="Lista Zaposlenih" id="lista-zaposlenih-tab" style={{ color: 'red' }}/>
               {checkAddEmployeePermission() && <ButtonTab onClick={handleCreateEmployee} label="Dodaj Zaposlenog" id="dodaj-zaposlenog-tab" />}
             </StyledTabs>
 
