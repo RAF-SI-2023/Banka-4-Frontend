@@ -3,18 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { getMe } from "utils/getMe";
 import { makeApiRequest } from "utils/apiRequest"; // Funkcija za slanje POST zahteva
 import { TextField, Button, Alert, Typography, Container, FormControlLabel, Checkbox } from '@mui/material';
-import styled from 'styled-components';
-
-const ActionButton = styled(Button)`
-
-  
-      background-color: #AC190C!important;
-  color: white!important;
-  border-radius: 5px!important;
-  
-  &:hover{
-    background-color: #EF2C1A!important;
-`;
 
 const auth = getMe();
 
@@ -136,9 +124,9 @@ const CreateOrderPage: React.FC = () => {
                     margin="normal"
                     required
                 />
-                <ActionButton variant="contained" color="primary" onClick={handleCreateOrder}>
+                <Button variant="contained" color="primary" onClick={handleCreateOrder}>
                     Create Order
-                </ActionButton>
+                </Button>
             </form>
         </Container>
     );

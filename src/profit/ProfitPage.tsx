@@ -11,17 +11,7 @@ import { makeApiRequest, makeGetRequest } from "utils/apiRequest";
 import { BankRoutes, ExchangeRate, Profit } from "utils/types";
 import ProfitTable from "./ProfitTable";
 import styled from "styled-components";
-import { AppBar, Tabs, Tab } from '@mui/material';
 
-const ButtonTab = styled(Button)`
-  background-color: white!important;
-  color: #AC190C!important;
-  border-radius: 5px!important;
-  
-  &:hover{
-    background-color: #EEEEEE!important;
-  }
-`
 const StyledTextField = styled(TextField)`
   margin-left: auto !important;
   margin-right: 20px !important;
@@ -115,7 +105,6 @@ const ProfitPage = () => {
           <Typography variant="h6" mb={1}>
             Profit banke
           </Typography>
-          
           <Typography variant="body1">
             Maržni računi: {totalProfit} RSD
           </Typography>
@@ -145,7 +134,7 @@ const ProfitPage = () => {
           ))}
         </StyledTextField>
         <StyledButtonsDiv>
-          <ButtonTab onClick={() => fetchProfit()}>Pregledajte profite</ButtonTab>
+          <Button onClick={() => fetchProfit()}>Pregledajte profite</Button>
         </StyledButtonsDiv>
       </StyledDiv>
       <Container>

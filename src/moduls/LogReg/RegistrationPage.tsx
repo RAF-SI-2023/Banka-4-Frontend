@@ -7,47 +7,9 @@ import { StyledContainerLogReg } from 'utils/logRegStyles';
 import { Context } from 'App';
 import styled from 'styled-components';
 
-const StyledTextField = styled(TextField)(({ theme }) => ({
-    width: '527px !important',
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: 'initial',
-      },
-      '&:hover fieldset': {
-        borderColor: '#EF2C1A', // Boja obruba prilikom hover-a
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: '#EF2C1A', // Boja obruba prilikom fokusa
-      },
-      '&.Mui-focused': {
-        backgroundColor: 'transparent', // Boja obruba prilikom fokusa
-    },
-    },
-    '& .MuiInputLabel-root': {
-      color: 'initial',
-    },
-    '& .MuiInputLabel-root.Mui-focused': {
-      color: '#EF2C1A', // Boja label-e prilikom fokusa
-    },
-  }));
-
 const StyledTitle = styled(Typography)`
     padding: 30px 0px;
-    color: red;
 `
-const LeftAlignedBox = styled(Box)`
-  text-align: left !important;
-  width: 100%
-  margin-left: 2px !important; 
-`;
-
-const FlexBox = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start; // Ensure left alignment
-  width: 100%;
-  padding-left: 2px; // Adjust as needed
-`;
 
 const validateEmail = (email: string) => {
     // Simple email validation pattern
@@ -215,15 +177,14 @@ const RegistrationPage = () => {
             <StyledContainerLogReg component="main" maxWidth="sm">
             <style type="text/css">
                 {`
-                   body {
-                         background-image: url("backgground.jpg");
-                          background-size: cover;
+                    body {
+                        background-color: #82b2ff;
                     }
                 `}
             </style>
-                <Typography component="h1" variant="h5" sx={{color:'red'}}>Registracija korisnika - Korak 1</Typography>
+                <Typography component="h1" variant="h5">Registracija korisnika - Korak 1</Typography>
                 <Box component="form" noValidate sx={{ mt: 1 }}>
-                    <StyledTextField
+                    <TextField
                         required
                         fullWidth
                         id="email"
@@ -234,9 +195,9 @@ const RegistrationPage = () => {
                         onChange={(e) => handleFieldChange('email', e.target.value)}
                         error={!!errors.email}
                         helperText={errors.email}
-                        sx={{ mb: 2, color:'red' }}
+                        sx={{ mb: 2 }}
                     />
-                    <StyledTextField
+                    <TextField
                         required
                         fullWidth
                         id="telefon"
@@ -247,9 +208,9 @@ const RegistrationPage = () => {
                         onChange={(e) => handleFieldChange('telefon', e.target.value)}
                         error={!!errors.telefon}
                         helperText={errors.telefon}
-                        sx={{ mb: 2, color:'red' }}
+                        sx={{ mb: 2 }}
                     />
-                    <StyledTextField
+                    <TextField
                         required
                         fullWidth
                         id="brojRacuna"
@@ -260,14 +221,9 @@ const RegistrationPage = () => {
                         onChange={(e) => handleFieldChange('brojRacuna', e.target.value)}
                         error={!!errors.brojRacuna}
                         helperText={errors.brojRacuna}
-                        sx={{ mb: 2, color:'red' }}
+                        sx={{ mb: 2 }}
                     />
-
-                    <Button variant="contained" onClick={handleNextStep} fullWidth sx={{ mt: 3, mb: 2, color:'white', backgroundColor:'#AC190C',
-                        '&:hover': {
-                            backgroundColor: '#EF2C1A', 
-                          },
-                     }}>
+                    <Button variant="contained" onClick={handleNextStep} fullWidth sx={{ mt: 3, mb: 2 }}>
                         Nastavi
                     </Button>
                 </Box>
@@ -275,18 +231,10 @@ const RegistrationPage = () => {
         );
     } else if (currentStep === 2) {
         return (
-            <StyledContainerLogReg component="main" maxWidth="sm">
-            <style type="text/css">
-                {`
-                   body {
-                         background-image: url("backgground.jpg");
-                          background-size: cover;
-                    }
-                `}
-            </style>
-                <Typography component="h1" variant="h5" sx={{color:'red'}}>Registracija korisnika - Korak 2</Typography>
+            <Container component="main" maxWidth="sm">
+                <Typography component="h1" variant="h5">Registracija korisnika - Korak 2</Typography>
                 <Box component="form" noValidate sx={{ mt: 3 }}>
-                    <StyledTextField
+                    <TextField
                         required
                         fullWidth
                         id="aktivacioniKod"
@@ -296,47 +244,29 @@ const RegistrationPage = () => {
                         onChange={(e) => handleFieldChange('aktivacioniKod', e.target.value)}
                         error={!!errors.aktivacioniKod}
                         helperText={errors.aktivacioniKod || "Unesite kod koji ste dobili."}
-                        sx={{ mb: 1 }}
+                        sx={{ mb: 2 }}
                     />
-                    <Button variant="contained" onClick={handleGenerateCode} sx={{ mt: 1, mb: 2, color:'white', backgroundColor:'#AC190C',
-                        '&:hover': {
-                            backgroundColor: '#EF2C1A', 
-                          },
-                     }}>
+                    <Button variant="contained" onClick={handleGenerateCode} sx={{ mt: 1, mb: 2 }}>
                         Generiši kod
                     </Button>
-                    <Button variant="contained" onClick={handleNextStep} fullWidth sx={{ mt: 3, mb: 2, color:'white', backgroundColor:'#AC190C',
-                        '&:hover': {
-                            backgroundColor: '#EF2C1A', 
-                          },
-                     }}>
+                    <Button variant="contained" onClick={handleNextStep} fullWidth sx={{ mt: 3, mb: 2 }}>
                         Nastavi
                     </Button>
                 </Box>
-            </StyledContainerLogReg>
+            </Container>
         );
     } else if (currentStep === 3) {
         return (
-            <StyledContainerLogReg component="main" maxWidth="sm">
-            <style type="text/css">
-                {`
-                   body {
-                         background-image: url("backgground.jpg");
-                          background-size: cover;
-                    }
-                `}
-            </style>
-                <StyledTitle variant="h5" sx={{color:'red'}}>Registracija korisnika - Korak 3</StyledTitle>
-                <FlexBox>
-                    <Typography fontWeight={'bold'} color={eightChar?'green':'red'} variant="body2">• Lozinka mora imati bar 8 karaktera</Typography>
-                    <Typography fontWeight={'bold'} color={capitalLetter?'green':'red'} variant="body2">• Lozinka mora imati bar jedno veliko slovo</Typography>
-                    <Typography fontWeight={'bold'} color={lowerLetter?'green':'red'} variant="body2">• Lozinka mora imati bar jedno malo slovo</Typography>
-                    <Typography fontWeight={'bold'} color={twoNumbers?'green':'red'} variant="body2">• Lozinka mora imati bar dva broja</Typography>
-                    <Typography fontWeight={'bold'} color={specChar?'green':'red'} variant="body2">• Lozinka mora imati bar jedan specijalni karakter</Typography>
-                </FlexBox>
+            <Container component="main" maxWidth="sm">
+                <StyledTitle variant="h5">Registracija korisnika - Korak 3</StyledTitle>
+                <Typography fontWeight={'bold'} color={eightChar?'green':'red'} variant="body1">Lozinka mora imati bar 8 karaktera</Typography>
+                <Typography fontWeight={'bold'} color={capitalLetter?'green':'red'} variant="body1">Lozinka mora imati bar jedno veliko slovo</Typography>
+                <Typography fontWeight={'bold'} color={lowerLetter?'green':'red'} variant="body1">Lozinka mora imati bar jedno malo slovo</Typography>
+                <Typography fontWeight={'bold'} color={twoNumbers?'green':'red'} variant="body1">Lozinka mora imati bar dva broja</Typography>
+                <Typography fontWeight={'bold'} color={specChar?'green':'red'} variant="body1">Lozinka mora imati bar jedan specijalni karakter</Typography>
 
                 <Box component="form" noValidate sx={{ mt: 3 }}>
-                    <StyledTextField
+                    <TextField
                         required
                         fullWidth
                         id="lozinka"
@@ -349,7 +279,7 @@ const RegistrationPage = () => {
                         helperText={errors.lozinka}
                         sx={{ mb: 2 }}
                     />
-                    <StyledTextField
+                    <TextField
                         required
                         fullWidth
                         id="ponovljenaLozinka"
@@ -362,15 +292,11 @@ const RegistrationPage = () => {
                         helperText={errors.ponovljenaLozinka}
                         sx={{ mb: 2 }}
                     />
-                    <Button variant="contained" onClick={handleRegistration} fullWidth sx={{ mt: 3, mb: 2, color:'white', backgroundColor:'#AC190C',
-                        '&:hover': {
-                            backgroundColor: '#EF2C1A', 
-                          },
-                     }}>
+                    <Button variant="contained" onClick={handleRegistration} fullWidth sx={{ mt: 3, mb: 2 }}>
                         Registruj se
                     </Button>
                 </Box>
-            </StyledContainerLogReg>
+            </Container>
         );
     }
 

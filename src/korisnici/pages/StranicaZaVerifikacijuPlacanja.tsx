@@ -6,17 +6,7 @@ import styled from 'styled-components';
 import { Button, IconButton, TextField } from '@mui/material';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import { UserRoutes } from 'utils/types';
-import { AppBar, Tabs, Tab } from '@mui/material';
 
-const ButtonTab = styled(Button)`
-  background-color: white!important;
-  color: #AC190C!important;
-  border-radius: 5px!important;
-  
-  &:hover{
-    background-color: #EEEEEE!important;
-  }
-`
 
 const PageWrapper = styled.div`
   text-align: 'center';
@@ -81,9 +71,9 @@ const Verifikacija: React.FC = () => {
       <FormWrapper>
         <h1>Verifikacija</h1>
         <p>Ispod možete generisati verifikacioni kod</p>
-        <ButtonTab id="generisiVerKod" onClick={() => sendOtpWithEmail()}>
+        <Button id="generisiVerKod" onClick={() => sendOtpWithEmail()}>
           Generiši verifikacioni kod
-        </ButtonTab>
+        </Button>
         {verificationSuccess && (
           <StyledTextField
             id="outlined-read-only-input"

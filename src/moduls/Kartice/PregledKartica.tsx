@@ -11,23 +11,18 @@ import { Context } from "App";
 const StyledTabs = styled(Tabs)`
   background-color: #f2f2f2;
   & > * > * {
-    display: flex !important;
-    justify-content: space-between !important;
-    margin: 6px !important;
+    display: flex!important;
+    justify-content: space-between!important;
+    margin: 6px!important;
   }
 
-  /* Dodaj stil za aktivni tab i donju crtu */
-  .MuiTabs-indicator {  /* Zameni sa odgovarajućom CSS klasom ako je drugačija */
-    background-color: red; /* Boja donje crte */
-  }
 `
 const ButtonTab = styled(Tab)`
-  background-color: #AC190C!important;
+  background-color: #718bb0!important;
   color: white!important;
   border-radius: 13px!important;
-  
   &:hover{
-    background-color: #EF2C1A!important;
+    background-color: #39547a!important;
   }
 `
 
@@ -94,20 +89,14 @@ export default function PregledKartica() {
             <ScrollContainer style={{ margin: '10px', maxWidth: 1200 }}>
                 <AppBar position="static" >
                     <StyledTabs value={0}>
-                        <Tab label="Lista Kartica" style={{ color: 'red' }}/>
+                        <Tab label="Lista Kartica" />
                         <ButtonTab
                             id="dodajKarticuDugme"
                             onClick={() => {
                                 navigate("/dodaj-karticu");
                             }}
                             label="Dodaj Karticu"
-                            style={{
-                                display: jeZaposleni ? 'flex' : 'none', // Prikaz dugmeta ako je korisnik zaposleni
-                                justifyContent: 'center', // Centriranje teksta horizontalno
-                                alignItems: 'center', // Centriranje teksta vertikalno
-                                height: '100%', // Podesite visinu dugmeta ako je potrebno
-                                textAlign: 'center', // Osigurava centriranje teksta
-                              }}
+                            style={{ display: jeZaposleni ? 'block' : 'none' }} // Ovde postavljamo da se dugme prikazuje samo ako je korisnik zaposleni
                         />
                     </StyledTabs>
                 </AppBar>

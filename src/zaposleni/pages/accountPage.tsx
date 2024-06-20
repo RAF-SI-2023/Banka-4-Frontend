@@ -75,13 +75,13 @@ function formatDate(date: string | null): string {
   const dateObj = /^\d+$/.test(date) ? new Date(Number(date)) : new Date(date);
 
   const options: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
+    year: 'numeric', 
     month: 'short',
     day: '2-digit',
     hour: '2-digit',
     minute: '2-digit',
     second: '2-digit',
-    hour12: false
+    hour12: false  
   };
   return new Intl.DateTimeFormat('en-US', options).format(dateObj);
 }
@@ -119,18 +119,16 @@ const AccountInfoPage: React.FC = () => {
         const urlParams = new URLSearchParams(window.location.search);
         const brojRacuna = urlParams?.get('broj')
         const jmbg = urlParams?.get('jmbg')
-        if (brojRacuna) {
+        if (brojRacuna && jmbg) {
           const res = await makeGetRequest(`/racuni/nadjiRacunPoBroju/${brojRacuna}`, ctx);
           if (res) {
             setAccount(res)
-            if (jmbg) {
-              const vlasnik = await makeGetRequest(`/korisnik/jmbg/${jmbg}`, ctx);
-              if (vlasnik && vlasnik.email) {
-                setEmailVlasnika(vlasnik.email)
-                const transakcije = await makeGetRequest(`/transaction/getAllUplateByBrojRacuna/${brojRacuna}`, ctx);
-                if (transakcije) {
-                  setTransatcions(transakcije)
-                }
+            const vlasnik = await makeGetRequest(`/korisnik/jmbg/${jmbg}`, ctx);
+            if (vlasnik && vlasnik.email) {
+              setEmailVlasnika(vlasnik.email)
+              const transakcije = await makeGetRequest(`/transaction/getAllUplateByBrojRacuna/${brojRacuna}`, ctx);
+              if (transakcije) {
+                setTransatcions(transakcije)
               }
             }
           }
@@ -194,14 +192,12 @@ const AccountInfoPage: React.FC = () => {
                 </StyledTableCell>
                 <StyledTableCell>{account.kamatnaStopa}</StyledTableCell>
               </TableRow>}
-              { emailVlasnika &&
-                <TableRow key={'Mejl korisnika'}>
-                  <StyledTableCell component="th" scope="row">
-                    Mejl korisnika
-                  </StyledTableCell>
-                  <StyledTableCell>{emailVlasnika}</StyledTableCell>
-                </TableRow>
-              }
+              <TableRow key={'Mejl korisnika'}>
+                <StyledTableCell component="th" scope="row">
+                  Mejl korisnika
+                </StyledTableCell>
+                <StyledTableCell>{emailVlasnika}</StyledTableCell>
+              </TableRow>
               <TableRow key={'Mejl zaposlenog'}>
                 <StyledTableCell component="th" scope="row">
                   ID zaposlenog

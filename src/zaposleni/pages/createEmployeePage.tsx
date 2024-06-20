@@ -38,13 +38,7 @@ const FormSeparatorRow = styled.div`
   max-width: 300px;
 `
 const StyledButton = styled(Button)`
-      background-color: #AC190C!important;
-  color: white!important;
-  border-radius: 5px!important;
-  
-  &:hover{
-    background-color: #EF2C1A!important;
-  }
+  max-width: 100px ;
 `
 const ButtonContainer = styled.div`
   display: flex;

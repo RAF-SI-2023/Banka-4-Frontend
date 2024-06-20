@@ -16,23 +16,9 @@ import {
 import { Order } from "berza/types/types";
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { Tab } from '@mui/material';
 
-import { AppBar, Tabs, Tab } from "@mui/material";
 const auth = getMe();
-
-const StyledTabs = styled(Tabs)`
-  background-color: #f2f2f2;
-  & > * > * {
-    display: flex !important;
-    justify-content: space-between !important;
-    margin: 6px !important;
-  }
-
-  /* Dodaj stil za aktivni tab i donju crtu */
-  .MuiTabs-indicator {  /* Zameni sa odgovarajućom CSS klasom ako je drugačija */
-    background-color: red; /* Boja donje crte */
-  }
-`
 
 const ButtonTab = styled(Tab)`
   background-color: #718bb0 !important;
@@ -44,7 +30,8 @@ const ButtonTab = styled(Tab)`
 `;
 
 const StyledTable = styled(Table)`
- 
+  margin: 20px 0;
+  border: 1px solid #ddd;
 `;
 
 const StyledTableCell = styled(TableCell)`
@@ -59,14 +46,7 @@ const StyledTableRow = styled(TableRow)`
 `;
 
 const ActionButton = styled(Button)`
-
-  
-      background-color: #AC190C!important;
-  color: white!important;
-  border-radius: 5px!important;
-  
-  &:hover{
-    background-color: #EF2C1A!important;
+  margin: 0 5px;
 `;
 
 const StyledHeading = styled(Typography)`
@@ -103,28 +83,19 @@ const OrdersPageKorisnici: React.FC = () => {
 
   return (
     <PageContainer maxWidth="lg">
-
+      <ActionButton
+        id="dodajKarticuDugme"
+        variant="contained"
+        color="primary"
+        onClick={() => {
+          navigate("/NewOrder");
+        }}
+      >
+        Dodaj porudžbinu
+      </ActionButton>
       <StyledHeading variant="h4">Porudžbine</StyledHeading>
       {error && <Alert severity="error">{error}</Alert>}
-
-    
       <Paper elevation={3}>
-      <AppBar position="static" >
-            <StyledTabs value={0}>
-              <Tab label="Lista Zaposlenih" id="lista-zaposlenih-tab" style={{ color: 'red' }}/>
-              <ActionButton
-                  id="dodajKarticuDugme"
-                  variant="contained"
-                  color="primary"
-                  onClick={() => {
-                    navigate("/NewOrder");
-                  }}
-                >
-                  Dodaj porudžbinu
-              </ActionButton>
-          </StyledTabs>
-
-          </AppBar>
         <StyledTable>
           <TableHead>
             <TableRow>
