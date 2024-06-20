@@ -12,23 +12,18 @@ import { EmployeePermissionsV2 } from 'utils/types';
 const StyledTabs = styled(Tabs)`
   background-color: #f2f2f2;
   & > * > * {
-    display: flex !important;
-    justify-content: space-between !important;
-    margin: 6px !important;
+    display: flex!important;
+    justify-content: space-between!important;
+    margin: 6px!important;
   }
 
-  /* Dodaj stil za aktivni tab i donju crtu */
-  .MuiTabs-indicator {  /* Zameni sa odgovarajućom CSS klasom ako je drugačija */
-    background-color: red; /* Boja donje crte */
-  }
 `
 const ButtonTab = styled(Tab)`
-  background-color: #AC190C!important;
+  background-color: #718bb0!important;
   color: white!important;
   border-radius: 13px!important;
-  
   &:hover{
-    background-color: #EF2C1A!important;
+    background-color: #39547a!important;
   }
 `
 const TableWrapper = styled.div`
@@ -122,7 +117,7 @@ return (
       <StyledTable>
         <AppBar position="static" >
           <StyledTabs value={0}>
-            <Tab label="Lista Korisnika" style={{ color: 'red' }}/>
+            <Tab label="Lista Korisnika" />
             {checkAddUserPermission() && <ButtonTab id="dodajKorisnikaDugme" onClick={handleCreateUser}
               label="Dodaj Korisnika" />}
 
