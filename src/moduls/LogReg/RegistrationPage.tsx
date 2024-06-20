@@ -275,10 +275,6 @@ const RegistrationPage = () => {
         );
     } else if (currentStep === 2) {
         return (
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> b2b7738 (Registrations steps 2 and 3 styling (#265) (#266))
             <StyledContainerLogReg component="main" maxWidth="sm">
             <style type="text/css">
                 {`
@@ -288,12 +284,6 @@ const RegistrationPage = () => {
                     }
                 `}
             </style>
-<<<<<<< HEAD
-=======
-            <Container component="main" maxWidth="sm">
->>>>>>> 450a6fe (Login, Register i ResetPassword Gotove +  Responsive NavBar (#260))
-=======
->>>>>>> b2b7738 (Registrations steps 2 and 3 styling (#265) (#266))
                 <Typography component="h1" variant="h5" sx={{color:'red'}}>Registracija korisnika - Korak 2</Typography>
                 <Box component="form" noValidate sx={{ mt: 3 }}>
                     <StyledTextField
@@ -308,15 +298,7 @@ const RegistrationPage = () => {
                         helperText={errors.aktivacioniKod || "Unesite kod koji ste dobili."}
                         sx={{ mb: 1 }}
                     />
-<<<<<<< HEAD
-<<<<<<< HEAD
                     <Button variant="contained" onClick={handleGenerateCode} sx={{ mt: 1, mb: 2, color:'white', backgroundColor:'#AC190C',
-=======
-                    <Button variant="contained" onClick={handleGenerateCode} sx={{ mt: 3, mb: 2, color:'white', backgroundColor:'#AC190C',
->>>>>>> 450a6fe (Login, Register i ResetPassword Gotove +  Responsive NavBar (#260))
-=======
-                    <Button variant="contained" onClick={handleGenerateCode} sx={{ mt: 1, mb: 2, color:'white', backgroundColor:'#AC190C',
->>>>>>> b2b7738 (Registrations steps 2 and 3 styling (#265) (#266))
                         '&:hover': {
                             backgroundColor: '#EF2C1A', 
                           },
@@ -335,10 +317,6 @@ const RegistrationPage = () => {
         );
     } else if (currentStep === 3) {
         return (
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> b2b7738 (Registrations steps 2 and 3 styling (#265) (#266))
             <StyledContainerLogReg component="main" maxWidth="sm">
             <style type="text/css">
                 {`
@@ -348,7 +326,6 @@ const RegistrationPage = () => {
                     }
                 `}
             </style>
-<<<<<<< HEAD
                 <StyledTitle variant="h5" sx={{color:'red'}}>Registracija korisnika - Korak 3</StyledTitle>
                 <FlexBox>
                     <Typography fontWeight={'bold'} color={eightChar?'green':'red'} variant="body2">• Lozinka mora imati bar 8 karaktera</Typography>
@@ -357,25 +334,6 @@ const RegistrationPage = () => {
                     <Typography fontWeight={'bold'} color={twoNumbers?'green':'red'} variant="body2">• Lozinka mora imati bar dva broja</Typography>
                     <Typography fontWeight={'bold'} color={specChar?'green':'red'} variant="body2">• Lozinka mora imati bar jedan specijalni karakter</Typography>
                 </FlexBox>
-=======
-            <Container component="main" maxWidth="sm">
-                <StyledTitle variant="h5" sx={{color:'red'}}>Registracija korisnika - Korak 3</StyledTitle>
-                <Typography fontWeight={'bold'} color={eightChar?'green':'red'} variant="body1">Lozinka mora imati bar 8 karaktera</Typography>
-                <Typography fontWeight={'bold'} color={capitalLetter?'green':'red'} variant="body1">Lozinka mora imati bar jedno veliko slovo</Typography>
-                <Typography fontWeight={'bold'} color={lowerLetter?'green':'red'} variant="body1">Lozinka mora imati bar jedno malo slovo</Typography>
-                <Typography fontWeight={'bold'} color={twoNumbers?'green':'red'} variant="body1">Lozinka mora imati bar dva broja</Typography>
-                <Typography fontWeight={'bold'} color={specChar?'green':'red'} variant="body1">Lozinka mora imati bar jedan specijalni karakter</Typography>
->>>>>>> 450a6fe (Login, Register i ResetPassword Gotove +  Responsive NavBar (#260))
-=======
-                <StyledTitle variant="h5" sx={{color:'red'}}>Registracija korisnika - Korak 3</StyledTitle>
-                <FlexBox>
-                    <Typography fontWeight={'bold'} color={eightChar?'green':'red'} variant="body2">• Lozinka mora imati bar 8 karaktera</Typography>
-                    <Typography fontWeight={'bold'} color={capitalLetter?'green':'red'} variant="body2">• Lozinka mora imati bar jedno veliko slovo</Typography>
-                    <Typography fontWeight={'bold'} color={lowerLetter?'green':'red'} variant="body2">• Lozinka mora imati bar jedno malo slovo</Typography>
-                    <Typography fontWeight={'bold'} color={twoNumbers?'green':'red'} variant="body2">• Lozinka mora imati bar dva broja</Typography>
-                    <Typography fontWeight={'bold'} color={specChar?'green':'red'} variant="body2">• Lozinka mora imati bar jedan specijalni karakter</Typography>
-                </FlexBox>
->>>>>>> b2b7738 (Registrations steps 2 and 3 styling (#265) (#266))
 
                 <Box component="form" noValidate sx={{ mt: 3 }}>
                     <StyledTextField
@@ -419,6 +377,5 @@ const RegistrationPage = () => {
     return <div></div>
 
 };
-
 
 export default RegistrationPage;
