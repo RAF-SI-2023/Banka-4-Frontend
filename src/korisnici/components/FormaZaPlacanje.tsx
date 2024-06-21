@@ -211,7 +211,20 @@ export const FormaZaPlacanje: React.FC<PaymentFormProps> = ({ onSave, navigate, 
                 value={svrhaPlacanja}
                 onChange={(e) => setSvrhaPlacanja(e.target.value)}
             />
-            <Button id="submitbuttonpaymentform" type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+            <Button id="submitbuttonpaymentform" type="submit" fullWidth variant="contained" 
+                sx={{ mt: 3, mb: 2, 
+                    color: 'white',
+                    backgroundColor: '#AC190C',
+                    '&:hover': {
+                    backgroundColor: '#EF2C1A',
+                    },
+                    // '&.Mui-disabled': {
+                    // backgroundColor: '#DBCBCB', // Siva boja kada je dugme onemogućeno
+                    // color: 'light-gray', // Boja teksta kada je dugme onemogućeno
+                    // },
+                }}
+
+            >
                 Plati
             </Button>
         </Box>

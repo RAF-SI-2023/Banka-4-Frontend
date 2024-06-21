@@ -90,7 +90,7 @@ const ATMPage: React.FC = () => {
     }, [racuni]);
 
     return (
-        <Container maxWidth="md">
+        <Container maxWidth="md" sx={{mt:4}}>
             <Typography variant="h4" component="h1" gutterBottom>
                 ATM
             </Typography>{racun && <FormControl fullWidth margin="normal">
@@ -137,7 +137,15 @@ const ATMPage: React.FC = () => {
                     <FormControlLabel value={"true"} control={<Radio />} label="Isplata" />
                 </RadioGroup>
             </FormControl>
-            <Button onClick={onClick} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+            <Button onClick={onClick} fullWidth variant="contained" 
+                sx={{ mt: 3, mb: 2 ,
+                    color: 'white',
+                    backgroundColor: '#AC190C',
+                    '&:hover': {
+                      backgroundColor: '#EF2C1A',
+                    }
+                }}
+            >
                 {(isplata2 == 'true') ? "Is" : "U"}plati
             </Button>
 
