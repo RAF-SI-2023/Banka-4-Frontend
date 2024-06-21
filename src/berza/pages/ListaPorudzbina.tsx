@@ -14,7 +14,8 @@ import {
 } from '@mui/material';
 import { getMe } from "utils/getMe";
 import { makeGetRequest, makeApiRequest } from "utils/apiRequest";
-import { Order, Firma } from "berza/types/types";
+import { Order } from "berza/types/types";
+import { Company as Firma } from 'utils/types';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { hasPermission } from "utils/permissions";
