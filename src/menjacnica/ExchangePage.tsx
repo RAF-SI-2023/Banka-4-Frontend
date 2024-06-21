@@ -11,6 +11,16 @@ import styled from "styled-components";
 
 const ContainerStyled = styled.div`
   display: flex;
+  justify-content: space-between;
+  width: 90%;
+`;
+
+const MainSectionContainer = styled(Container)`
+  flex-grow: 1;
+`;
+
+const ExchangeRatesContainer = styled(Container)`
+  width: auto;
 `;
 
 const ExchangePage = () => {
@@ -42,7 +52,7 @@ const ExchangePage = () => {
   return (
     <ContainerStyled>
       {detaljiTransfera ? (
-        <Container>
+        <MainSectionContainer>
           <TransferDetails
             {...{
               kurs,
@@ -55,9 +65,9 @@ const ExchangePage = () => {
               saRacunaValuta,
             }}
           />
-        </Container>
+        </MainSectionContainer>
       ) : (
-        <Container>
+        <MainSectionContainer>
           <ExchangeMainSection
             {...{
               setKurs,
@@ -69,11 +79,11 @@ const ExchangePage = () => {
               setNaRacunValuta,
             }}
           />
-        </Container>
+        </MainSectionContainer>
       )}
-      <Container>
+      <ExchangeRatesContainer>
         <ExchangeRatesTable />
-      </Container>
+      </ExchangeRatesContainer>
     </ContainerStyled>
   );
 };

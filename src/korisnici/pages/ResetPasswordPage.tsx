@@ -127,7 +127,22 @@ const ResetPasswordPage = () => {
               onChange={(e) => setEmail(e.target.value)}
               onBlur={validateEmail}
             />
-            <Button variant={'contained'} disabled={!emailValid} onClick={sendRequest}>
+            <Button variant={'contained'} 
+              disabled={!emailValid} 
+              onClick={sendRequest}
+              
+              sx={{
+                color: 'white',
+                backgroundColor: '#AC190C',
+                '&:hover': {
+                  backgroundColor: '#EF2C1A',
+                },
+                '&.Mui-disabled': {
+                  backgroundColor: '#DBCBCB', // Siva boja kada je dugme onemogućeno
+                  color: 'light-gray', // Boja teksta kada je dugme onemogućeno
+                },
+              }}
+            >
               Pošalji zahtev
             </Button>
 
