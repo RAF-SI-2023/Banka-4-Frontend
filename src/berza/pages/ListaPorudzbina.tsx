@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { getMe } from "utils/getMe";
 import { makeGetRequest, makeApiRequest } from "utils/apiRequest";
-import { Order } from "berza/types/types";
+import { Order, Firma } from "berza/types/types";
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { hasPermission } from "utils/permissions";
@@ -65,6 +65,7 @@ const OrdersPage: React.FC = () => {
   const [permission_odobri, setPermissionOdobri] = useState<boolean>(false);
   const [permission_odbij, setPermissionOdbij] = useState<boolean>(false);
   const [emails, setEmails] = useState<{ [key: string]: string }>({});
+  const [firme, setFirme] = useState<Firma[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,41 +76,45 @@ const OrdersPage: React.FC = () => {
         const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${me.sub}`) as Employee;
 
         const orders = await makeGetRequest(`/orders/all`);
-
         const futures = await makeGetRequest(`/futures/kupac/` + worker.firmaId);
-        const futures2 = await makeGetRequest(`/futures/request?userId=` + worker.firmaId);
+        const futures2 = await makeGetRequest(`/futures/request/` + worker.firmaId);
+        const firme = await makeGetRequest(`/racuni/izlistajSveFirme`);
 
-        console.log(orders, futures, futures2);
-        if (orders) {
-          setOrders(orders);
-        }
-        if (futures) {
-          setFutures(futures);
-        }
-        if (futures2) {
-          setFutures2(futures2);
-        }
+        console.log('Fetched Data:', { orders, futures, futures2, firme });
+
+        if (orders) setOrders(orders);
+        if (futures) setFutures(futures);
+        if (futures2) setFutures2(futures2);
+        if (firme) setFirme(firme);
 
         const token = localStorage.getItem('si_jwt');
         if (token) {
           const decodedToken = jwtDecode(token) as DecodedToken;
-          console.log(decodedToken);
           setPermissionOdobri(hasPermission(decodedToken.permission, [EmployeePermissionsV2.accept_orders]));
           setPermissionOdbij(hasPermission(decodedToken.permission, [EmployeePermissionsV2.deny_orders]));
         }
 
-        // Fetch emails for orders
         const emailMap: { [key: string]: string } = {};
-        for (const order of orders) {
-          const email = await generateemailofid(order.id);
-          emailMap[order.id] = email;
-        }
+        const emailPromises = orders.map(async (order: { userId: number; }) => {
+          if (order.userId >= 0) {
+            const email = await generateEmailOfId(order.userId);
+            emailMap[order.userId] = email;
+          } else {
+            const firma = firme.find((firma: { id: number; }) => firma.id === order.userId);
+            emailMap[order.userId] = firma ? firma.nazivPreduzeca : "FIRMA";
+          }
+        });
+
+        await Promise.all(emailPromises);
+        console.log('Email Map:', emailMap);
         setEmails(emailMap);
 
       } catch (error) {
+        console.error('Error fetching data:', error);
         setError("Failed to fetch data");
       }
     };
+
     fetchData();
   }, []);
 
@@ -165,11 +170,14 @@ const OrdersPage: React.FC = () => {
     }
   };
 
-  async function generateemailofid(orderId: string): Promise<string> {
-    let data = await makeGetRequest(`${UserRoutes.user}/id/${orderId}`);
-    // Na primer, dodajemo prefiks "Order-" ispred ID-a
-    //console.log(data);
-    return data.email;
+  async function generateEmailOfId(orderId: number): Promise<string> {
+    try {
+      const data = await makeGetRequest(`${UserRoutes.user}/id/${orderId}`);
+      return data.email;
+    } catch (error) {
+      console.error('Error fetching email for order ID:', orderId, error);
+      return 'Error fetching email';
+    }
   }
 
   return (
@@ -259,15 +267,11 @@ const OrdersPage: React.FC = () => {
         </StyledTable>
       </Paper>
 
-      <StyledHeading variant="h4">Futures Requests</StyledHeading>
+      <StyledHeading variant="h4">Futures 2</StyledHeading>
       <Paper elevation={3}>
         <StyledTable>
           <TableHead>
             <TableRow>
-              <StyledTableCell>Email</StyledTableCell>
-              <StyledTableCell>Ime</StyledTableCell>
-              <StyledTableCell>Prezime</StyledTableCell>
-              <StyledTableCell>Broj Telefona</StyledTableCell>
               <StyledTableCell>Type</StyledTableCell>
               <StyledTableCell>Name</StyledTableCell>
               <StyledTableCell>Price</StyledTableCell>
@@ -276,25 +280,32 @@ const OrdersPage: React.FC = () => {
               <StyledTableCell>Open Interest</StyledTableCell>
               <StyledTableCell>Settlement Date</StyledTableCell>
               <StyledTableCell>Maintenance Margin</StyledTableCell>
-              <StyledTableCell>Status</StyledTableCell>
+              <StyledTableCell></StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {futures2.map(future => (
               <StyledTableRow key={future.id}>
-                <TableCell>{future.email}</TableCell>
-                <TableCell>{future.ime}</TableCell>
-                <TableCell>{future.prezime}</TableCell>
-                <TableCell>{future.broj_telefona}</TableCell>
-                <TableCell>{future.futuresContractDto.type}</TableCell>
-                <TableCell>{future.futuresContractDto.name}</TableCell>
-                <TableCell>{future.futuresContractDto.price}</TableCell>
-                <TableCell>{future.futuresContractDto.contractSize}</TableCell>
-                <TableCell>{future.futuresContractDto.contractUnit}</TableCell>
-                <TableCell>{future.futuresContractDto.openInterest}</TableCell>
-                <TableCell>{future.futuresContractDto.settlementDate}</TableCell>
-                <TableCell>{future.futuresContractDto.maintenanceMargin}</TableCell>
-                <TableCell>{future.status}</TableCell>
+                <TableCell>{future.type}</TableCell>
+                <TableCell>{future.name}</TableCell>
+                <TableCell>{future.price}</TableCell>
+                <TableCell>{future.contractSize}</TableCell>
+                <TableCell>{future.contractUnit}</TableCell>
+                <TableCell>{future.openInterest}</TableCell>
+                <TableCell>{future.settlementDate}</TableCell>
+                <TableCell>{future.maintenanceMargin}</TableCell>
+                <TableCell>
+                  {future.status.toLowerCase() === 'pending' && (
+                    <>
+                      {permission_odobri && (
+                        <ActionButton variant="contained" color="primary" onClick={() => handleApproveFuture(future.id)}>Odobri</ActionButton>
+                      )}
+                      {permission_odbij && (
+                        <ActionButton variant="contained" color="error" onClick={() => handleRejectFuture(future.id)}>Poništi</ActionButton>
+                      )}
+                    </>
+                  )}
+                </TableCell>
               </StyledTableRow>
             ))}
           </TableBody>

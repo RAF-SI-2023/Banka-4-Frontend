@@ -87,3 +87,16 @@ export type Order = {
     approvedBy?: string;
     userId: string;
 }
+
+
+export type Firma =  {
+    id: string,
+    nazivPreduzeca: string,
+    povezaniRacuni: string,
+    brojTelefona: string,
+    brojFaksa: string,
+    maticniBroj: number,
+    sifraDelatnosti: number,
+    registarskiBroj: number,
+    pib: number
+  }
