@@ -12,6 +12,7 @@ import { BankRoutes, ExchangeRate, Profit } from "utils/types";
 import ProfitTable from "./ProfitTable";
 import styled from "styled-components";
 import { AppBar, Tabs, Tab } from '@mui/material';
+import ProfitHartijeTable from "./ProfitHartijeTable";
 
 const ButtonTab = styled(Button)`
   background-color: white!important;
@@ -98,6 +99,7 @@ const ProfitPage = () => {
 
   return (
     <PageWrapper>
+      <ProfitHartijeTable />
       <StyledDiv>
         <Box
           display="flex"
@@ -115,13 +117,15 @@ const ProfitPage = () => {
           <Typography variant="h6" mb={1}>
             Profit banke
           </Typography>
-          
+
           <Typography variant="body1">
             Maržni računi: {totalProfit} RSD
           </Typography>
-          {(profitValute === null) ? null : <Typography variant="body1">
-            Selektovana valuta: {profitValute} RSD
-          </Typography>}
+          {profitValute === null ? null : (
+            <Typography variant="body1">
+              Selektovana valuta: {profitValute} RSD
+            </Typography>
+          )}
         </Box>
         <StyledTextField
           label="Valute:"
@@ -139,13 +143,18 @@ const ProfitPage = () => {
             RSD
           </StyledManuItem>
           {exchages?.map((exchage: ExchangeRate) => (
-            <StyledManuItem key={exchage.currencyCode} value={exchage.currencyCode}>
+            <StyledManuItem
+              key={exchage.currencyCode}
+              value={exchage.currencyCode}
+            >
               {exchage.currencyCode}
             </StyledManuItem>
           ))}
         </StyledTextField>
         <StyledButtonsDiv>
-          <ButtonTab onClick={() => fetchProfit()}>Pregledajte profite</ButtonTab>
+          <ButtonTab onClick={() => fetchProfit()}>
+            Pregledajte profite
+          </ButtonTab>
         </StyledButtonsDiv>
       </StyledDiv>
       <Container>
@@ -155,3 +164,4 @@ const ProfitPage = () => {
   );
 };
 export default ProfitPage;
+
