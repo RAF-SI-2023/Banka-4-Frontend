@@ -55,7 +55,7 @@ const SearchWrapper = styled.div`
   }
 `
 
-const OtcPage: React.FC = () => {
+const OtcPageKorisnik: React.FC = () => {
 
   const [selectedTab, setSelectedTab] = useState(0);
   const [filter, setFilter] = useState('');
@@ -163,4 +163,4 @@ const OtcPage: React.FC = () => {
   );
 };
 
-export default OtcPage;
+export default OtcPageKorisnik;
