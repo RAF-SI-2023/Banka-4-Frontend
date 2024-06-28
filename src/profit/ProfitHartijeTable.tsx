@@ -6,6 +6,7 @@ import {
   Button,
   TableCell,
 } from "@mui/material";
+import HartijePopup from "berza/pages/hartije/HartijePopup";
 import { UserStock2, Future } from "berza/types/types";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -40,13 +41,13 @@ const TitleTableDiv = styled.div`
 `;
 
 const StyledTableCellDynamic = styled(TableCell)<{
-  $settlementDate: number;
+  settlementDate: number;
 }>`
   ${(props) => `
     &:not(:last-child) {
       border-right: 1px solid #e2e2e2;
     }
-    background-color: ${() => isWithinTwoDays(props.$settlementDate)};
+    background-color: ${isWithinTwoDays(props.settlementDate)};
     `}
 `;
 
@@ -66,8 +67,14 @@ const ProfitHartijeTable = () => {
   const [hartija, setHartija] = useState<string>(hartijeOdVrednosti);
   const [userStocks, setUserStocks] = useState<UserStock2[]>([]);
   const [futures, setFutures] = useState<Future[]>([]);
+  const [popupOpen, setPopupOpen] = useState<boolean>(false);
+  const [selectedStock, setSelectedStock] = useState<UserStock2>({
+    ticker: "string",
+    quantity: 0,
+    currentBid: 0,
+    currentAsk: 0,
+  });
   const auth = getMe();
-  console.log(auth?.permission);
 
   const calculateFuturesSum = () => {
     let futuresSum = 0;
@@ -131,7 +138,7 @@ const ProfitHartijeTable = () => {
     <PageWrapper>
       <TitleTableDiv>
         <EnhancedTableToolbar />
-        <ScrollContainer style={{}}>
+        <ScrollContainer>
           {hartija === "Akcije" ? (
             <Table sx={{ minWidth: 250, marginTop: 0 }}>
               <StyledTableHead>
@@ -150,7 +157,13 @@ const ProfitHartijeTable = () => {
               </StyledTableHead>
               <TableBody>
                 {userStocks.map((stock: UserStock2) => (
-                  <StyledTableRow key={stock.ticker}>
+                  <StyledTableRow
+                    key={stock.ticker}
+                    onClick={() => {
+                      setPopupOpen(true);
+                      setSelectedStock(stock);
+                    }}
+                  >
                     <StyledTableCell component="th" scope="row">
                       {stock.ticker}
                     </StyledTableCell>
@@ -193,7 +206,10 @@ const ProfitHartijeTable = () => {
               </StyledTableHead>
               <TableBody>
                 {futures.map((future: Future) => (
-                  <StyledTableRow key={future.name}>
+                  <StyledTableRow
+                    key={future.name}
+                    onClick={() => setPopupOpen(true)}
+                  >
                     <StyledTableCell component="th" scope="row">
                       {future.name}
                     </StyledTableCell>
@@ -215,7 +231,7 @@ const ProfitHartijeTable = () => {
                     <StyledTableCellDynamic
                       component="th"
                       scope="row"
-                      $settlementDate={future.settlementDate}
+                      settlementDate={future.settlementDate}
                     >
                       {future.settlementDate}
                     </StyledTableCellDynamic>
@@ -241,12 +257,11 @@ const ProfitHartijeTable = () => {
               <TableBody>
                 {auth?.permission
                   ? hartijeEmployee.map((hartija: string) => (
-                      <StyledTableRow key={hartija}>
-                        <StyledTableCell
-                          component="th"
-                          scope="row"
-                          onClick={() => setHartija(hartija)}
-                        >
+                      <StyledTableRow
+                        key={hartija}
+                        onClick={() => setHartija(hartija)}
+                      >
+                        <StyledTableCell component="th" scope="row">
                           {hartija}
                         </StyledTableCell>
                         <StyledTableCell component="th" scope="row">
@@ -257,12 +272,11 @@ const ProfitHartijeTable = () => {
                       </StyledTableRow>
                     ))
                   : hartije.map((hartija: string) => (
-                      <StyledTableRow key={hartija}>
-                        <StyledTableCell
-                          component="th"
-                          scope="row"
-                          onClick={() => setHartija(hartija)}
-                        >
+                      <StyledTableRow
+                        key={hartija}
+                        onClick={() => setHartija(hartija)}
+                      >
+                        <StyledTableCell component="th" scope="row">
                           {hartija}
                         </StyledTableCell>
                         <StyledTableCell component="th" scope="row">
@@ -281,6 +295,7 @@ const ProfitHartijeTable = () => {
       >
         Nazad na hartije
       </Button>
+      {popupOpen && <HartijePopup {...{ setPopupOpen, selectedStock }} />}
     </PageWrapper>
   );
 };

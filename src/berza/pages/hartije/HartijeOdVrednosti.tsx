@@ -11,7 +11,7 @@ import { hasPermission } from "utils/permissions";
 import { Employee, EmployeePermissionsV2, UserRoutes } from "utils/types";
 import { jwtDecode } from "jwt-decode";
 import SpecificContractListPage from "moduls/TerminskiUgovori/pages/SpecificContractListPage";
-import OrdersPageKorisnici from "./ListaPorudzbinaKorisnici";
+import OrdersPageKorisnici from "../ListaPorudzbinaKorisnici";
 import ProfitHartijeTable from "profit/ProfitHartijeTable";
 const employee = "employee";
 
@@ -168,7 +168,7 @@ const HartijeOdVrednosti = () => {
   return (
     <PageWrapper>
       <ProfitHartijeTable />
-      <TableContainer>
+      {/* <TableContainer>
         <StyledTable>
           <AppBar position="static">
             <StyledTabs value={selectedTab} onChange={handleChange}>
@@ -193,7 +193,7 @@ const HartijeOdVrednosti = () => {
             userType === employee &&
             selectedTab === 3 && <SpecificContractListPage />}
         </StyledTable>
-      </TableContainer>
+      </TableContainer> */}
     </PageWrapper>
   );
 };

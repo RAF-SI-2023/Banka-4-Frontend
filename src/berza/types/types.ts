@@ -26,6 +26,14 @@ export type UserStock2 = {
   currentBid: number;
   currentAsk: number;
 };
+
+export type Option2 = {
+  korisnikId: number;
+  opcijaId: number;
+  akcijaId: number;
+  akcijaTickerCenaPrilikomIskoriscenja: number;
+};
+
 export type Option = {
   korisnikId: number;
   opcijaId: number;
@@ -108,3 +116,4 @@ export type Order = {
   approvedBy?: string;
   userId: string;
 };
+
