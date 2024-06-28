@@ -1,4 +1,11 @@
-import { Table, TableRow, TableBody, Typography, Button } from "@mui/material";
+import {
+  Table,
+  TableRow,
+  TableBody,
+  Typography,
+  Button,
+  TableCell,
+} from "@mui/material";
 import { UserStock2, Future } from "berza/types/types";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -31,6 +38,25 @@ const TitleTableDiv = styled.div`
   margin-top: 100px;
   width: 100%;
 `;
+
+const StyledTableCellDynamic = styled(TableCell)<{
+  $settlementDate: number;
+}>`
+  ${(props) => `
+    &:not(:last-child) {
+      border-right: 1px solid #e2e2e2;
+    }
+    background-color: ${() => isWithinTwoDays(props.$settlementDate)};
+    `}
+`;
+
+function isWithinTwoDays(settlementDate: number): string {
+  const date = new Date(settlementDate);
+  const today = new Date();
+  const differenceMs = date.getTime() - today.getTime();
+  const differenceDays = differenceMs / (1000 * 60 * 60 * 24);
+  return differenceDays <= 2 && differenceDays >= 0 ? "#FFF9C4" : "#ffffff";
+}
 
 const ProfitHartijeTable = () => {
   const [hartija, setHartija] = useState<string>(hartijeOdVrednosti);
@@ -182,9 +208,13 @@ const ProfitHartijeTable = () => {
                     <StyledTableCell component="th" scope="row">
                       {future.openInterest}
                     </StyledTableCell>
-                    <StyledTableCell component="th" scope="row">
+                    <StyledTableCellDynamic
+                      component="th"
+                      scope="row"
+                      $settlementDate={future.settlementDate}
+                    >
                       {future.settlementDate}
-                    </StyledTableCell>
+                    </StyledTableCellDynamic>
                     <StyledTableCell component="th" scope="row">
                       {future.maintenanceMargin}
                     </StyledTableCell>
@@ -252,5 +282,4 @@ const ProfitHartijeTable = () => {
 };
 
 export default ProfitHartijeTable;
-
 
