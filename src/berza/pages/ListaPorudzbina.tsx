@@ -250,18 +250,7 @@ const OrdersPage: React.FC = () => {
                 <TableCell>{future.openInterest}</TableCell>
                 <TableCell>{future.settlementDate}</TableCell>
                 <TableCell>{future.maintenanceMargin}</TableCell>
-                <TableCell>
-                  {future.status.toLowerCase() === 'pending' && (
-                    <>
-                      {permission_odobri && (
-                        <ActionButton variant="contained" color="primary" onClick={() => handleApproveFuture(future.id)}>Odobri</ActionButton>
-                      )}
-                      {permission_odbij && (
-                        <ActionButton variant="contained" color="error" onClick={() => handleRejectFuture(future.id)}>Poništi</ActionButton>
-                      )}
-                    </>
-                  )}
-                </TableCell>
+        
               </StyledTableRow>
             ))}
           </TableBody>
@@ -296,7 +285,7 @@ const OrdersPage: React.FC = () => {
                 <TableCell>{future.settlementDate}</TableCell>
                 <TableCell>{future.maintenanceMargin}</TableCell>
                 <TableCell>
-                  {future.status.toLowerCase() === 'pending' && (
+                  {future.request_status.toLowerCase() === 'not_approved' && (
                     <>
                       {permission_odobri && (
                         <ActionButton variant="contained" color="primary" onClick={() => handleApproveFuture(future.id)}>Odobri</ActionButton>
