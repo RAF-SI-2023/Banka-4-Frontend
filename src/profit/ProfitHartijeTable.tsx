@@ -53,9 +53,13 @@ const StyledTableCellDynamic = styled(TableCell)<{
 function isWithinTwoDays(settlementDate: number): string {
   const date = new Date(settlementDate);
   const today = new Date();
+
   const differenceMs = date.getTime() - today.getTime();
   const differenceDays = differenceMs / (1000 * 60 * 60 * 24);
-  return differenceDays <= 2 && differenceDays >= 0 ? "#FFF9C4" : "#ffffff";
+
+  if (differenceDays <= 2 && differenceDays >= 0) return "#FFF9C4";
+  if (date.getTime() < today.getTime()) return "#FFCCCB";
+  return "#ffffff";
 }
 
 const ProfitHartijeTable = () => {
