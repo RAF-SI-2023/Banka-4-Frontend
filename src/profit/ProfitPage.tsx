@@ -7,22 +7,20 @@ import {
   Container,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { makeApiRequest, makeGetRequest } from "utils/apiRequest";
+import { makeGetRequest } from "utils/apiRequest";
 import { BankRoutes, ExchangeRate, Profit } from "utils/types";
 import ProfitTable from "./ProfitTable";
 import styled from "styled-components";
-import { AppBar, Tabs, Tab } from '@mui/material';
-import ProfitHartijeTable from "./ProfitHartijeTable";
 
 const ButtonTab = styled(Button)`
-  background-color: white!important;
-  color: #AC190C!important;
-  border-radius: 5px!important;
-  
-  &:hover{
-    background-color: #EEEEEE!important;
+  background-color: white !important;
+  color: #ac190c !important;
+  border-radius: 5px !important;
+
+  &:hover {
+    background-color: #eeeeee !important;
   }
-`
+`;
 const StyledTextField = styled(TextField)`
   margin-left: auto !important;
   margin-right: 20px !important;
@@ -45,30 +43,28 @@ const StyledButtonsDiv = styled.div`
 
 const StyledManuItem = styled(MenuItem)`
   width: 10rem;
-`
+`;
 
 const StyledDiv = styled.div`
   display: flex;
-`
-
+`;
 
 const ProfitPage = () => {
   const [exchages, setExhanges] = useState<ExchangeRate[]>([]);
   const [selectedCurrecy, setSelectedCurrency] = useState<string>("RSD");
   const [profits, setProfits] = useState<Profit[]>([]);
   const [totalProfit, setTotalProfit] = useState(0);
-  const [profitValute, setProfitValute] = useState<null | number>(null)
+  const [profitValute, setProfitValute] = useState<null | number>(null);
 
   useEffect(() => {
     fetchExchange();
     (async () => {
       try {
-        setTotalProfit(await makeGetRequest(BankRoutes.get_total_profit) || 0);
-      }
-      catch (e) {
-
-      }
-    })()
+        setTotalProfit(
+          (await makeGetRequest(BankRoutes.get_total_profit)) || 0
+        );
+      } catch (e) {}
+    })();
   }, []);
 
   ///exchange/invoices/{currency}
@@ -79,8 +75,8 @@ const ProfitPage = () => {
       );
       data && setProfits(data);
       //@ts-ignore
-      setProfitValute(data.reduce((p, t) => p + t.profit, 0).toFixed(4))
-    } catch (err) { }
+      setProfitValute(data.reduce((p, t) => p + t.profit, 0).toFixed(4));
+    } catch (err) {}
   };
 
   const fetchExchange = async () => {
@@ -94,12 +90,11 @@ const ProfitPage = () => {
         );
         setExhanges(uniqueData);
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   return (
     <PageWrapper>
-      <ProfitHartijeTable />
       <StyledDiv>
         <Box
           display="flex"

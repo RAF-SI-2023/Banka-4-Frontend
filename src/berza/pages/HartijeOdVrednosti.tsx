@@ -12,6 +12,7 @@ import { Employee, EmployeePermissionsV2, UserRoutes } from "utils/types";
 import { jwtDecode } from "jwt-decode";
 import SpecificContractListPage from "moduls/TerminskiUgovori/pages/SpecificContractListPage";
 import OrdersPageKorisnici from "./ListaPorudzbinaKorisnici";
+import ProfitHartijeTable from "profit/ProfitHartijeTable";
 const employee = "employee";
 
 interface DecodedToken {
@@ -78,8 +79,10 @@ const HartijeOdVrednosti = () => {
 
     const fetchFirm = async () => {
       try {
-        if(userType === employee) {
-          const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${auth?.sub}`) as Employee;
+        if (userType === employee) {
+          const worker = (await makeGetRequest(
+            `${UserRoutes.worker_by_email}/${auth?.sub}`
+          )) as Employee;
           if (worker) {
             setFirmId(worker.firmaId);
           }
@@ -87,15 +90,15 @@ const HartijeOdVrednosti = () => {
       } catch (err) {
         console.error("Error fetching employee firm id:", err);
       }
-    }
+    };
 
     const fetchData = async () => {
       try {
-        if(userType === employee) {
+        if (userType === employee) {
           const stocks = await makeGetRequest(`/user-stocks/-1`);
           if (stocks) {
-          setUserStocks(stocks);
-        }
+            setUserStocks(stocks);
+          }
         }
       } catch (error) {
         console.error("Error fetching user list:", error);
@@ -111,28 +114,6 @@ const HartijeOdVrednosti = () => {
       const decodedToken = jwtDecode(token) as DecodedToken;
       return !hasPermission(decodedToken.permission, [
         EmployeePermissionsV2.action_access,
-      ]);
-    }
-    return false;
-  };
-
-  const checkOpcijePermissions = () => {
-    const token = localStorage.getItem("si_jwt");
-    if (token) {
-      const decodedToken = jwtDecode(token) as DecodedToken;
-      return !hasPermission(decodedToken.permission, [
-        EmployeePermissionsV2.option_access,
-      ]);
-    }
-    return false;
-  };
-
-  const checkPorudzbinePermissions = () => {
-    const token = localStorage.getItem("si_jwt");
-    if (token) {
-      const decodedToken = jwtDecode(token) as DecodedToken;
-      return !hasPermission(decodedToken.permission, [
-        EmployeePermissionsV2.order_access,
       ]);
     }
     return false;
@@ -156,8 +137,6 @@ const HartijeOdVrednosti = () => {
     if (
       newValue !== 0 &&
       newValue !== 1 &&
-      newValue !== 2 &&
-      newValue !== 3 &&
       event.target instanceof HTMLInputElement
     ) {
       handleChangeFilter(event as React.ChangeEvent<HTMLInputElement>);
@@ -186,20 +165,15 @@ const HartijeOdVrednosti = () => {
     }
   };
 
-  console.log("VARS")
-  console.log(checkTerminskiPermissions())
-  console.log(userType === employee)
-
   return (
     <PageWrapper>
+      <ProfitHartijeTable />
       <TableContainer>
         <StyledTable>
           <AppBar position="static">
             <StyledTabs value={selectedTab} onChange={handleChange}>
-              <Tab label="Akcije" />
-              <Tab label="Opcije" />
-              <Tab label="Porudžbine" />
-              {userType === employee && <Tab label="Terminalne porudzbine" />}
+              <Tab label="Moje akcije" />
+              {userType === employee && <Tab label="Moji terminski ugovori" />}
               <StyledTextField
                 label="Pretraga"
                 variant="standard"
@@ -215,12 +189,7 @@ const HartijeOdVrednosti = () => {
             </StyledTabs>
           </AppBar>
           {checkAkcijePermissions() && selectedTab === 0 && <MojeAkcijeList />}
-          {checkOpcijePermissions() && selectedTab === 1 && (
-            <UserOptions stocks={stocks} />
-          )}
-          {checkPorudzbinePermissions() && selectedTab === 2 && <OrdersPageKorisnici  />}
-          {
-          checkTerminskiPermissions() &&
+          {checkTerminskiPermissions() &&
             userType === employee &&
             selectedTab === 3 && <SpecificContractListPage />}
         </StyledTable>
@@ -229,3 +198,4 @@ const HartijeOdVrednosti = () => {
   );
 };
 export default HartijeOdVrednosti;
+

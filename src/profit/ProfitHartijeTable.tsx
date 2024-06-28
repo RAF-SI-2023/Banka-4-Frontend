@@ -1,5 +1,5 @@
-import { Table, TableRow, TableBody, Typography } from "@mui/material";
-import { UserStock2, Option, Future } from "berza/types/types";
+import { Table, TableRow, TableBody, Typography, Button } from "@mui/material";
+import { UserStock2, Future } from "berza/types/types";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { makeGetRequest } from "utils/apiRequest";
@@ -11,8 +11,9 @@ import {
   StyledTableRow,
   StyledTableCell,
 } from "utils/tableStyles";
-const employee = "employee";
-const hartije = ["Akcije", "Opcije", "Obaveznice", "Futures ugovori"];
+const hartijeEmployee = ["Akcije", "Terminski ugovori"];
+const hartije = ["Akcije"];
+const hartijeOdVrednosti = "Hartije od vrednosti";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -21,6 +22,7 @@ const PageWrapper = styled.div`
   align-items: center;
   width: 40rem;
   margin-bottom: 50px;
+  gap: 1rem;
 `;
 const TitleTableDiv = styled.div`
   display: flex;
@@ -31,70 +33,56 @@ const TitleTableDiv = styled.div`
 `;
 
 const ProfitHartijeTable = () => {
-  const [userType, setUserType] = useState<string>("user");
-  const [hartija, setHartija] = useState<string>("Hartije od vrednosti");
+  const [hartija, setHartija] = useState<string>(hartijeOdVrednosti);
   const [userStocks, setUserStocks] = useState<UserStock2[]>([]);
-  const [options, setOptions] = useState<Option[]>([]);
-  const [orders, setOrders] = useState<Option[]>([]);
   const [futures, setFutures] = useState<Future[]>([]);
   const auth = getMe();
+  console.log(auth?.permission);
+
+  const calculateFuturesSum = () => {
+    let futuresSum = 0;
+    futures && futures.map((future) => (futuresSum += future.price));
+    return futuresSum;
+  };
+
+  const calculateStocksSum = () => {
+    let stocksSum = 0;
+    userStocks.map((userStock) => (stocksSum += userStock.currentBid));
+    return stocksSum;
+  };
 
   useEffect(() => {
-    auth?.permission && setUserType(employee);
+    if (auth?.permission) {
+      const fetchStocks = async () => {
+        try {
+          const stocksData = await makeGetRequest(`/user-stocks/-1`);
+          stocksData && setUserStocks(stocksData);
+        } catch (error) {
+          console.error("Error fetching user stocks:", error);
+        }
+      };
 
-    const fetchStocks = async () => {
-      try {
-        let request =
-          userType === employee
-            ? `/user-stocks/-1`
-            : `/user-stocks/${auth?.id}`;
-        const stocks = await makeGetRequest(request);
-        stocks && setOptions(stocks);
-      } catch (error) {
-        console.error("Error fetching user stocks:", error);
-      }
-    };
-
-    const fetchOptions = async () => {
-      try {
-        let request =
-          userType === employee
-            ? `/opcija/sve-opcije-korisnika/-1`
-            : `/opcija/sve-opcije-korisnika/${auth?.id}`;
-        const fetchedOptions = await makeGetRequest(request);
-        fetchedOptions && setOptions(fetchedOptions);
-      } catch (error) {
-        console.error("Error fetching user options:", error);
-      }
-    };
-
-    const fetchOrders = async () => {
-      try {
-        let request =
-          userType === employee ? `/orders/-1` : `/orders/${auth?.id}`;
-        const orders = await makeGetRequest(request);
-        orders && setOrders(orders);
-      } catch (error) {
-        console.error("Error fetching user orders:", error);
-      }
-    };
-
-    const fetchFutures = async () => {
-      try {
-        let request =
-          userType === employee
-            ? `/futures/kupac/-1`
-            : `/futures/kupac/${auth?.id}`;
-        const futures = await makeGetRequest(request);
-        futures && setFutures(futures);
-      } catch (error) {
-        console.error("Error fetching user futures:", error);
-      }
-    };
-    // fetchStocks();
-    // fetchOptions();
-    // fetchOrders();
-    // fetchFutures();
+      const fetchFutures = async () => {
+        try {
+          const futuresData = await makeGetRequest(`/futures/kupac/-1`);
+          futuresData && setFutures(futuresData);
+        } catch (error) {
+          console.error("Error fetching user futures:", error);
+        }
+      };
+      fetchStocks();
+      fetchFutures();
+    } else {
+      const fetchStocks = async () => {
+        try {
+          const stocksData = await makeGetRequest(`/user-stocks/${auth?.id}`);
+          stocksData && setUserStocks(stocksData);
+        } catch (error) {
+          console.error("Error fetching user stocks:", error);
+        }
+      };
+      fetchStocks();
+    }
   }, []);
 
   function EnhancedTableToolbar() {
@@ -109,7 +97,6 @@ const ProfitHartijeTable = () => {
       </Typography>
     );
   }
-
   return (
     <PageWrapper>
       <TitleTableDiv>
@@ -119,16 +106,9 @@ const ProfitHartijeTable = () => {
             <Table sx={{ minWidth: 250, marginTop: 0 }}>
               <StyledTableHead>
                 <TableRow>
-                  {/* <StyledHeadTableCell align="right">Oznaka</StyledHeadTableCell> */}
-                  {/* <StyledHeadTableCell align="right">Naziv</StyledHeadTableCell> */}
-                  {/* <StyledHeadTableCell align="right">Berza</StyledHeadTableCell> */}
-                  {/* <StyledHeadTableCell align="right">Kolicina u vlasnistvu</StyledHeadTableCell> */}
-                  {/* <StyledHeadTableCell align="right">Cena (trenutna)</StyledHeadTableCell> */}
-                  {/* <StyledHeadTableCell align="right">Kupljeno za (ukupno)</StyledHeadTableCell> */}
-                  {/* <StyledHeadTableCell align="right">Profit</StyledHeadTableCell> */}
-                  <StyledHeadTableCell>Ticker</StyledHeadTableCell>
+                  <StyledHeadTableCell>Oznaka</StyledHeadTableCell>
                   <StyledHeadTableCell align="right">
-                    Quantity
+                    Kolicina
                   </StyledHeadTableCell>
                   <StyledHeadTableCell align="right">
                     Current Ask
@@ -157,73 +137,7 @@ const ProfitHartijeTable = () => {
                 ))}
               </TableBody>
             </Table>
-          ) : hartija === "Opcije" ? (
-            <Table sx={{ minWidth: 250, marginTop: 0 }} aria-labelledby="h6">
-              <StyledTableHead>
-                <TableRow>
-                  <StyledHeadTableCell>AkcijaId</StyledHeadTableCell>
-                  <StyledHeadTableCell align="right">
-                    akcijaTickerCenaPrilikomIskoriscenja
-                  </StyledHeadTableCell>
-                  <StyledHeadTableCell>korisnikId</StyledHeadTableCell>
-                  <StyledHeadTableCell align="right">
-                    opcijaId
-                  </StyledHeadTableCell>
-                </TableRow>
-              </StyledTableHead>
-              <TableBody>
-                {options.map((option: Option) => (
-                  <StyledTableRow key={option.opcijaId}>
-                    <StyledTableCell component="th" scope="row">
-                      {option.akcijaId}
-                    </StyledTableCell>
-                    <StyledTableCell component="th" scope="row">
-                      {option.akcijaTickerCenaPrilikomIskoriscenja}
-                    </StyledTableCell>
-                    <StyledTableCell component="th" scope="row">
-                      {option.korisnikId}
-                    </StyledTableCell>
-                    <StyledTableCell component="th" scope="row">
-                      {option.opcijaId}
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-            </Table>
-          ) : hartija === "Obaveznice" ? (
-            <Table sx={{ minWidth: 250, marginTop: 0 }} aria-labelledby="h6">
-              <StyledTableHead>
-                <TableRow>
-                  <StyledHeadTableCell>AkcijaId</StyledHeadTableCell>
-                  <StyledHeadTableCell align="right">
-                    akcijaTickerCenaPrilikomIskoriscenja
-                  </StyledHeadTableCell>
-                  <StyledHeadTableCell>korisnikId</StyledHeadTableCell>
-                  <StyledHeadTableCell align="right">
-                    opcijaId
-                  </StyledHeadTableCell>
-                </TableRow>
-              </StyledTableHead>
-              <TableBody>
-                {orders.map((order: Option) => (
-                  <StyledTableRow key={order.opcijaId}>
-                    <StyledTableCell component="th" scope="row">
-                      {order.akcijaId}
-                    </StyledTableCell>
-                    <StyledTableCell component="th" scope="row">
-                      {order.akcijaTickerCenaPrilikomIskoriscenja}
-                    </StyledTableCell>
-                    <StyledTableCell component="th" scope="row">
-                      {order.korisnikId}
-                    </StyledTableCell>
-                    <StyledTableCell component="th" scope="row">
-                      {order.opcijaId}
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-            </Table>
-          ) : hartija === "Futures ugovori" ? (
+          ) : hartija === "Terminski ugovori" && auth?.permission ? (
             <Table sx={{ minWidth: 250, marginTop: 0 }} aria-labelledby="h6">
               <StyledTableHead>
                 <TableRow>
@@ -282,32 +196,61 @@ const ProfitHartijeTable = () => {
             <Table sx={{ minWidth: 250, marginTop: 0 }} aria-labelledby="h6">
               <StyledTableHead>
                 <TableRow>
-                  <StyledHeadTableCell>Tip</StyledHeadTableCell>
+                  <StyledHeadTableCell>
+                    Hartije od vrednosti
+                  </StyledHeadTableCell>
                   <StyledHeadTableCell align="right">
-                    Ukupno
+                    Ukupna vrednost
                   </StyledHeadTableCell>
                 </TableRow>
               </StyledTableHead>
               <TableBody>
-                {hartije.map((hartija: string) => (
-                  <StyledTableRow key={hartija}>
-                    <StyledTableCell
-                      component="th"
-                      scope="row"
-                      onClick={() => setHartija(hartija)}
-                    >
-                      {hartija}
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
+                {auth?.permission
+                  ? hartijeEmployee.map((hartija: string) => (
+                      <StyledTableRow key={hartija}>
+                        <StyledTableCell
+                          component="th"
+                          scope="row"
+                          onClick={() => setHartija(hartija)}
+                        >
+                          {hartija}
+                        </StyledTableCell>
+                        <StyledTableCell component="th" scope="row">
+                          {hartija === "Akcije"
+                            ? calculateStocksSum()
+                            : calculateFuturesSum()}
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    ))
+                  : hartije.map((hartija: string) => (
+                      <StyledTableRow key={hartija}>
+                        <StyledTableCell
+                          component="th"
+                          scope="row"
+                          onClick={() => setHartija(hartija)}
+                        >
+                          {hartija}
+                        </StyledTableCell>
+                        <StyledTableCell component="th" scope="row">
+                          {calculateStocksSum()}
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    ))}
               </TableBody>
             </Table>
           )}
         </ScrollContainer>
       </TitleTableDiv>
+      <Button
+        onClick={() => setHartija(hartijeOdVrednosti)}
+        disabled={hartija === hartijeOdVrednosti}
+      >
+        Nazad na hartije
+      </Button>
     </PageWrapper>
   );
 };
 
 export default ProfitHartijeTable;
+
 
