@@ -151,7 +151,7 @@ const Ponude: React.FC = () => {
     };
 
     try {
-      const response = await makeApiRequest(`/otc/make-offers-for-otc/`, "PUT", data);
+      const response = await makeApiRequest(`/otc/make-offer-for-otc`, "PUT", data);
 
       if (response.status === 200) {
         console.log('Offer successfully made:', response.data);
