@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { makeGetRequest } from "utils/apiRequest";
 import { getMe } from "utils/getMe";
+import { UserRoutes, Employee } from "utils/types";
 
 const ScrollContainer = styled.div`
   max-height: 400px;
@@ -58,8 +59,11 @@ const OrdersTable = () => {
   useEffect(() => {
     const fetchOptions = async () => {
       if (auth?.permission) {
+        const worker = (await makeGetRequest(
+          `${UserRoutes.worker_by_email}/${auth?.sub}`
+        )) as Employee;
         try {
-          const ordersData = await makeGetRequest(`/orders/-1`);
+          const ordersData = await makeGetRequest(`/orders/${worker.firmaId}`);
           ordersData && setOrders(ordersData);
         } catch (error) {
           console.error("Error fetching user orders:", error);
@@ -99,3 +103,4 @@ const OrdersTable = () => {
 };
 
 export default OrdersTable;
+

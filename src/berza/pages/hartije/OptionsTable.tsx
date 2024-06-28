@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { makeGetRequest } from "utils/apiRequest";
 import { getMe } from "utils/getMe";
+import { Account, UserRoutes, Employee, BankRoutes } from "utils/types";
 
 const ScrollContainer = styled.div`
   max-height: 400px;
@@ -58,9 +59,12 @@ const OptionsTable = () => {
   useEffect(() => {
     const fetchOptions = async () => {
       if (auth?.permission) {
+        const worker = (await makeGetRequest(
+          `${UserRoutes.worker_by_email}/${auth?.sub}`
+        )) as Employee;
         try {
           const optionsData = await makeGetRequest(
-            `/opcija/sve-opcije-korisnika/-1`
+            `/opcija/sve-opcije-korisnika/${worker.firmaId}`
           );
           optionsData && setOptions(optionsData);
         } catch (error) {

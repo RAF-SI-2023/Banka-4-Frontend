@@ -19,6 +19,7 @@ import {
   StyledTableRow,
   StyledTableCell,
 } from "utils/tableStyles";
+import { UserRoutes, Employee } from "utils/types";
 const hartijeEmployee = ["Akcije", "Terminski ugovori"];
 const hartije = ["Akcije"];
 const hartijeOdVrednosti = "Hartije od vrednosti";
@@ -91,8 +92,13 @@ const ProfitHartijeTable = () => {
   useEffect(() => {
     if (auth?.permission) {
       const fetchStocks = async () => {
+        const worker = (await makeGetRequest(
+          `${UserRoutes.worker_by_email}/${auth?.sub}`
+        )) as Employee;
         try {
-          const stocksData = await makeGetRequest(`/user-stocks/-1`);
+          const stocksData = await makeGetRequest(
+            `/user-stocks/${worker.firmaId}`
+          );
           stocksData && setUserStocks(stocksData);
         } catch (error) {
           console.error("Error fetching user stocks:", error);
@@ -101,7 +107,12 @@ const ProfitHartijeTable = () => {
 
       const fetchFutures = async () => {
         try {
-          const futuresData = await makeGetRequest(`/futures/kupac/-1`);
+          const worker = (await makeGetRequest(
+            `${UserRoutes.worker_by_email}/${auth?.sub}`
+          )) as Employee;
+          const futuresData = await makeGetRequest(
+            `/futures/kupac/${worker.firmaId}`
+          );
           futuresData && setFutures(futuresData);
         } catch (error) {
           console.error("Error fetching user futures:", error);
