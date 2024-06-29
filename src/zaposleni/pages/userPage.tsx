@@ -18,13 +18,13 @@ const PageWrapper = styled.div`
 `
 
 const FormWrapper = styled.div`
-  background-color: #fafafa;
-  padding: 30px 40px;
-  border-radius: 18px;
-  width: 500px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+    background-color: #fafafa;
+    padding: 30px 40px;
+    border-radius: 18px;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 `
 
 const HeadingText = styled.div`
@@ -61,7 +61,9 @@ const StyledTableCell = styled(TableCell)`
 `
 
 const formatTitle = (title: string): string => {
-  return title;
+  // title = title.charAt(0).toUpperCase() + title.slice(1)
+  // title = title.replaceAll("_", " ")
+  return title
 }
 
 //TODO add a conditionals to display buttons only with permissions
@@ -69,7 +71,6 @@ const UserInfoTable: React.FC = () => {
   const [user, setUser] = useState([])
   const [uid, setId] = useState(null)
   const [accounts, setAccounts] = useState<Account[]>([])
-  const [marzniRacuni, setMarzniRacuni] = useState<any[]>([]);
   const [jmbg, setJmbg] = useState('')
   const [successPopup, setSucessPopup] = useState<boolean>(false);
   const ctx = useContext(Context);
@@ -83,16 +84,12 @@ const UserInfoTable: React.FC = () => {
           const res = await makeGetRequest(`/korisnik/jmbg/${jmbg}`, ctx);
           setUser(res);
           if (res?.id) {
-            setId(res?.id);
+            setId(res?.id)
             const accs = await makeGetRequest(`/racuni/nadjiRacuneKorisnika/${res.id}`, ctx);
             setAccounts(accs);
-
-            const marzniData = await makeGetRequest(`/marzniRacuni/${res.id}`, ctx);
-            setMarzniRacuni(marzniData);
           }
         }
       } catch (error) {
-        console.error(error);
       }
     };
     fetchData();
@@ -114,9 +111,6 @@ const UserInfoTable: React.FC = () => {
       navigate(`/kreirajRacun?jmbg=${jmbg}`)
     }
   }
-
- 
-
   const handleDeactivateUser = async () => {
     const res = await makeApiRequest(UserRoutes.user, 'PUT', { ...user, aktivan: false }, false, false, ctx)
     if (res) {
@@ -129,21 +123,15 @@ const UserInfoTable: React.FC = () => {
     navigate(`/racun?broj=${id}&jmbg=${jmbg}`)
   }
 
-  const handleMarginAccountDetails = (event: any) => {
-    const id = event.currentTarget.id;
-    navigate(`/marginRacun?broj=${id}&jmbg=${jmbg}`);
-  }
-
   const handleDeactivateAccount = async (brojRacuna: string) => {
     const res = await makeApiRequest(`${BankRoutes.account_find_by_number}/${brojRacuna}`, 'PUT', {}, false, false, ctx)
     if (res) {
       const accs = await makeGetRequest(`${BankRoutes.account_find_user_account}/${uid}`, ctx);
       setAccounts(accs);
+
       setSucessPopup(true)
     }
   }
-
-  
 
   return (
     <PageWrapper>
@@ -164,6 +152,8 @@ const UserInfoTable: React.FC = () => {
                     {formatTitle(field)}
                   </StyledTableCell>
                   <StyledTableCell>{field === "datumRodjenja" ? new Date(info).toLocaleDateString("en-de") : info}</StyledTableCell>
+                  {/* {Array.isArray(info) ? <StyledTableCell>{info.join(", ")}</StyledTableCell> : <StyledTableCell>{info}</StyledTableCell>} */}
+
                 </TableRow>
               ))}
               <TableRow >
@@ -209,42 +199,11 @@ const UserInfoTable: React.FC = () => {
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
-        </ScrollContainer>
-        <ScrollContainer>
-        <H2Text>Marzni Racuni</H2Text>
-          <Table aria-label="marzni racuni table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCentered>Broj racuna</StyledTableCentered>
-                <StyledTableCentered>Maintenance Margin</StyledTableCentered>
-                <StyledTableCentered>Margin Call</StyledTableCentered>
-                <StyledTableCentered>Uložena Sredstva</StyledTableCentered>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {marzniRacuni?.map((racun) => (
-                <TableRow key={racun.brojRacuna}>
-                  <StyledTableCentered component="th" scope="row">
-                    {racun.brojRacuna}
-                  </StyledTableCentered>
-                  <StyledTableCentered component="th" scope="row">
-                    {racun.maintenanceMargin}
-                  </StyledTableCentered>
-                  <StyledTableCentered component="th" scope="row">
-                    {racun.marginCall ? "True":"False"}
-                  </StyledTableCentered>
-                  <StyledTableCentered component="th" scope="row">
-                    {racun.ulozenaSredstva}
-                  </StyledTableCentered>
-                </TableRow>
-              ))}
-            </TableBody>
+
           </Table>
         </ScrollContainer>
       </FormWrapper >
     </PageWrapper >
   );
 };
-
 export default UserInfoTable;

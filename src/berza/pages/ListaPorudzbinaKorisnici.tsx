@@ -111,7 +111,7 @@ const OrdersPageKorisnici: React.FC = () => {
       <Paper elevation={3}>
       <AppBar position="static" >
             <StyledTabs value={0}>
-              <Tab label="Lista Porudzbina" id="lista-zaposlenih-tab" style={{ color: 'red' }}/>
+              <Tab label="Lista Zaposlenih" id="lista-zaposlenih-tab" style={{ color: 'red' }}/>
               <ActionButton
                   id="dodajKarticuDugme"
                   variant="contained"

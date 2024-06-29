@@ -11,15 +11,13 @@ interface MakeOfferPopupProps {
 
 const MakeOfferPopup: React.FC<MakeOfferPopupProps> = ({ open, stock, onClose }) => {
     const [offerAmount, setOfferAmount] = useState("");
-    const [offerQuantity, setOfferQuantity] = useState("");
 
     const handleMakeOffer = async () => {
         // Add your make offer logic here
-        const result = await makeApiRequest("/v1/otcTrade/makeOffer", "POST", {
+        const result = await makeApiRequest("/offer/place-offer", "POST", {
             ticker: stock.ticker,
-            amount: offerQuantity,
-            price: offerAmount,
-         
+            quantity: stock.amount,
+            amountOffered: offerAmount
         })
         console.log(result);
         console.log(`Offer made for ${stock.ticker} with amount: ${offerAmount}`);
@@ -33,16 +31,9 @@ const MakeOfferPopup: React.FC<MakeOfferPopupProps> = ({ open, stock, onClose })
                 <p>Unseite vasu ponudu za {stock.ticker}:</p>
                 <br />
                 <TextField
-                    label="Cena"
+                    label="Offer Amount"
                     value={offerAmount}
                     onChange={(e) => setOfferAmount(e.target.value)}
-                    fullWidth
-                />
-
-                <TextField
-                    label="Kolicina"
-                    value={offerQuantity}
-                    onChange={(e) => setOfferQuantity(e.target.value)}
                     fullWidth
                 />
             </DialogContent>

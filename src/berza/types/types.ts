@@ -47,7 +47,10 @@ export type IOtcList = {
 }
 
 export type ForeignOffer = {
-    offerId : string,
+    id: string,
+    quantity: number,
+    amountOffered: number,
+    offerId: string,
     ticker: string,
     amount: number,
     price: number,
@@ -60,7 +63,7 @@ export type ForeignOfferList = {
 }
 
 export type OurOffer = {
-    myOfferId : string,
+    myOfferId: string,
     ticker: string,
     amount: number,
     price: number,
@@ -100,3 +103,36 @@ export type Order = {
     approvedBy?: string;
     userId: string;
 }
+
+export type UserStock2 = {
+    id: number;
+    ticker: string;
+    quantity: number;
+    currentBid: number;
+    currentAsk: number;
+};
+
+export type Option2 = {
+    korisnikId: number;
+    opcijaId: number;
+    akcijaId: number;
+    akcijaTickerCenaPrilikomIskoriscenja: number;
+};
+
+export type Option = {
+    korisnikId: number;
+    opcijaId: number;
+    akcijaId: number;
+    akcijaTickerCenaPrilikomIskoriscenja: number;
+};
+
+export type Future = {
+    type: string;
+    name: string;
+    price: number;
+    contractSize: number;
+    contractUnit: "string";
+    openInterest: 0;
+    settlementDate: 0;
+    maintenanceMargin: 0;
+};

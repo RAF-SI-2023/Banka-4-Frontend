@@ -43,20 +43,13 @@ import TerminskiUgovoriPage from 'moduls/TerminskiUgovori/pages/TerminskiUgovori
 import AgriculturePage from 'moduls/TerminskiUgovori/pages/ContractsPage';
 import SpecificContractListPage from 'moduls/TerminskiUgovori/pages/SpecificContractListPage';
 // import WSTest from 'WSTest';
-import {
-  Dispatch,
-  SetStateAction,
-  createContext,
-  useEffect,
-  useState,
-} from "react";
+import { Dispatch, SetStateAction, createContext, useEffect, useState, } from "react";
 import CompanyInfoTable from "zaposleni/pages/companyPage";
-import HartijeOdVrednosti from "berza/pages/HartijeOdVrednosti";
+import HartijeOdVrednosti from "berza/pages/hartije/HartijeOdVrednosti";
 import ProfitPage from "profit/ProfitPage";
 import ATMPage from 'korisnici/pages/ATMPage';
 import OtcPage from 'berza/pages/OtcPage';
 import OtcPageKorisnik from 'berza/pages/OtcPageKorisnik';
-import {permissionMap} from 'utils/permissions';
 
 const fadeIn = keyframes`
   from {
@@ -140,7 +133,7 @@ function App() {
             <VideoWrapper>
               <video autoPlay muted height="300" controls>
                 <source
-                
+
                   src="https://imgur.com/sqCNZHS.mp4"
                   type="video/mp4"
                 />
@@ -153,7 +146,7 @@ function App() {
             >
               JWT STOP
             </Typography>
-            <Button id="exitPosionPill" onClick={handleClose} sx={{color:'red', textDecoration: 'none', '&:hover': {  backgroundColor: '#FFDDDD', }}}>
+            <Button id="exitPosionPill" onClick={handleClose} sx={{ color: 'red', textDecoration: 'none', '&:hover': { backgroundColor: '#FFDDDD', } }}>
               Exit
             </Button>
           </Box>
@@ -189,12 +182,12 @@ function App() {
             <Route path="/listaKorisnika" element={auth?.id ? <UserListPage /> : <LoginPage />} />
             <Route path="/listaZaposlenih" element={auth?.id ? <EmployeeListPage /> : <LoginPage />} />
             <Route path="/listaFirmi" element={auth?.id ? <CompanyListPage /> : <LoginPage />} />
-            <Route path="/firma" element={auth?.id ? <CompanyInfoTable /> : <LoginPage/>}/>
+            <Route path="/firma" element={auth?.id ? <CompanyInfoTable /> : <LoginPage />} />
             <Route path="/korisnik" element={auth?.id ? <UserInfoTable /> : <LoginPage />} />
             <Route path="/kreirajKorisnika" element={auth?.id ? <CreateUserPage /> : <LoginPage />} />
             <Route path="/listaPorudzbina" element={auth?.id ? <OrdersPage /> : <LoginPage />} />
             <Route path="/listaPorudzbinaKorisnici" element={auth?.id ? <OrdersPageKorisnici /> : <LoginPage />} />
-            <Route path="/NewOrder" element={auth?.id ? <NewOrder/> : <LoginPage />} />
+            <Route path="/NewOrder" element={auth?.id ? <NewOrder /> : <LoginPage />} />
             <Route path="/izmeniKorisnika" element={auth?.id ? <EditUserPage /> : <LoginPage />} />
             <Route path="/racun" element={auth?.id ? <AccountInfoPage /> : <LoginPage />} />
             <Route path="/kreirajRacun" element={auth?.id ? <CreateAccountPage /> : <LoginPage />} />
@@ -265,7 +258,7 @@ function App() {
               path="/akcije"
               element={auth?.id ? <AkcijePage /> : <LoginPage />}
             />
-             <Route
+            <Route
               path="/otc"
               element={auth?.id ? <OtcPage /> : <LoginPage />}
             />

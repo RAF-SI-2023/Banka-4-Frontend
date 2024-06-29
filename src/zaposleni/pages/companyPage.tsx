@@ -16,60 +16,58 @@ const PageWrapper = styled.div`
   align-items: center;
   margin-top: 100px;
   gap: 80px;
-`;
+`
 
 const FormWrapper = styled.div`
-  background-color: #fafafa;
-  padding: 30px 40px;
-  border-radius: 18px;
-  width: 500px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
+    background-color: #fafafa;
+    padding: 30px 40px;
+    border-radius: 18px;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+`
 
 const HeadingText = styled.div`
   font-size: 32px;
-`;
+`
 
 const H2Text = styled.div`
   font-size: 22px;
   text-align: center;
   margin: 6px 0px;
-`;
+`
 
 const StyledTableCentered = styled(TableCell)`
-  text-align: center !important;
-  &:not(:last-child) {
+  text-align: center!important;
+  &:not(:last-child){
     border-right: 1px solid #e2e2e2;
   }
-`;
+`
 
 const HighlightableStyledTableCentered = styled(StyledTableCentered)`
-  &:hover {
+  &:hover{
     background-color: #23395b;
     transition: 200ms;
     color: white;
     cursor: pointer;
   }
-`;
-
+`
 const StyledTableCell = styled(TableCell)`
-  text-align: center !important;
-  &:not(:last-child) {
+  text-align: center!important;
+  &:not(:last-child){
     border-right: 1px solid #e2e2e2;
-    text-align: left !important;
+    text-align: left!important;
   }
-  &:last-child {
+  &:last-child{
     word-break: break-all;
   }
-`;
-
+`
 const auth = getMe();
 
 const formatTitle = (title: string): string => {
   return title.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-};
+}
 
 function formatDate(date: string | null): string {
   if (date == null) {
@@ -90,63 +88,66 @@ function formatDate(date: string | null): string {
   return new Intl.DateTimeFormat('en-US', options).format(dateObj);
 }
 
-const jmbg = '';
+const jmbg = ''
 
 const CompanyInfoTable: React.FC = () => {
   const location = useLocation();
   const { company } = location.state as { company: Company };
   const [successPopup, setSucessPopup] = useState<boolean>(false);
-  const [accounts, setAccounts] = useState<Account[]>([]);
-  const [marzniRacuni, setMarzniRacuni] = useState<any[]>([]);
+  const [accounts, setAccounts] = useState<Account[]>([])
   const navigate = useNavigate();
   const ctx = useContext(Context);
+
 
   useEffect(() => {
     const fetchData = async () => {
       if (company.id) {
         const accs = await makeGetRequest(`/racuni/nadjiRacuneKorisnika/${company.id}`, ctx);
         setAccounts(accs);
-        
-        const marzniData = await makeGetRequest(`/marzniRacuni/${company.id}`, ctx);
-        setMarzniRacuni(marzniData);
-       
+
       }
     };
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [company.id]);
-  console.log(accounts);
+  console.log(accounts)
+
 
   const handleEditAccount = () => {
-    navigate('/izmeniRacun');
-  };
+    navigate('/izmeniRacun')
+  }
 
   const handleAddAccount = async () => {
     if (company?.id && auth?.id) {
       const data = {
         firma: company.id,
         zaposleni: auth.id
-      };
-      const res = await makeApiRequest(`/racuni/dodajPravni`, 'POST', data, false, false, ctx);
+      }
+      const res = await makeApiRequest(`/racuni/dodajPravni`, 'POST', data, false, false, ctx)
       if (res && company.id) {
         const accs = await makeGetRequest(`${BankRoutes.account_find_user_account}/${company.id}`, ctx);
         setAccounts(accs);
+
       }
+
     }
-  };
+
+  }
 
   const handleAccountDetails = (event: any) => {
     const id = event.currentTarget.id;
-    navigate(`/racun?broj=${id}&jmbg=${jmbg}`);
-  };
+    navigate(`/racun?broj=${id}&jmbg=${jmbg}`)
+  }
 
   const handleDeactivateAccount = async (brojRacuna: string) => {
-    const res = await makeApiRequest(`${BankRoutes.account_find_by_number}/${brojRacuna}`, 'PUT', {}, false, false, ctx);
+    const res = await makeApiRequest(`${BankRoutes.account_find_by_number}/${brojRacuna}`, 'PUT', {}, false, false, ctx)
     if (res && company.id) {
       const accs = await makeGetRequest(`${BankRoutes.account_find_user_account}/${company.id}`, ctx);
       setAccounts(accs);
+
     }
-  };
+  }
+
 
   return (
     <PageWrapper>
@@ -165,6 +166,9 @@ const CompanyInfoTable: React.FC = () => {
                   <StyledTableCell>{field === "date_of_establishment" ? new Date(info).toLocaleDateString("en-de") : info}</StyledTableCell>
                 </TableRow>
               ))}
+              <TableRow>
+
+              </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
@@ -198,39 +202,7 @@ const CompanyInfoTable: React.FC = () => {
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
 
-        </ScrollContainer>
-
-        <ScrollContainer>
-        <H2Text>Marzni Racuni</H2Text>
-          <Table aria-label="marzni racuni table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCentered>Broj racuna</StyledTableCentered>
-                <StyledTableCentered>Maintenance Margin</StyledTableCentered>
-                <StyledTableCentered>Margin Call</StyledTableCentered>
-                <StyledTableCentered>Uložena Sredstva</StyledTableCentered>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {marzniRacuni?.map((racun) => (
-                <TableRow key={racun.brojRacuna}>
-                  <StyledTableCentered component="th" scope="row">
-                    {racun.brojRacuna}
-                  </StyledTableCentered>
-                  <StyledTableCentered component="th" scope="row">
-                    {racun.maintenanceMargin}
-                  </StyledTableCentered>
-                  <StyledTableCentered component="th" scope="row">
-                    {racun.marginCall ? "True":"False"}
-                  </StyledTableCentered>
-                  <StyledTableCentered component="th" scope="row">
-                    {racun.ulozenaSredstva}
-                  </StyledTableCentered>
-                </TableRow>
-              ))}
-            </TableBody>
           </Table>
         </ScrollContainer>
       </FormWrapper>
