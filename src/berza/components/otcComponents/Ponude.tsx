@@ -25,6 +25,7 @@ interface Ponuda {
 
 interface NewPonuda {
   ticker: string;
+  quantity: number;
 }
 
 interface Ticker {
@@ -37,12 +38,13 @@ interface Ticker {
 const Ponude: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [openOffer, setOpenOffer] = useState(false);
-  const [newPonuda, setNewPonuda] = useState<NewPonuda>({ ticker: '' });
+  const [newPonuda, setNewPonuda] = useState<NewPonuda>({ ticker: '', quantity: 0 });
   const [tickers, setTickers] = useState<Ticker[]>([]);
   const [selectedTicker, setSelectedTicker] = useState<Ticker | null>(null);
   const [otcData, setOtcData] = useState<Ponuda[]>([]);
   const [priceOffered, setPriceOffered] = useState(0);
   const [selectedPonuda, setSelectedPonuda] = useState<Ponuda | null>(null);
+  const [offerQuantity, setOfferQuantity] = useState(0);
 
   useEffect(() => {
     const fetchTickers = async () => {
@@ -51,6 +53,7 @@ const Ponude: React.FC = () => {
         if (!me) return;
 
         const response = await makeGetRequest(`/user-stocks/-1`);
+        
         setTickers(response.map((ticker: Ticker) => ({
           ticker: ticker.ticker,
           quantity: ticker.quantity,
@@ -76,7 +79,7 @@ const Ponude: React.FC = () => {
   }, []);
 
   const handleOpen = (ticker: string = '') => {
-    setNewPonuda({ ticker });
+    setNewPonuda({ ticker, quantity: 0 });
     setOpen(true);
   };
 
@@ -87,21 +90,32 @@ const Ponude: React.FC = () => {
 
   const handleSelectChange = (e: SelectChangeEvent<string>) => {
     const selectedTicker = tickers.find(ticker => ticker.ticker === e.target.value);
-    setNewPonuda({ ticker: e.target.value });
+    setNewPonuda({ ticker: e.target.value, quantity: 0 });
     setSelectedTicker(selectedTicker || null);
+  };
+
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewPonuda(prevState => ({
+      ...prevState,
+      quantity: Math.min(Number(e.target.value), selectedTicker ? selectedTicker.quantity : 0)
+    }));
+  };
+
+  const handleOfferQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setOfferQuantity(Number(e.target.value));
   };
 
   const handleSubmit = async () => {
     try {
-      if (!selectedTicker || !getMe()?.id) {
-        console.error('Selected ticker or user ID is not defined');
+      if (!selectedTicker || !getMe()?.id || newPonuda.quantity <= 0) {
+        console.error('Selected ticker, user ID or quantity is not defined');
         return;
       }
   
       const data = {
         userId: -1,
         ticker: selectedTicker.ticker,
-        quantity: selectedTicker.quantity,
+        quantity: newPonuda.quantity,
       };
   
       const response = await makeApiRequest(`/otc/place-otc-public`, "POST", data);
@@ -121,6 +135,7 @@ const Ponude: React.FC = () => {
 
   const handleOpenOfferDialog = (ponuda: Ponuda) => {
     setSelectedPonuda(ponuda);
+    setOfferQuantity(ponuda.quantity); // Set the default offer quantity to the selected ponuda's quantity
     setOpenOffer(true);
   };
 
@@ -128,6 +143,7 @@ const Ponude: React.FC = () => {
     setOpenOffer(false);
     setPriceOffered(0);
     setSelectedPonuda(null);
+    setOfferQuantity(0);
   };
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -135,18 +151,17 @@ const Ponude: React.FC = () => {
   };
 
   const handleMakeOffer = async () => {
-    if (!selectedPonuda) {
-      console.error('No selected ponuda');
+    if (!selectedPonuda || offerQuantity <= 0) {
+      console.error('No selected ponuda or invalid offer quantity');
       return;
     }
 
-    
     const data = {
       otcId: selectedPonuda.otcId,
-      sellerId: 0,
+      sellerId: -1,
       buyerId: getMe()?.id,
       ticker: selectedPonuda.ticker,
-      quantity: selectedPonuda.quantity,
+      quantity: offerQuantity, // Use the user-specified quantity here
       priceOffered: priceOffered
     };
 
@@ -226,6 +241,19 @@ const Ponude: React.FC = () => {
               <p>Quantity: {selectedTicker.quantity}</p>
               <p>Current Bid: {selectedTicker.currentBid}</p>
               <p>Current Ask: {selectedTicker.currentAsk}</p>
+              <TextField
+                margin="dense"
+                label="Količina"
+                type="number"
+                fullWidth
+                value={newPonuda.quantity}
+                onChange={handleQuantityChange}
+                inputProps={{
+                  min: 0,
+                  max: selectedTicker.quantity,
+                  step: 1,
+                }}
+              />
             </div>
           )}
         </DialogContent>
@@ -250,6 +278,19 @@ const Ponude: React.FC = () => {
             fullWidth
             value={priceOffered}
             onChange={handlePriceChange}
+          />
+          <TextField
+            margin="dense"
+            label="Količina"
+            type="number"
+            fullWidth
+            value={offerQuantity}
+            onChange={handleOfferQuantityChange}
+            inputProps={{
+              min: 0,
+              max: selectedPonuda ? selectedPonuda.quantity : 0,
+              step: 1,
+            }}
           />
         </DialogContent>
         <DialogActions>

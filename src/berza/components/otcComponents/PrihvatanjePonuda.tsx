@@ -1,53 +1,150 @@
-import React from 'react';
-import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Button } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import {
+  Table, TableBody, TableCell, TableHead, TableRow, Paper,
+  Button, Dialog, DialogActions, DialogContent, DialogContentText,
+  DialogTitle, TextField
+} from '@mui/material';
+import { getMe } from 'utils/getMe'; // Importujte getMe funkciju
+import { makeGetRequest, makeApiRequest } from 'utils/apiRequest'; // Importujte funkciju za API zahteve
 
-const PrihvatanjePonuda = () => {
-  // Ovo bi trebalo zameniti stvarnim podacima iz API-a
-  const ponude = [
-    { id: 1, korisnik: 'Korisnik A', firma: 'Firma A', detalji: 'Detalji ponude A' },
-    { id: 2, korisnik: 'Korisnik B', firma: 'Firma B', detalji: 'Detalji ponude B' },
-    // Dodajte više podataka po potrebi
-  ];
+interface Ponuda {
+  otcId: number;
+  ticker: string;
+  quantity: number;
+  status: string | null;
+  reason?: string;
+}
 
-  const handleAccept = (id: number) => {
-    // Ovdje dodajte logiku za prihvatanje ponude
+const PrihvatanjePonuda: React.FC = () => {
+  const [ponude, setPonude] = useState<Ponuda[]>([]);
+  const [istorija, setIstorija] = useState<Ponuda[]>([]);
+  const [open, setOpen] = useState<boolean>(false);
+  const [reason, setReason] = useState<string>('');
+  const [selectedPonuda, setSelectedPonuda] = useState<number | null>(null);
 
-    console.log(id);
+  useEffect(() => {
+    const fetchPonude = async () => {
+      try {
+        const me = getMe();
+        if (!me) return;
+
+        const response = await makeGetRequest(`/otc/pending-otc-offers/-1`);
+        setPonude(response);
+      } catch (error) {
+        console.error('Error fetching offers:', error);
+      }
+    };
+
+    fetchPonude();
+  }, []);
+
+  const handleAccept = async (id: number) => {
+    try {
+      const me = getMe();
+      if (!me) return;
+
+      const data = {
+        userId: -1,
+        otcId: id,
+        accept: true,
+      };
+
+      await makeApiRequest(`/otc/resolve-otc`, 'POST', data);
+
+      const updatedPonude = ponude.map((ponuda) =>
+        ponuda.otcId === id ? { ...ponuda, status: 'Prihvaćeno' } : ponuda
+      );
+      setPonude(updatedPonude);
+      setIstorija([...istorija, { ...ponude.find((ponuda) => ponuda.otcId === id)!, status: 'Prihvaćeno' }]);
+    } catch (error) {
+      console.error('Error accepting offer:', error);
+    }
   };
 
   const handleReject = (id: number) => {
-    console.log(id);
-    // Ovdje dodajte logiku za odbijanje ponude
+    setSelectedPonuda(id);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setReason('');
+  };
+
+  const handleConfirmReject = async () => {
+    try {
+      const me = getMe();
+      if (!me || selectedPonuda === null) return;
+
+      const data = {
+        userId: -1,
+        otcId: selectedPonuda,
+        accept: false,
+      };
+
+      await makeApiRequest(`/otc/resolve-otc`, 'POST', data);
+
+      const updatedPonude = ponude.map((ponuda) =>
+        ponuda.otcId === selectedPonuda ? { ...ponuda, status: 'Odbijeno', reason } : ponuda
+      );
+      setPonude(updatedPonude);
+      setIstorija([...istorija, { ...ponude.find((ponuda) => ponuda.otcId === selectedPonuda)!, status: 'Odbijeno', reason }]);
+      handleClose();
+    } catch (error) {
+      console.error('Error rejecting offer:', error);
+    }
   };
 
   return (
-    <Paper>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Korisnik</TableCell>
-            <TableCell>Firma</TableCell>
-            <TableCell>Detalji</TableCell>
-            <TableCell>Akcije</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {ponude.map((ponuda) => (
-            <TableRow key={ponuda.id}>
-              <TableCell>{ponuda.id}</TableCell>
-              <TableCell>{ponuda.korisnik}</TableCell>
-              <TableCell>{ponuda.firma}</TableCell>
-              <TableCell>{ponuda.detalji}</TableCell>
-              <TableCell>
-                <Button onClick={() => handleAccept(ponuda.id)}>Prihvati</Button>
-                <Button onClick={() => handleReject(ponuda.id)}>Odbij</Button>
-              </TableCell>
+    <div>
+      <Paper>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>ID</TableCell>
+              <TableCell>Ticker</TableCell>
+              <TableCell>Količina</TableCell>
+              <TableCell>Akcije</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Paper>
+          </TableHead>
+          <TableBody>
+            {ponude.filter((ponuda) => !ponuda.status).map((ponuda) => (
+              <TableRow key={ponuda.otcId}>
+                <TableCell>{ponuda.otcId}</TableCell>
+                <TableCell>{ponuda.ticker}</TableCell>
+                <TableCell>{ponuda.quantity}</TableCell>
+                <TableCell>
+                  <Button onClick={() => handleAccept(ponuda.otcId)}>Prihvati</Button>
+                  <Button onClick={() => handleReject(ponuda.otcId)}>Odbij</Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Paper>
+
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Odbij Ponudu</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Unesite razlog za odbijanje ponude.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Razlog"
+            type="text"
+            fullWidth
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Odustani</Button>
+          <Button onClick={handleConfirmReject}>Potvrdi</Button>
+        </DialogActions>
+      </Dialog>
+    </div>
   );
 };
 
