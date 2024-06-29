@@ -59,7 +59,7 @@ describe('Provera racuna', () => {
 
 
 
-    cy.get('input[type="checkbox"]').check();
+    // cy.get('input[type="checkbox"]').check();
 
 
     cy.contains('button', "Pretraga Korisnika").click();

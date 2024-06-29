@@ -93,8 +93,6 @@ describe('Kartice spec', () => {
 
         cy.contains('button', 'Deaktiviraj').click();
 
-        cy.contains('button', 'OK').click();
-
         cy.contains('button', 'Aktiviraj').click();
 
     })

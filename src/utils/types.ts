@@ -136,8 +136,8 @@ export type AccountPageProps = {
 };
 
 export type Employee = {
-  ime: string;
   id: string;
+  ime: string;
   prezime: string;
   jmbg: string;
   username: string;
