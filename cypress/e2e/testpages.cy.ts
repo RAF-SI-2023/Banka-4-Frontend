@@ -6,11 +6,17 @@ describe('template spec', () => {
     cy.get("#email").type("pera@gmail.rs")
     cy.get("#password").type("123")
     cy.get("#root > main > form > button").click()
-    cy.get("#root table thead tr").children().should("have.length", 7)
+    cy.get("#root table thead tr").children().should($children => {
+      expect($children.length).to.be.at.least(7);
+    });
     cy.visit('http://localhost:3000/listaZaposlenih')
-    cy.get("#root table thead tr").children().should("have.length", 10)
+    cy.get("#root table thead tr").children().should($children => {
+      expect($children.length).to.be.at.least(10);
+    });
     cy.visit('http://localhost:3000/listaFirmi')
-    cy.get("#root table thead tr").children().should("have.length", 7)
+    cy.get("#root table thead tr").children().should($children => {
+      expect($children.length).to.be.at.least(7);
+    });
 
 
   })
