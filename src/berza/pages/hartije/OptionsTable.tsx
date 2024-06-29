@@ -14,6 +14,12 @@ import { makeGetRequest } from "utils/apiRequest";
 import { getMe } from "utils/getMe";
 import { UserRoutes, Employee } from "utils/types";
 
+const PageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
 const ScrollContainer = styled.div`
   max-height: 400px;
   overflow-y: auto;
@@ -102,43 +108,43 @@ const OptionsTable = ({ selectedStock }: Props) => {
 
   function EnhancedTableToolbar() {
     return (
-      <Typography
-        sx={{ flex: "1 1 100%" }}
-        color="inherit"
-        variant="h6"
-        component="div"
-      >
-        Opcije koje pripadaju korisniku i vezane su za akciju{" "}
-        {selectedStock.ticker}
+      <Typography sx={{ flex: "1 1 100%" }} color="inherit" component="div">
+        Opcije
       </Typography>
     );
   }
   return (
-    <>
+    <PageWrapper>
       <EnhancedTableToolbar />
       <ScrollContainer>
         <StyledTableContainer>
           <StyledTable>
             <StyledTableHead>
               <TableRow>
-                <StyledHeadTableCell>
-                  akcijaTickerCenaPrilikomIskoriscenja
-                </StyledHeadTableCell>
+                <StyledHeadTableCell>Cena akcije</StyledHeadTableCell>
               </TableRow>
             </StyledTableHead>
             <TableBody>
-              {foundOptions.map((option, index) => (
-                <StyledTableRow key={index}>
-                  <StyledTableCell>
-                    {option.akcijaTickerCenaPrilikomIskoriscenja}
+              {foundOptions.length > 0 ? (
+                foundOptions.map((option, index) => (
+                  <StyledTableRow key={index}>
+                    <StyledTableCell>
+                      {option.akcijaTickerCenaPrilikomIskoriscenja}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))
+              ) : (
+                <StyledTableRow key={"Nema"}>
+                  <StyledTableCell style={{ backgroundColor: "#e2e2e2" }}>
+                    Nema opcija
                   </StyledTableCell>
                 </StyledTableRow>
-              ))}
+              )}
             </TableBody>
           </StyledTable>
         </StyledTableContainer>
       </ScrollContainer>
-    </>
+    </PageWrapper>
   );
 };
 

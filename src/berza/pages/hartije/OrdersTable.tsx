@@ -7,12 +7,18 @@ import {
   TableBody,
   Typography,
 } from "@mui/material";
-import { Option2, UserStock2 } from "berza/types/types";
+import { Option2, Order, UserStock2 } from "berza/types/types";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { makeGetRequest } from "utils/apiRequest";
 import { getMe } from "utils/getMe";
 import { UserRoutes, Employee } from "utils/types";
+
+const PageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
 
 const ScrollContainer = styled.div`
   max-height: 400px;
@@ -56,13 +62,13 @@ type Props = {
 };
 
 const OrdersTable = ({ selectedStock }: Props) => {
-  const [orders, setOrders] = useState<Option2[]>([]);
-  const [foundOrders, setFoundOrders] = useState<Option2[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [foundOrders, setFoundOrders] = useState<Order[]>([]);
   const auth = getMe();
 
   const findActions = () => {
     const foundOrder = orders.find(
-      (orders) => orders.akcijaId === selectedStock.id
+      (orders) => orders.ticker === selectedStock.ticker
     );
 
     foundOrder && setFoundOrders((prevOrders) => [...prevOrders, foundOrder]);
@@ -97,44 +103,52 @@ const OrdersTable = ({ selectedStock }: Props) => {
 
   function EnhancedTableToolbar() {
     return (
-      <Typography
-        sx={{ flex: "1 1 100%" }}
-        color="inherit"
-        variant="h6"
-        component="div"
-      >
-        Istorija porudžbina koje pripadaju korisniku i vezane su za akciju{" "}
-        {selectedStock.ticker}
+      <Typography sx={{ flex: "1 1 100%" }} color="inherit" component="div">
+        Istorija porudžbina
       </Typography>
     );
   }
 
   return (
-    <>
+    <PageWrapper>
       <EnhancedTableToolbar />
       <ScrollContainer>
         <StyledTableContainer>
           <StyledTable>
             <StyledTableHead>
               <TableRow>
-                <StyledHeadTableCell>
-                  akcijaTickerCenaPrilikomIskoriscenja
-                </StyledHeadTableCell>
+                <StyledHeadTableCell>Oznaka</StyledHeadTableCell>
+                <StyledHeadTableCell>Kolicina</StyledHeadTableCell>
+                <StyledHeadTableCell>Ukupna cena</StyledHeadTableCell>
+                <StyledHeadTableCell>Status</StyledHeadTableCell>
               </TableRow>
             </StyledTableHead>
             <TableBody>
-              {foundOrders.map((order, index) => (
-                <StyledTableRow key={index}>
-                  <StyledTableCell>
-                    {order.akcijaTickerCenaPrilikomIskoriscenja}
+              {foundOrders.length > 0 ? (
+                foundOrders.map((order, index) => (
+                  <StyledTableRow key={index}>
+                    <StyledTableCell>{order.ticker}</StyledTableCell>
+                    <StyledTableCell>{order.quantity}</StyledTableCell>
+                    <StyledTableCell>{order.totalPrice}</StyledTableCell>
+                    <StyledTableCell>{order.status}</StyledTableCell>
+                  </StyledTableRow>
+                ))
+              ) : (
+                <StyledTableRow key={"Nema"}>
+                  {" "}
+                  <StyledTableCell
+                    colSpan={4}
+                    style={{ backgroundColor: "#e2e2e2" }}
+                  >
+                    Nema porudžbina
                   </StyledTableCell>
                 </StyledTableRow>
-              ))}
+              )}
             </TableBody>
           </StyledTable>
         </StyledTableContainer>
       </ScrollContainer>
-    </>
+    </PageWrapper>
   );
 };
 

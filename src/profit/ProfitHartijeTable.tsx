@@ -156,102 +156,91 @@ const ProfitHartijeTable = () => {
               <StyledTableHead>
                 <TableRow>
                   <StyledHeadTableCell>Oznaka</StyledHeadTableCell>
-                  <StyledHeadTableCell align="right">
-                    Kolicina
-                  </StyledHeadTableCell>
-                  <StyledHeadTableCell align="right">
-                    Current Ask
-                  </StyledHeadTableCell>
-                  <StyledHeadTableCell align="right">
-                    Current Bid
+                  <StyledHeadTableCell>Kolicina</StyledHeadTableCell>
+                  <StyledHeadTableCell>
+                    Trenutna ukupna cena
                   </StyledHeadTableCell>
                 </TableRow>
               </StyledTableHead>
               <TableBody>
-                {userStocks.map((stock: UserStock2) => (
-                  <StyledTableRow
-                    key={stock.ticker}
-                    onClick={() => {
-                      setPopupOpen(true);
-                      setSelectedStock(stock);
-                    }}
-                  >
-                    <StyledTableCell component="th" scope="row">
-                      {stock.ticker}
-                    </StyledTableCell>
-                    <StyledTableCell component="th" scope="row">
-                      {stock.quantity}
-                    </StyledTableCell>
-                    <StyledTableCell component="th" scope="row">
-                      {stock.currentAsk}
-                    </StyledTableCell>
-                    <StyledTableCell component="th" scope="row">
-                      {stock.currentBid}
+                {userStocks.length > 0 ? (
+                  userStocks.map((stock: UserStock2) => (
+                    <StyledTableRow
+                      key={stock.ticker}
+                      onClick={() => {
+                        setPopupOpen(true);
+                        setSelectedStock(stock);
+                      }}
+                    >
+                      <StyledTableCell component="th" scope="row">
+                        {stock.ticker}
+                      </StyledTableCell>
+                      <StyledTableCell component="th" scope="row">
+                        {stock.quantity}
+                      </StyledTableCell>
+                      <StyledTableCell component="th" scope="row">
+                        {stock.currentAsk}
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  ))
+                ) : (
+                  <StyledTableRow key={"Nema"}>
+                    <StyledTableCell
+                      colSpan={4}
+                      style={{ backgroundColor: "#e2e2e2" }}
+                    >
+                      Nema akcija
                     </StyledTableCell>
                   </StyledTableRow>
-                ))}
+                )}
               </TableBody>
             </Table>
           ) : hartija === "Terminski ugovori" && auth?.permission ? (
             <Table sx={{ minWidth: 250, marginTop: 0 }} aria-labelledby="h6">
               <StyledTableHead>
                 <TableRow>
-                  <StyledHeadTableCell>Name</StyledHeadTableCell>
-                  <StyledHeadTableCell align="right">Type</StyledHeadTableCell>
-                  <StyledHeadTableCell>Price</StyledHeadTableCell>
-                  <StyledHeadTableCell align="right">
-                    ContractSize
-                  </StyledHeadTableCell>
-                  <StyledHeadTableCell align="right">
-                    ContractUnit
-                  </StyledHeadTableCell>
-                  <StyledHeadTableCell>OpenInterest</StyledHeadTableCell>
-                  <StyledHeadTableCell align="right">
-                    ContractUnit
-                  </StyledHeadTableCell>
-                  <StyledHeadTableCell>OpenInterest</StyledHeadTableCell>
-                  <StyledHeadTableCell align="right">
-                    SettlementDate
-                  </StyledHeadTableCell>
-                  <StyledHeadTableCell>MaintenanceMargin</StyledHeadTableCell>
+                  <StyledHeadTableCell>Naziv</StyledHeadTableCell>
+                  <StyledHeadTableCell>Tip</StyledHeadTableCell>
+                  <StyledHeadTableCell>Cena</StyledHeadTableCell>
+                  <StyledHeadTableCell>Datum namirenja</StyledHeadTableCell>
                 </TableRow>
               </StyledTableHead>
               <TableBody>
-                {futures.map((future: Future) => (
-                  <StyledTableRow
-                    key={future.name}
-                    onClick={() => setPopupOpen(true)}
-                  >
-                    <StyledTableCell component="th" scope="row">
-                      {future.name}
-                    </StyledTableCell>
-                    <StyledTableCell component="th" scope="row">
-                      {future.type}
-                    </StyledTableCell>
-                    <StyledTableCell component="th" scope="row">
-                      {future.price}
-                    </StyledTableCell>
-                    <StyledTableCell component="th" scope="row">
-                      {future.contractSize}
-                    </StyledTableCell>
-                    <StyledTableCell component="th" scope="row">
-                      {future.contractUnit}
-                    </StyledTableCell>
-                    <StyledTableCell component="th" scope="row">
-                      {future.openInterest}
-                    </StyledTableCell>
-                    <StyledTableCellDynamic
-                      component="th"
-                      scope="row"
-                      settlementDate={future.settlementDate}
+                {futures.length > 0 ? (
+                  futures.map((future: Future) => (
+                    <StyledTableRow
+                      key={future.name}
+                      onClick={() => setPopupOpen(true)}
                     >
-                      {future.settlementDate}
-                    </StyledTableCellDynamic>
-                    <StyledTableCell component="th" scope="row">
-                      {future.maintenanceMargin}
+                      <StyledTableCell component="th" scope="row">
+                        {future.name}
+                      </StyledTableCell>
+                      <StyledTableCell component="th" scope="row">
+                        {future.type}
+                      </StyledTableCell>
+                      <StyledTableCell component="th" scope="row">
+                        {future.price}
+                      </StyledTableCell>
+
+                      <StyledTableCellDynamic
+                        component="th"
+                        scope="row"
+                        settlementDate={future.settlementDate}
+                      >
+                        {future.settlementDate}
+                      </StyledTableCellDynamic>
+                    </StyledTableRow>
+                  ))
+                ) : (
+                  <StyledTableRow key={"Nema"}>
+                    <StyledTableCell
+                      colSpan={4}
+                      style={{ backgroundColor: "#e2e2e2" }}
+                    >
+                      Nema terminskih ugovora
                     </StyledTableCell>
                   </StyledTableRow>
-                ))}
+                )}
               </TableBody>
             </Table>
           ) : (
@@ -261,9 +250,7 @@ const ProfitHartijeTable = () => {
                   <StyledHeadTableCell>
                     Hartije od vrednosti
                   </StyledHeadTableCell>
-                  <StyledHeadTableCell align="right">
-                    Ukupna vrednost
-                  </StyledHeadTableCell>
+                  <StyledHeadTableCell>Ukupna vrednost</StyledHeadTableCell>
                 </TableRow>
               </StyledTableHead>
               <TableBody>
