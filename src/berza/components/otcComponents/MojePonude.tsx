@@ -6,6 +6,7 @@ import {
 } from '@mui/material';
 import { getMe } from 'utils/getMe'; // Importujte getMe funkciju
 import { makeGetRequest, makeApiRequest } from 'utils/apiRequest'; // Importujte funkciju za API zahteve
+import { Account, BankRoutes, Employee, UserRoutes } from "utils/types";
 
 interface Ponuda {
   otcId: number;
@@ -21,14 +22,32 @@ const MojePonude: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [reason, setReason] = useState<string>('');
   const [selectedPonuda, setSelectedPonuda] = useState<number | null>(null);
+  const [userId, setId] = useState(0);
+
 
   useEffect(() => {
     const fetchPonude = async () => {
+
+      const me = getMe();
+      if (!me) return;
+
+      let prim =0;
+      if (me.permission !== 0) {
+        const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${me.sub}`) as Employee;
+        setId(worker.firmaId);
+        prim = worker.firmaId;
+       }
+       else
+       {
+        setId(me.id);
+        prim = me.id;
+       }
+
       try {
         const me = getMe();
         if (!me) return;
 
-        const response = await makeGetRequest(`/otc/pending-otc-offers/${me?.id}`);
+        const response = await makeGetRequest(`/otc/pending-otc-offers/${prim}`);
         setPonude(response);
       } catch (error) {
         console.error('Error fetching offers:', error);
@@ -44,7 +63,7 @@ const MojePonude: React.FC = () => {
       if (!me) return;
 
       const data = {
-        userId: me.id,
+        userId: userId,
         otcId: id,
         accept: true,
       };
@@ -77,7 +96,7 @@ const MojePonude: React.FC = () => {
       if (!me || selectedPonuda === null) return;
 
       const data = {
-        userId: me.id,
+        userId: userId,
         otcId: selectedPonuda,
         accept: false,
       };
