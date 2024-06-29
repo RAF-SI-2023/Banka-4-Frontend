@@ -37,7 +37,7 @@ const StyledTitle = styled(Typography)`
 `
 const LeftAlignedBox = styled(Box)`
   text-align: left !important;
-  width: 100%
+  width: 100%;
   margin-left: 2px !important; 
 `;
 
@@ -85,7 +85,7 @@ const RegistrationPage = () => {
 
     const handleGenerateCode = async () => {
         try {
-            await makeApiRequest(UserRoutes.user_generate_login, "POST", { email: userData.email }, true, true, ctx)
+            await makeApiRequest(UserRoutes.user_generate_login, "POST", { email: userData.email.toLowerCase() }, true, true, ctx)
         }
         catch (e) {
         }
