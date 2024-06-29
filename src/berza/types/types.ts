@@ -10,9 +10,11 @@ export type Stock = {
     openInterest: string,
     impliedVolatility: string
 }
+
 export type StockList = {
     stocks: Stock[]
 }
+
 export type UserStock = {
     ticker: string,
     strike: string,
@@ -20,9 +22,11 @@ export type UserStock = {
     premium: string,
     amount: string,
 }
+
 export type UserStockList = {
     stocks: UserStock[]
 }
+
 export type Akcija = {
     ticker: string,
     price: string,
@@ -35,19 +39,22 @@ export type Akcija = {
     low: string,
     outstandingShares: string,
 }
+
 export type AkcijaList = {
     stocks: Akcija[]
 }
+
 export type IOTC = {
     ticker: string,
     amount: number,
 }
+
 export type IOtcList = {
     otcs: IOTC[]
 }
 
 export type ForeignOffer = {
-    offerId : string,
+    offerId: string,
     ticker: string,
     amount: number,
     price: number,
@@ -60,7 +67,7 @@ export type ForeignOfferList = {
 }
 
 export type OurOffer = {
-    myOfferId : string,
+    myOfferId: string,
     ticker: string,
     amount: number,
     price: number,
@@ -100,3 +107,36 @@ export type Order = {
     approvedBy?: string;
     userId: string;
 }
+
+export type UserStock2 = {
+    id: number;
+    ticker: string;
+    quantity: number;
+    currentBid: number;
+    currentAsk: number;
+};
+
+export type Option2 = {
+    korisnikId: number;
+    opcijaId: number;
+    akcijaId: number;
+    akcijaTickerCenaPrilikomIskoriscenja: number;
+};
+
+export type Option = {
+    korisnikId: number;
+    opcijaId: number;
+    akcijaId: number;
+    akcijaTickerCenaPrilikomIskoriscenja: number;
+};
+
+export type Future = {
+    type: string;
+    name: string;
+    price: number;
+    contractSize: number;
+    contractUnit: "string";
+    openInterest: 0;
+    settlementDate: 0;
+    maintenanceMargin: 0;
+};

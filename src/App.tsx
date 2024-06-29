@@ -51,7 +51,7 @@ import {
   useState,
 } from "react";
 import CompanyInfoTable from "zaposleni/pages/companyPage";
-import HartijeOdVrednosti from "berza/pages/HartijeOdVrednosti";
+import HartijeOdVrednosti from "berza/pages/hartije/HartijeOdVrednosti";
 import ProfitPage from "profit/ProfitPage";
 import ATMPage from 'korisnici/pages/ATMPage';
 import OtcPage from 'berza/pages/OtcPage';
