@@ -1,6 +1,5 @@
 import { loginKorisnik, logout } from "../util/util"
 
-
 describe('Trazi Krediti spec', () => {
   beforeEach(() => {
     loginKorisnik(cy);
@@ -10,8 +9,6 @@ describe('Trazi Krediti spec', () => {
   })
 
   it('Novi kredit Radi', () => {
-
-
     cy.visit('http://localhost:3000/listaKredita')
 
     cy.get("#TraziKredit").click()

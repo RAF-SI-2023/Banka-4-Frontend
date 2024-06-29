@@ -27,10 +27,8 @@ export function loginKorisnik(cy: Cypress.cy, korisnik?: number) {
     });
 }
 
-
 export function logout(cy: Cypress.cy) {
     cy.visit('http://localhost:3000')
     cy.get(".MuiAvatar-img").click()
     cy.get(".MuiList-root.MuiList-padding.MuiMenu-list").children().last().click()
 }
-

@@ -34,19 +34,14 @@ describe('Kredit spec', () => {
 
     cy.get("#kwiknimeUwU").click();
 
-
-
-
     logout(cy)
 
     loginAdmin(cy);
-
 
     cy.visit('http://localhost:3000/listaKredita')
     cy.get('[id="Odobri"]').first().click();
 
     logout(cy)
-
   })
 
   it('Odbij prvi kredit', () => {
@@ -75,18 +70,11 @@ describe('Kredit spec', () => {
 
     cy.get("#kwiknimeUwU").click();
 
-
-
-
     logout(cy)
-
 
     loginAdmin(cy);
 
-
     cy.visit('http://localhost:3000/listaKredita')
     cy.get('[id="Odbij"]').first().click();
-
-
   })
 })

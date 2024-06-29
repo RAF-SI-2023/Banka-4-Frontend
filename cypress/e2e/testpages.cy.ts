@@ -17,7 +17,5 @@ describe('template spec', () => {
     cy.get("#root table thead tr").children().should($children => {
       expect($children.length).to.be.at.least(7);
     });
-
-
   })
 })

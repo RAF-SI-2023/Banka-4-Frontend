@@ -2,12 +2,10 @@ import { loginAdmin, loginKorisnik, logout } from "../util/util"
 
 describe('Kartice spec', () => {
     beforeEach(() => {
-
         //Dodaj kartice
         loginAdmin(cy);
 
         cy.get('tbody > tr').first().click();
-
 
         var first18Chars = "";
         cy.get('#RacuniTabela').should('exist').then(() => {
@@ -18,13 +16,9 @@ describe('Kartice spec', () => {
                 first18Chars = text.substring(0, 18);
                 cy.log('Prvih 18 karaktera teksta:', first18Chars);
             });
-
         });
 
-
-
         cy.visit('http://localhost:3000/kartice');
-
 
         cy.get('table')
             .find('tbody')
@@ -37,63 +31,43 @@ describe('Kartice spec', () => {
                     initialRowCountUser = rows.length;
                 }
 
-
                 cy.visit('http://localhost:3000/kartice');
                 cy.get("#dodajKarticuDugme").click();
                 cy.get("#brojRacunaInputt").type(first18Chars);
                 cy.get("#buttonKreiraj").click();
 
                 logout(cy);
-
-
             });
     })
     it('Rad sa karticama blokiraj korisnik', () => {
-
         //Deo za dodavanje
 
         loginKorisnik(cy, 2);
 
         cy.visit('http://localhost:3000/kartice');
-
         cy.get('tbody > tr').children().should("have.length.above", 3)
         cy.get('tbody > tr').first().click();
-
         cy.contains('button', 'Blokiraj').click();
-
     })
 
     it('Rad sa karticama blokiraj admin', () => {
-
         //Deo za dodavanje
 
         loginAdmin(cy);
-
         cy.visit('http://localhost:3000/kartice');
-
         cy.get('tbody > tr').children().should("have.length.above", 3)
-
         cy.get('tbody > tr').first().click();
-
         cy.contains('button', 'Blokiraj').click();
-
     })
 
     it('Rad sa karticama aktiviraj deaktiviraj', () => {
-
         //Deo za dodavanje
 
         loginAdmin(cy);
-
         cy.visit('http://localhost:3000/kartice');
-
         cy.get('tbody > tr').children().should("have.length.above", 3)
-
         cy.get('tbody > tr').first().click();
-
         cy.contains('button', 'Deaktiviraj').click();
-
         cy.contains('button', 'Aktiviraj').click();
-
     })
 })

@@ -104,7 +104,6 @@ describe('Placanja spec', () => {
       .should('have.text', 'Račun primaoca mora imati tačno 18 cifara.');
   })
 
-
   it('Novo placanje los otp', () => {
     novoPlacanje(cy)
     cy.get("#iznos").type("1")

@@ -1,5 +1,4 @@
 export function resetAndGo(cy: Cypress.cy) {
-
     cy.visit('http://localhost:3000/placanja')
 
 }

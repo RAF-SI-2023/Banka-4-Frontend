@@ -6,7 +6,6 @@ describe("Menjacnica spec", () => {
   });
   after(() => { });
   it("Menjacnica main page", () => {
-
     cy.visit("http://localhost:3000/menjacnica");
 
     cy.get("#iznosTextField").type("1");
@@ -23,7 +22,6 @@ describe("Menjacnica spec", () => {
   });
 
   it("Menjacnica greska bez unosa textfield", () => {
-
     cy.visit("http://localhost:3000/menjacnica");
 
     cy.get("#saRacunaTextField").click();
@@ -34,11 +32,9 @@ describe("Menjacnica spec", () => {
 
     cy.get('[role="option"]').first().click()
     cy.get("#nastaviButton").click();
-
   });
 
   it("Menjacnica greska bez prvog racuna", () => {
-
     cy.visit("http://localhost:3000/menjacnica");
 
     cy.get("#iznosTextField").type("1");
@@ -46,11 +42,9 @@ describe("Menjacnica spec", () => {
 
     cy.get('[role="option"]').first().click()
     cy.get("#nastaviButton").click();
-
   });
 
   it("Menjacnica greska bez drugog racuna", () => {
-
     cy.visit("http://localhost:3000/menjacnica");
 
     cy.get("#iznosTextField").type("1");
@@ -59,11 +53,9 @@ describe("Menjacnica spec", () => {
     cy.get('[role="option"]').first().click()
 
     cy.get("#nastaviButton").click();
-
   });
 
   it("Menjacnica unet tekst kao broj", () => {
-
     cy.visit("http://localhost:3000/menjacnica");
 
     cy.get("#iznosTextField").type("Varam ti zenu");
@@ -75,7 +67,5 @@ describe("Menjacnica spec", () => {
 
     cy.get('[role="option"]').first().click()
     cy.get("#nastaviButton").click();
-
   });
-
 });

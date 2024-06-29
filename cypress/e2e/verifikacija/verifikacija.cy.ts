@@ -8,14 +8,10 @@ describe('Verifikacija spec', () => {
     //logout(cy)
   })
   it('posalji mail', () => {
-
     cy.visit('http://localhost:3000/verifikacija');
 
     cy.get('#generisiVerKod').click();
 
-
-
     cy.get('#outlined-read-only-input').should('exist');
   })
-
 })
