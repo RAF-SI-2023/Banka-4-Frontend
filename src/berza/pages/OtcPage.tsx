@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useContext, useEffect, useState } from 'react';
 import { makeApiRequest, makeGetRequest } from '../../utils/apiRequest';
-import { AppBar, Tab, Tabs, TextField } from '@mui/material';
+import { AppBar, Button, Tab, Tabs, TextField } from '@mui/material';
 import AkcijeList from 'berza/components/AkcijeList';
 import MojeAkcijeList from 'berza/components/MojeAkcijeList';
 import SearchIcon from '@mui/icons-material/Search';
@@ -9,6 +9,7 @@ import { Context } from 'App';
 import OurOtcList from 'berza/components/OurOtcList';
 import ForeignOtcList from 'berza/components/ForeignOtcList';
 import RecievedOtcOffers from 'berza/components/RecievedOtcOffers';
+import SendOtcOffers from 'berza/components/SendOtcOffers';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -62,7 +63,7 @@ const OtcPageKorisnik: React.FC = () => {
   const [stocks, setStocks] = useState([]);
   const [banka3Stocks, setBanka3Stocks] = useState([]);
   const [banka3Offers,setBanka3Offers] = useState([]);
-
+  const [outOffers, setOurOffers] = useState([]);
   const ctx = useContext(Context);
 
   const handleChange = (event: React.SyntheticEvent<unknown>, newValue: number) => {
@@ -88,15 +89,19 @@ const OtcPageKorisnik: React.FC = () => {
 
   }
 
+  const refreshStocks = async () => {
+   
+    await makeApiRequest('/v1/otcTrade/refresh','PUT');
+   
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const s = await makeApiRequest('/stock', 'POST', { 'ticker': 'aapl' });
         const stocks = await makeGetRequest('/user-stocks/get-our-banks-stocks');
-        await fetchBanka3Stocks()
-        await fetchBanka3Offers()
-        console.log("00000000000000000")
-        console.log(stocks)
+        await fetchBanka3Stocks();
+        await fetchBanka3Offers();
+        await fetchOurOffers();
         if (stocks) {
           setStocks(stocks);
         }
@@ -104,34 +109,45 @@ const OtcPageKorisnik: React.FC = () => {
       }
     };
     const fetchBanka3Stocks = async () => {
-        try {
-          const stocks = await makeGetRequest('/offer/see-stocks-from-banka3');
-          console.log("111111111111")
-          console.log(stocks)
-          if (stocks) {
-            setBanka3Stocks(stocks);
-          }
-        } catch (error) {
+      try {
+        const stocks = await makeGetRequest('/v1/otcTrade/getBanksStocks');
+        console.log("SSS");
+        if (stocks) {
+          setBanka3Stocks(stocks);
         }
-      };
-      const fetchBanka3Offers = async () => {
-        try {
-          const offers = await makeGetRequest('/offer/banka3-offers');
-          console.log("222222222222")
-          console.log(offers)
-          if (stocks) {
-            setBanka3Offers(offers);
-          }
-        } catch (error) {
+      } catch (error) {
+      }
+    };
+
+    const fetchOurOffers = async () => {
+      try {
+        const offers = await makeGetRequest('/v1/otcTrade/getOurOffers');
+        if (offers) {
+          setOurOffers(offers);
         }
-      };
+      } catch (error) {
+      }
+    }
+    const fetchBanka3Offers = async () => {
+      try {
+        const offers = await makeGetRequest('/v1/otcTrade/getOffers');
+        if (offers) {
+          setBanka3Offers(offers);
+        }
+      } catch (error) {
+      }
+
+    };
     fetchData();
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, []);
 
   return (
     <PageWrapper>
+      <Button variant="contained" color="primary" onClick={refreshStocks}>
+        Refresh
+      </Button>
       <TableContainer>
         <StyledTable>
           <AppBar position="static" >
@@ -139,6 +155,7 @@ const OtcPageKorisnik: React.FC = () => {
               <Tab label="Svi nasi OTC-ovi" />
               <Tab label="Svi OTC-ovi Banke 3" />
               <Tab label="Nase primljene ponude" />
+              <Tab label="Nase poslate ponude" />
               <StyledTextField
                 label="Pretraga"
                 variant="standard"
@@ -149,14 +166,14 @@ const OtcPageKorisnik: React.FC = () => {
                 sx={{ marginTop: 0, marginBottom: 1 }}
               />
               <SearchWrapper onClick={findStock}>
-                <SearchIcon ></SearchIcon>
+                <SearchIcon></SearchIcon>
               </SearchWrapper>
             </StyledTabs>
           </AppBar>
           {selectedTab === 0 && <OurOtcList otcs={stocks} />}
           {selectedTab === 1 && <ForeignOtcList otcs={banka3Stocks} />}
           {selectedTab === 2 && <RecievedOtcOffers offers={banka3Offers} />}
-
+          {selectedTab === 3 && <SendOtcOffers offers={outOffers} />}
         </StyledTable>
       </TableContainer>
     </PageWrapper>

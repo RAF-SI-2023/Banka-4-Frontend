@@ -100,7 +100,7 @@ const ContractsPage = () => {
                                         <StyledTableCell>{contract.contractSize}</StyledTableCell>
                                         <StyledTableCell>{contract.maintenanceMargin}</StyledTableCell>
                                         <StyledTableCell>
-                                            <BuyOptionPopup contractId={contract.id || contract.name} />
+                                            <BuyOptionPopup contractId={contract.id || contract.name} price_d={contract.price} />
                                         </StyledTableCell>
 
                                     </StyledTableRow>

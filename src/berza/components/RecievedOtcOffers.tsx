@@ -7,18 +7,10 @@ import { makeApiRequest } from "utils/apiRequest";
 const RecievedOtcOffers: React.FC<ForeignOfferList> = ({ offers }) => {
     const navigate = useNavigate();
 
-    // Dummy offers if the offers array is empty
-    if (!offers || offers.length === 0) {
-        offers = [
-            { id: "1", ticker: "AAPL", quantity: 10, amountOffered: 1500 },
-            { id: "2", ticker: "GOOGL", quantity: 5, amountOffered: 8000 },
-            { id: "3", ticker: "AMZN", quantity: 3, amountOffered: 9000 }
-        ];
-    }
-
+    
     const handleAccept = async (offerId: string) => {
         try {
-            const response = await makeApiRequest(`/offer/accept-foreign-offer`, 'POST', { offerId });
+            const response = await makeApiRequest(`/v1/otcTrade/acceptOffer`, 'POST', { offerId });
             alert(`Offer accepted successfully: ${JSON.stringify(response)}`);
         } catch (error) {
             alert(`Error accepting offer: ${error}`);
@@ -27,7 +19,7 @@ const RecievedOtcOffers: React.FC<ForeignOfferList> = ({ offers }) => {
     
     const handleDecline = async (offerId: string) => {
         try {
-            const response = await makeApiRequest(`/offer/decline-foreign-offer`, 'POST', { offerId });
+            const response = await makeApiRequest(`/v1/otcTrade/declineOffer`, 'POST', { offerId });
             alert(`Offer declined successfully: ${JSON.stringify(response)}`);
         } catch (error) {
             alert(`Error declining offer: ${error}`);
@@ -50,17 +42,17 @@ const RecievedOtcOffers: React.FC<ForeignOfferList> = ({ offers }) => {
                 </StyledTableHead>
                 <TableBody>
                     {offers.map((offer: ForeignOffer) => (
-                        <StyledTableRow key={offer.id} id={offer.id}>
+                        <StyledTableRow key={offer.offerId} id={offer.offerId}>
                             <StyledTableCell>{offer.ticker}</StyledTableCell>
-                            <StyledTableCell>{offer.quantity}</StyledTableCell>
-                            <StyledTableCell>{offer.amountOffered}</StyledTableCell>
+                            <StyledTableCell>{offer.amount}</StyledTableCell>
+                            <StyledTableCell>{offer.price}</StyledTableCell>
                             <StyledTableCell>
-                                <Button onClick={() => handleAccept(offer.id)}>
+                                <Button onClick={() => handleAccept(offer.offerId)}>
                                     Prihvati
                                 </Button>
                             </StyledTableCell>
                             <StyledTableCell>
-                                <Button onClick={() => handleDecline(offer.id)}>
+                                <Button onClick={() => handleDecline(offer.offerId)}>
                                     Odbij
                                 </Button>
                             </StyledTableCell>

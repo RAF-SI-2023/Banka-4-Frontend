@@ -290,7 +290,7 @@ const OrdersPage: React.FC = () => {
                   {future.status.toLowerCase() === 'not_approved' && (
                     <>
                       {permission_odobri && (
-                        <ActionButton variant="contained" color="primary" onClick={() => handleApproveFuture(future.futuresContractDto.id)}>Odobri</ActionButton>
+                        <ActionButton variant="contained" color="primary" onClick={() => handleApproveFuture(future.id)}>Odobri</ActionButton>
                       )}
                       {permission_odbij && (
                         <ActionButton variant="contained" color="error" onClick={() => handleRejectFuture(future.id)}>Poništi</ActionButton>
