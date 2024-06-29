@@ -28,7 +28,7 @@ const MojePonude: React.FC = () => {
         const me = getMe();
         if (!me) return;
 
-        const response = await makeGetRequest(`/otc/pending-otc-offers/-1`);
+        const response = await makeGetRequest(`/otc/pending-otc-offers/${me?.id}`);
         setPonude(response);
       } catch (error) {
         console.error('Error fetching offers:', error);
@@ -44,7 +44,7 @@ const MojePonude: React.FC = () => {
       if (!me) return;
 
       const data = {
-        userId: -1,
+        userId: me.id,
         otcId: id,
         accept: true,
       };
@@ -77,7 +77,7 @@ const MojePonude: React.FC = () => {
       if (!me || selectedPonuda === null) return;
 
       const data = {
-        userId: -1,
+        userId: me.id,
         otcId: selectedPonuda,
         accept: false,
       };

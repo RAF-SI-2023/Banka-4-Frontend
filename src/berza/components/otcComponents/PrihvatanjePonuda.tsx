@@ -6,6 +6,7 @@ import {
 } from '@mui/material';
 import { getMe } from 'utils/getMe'; // Importujte getMe funkciju
 import { makeGetRequest, makeApiRequest } from 'utils/apiRequest'; // Importujte funkciju za API zahteve
+import { Account, BankRoutes, Employee, UserRoutes } from "utils/types";
 
 interface Ponuda {
   otcId: number;
@@ -21,22 +22,41 @@ const PrihvatanjePonuda: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [reason, setReason] = useState<string>('');
   const [selectedPonuda, setSelectedPonuda] = useState<number | null>(null);
+  const [accounts, setAccounts] = useState<Account[]>([]);
+  const [firmaId, setFirmaId] = useState<number | null>(null); // Dodato za čuvanje firmaId
+
+  const fetchAccounts = async () => {
+    try {
+      const me = getMe();
+      if (!me) return;
+
+      const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${me.sub}`) as Employee;
+      if (worker) {
+        setFirmaId(worker.firmaId); // Sačuvaj firmaId u stanju komponente
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
-    const fetchPonude = async () => {
-      try {
-        const me = getMe();
-        if (!me) return;
-
-        const response = await makeGetRequest(`/otc/pending-otc-offers/-1`);
-        setPonude(response);
-      } catch (error) {
-        console.error('Error fetching offers:', error);
-      }
-    };
-
-    fetchPonude();
+    fetchAccounts();
   }, []);
+
+  const fetchPonude = async () => {
+    try {
+      if (!firmaId) return; // Ako firmaId nije dostupan, ne nastavljaj
+
+      const response = await makeGetRequest(`/otc/pending-otc-offers/${firmaId}`);
+      setPonude(response);
+    } catch (error) {
+      console.error('Error fetching offers:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPonude();
+  }, [firmaId]);
 
   const handleAccept = async (id: number) => {
     try {
@@ -44,7 +64,7 @@ const PrihvatanjePonuda: React.FC = () => {
       if (!me) return;
 
       const data = {
-        userId: -1,
+        userId: firmaId, // Koristi firmaId umesto statičkog -1
         otcId: id,
         accept: true,
       };
@@ -77,7 +97,7 @@ const PrihvatanjePonuda: React.FC = () => {
       if (!me || selectedPonuda === null) return;
 
       const data = {
-        userId: -1,
+        userId: firmaId, // Koristi firmaId umesto statičkog -1
         otcId: selectedPonuda,
         accept: false,
       };

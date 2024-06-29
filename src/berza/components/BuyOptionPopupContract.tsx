@@ -87,9 +87,9 @@ const handleBuy = async () => {
         
                 <p>Uspesno kupljeno sa sledećim detaljima:</p>
                 <p><strong>Cena:</strong> ${quantity}</p>
-                <p><strong>Valuta:</strong> ${currency}</p>
+              
                 <p><strong>Račun:</strong> ${selectedAccount}</p>
-                <p><strong>Id:</strong> ${contractId}</p>
+              
               `,
               icon: "success"
             });
@@ -165,6 +165,11 @@ const handleBuy = async () => {
               fullWidth
               margin="normal"
             />
+            
+
+            
+            {/* 
+
             <FormControl fullWidth sx={{ marginTop: 2, marginBottom: 1 }}>
               <InputLabel id="valuta">Valuta</InputLabel>
               <Select
@@ -180,9 +185,6 @@ const handleBuy = async () => {
                 <MenuItem value="GBP">GBP</MenuItem>
               </Select>
             </FormControl>
-
-            
-            {/* 
                 <TextField
               label="Cena po komadu"
               name="cena"

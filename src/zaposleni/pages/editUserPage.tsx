@@ -210,6 +210,7 @@ const EditUserPage: React.FC = () => {
           >
             <MenuItem value="M">Musko</MenuItem>
             <MenuItem value="F">Zensko</MenuItem>
+            <MenuItem value="F">Ker</MenuItem>
             <MenuItem value="F">Komplikovano</MenuItem>
           </StyledSelect>
         </FormControl>
