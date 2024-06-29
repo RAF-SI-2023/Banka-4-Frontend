@@ -47,15 +47,28 @@ export type IOtcList = {
 }
 
 export type ForeignOffer = {
-    id : string,
+    offerId : string,
     ticker: string,
-    quantity: number,
-    amountOffered: number,
-
+    amount: number,
+    price: number,
+    idBank: number,
+    offerStatus: string,
 }
 
 export type ForeignOfferList = {
     offers: ForeignOffer[]
+}
+
+export type OurOffer = {
+    myOfferId : string,
+    ticker: string,
+    amount: number,
+    price: number,
+    offerStatus: string,
+}
+
+export type OurOfferList = {
+    offers: OurOffer[]
 }
 export type Options = {
     id: number | null,

@@ -50,6 +50,13 @@ const StyledDiv = styled.div`
   display: flex;
 `
 
+const CenteredDiv = styled.div`
+  display: flex;
+  margin-bottom: 5%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+`;
 
 const ProfitPage = () => {
   const [exchages, setExhanges] = useState<ExchangeRate[]>([]);
@@ -63,14 +70,21 @@ const ProfitPage = () => {
     (async () => {
       try {
         setTotalProfit(await makeGetRequest(BankRoutes.get_total_profit) || 0);
+      } catch (e) {
+        console.error(e);
       }
-      catch (e) {
-
+    })();
+    
+    (async () => {
+      try {
+        const response = await makeGetRequest('/marzniRacuni/bank-profit');
+        console.log(response);
+      } catch (e) {
+        console.error(e);
       }
-    })()
+    })();
   }, []);
 
-  ///exchange/invoices/{currency}
   const fetchProfit = async () => {
     try {
       const data = await makeGetRequest(
@@ -78,8 +92,10 @@ const ProfitPage = () => {
       );
       data && setProfits(data);
       //@ts-ignore
-      setProfitValute(data.reduce((p, t) => p + t.profit, 0).toFixed(4))
-    } catch (err) { }
+      setProfitValute(data.reduce((p, t) => p + t.profit, 0).toFixed(4));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const fetchExchange = async () => {
@@ -93,12 +109,22 @@ const ProfitPage = () => {
         );
         setExhanges(uniqueData);
       }
-    } catch (error) { }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <PageWrapper>
+
+      <CenteredDiv>
+        <Typography variant="h5">
+          Ukupan profit banke je: {totalProfit} RSD
+        </Typography>
+      </CenteredDiv>
+
       <StyledDiv>
+
         <Box
           display="flex"
           flexDirection="column"
@@ -113,7 +139,7 @@ const ProfitPage = () => {
           borderRadius={2}
         >
           <Typography variant="h6" mb={1}>
-            Profit banke
+            Profit Menjacnice
           </Typography>
           
           <Typography variant="body1">
@@ -148,6 +174,7 @@ const ProfitPage = () => {
           <ButtonTab onClick={() => fetchProfit()}>Pregledajte profite</ButtonTab>
         </StyledButtonsDiv>
       </StyledDiv>
+      
       <Container>
         <ProfitTable {...{ profits }} />
       </Container>

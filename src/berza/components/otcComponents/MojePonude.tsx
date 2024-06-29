@@ -1,42 +1,64 @@
-import React, { useState } from 'react';
-import { 
-  Table, TableBody, TableCell, TableHead, TableRow, Paper, 
-  Button, Dialog, DialogActions, DialogContent, DialogContentText, 
-  DialogTitle, TextField 
+import React, { useState, useEffect } from 'react';
+import {
+  Table, TableBody, TableCell, TableHead, TableRow, Paper,
+  Button, Dialog, DialogActions, DialogContent, DialogContentText,
+  DialogTitle, TextField
 } from '@mui/material';
+import { getMe } from 'utils/getMe'; // Importujte getMe funkciju
+import { makeGetRequest, makeApiRequest } from 'utils/apiRequest'; // Importujte funkciju za API zahteve
 
 interface Ponuda {
-  id: number;
-  korisnik: string;
-  firma: string;
-  detalji: string;
+  otcId: number;
+  ticker: string;
+  quantity: number;
   status: string | null;
   reason?: string;
 }
 
 const MojePonude: React.FC = () => {
-  const [ponude, setPonude] = useState<Ponuda[]>([
-    { id: 1, korisnik: 'Korisnik A', firma: 'Firma A', detalji: 'Detalji ponude A', status: null },
-    { id: 2, korisnik: 'Korisnik B', firma: 'Firma B', detalji: 'Detalji ponude B', status: null },
-    // Dodajte više podataka po potrebi
-  ]);
-
-  const [istorija, setIstorija] = useState<Ponuda[]>([
-    { id: 3, korisnik: 'Korisnik C', firma: 'Firma C', detalji: 'Detalji ponude C', status: 'Prihvaćeno' },
-    { id: 4, korisnik: 'Korisnik D', firma: 'Firma D', detalji: 'Detalji ponude D', status: 'Odbijeno' },
-    // Dodajte više podataka po potrebi
-  ]);
-
+  const [ponude, setPonude] = useState<Ponuda[]>([]);
+  const [istorija, setIstorija] = useState<Ponuda[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [reason, setReason] = useState<string>('');
   const [selectedPonuda, setSelectedPonuda] = useState<number | null>(null);
 
-  const handleAccept = (id: number) => {
-    const updatedPonude = ponude.map((ponuda) =>
-      ponuda.id === id ? { ...ponuda, status: 'Prihvaćeno' } : ponuda
-    );
-    setPonude(updatedPonude);
-    setIstorija([...istorija, { ...ponude.find((ponuda) => ponuda.id === id)!, status: 'Prihvaćeno' }]);
+  useEffect(() => {
+    const fetchPonude = async () => {
+      try {
+        const me = getMe();
+        if (!me) return;
+
+        const response = await makeGetRequest(`/otc/pending-otc-offers/${me?.id}`);
+        setPonude(response);
+      } catch (error) {
+        console.error('Error fetching offers:', error);
+      }
+    };
+
+    fetchPonude();
+  }, []);
+
+  const handleAccept = async (id: number) => {
+    try {
+      const me = getMe();
+      if (!me) return;
+
+      const data = {
+        userId: me.id,
+        otcId: id,
+        accept: true,
+      };
+
+      await makeApiRequest(`/otc/resolve-otc`, 'POST', data);
+
+      const updatedPonude = ponude.map((ponuda) =>
+        ponuda.otcId === id ? { ...ponuda, status: 'Prihvaćeno' } : ponuda
+      );
+      setPonude(updatedPonude);
+      setIstorija([...istorija, { ...ponude.find((ponuda) => ponuda.otcId === id)!, status: 'Prihvaćeno' }]);
+    } catch (error) {
+      console.error('Error accepting offer:', error);
+    }
   };
 
   const handleReject = (id: number) => {
@@ -48,15 +70,29 @@ const MojePonude: React.FC = () => {
     setOpen(false);
     setReason('');
   };
-  
 
-  const handleConfirmReject = () => {
-    const updatedPonude = ponude.map((ponuda) =>
-      ponuda.id === selectedPonuda ? { ...ponuda, status: 'Odbijeno', reason } : ponuda
-    );
-    setPonude(updatedPonude);
-    setIstorija([...istorija, { ...ponude.find((ponuda) => ponuda.id === selectedPonuda)!, status: 'Odbijeno', reason }]);
-    handleClose();
+  const handleConfirmReject = async () => {
+    try {
+      const me = getMe();
+      if (!me || selectedPonuda === null) return;
+
+      const data = {
+        userId: me.id,
+        otcId: selectedPonuda,
+        accept: false,
+      };
+
+      await makeApiRequest(`/otc/resolve-otc`, 'POST', data);
+
+      const updatedPonude = ponude.map((ponuda) =>
+        ponuda.otcId === selectedPonuda ? { ...ponuda, status: 'Odbijeno', reason } : ponuda
+      );
+      setPonude(updatedPonude);
+      setIstorija([...istorija, { ...ponude.find((ponuda) => ponuda.otcId === selectedPonuda)!, status: 'Odbijeno', reason }]);
+      handleClose();
+    } catch (error) {
+      console.error('Error rejecting offer:', error);
+    }
   };
 
   return (
@@ -66,48 +102,21 @@ const MojePonude: React.FC = () => {
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>
-              <TableCell>Korisnik</TableCell>
-              <TableCell>Firma</TableCell>
-              <TableCell>Detalji</TableCell>
+              <TableCell>Ticker</TableCell>
+              <TableCell>Količina</TableCell>
               <TableCell>Akcije</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {ponude.filter((ponuda) => !ponuda.status).map((ponuda) => (
-              <TableRow key={ponuda.id}>
-                <TableCell>{ponuda.id}</TableCell>
-                <TableCell>{ponuda.korisnik}</TableCell>
-                <TableCell>{ponuda.firma}</TableCell>
-                <TableCell>{ponuda.detalji}</TableCell>
+              <TableRow key={ponuda.otcId}>
+                <TableCell>{ponuda.otcId}</TableCell>
+                <TableCell>{ponuda.ticker}</TableCell>
+                <TableCell>{ponuda.quantity}</TableCell>
                 <TableCell>
-                  <Button onClick={() => handleAccept(ponuda.id)}>Prihvati</Button>
-                  <Button onClick={() => handleReject(ponuda.id)}>Odbij</Button>
+                  <Button onClick={() => handleAccept(ponuda.otcId)}>Prihvati</Button>
+                  <Button onClick={() => handleReject(ponuda.otcId)}>Odbij</Button>
                 </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Paper>
-
-      <Paper style={{ marginTop: '20px' }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Korisnik</TableCell>
-              <TableCell>Firma</TableCell>
-              <TableCell>Detalji</TableCell>
-              <TableCell>Status</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {istorija.map((ponuda) => (
-              <TableRow key={ponuda.id}>
-                <TableCell>{ponuda.id}</TableCell>
-                <TableCell>{ponuda.korisnik}</TableCell>
-                <TableCell>{ponuda.firma}</TableCell>
-                <TableCell>{ponuda.detalji}</TableCell>
-                <TableCell>{ponuda.status}</TableCell>
               </TableRow>
             ))}
           </TableBody>

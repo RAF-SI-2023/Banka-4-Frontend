@@ -78,7 +78,7 @@ const OrdersPage: React.FC = () => {
 
         const orders = await makeGetRequest(`/orders/all`);
         const futures = await makeGetRequest(`/futures/kupac/` + worker.firmaId);
-        const futures2 = await makeGetRequest(`/futures/request/` + worker.firmaId);
+        const futures2 = await makeGetRequest(`/futures/request`);
         const firme = await makeGetRequest(`/racuni/izlistajSveFirme`);
 
         console.log('Fetched Data:', { orders, futures, futures2, firme });
@@ -147,7 +147,7 @@ const OrdersPage: React.FC = () => {
 
   const handleApproveFuture = async (futureId: string) => {
     try {
-      const response = await makeApiRequest('/futures/approve/' + futureId, 'POST');
+      const response = await makeApiRequest('/futures/approve/' + futureId, 'PUT');
       if (response.status === 200) {
         window.location.reload();
       }
@@ -160,7 +160,7 @@ const OrdersPage: React.FC = () => {
 
   const handleRejectFuture = async (futureId: string) => {
     try {
-      const response = await makeApiRequest('/futures/reject/' + futureId, 'POST');
+      const response = await makeApiRequest('/futures/deny/' + futureId, 'PUT');
       if (response.status === 200) {
         window.location.reload();
       }
@@ -248,20 +248,9 @@ const OrdersPage: React.FC = () => {
                 <TableCell>{future.contractSize}</TableCell>
                 <TableCell>{future.contractUnit}</TableCell>
                 <TableCell>{future.openInterest}</TableCell>
-                <TableCell>{future.settlementDate}</TableCell>
+                <TableCell>{new Date(future.settlementDate).toLocaleDateString()}</TableCell>
                 <TableCell>{future.maintenanceMargin}</TableCell>
-                <TableCell>
-                  {future.status.toLowerCase() === 'pending' && (
-                    <>
-                      {permission_odobri && (
-                        <ActionButton variant="contained" color="primary" onClick={() => handleApproveFuture(future.id)}>Odobri</ActionButton>
-                      )}
-                      {permission_odbij && (
-                        <ActionButton variant="contained" color="error" onClick={() => handleRejectFuture(future.id)}>Poništi</ActionButton>
-                      )}
-                    </>
-                  )}
-                </TableCell>
+        
               </StyledTableRow>
             ))}
           </TableBody>
@@ -281,22 +270,24 @@ const OrdersPage: React.FC = () => {
               <StyledTableCell>Open Interest</StyledTableCell>
               <StyledTableCell>Settlement Date</StyledTableCell>
               <StyledTableCell>Maintenance Margin</StyledTableCell>
+              <StyledTableCell>Status</StyledTableCell>
               <StyledTableCell></StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {futures2.map(future => (
-              <StyledTableRow key={future.id}>
-                <TableCell>{future.type}</TableCell>
-                <TableCell>{future.name}</TableCell>
-                <TableCell>{future.price}</TableCell>
-                <TableCell>{future.contractSize}</TableCell>
-                <TableCell>{future.contractUnit}</TableCell>
-                <TableCell>{future.openInterest}</TableCell>
-                <TableCell>{future.settlementDate}</TableCell>
-                <TableCell>{future.maintenanceMargin}</TableCell>
+              <StyledTableRow key={future.futuresContractDto.id}>
+                <TableCell>{future.futuresContractDto.type}</TableCell>
+                <TableCell>{future.futuresContractDto.name}</TableCell>
+                <TableCell>{future.futuresContractDto.price}</TableCell>
+                <TableCell>{future.futuresContractDto.contractSize}</TableCell>
+                <TableCell>{future.futuresContractDto.contractUnit}</TableCell>
+                <TableCell>{future.futuresContractDto.openInterest}</TableCell>
+                <TableCell>{new Date(future.futuresContractDto.settlementDate).toLocaleDateString()}</TableCell>
+                <TableCell>{future.futuresContractDto.maintenanceMargin}</TableCell>
+                <TableCell>{future.status}</TableCell>
                 <TableCell>
-                  {future.status.toLowerCase() === 'pending' && (
+                  {future.status.toLowerCase() === 'not_approved' && (
                     <>
                       {permission_odobri && (
                         <ActionButton variant="contained" color="primary" onClick={() => handleApproveFuture(future.id)}>Odobri</ActionButton>
