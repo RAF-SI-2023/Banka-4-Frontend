@@ -21,6 +21,7 @@ export type UserStock = {
   amount: string;
 };
 export type UserStock2 = {
+  id: number;
   ticker: string;
   quantity: number;
   currentBid: number;

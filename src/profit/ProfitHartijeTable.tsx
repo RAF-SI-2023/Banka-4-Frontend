@@ -70,6 +70,7 @@ const ProfitHartijeTable = () => {
   const [futures, setFutures] = useState<Future[]>([]);
   const [popupOpen, setPopupOpen] = useState<boolean>(false);
   const [selectedStock, setSelectedStock] = useState<UserStock2>({
+    id: 0,
     ticker: "string",
     quantity: 0,
     currentBid: 0,

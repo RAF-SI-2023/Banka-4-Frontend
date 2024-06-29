@@ -5,8 +5,9 @@ import {
   TableHead,
   TableRow,
   TableBody,
+  Typography,
 } from "@mui/material";
-import { Option2 } from "berza/types/types";
+import { Option2, UserStock2 } from "berza/types/types";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { makeGetRequest } from "utils/apiRequest";
@@ -50,11 +51,22 @@ const StyledTableRow = styled(TableRow)`
   }
 `;
 
-const OrdersTable = () => {
+type Props = {
+  selectedStock: UserStock2;
+};
+
+const OrdersTable = ({ selectedStock }: Props) => {
   const [orders, setOrders] = useState<Option2[]>([]);
+  const [foundOrders, setFoundOrders] = useState<Option2[]>([]);
   const auth = getMe();
 
-  const findActions = () => {};
+  const findActions = () => {
+    const foundOrder = orders.find(
+      (orders) => orders.akcijaId === selectedStock.id
+    );
+
+    foundOrder && setFoundOrders((prevOrders) => [...prevOrders, foundOrder]);
+  };
 
   useEffect(() => {
     const fetchOptions = async () => {
@@ -64,7 +76,10 @@ const OrdersTable = () => {
         )) as Employee;
         try {
           const ordersData = await makeGetRequest(`/orders/${worker.firmaId}`);
-          ordersData && setOrders(ordersData);
+          if (ordersData) {
+            setOrders(ordersData);
+            findActions();
+          }
         } catch (error) {
           console.error("Error fetching user orders:", error);
         }
@@ -80,25 +95,46 @@ const OrdersTable = () => {
     fetchOptions();
   }, []);
 
+  function EnhancedTableToolbar() {
+    return (
+      <Typography
+        sx={{ flex: "1 1 100%" }}
+        color="inherit"
+        variant="h6"
+        component="div"
+      >
+        Istorija porudžbina koje pripadaju korisniku i vezane su za akciju{" "}
+        {selectedStock.ticker}
+      </Typography>
+    );
+  }
+
   return (
-    <ScrollContainer>
-      <StyledTableContainer>
-        <StyledTable>
-          <StyledTableHead>
-            <TableRow>
-              <StyledHeadTableCell></StyledHeadTableCell>
-            </TableRow>
-          </StyledTableHead>
-          <TableBody>
-            {orders.map((order, index) => (
-              <StyledTableRow key={index}>
-                <StyledTableCell>{}</StyledTableCell>
-              </StyledTableRow>
-            ))}
-          </TableBody>
-        </StyledTable>
-      </StyledTableContainer>
-    </ScrollContainer>
+    <>
+      <EnhancedTableToolbar />
+      <ScrollContainer>
+        <StyledTableContainer>
+          <StyledTable>
+            <StyledTableHead>
+              <TableRow>
+                <StyledHeadTableCell>
+                  akcijaTickerCenaPrilikomIskoriscenja
+                </StyledHeadTableCell>
+              </TableRow>
+            </StyledTableHead>
+            <TableBody>
+              {foundOrders.map((order, index) => (
+                <StyledTableRow key={index}>
+                  <StyledTableCell>
+                    {order.akcijaTickerCenaPrilikomIskoriscenja}
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </StyledTable>
+        </StyledTableContainer>
+      </ScrollContainer>
+    </>
   );
 };
 

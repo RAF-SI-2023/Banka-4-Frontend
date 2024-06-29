@@ -48,8 +48,8 @@ const HartijePopup = ({ setPopupOpen, selectedStock }: Props) => {
     <PopUpBackground>
       <PopUpPositioning>
         <PopupDiv>
-          <OptionsTable />
-          <OrdersTable />
+          <OptionsTable {...{ selectedStock }} />
+          <OrdersTable {...{ selectedStock }} />
           {selectedStock.ticker}
           <Button onClick={() => setPopupOpen(false)}>Zatvorite</Button>
         </PopupDiv>

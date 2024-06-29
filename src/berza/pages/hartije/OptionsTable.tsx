@@ -5,13 +5,14 @@ import {
   TableHead,
   TableRow,
   TableBody,
+  Typography,
 } from "@mui/material";
-import { Option2 } from "berza/types/types";
+import { Option2, UserStock2 } from "berza/types/types";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { makeGetRequest } from "utils/apiRequest";
 import { getMe } from "utils/getMe";
-import { Account, UserRoutes, Employee, BankRoutes } from "utils/types";
+import { UserRoutes, Employee } from "utils/types";
 
 const ScrollContainer = styled.div`
   max-height: 400px;
@@ -50,11 +51,23 @@ const StyledTableRow = styled(TableRow)`
   }
 `;
 
-const OptionsTable = () => {
+type Props = {
+  selectedStock: UserStock2;
+};
+
+const OptionsTable = ({ selectedStock }: Props) => {
   const [options, setOptions] = useState<Option2[]>([]);
+  const [foundOptions, setFoundOptions] = useState<Option2[]>([]);
   const auth = getMe();
 
-  const findActions = () => {};
+  const findActions = () => {
+    const foundOption = options.find(
+      (option) => option.akcijaId === selectedStock.id
+    );
+
+    foundOption &&
+      setFoundOptions((prevOptions) => [...prevOptions, foundOption]);
+  };
 
   useEffect(() => {
     const fetchOptions = async () => {
@@ -66,7 +79,10 @@ const OptionsTable = () => {
           const optionsData = await makeGetRequest(
             `/opcija/sve-opcije-korisnika/${worker.firmaId}`
           );
-          optionsData && setOptions(optionsData);
+          if (optionsData) {
+            setOptions(optionsData);
+            findActions();
+          }
         } catch (error) {
           console.error("Error fetching user options:", error);
         }
@@ -84,25 +100,45 @@ const OptionsTable = () => {
     fetchOptions();
   }, []);
 
+  function EnhancedTableToolbar() {
+    return (
+      <Typography
+        sx={{ flex: "1 1 100%" }}
+        color="inherit"
+        variant="h6"
+        component="div"
+      >
+        Opcije koje pripadaju korisniku i vezane su za akciju{" "}
+        {selectedStock.ticker}
+      </Typography>
+    );
+  }
   return (
-    <ScrollContainer>
-      <StyledTableContainer>
-        <StyledTable>
-          <StyledTableHead>
-            <TableRow>
-              <StyledHeadTableCell></StyledHeadTableCell>
-            </TableRow>
-          </StyledTableHead>
-          <TableBody>
-            {options.map((option, index) => (
-              <StyledTableRow key={index}>
-                <StyledTableCell>{}</StyledTableCell>
-              </StyledTableRow>
-            ))}
-          </TableBody>
-        </StyledTable>
-      </StyledTableContainer>
-    </ScrollContainer>
+    <>
+      <EnhancedTableToolbar />
+      <ScrollContainer>
+        <StyledTableContainer>
+          <StyledTable>
+            <StyledTableHead>
+              <TableRow>
+                <StyledHeadTableCell>
+                  akcijaTickerCenaPrilikomIskoriscenja
+                </StyledHeadTableCell>
+              </TableRow>
+            </StyledTableHead>
+            <TableBody>
+              {foundOptions.map((option, index) => (
+                <StyledTableRow key={index}>
+                  <StyledTableCell>
+                    {option.akcijaTickerCenaPrilikomIskoriscenja}
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </StyledTable>
+        </StyledTableContainer>
+      </ScrollContainer>
+    </>
   );
 };
 
