@@ -39,7 +39,7 @@ const TableWrapper = styled.div`
 
 const StyledTable = styled.div`
   display: flex;
-  max-width: 1200px;
+  max-width: 1300px;
   flex-grow: 1;
   flex-direction: column;
 `

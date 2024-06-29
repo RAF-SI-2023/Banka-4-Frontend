@@ -129,12 +129,13 @@ const CreateEmployeePage: React.FC = () => {
     { naziv: EmployeePermissionsV2.option_access, vrednost: false },
     { naziv: EmployeePermissionsV2.order_access, vrednost: false },
     { naziv: EmployeePermissionsV2.termin_access, vrednost: false },
-    {naziv:EmployeePermissionsV2.profit_access, vrednost: false}
+    { naziv: EmployeePermissionsV2.profit_access, vrednost: false }
   ]);
   const [groupedPermissions, setGroupedPermissions] = useState<{ [key: string]: Permisije[] }>({});
+  const [supervizorCb, setSupervizorCb] = useState(false);
   const navigate = useNavigate();
   const ctx = useContext(Context);
-  
+
   useEffect(() => {
     const grouped = permissionCheckboxes.reduce((acc: { [key: string]: Permisije[] }, perm) => {
       const lastWord = perm.naziv.split('_').pop();
@@ -221,7 +222,7 @@ const CreateEmployeePage: React.FC = () => {
     if (!(emailRegex.test(formData.email))) {
       ctx?.setErrors([...ctx.errors, 'Our Error: Email mora biti validan']);
     }
-    const data = { ...formData, datumRodjenja: new Date(formData.datumRodjenja).getTime(), aktivan: true };
+    const data = { ...formData, datumRodjenja: new Date(formData.datumRodjenja).getTime(), aktivan: true, supervizor: supervizorCb };
     const res = await makeApiRequest(UserRoutes.worker, 'POST', data, false, false, ctx);
     if (res) {
       ctx?.setErrors([...ctx.errors, 'Our Success: Zaposleni je uspesno kreiran']);
@@ -403,6 +404,15 @@ const CreateEmployeePage: React.FC = () => {
               </React.Fragment>
             ))}
           </Grid>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={supervizorCb}
+                onChange={() => supervizorCb ? setSupervizorCb(false) : setSupervizorCb(true)}
+              />
+            }
+            label='supervizor'
+          />
         </CheckBoxForm>
         <ButtonContainer>
           <StyledButton variant="contained" color="primary" onClick={handleSumbit}>
