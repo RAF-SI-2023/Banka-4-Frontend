@@ -35,6 +35,19 @@ const StyledTitle = styled(Typography)`
     padding: 30px 0px;
     color: red;
 `
+const LeftAlignedBox = styled(Box)`
+  text-align: left !important;
+  width: 100%;
+  margin-left: 2px !important; 
+`;
+
+const FlexBox = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; // Ensure left alignment
+  width: 100%;
+  padding-left: 2px; // Adjust as needed
+`;
 
 const validateEmail = (email: string) => {
     // Simple email validation pattern
@@ -72,7 +85,7 @@ const RegistrationPage = () => {
 
     const handleGenerateCode = async () => {
         try {
-            await makeApiRequest(UserRoutes.user_generate_login, "POST", { email: userData.email }, true, true, ctx)
+            await makeApiRequest(UserRoutes.user_generate_login, "POST", { email: userData.email.toLowerCase() }, true, true, ctx)
         }
         catch (e) {
         }
@@ -262,7 +275,15 @@ const RegistrationPage = () => {
         );
     } else if (currentStep === 2) {
         return (
-            <Container component="main" maxWidth="sm">
+            <StyledContainerLogReg component="main" maxWidth="sm">
+            <style type="text/css">
+                {`
+                   body {
+                         background-image: url("backgground.jpg");
+                          background-size: cover;
+                    }
+                `}
+            </style>
                 <Typography component="h1" variant="h5" sx={{color:'red'}}>Registracija korisnika - Korak 2</Typography>
                 <Box component="form" noValidate sx={{ mt: 3 }}>
                     <StyledTextField
@@ -275,9 +296,9 @@ const RegistrationPage = () => {
                         onChange={(e) => handleFieldChange('aktivacioniKod', e.target.value)}
                         error={!!errors.aktivacioniKod}
                         helperText={errors.aktivacioniKod || "Unesite kod koji ste dobili."}
-                        sx={{ mb: 2 }}
+                        sx={{ mb: 1 }}
                     />
-                    <Button variant="contained" onClick={handleGenerateCode} sx={{ mt: 3, mb: 2, color:'white', backgroundColor:'#AC190C',
+                    <Button variant="contained" onClick={handleGenerateCode} sx={{ mt: 1, mb: 2, color:'white', backgroundColor:'#AC190C',
                         '&:hover': {
                             backgroundColor: '#EF2C1A', 
                           },
@@ -292,17 +313,27 @@ const RegistrationPage = () => {
                         Nastavi
                     </Button>
                 </Box>
-            </Container>
+            </StyledContainerLogReg>
         );
     } else if (currentStep === 3) {
         return (
-            <Container component="main" maxWidth="sm">
+            <StyledContainerLogReg component="main" maxWidth="sm">
+            <style type="text/css">
+                {`
+                   body {
+                         background-image: url("backgground.jpg");
+                          background-size: cover;
+                    }
+                `}
+            </style>
                 <StyledTitle variant="h5" sx={{color:'red'}}>Registracija korisnika - Korak 3</StyledTitle>
-                <Typography fontWeight={'bold'} color={eightChar?'green':'red'} variant="body1">Lozinka mora imati bar 8 karaktera</Typography>
-                <Typography fontWeight={'bold'} color={capitalLetter?'green':'red'} variant="body1">Lozinka mora imati bar jedno veliko slovo</Typography>
-                <Typography fontWeight={'bold'} color={lowerLetter?'green':'red'} variant="body1">Lozinka mora imati bar jedno malo slovo</Typography>
-                <Typography fontWeight={'bold'} color={twoNumbers?'green':'red'} variant="body1">Lozinka mora imati bar dva broja</Typography>
-                <Typography fontWeight={'bold'} color={specChar?'green':'red'} variant="body1">Lozinka mora imati bar jedan specijalni karakter</Typography>
+                <FlexBox>
+                    <Typography fontWeight={'bold'} color={eightChar?'green':'red'} variant="body2">• Lozinka mora imati bar 8 karaktera</Typography>
+                    <Typography fontWeight={'bold'} color={capitalLetter?'green':'red'} variant="body2">• Lozinka mora imati bar jedno veliko slovo</Typography>
+                    <Typography fontWeight={'bold'} color={lowerLetter?'green':'red'} variant="body2">• Lozinka mora imati bar jedno malo slovo</Typography>
+                    <Typography fontWeight={'bold'} color={twoNumbers?'green':'red'} variant="body2">• Lozinka mora imati bar dva broja</Typography>
+                    <Typography fontWeight={'bold'} color={specChar?'green':'red'} variant="body2">• Lozinka mora imati bar jedan specijalni karakter</Typography>
+                </FlexBox>
 
                 <Box component="form" noValidate sx={{ mt: 3 }}>
                     <StyledTextField
@@ -339,12 +370,13 @@ const RegistrationPage = () => {
                         Registruj se
                     </Button>
                 </Box>
-            </Container>
+            </StyledContainerLogReg>
         );
     }
 
     return <div></div>
 
 };
+
 
 export default RegistrationPage;

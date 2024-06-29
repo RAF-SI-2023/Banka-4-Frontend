@@ -126,6 +126,7 @@ const EditEmployeePage: React.FC = () => {
   const [emptyWarning, setEmptyWarning] = useState<boolean>(false);
   const [phoneWarning, setPhoneWarning] = useState<boolean>(false);
   const [successPopup, setSucessPopup] = useState<boolean>(false);
+  const [supervizorCb, setSupervizorCb] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -207,7 +208,7 @@ const EditEmployeePage: React.FC = () => {
         setPhoneWarning(false)
       }
     }
-    const data = { ...formData, aktivan: true }
+    const data = { ...formData, aktivan: true, supervizor: supervizorCb }
     const res = await makeApiRequest(UserRoutes.worker, 'PUT', data, false, false, ctx)
     if (res) {
       setSucessPopup(true)
@@ -349,6 +350,15 @@ const EditEmployeePage: React.FC = () => {
               </Grid>
             ))}
           </Grid>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={supervizorCb}
+                onChange={() => supervizorCb ? setSupervizorCb(false) : setSupervizorCb(true)}
+              />
+            }
+            label='supervizor'
+          />
         </CheckBoxForm>
         <ButtonContainer>
           <StyledButton variant="contained" color="primary" onClick={handleSumbit}>

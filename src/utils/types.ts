@@ -136,6 +136,7 @@ export type AccountPageProps = {
 };
 
 export type Employee = {
+  id: string;
   ime: string;
   prezime: string;
   jmbg: string;
@@ -143,6 +144,7 @@ export type Employee = {
   datumRodjenja: string;
   pol: string;
   adresa: string;
+  dailyLimit: string;
   email: string;
   firmaId: number;
   brojTelefona: string;
@@ -161,6 +163,7 @@ export type Company = {
   brojTelefona: string;
   brojFaksa: string;
   pib: string;
+  id: string;
   maticniBroj: string;
   sifraDelatnosti: string;
   registarskiBroj: string;

@@ -178,7 +178,8 @@ const ExchangeMainSection = ({
           <StyledTextField
             id="saRacunaTextField"
             select
-            defaultValue={"Broj racuna..."}
+            placeholder="Broj racuna..."
+            //defaultValue={"Broj racuna..."}
             onChange={(e) => {
               const selectedAccount = accounts.find(
                 (account) => account.brojRacuna === e.target.value
@@ -190,9 +191,9 @@ const ExchangeMainSection = ({
               }
             }}
           >
-            <MenuItem disabled value={"Broj racuna..."} key="default">
+            {/* <MenuItem disabled value={"Broj racuna..."} key="default">
               Broj racuna...
-            </MenuItem>
+            </MenuItem> */}
             {accounts?.map((account) => (
               <MenuItem key={account.brojRacuna} value={account.brojRacuna}>
                 {account.brojRacuna}, {account.currency}
@@ -205,7 +206,8 @@ const ExchangeMainSection = ({
           <StyledTextField
             id="naRacunTextField"
             select
-            defaultValue={"Broj racuna..."}
+            placeholder="Broj racuna..."
+            //defaultValue={"Broj racuna..."}
             onChange={(e) => {
               const selectedAccount = accounts.find(
                 (account) => account.brojRacuna === e.target.value
@@ -217,9 +219,9 @@ const ExchangeMainSection = ({
               }
             }}
           >
-            <MenuItem disabled value={"Broj racuna..."} key="default">
+            {/* <MenuItem disabled value={"Broj racuna..."} key="default">
               Broj racuna...
-            </MenuItem>
+            </MenuItem> */}
             {accounts?.map((account) => (
               <MenuItem key={account.brojRacuna} value={account.brojRacuna}>
                 {account.brojRacuna}, {account.currency}

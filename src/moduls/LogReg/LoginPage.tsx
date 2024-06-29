@@ -84,7 +84,7 @@ const LoginPage = () => {
 
 
         try {
-            const data = await makeApiRequest(UserRoutes.user_login, "POST", { username: email, password: password }, true, true)
+            const data = await makeApiRequest(UserRoutes.user_login, "POST", { username: email.toLowerCase(), password: password }, true, true)
             const token = await data.text()
             localStorage.setItem('si_jwt', token);
             const decodedToken = jwtDecode(token) as DecodedToken;

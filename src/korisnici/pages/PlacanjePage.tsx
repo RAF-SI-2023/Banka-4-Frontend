@@ -47,7 +47,7 @@ const Placanje: React.FC = () => {
     }
 
     return (
-        <Container maxWidth="md">
+        <Container maxWidth="md" sx={{mt:4}}>
             <Typography variant="h4" component="h1" gutterBottom>
                 Upravljanje Plaćanjima
             </Typography>

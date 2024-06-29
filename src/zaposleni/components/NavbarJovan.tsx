@@ -28,8 +28,11 @@ const pages = [
   { name: 'Krediti', path: 'listaKredita', permissions: [EmployeePermissionsV2.list_credits] },
   { name: 'Verifikacija', path: '/verifikacija', permissions: [EmployeePermissionsV2.payment_access] },
   { name: 'Profit', path: '/profit', permissions: [EmployeePermissionsV2.profit_access] },
-  { name: 'OTC', path: 'otc', permissions: [] },
+  {name: "OTC-K", path:"otckorisnik", permissions: []},
+  {name: "OTC", path:"otc", permissions: [EmployeePermissionsV2.list_workers]},
+
 ];
+
 
 const checkUserPermissions = (requiredPermissions: EmployeePermissionsV2[]) => {
   const token = localStorage.getItem('si_jwt');

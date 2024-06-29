@@ -126,7 +126,7 @@ describe('Provera zaposlenog spec', () => {
 
 
 
-    cy.get('#lista-zaposlenih-tab').click();
+    // cy.get('#lista-zaposlenih-tab').click();
 
 
     it('should submit form with valid data', () => {

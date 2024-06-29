@@ -164,61 +164,84 @@ const ResetPasswordPage = () => {
         >
           Pošalji zahtev
         </Button>
+        </Typography>
+        
+            <StyledTextField
+              type="email"
+              error={!!email && !emailValid}
+              fullWidth
+              helperText={!!email && !emailValid ? 'Unesite ispravan mejl' : ''}
+              label="Email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onBlur={validateEmail}
+            />
+            <Button variant={'contained'} 
+              disabled={!emailValid} 
+              onClick={sendRequest}
+              
+              sx={{
+                color: 'white',
+                backgroundColor: '#AC190C',
+                '&:hover': {
+                  backgroundColor: '#EF2C1A',
+                },
+                '&.Mui-disabled': {
+                  backgroundColor: '#DBCBCB', // Siva boja kada je dugme onemogućeno
+                  color: 'light-gray', // Boja teksta kada je dugme onemogućeno
+                },
+              }}
+            >
+              Pošalji zahtev
+            </Button>
 
-        <StyledTextField
-          type="text"
-          error={!!activationCode && !activationCodeValid}
-          fullWidth
-          helperText={
-            !!activationCode && !activationCodeValid
-              ? "Unesite ispravan aktivacioni kod"
-              : ""
-          }
-          label="Aktivacioni kod"
-          id="activationCode"
-          value={activationCode}
-          onChange={(e) => setActivationCode(e.target.value)}
-          onBlur={validateActivationCode}
-        />
-        <StyledTextField
-          type="password"
-          error={!!newPassword && !passwordValid}
-          fullWidth
-          helperText={
-            !!newPassword && !passwordValid
-              ? "Lozinka mora imati najmanje 8 karaktera, najviše 32 karaktera,najmanje 2 broja, najmanje 1 veliko slovo i najmanje 1 malo slovo"
-              : ""
-          }
-          label="Nova lozinka"
-          id="novaLozinka"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          onBlur={validatePassword}
-        />
-        <Button
-          disabled={!activationCodeValid || !passwordValid}
-          onClick={resetPassword}
-          sx={{
-            mt: 3,
-            mb: 2,
-            color: "white",
-            backgroundColor: "#AC190C",
-            "&:hover": {
-              backgroundColor: "#EF2C1A",
-            },
-            "&.Mui-disabled": {
-              backgroundColor: "#DBCBCB", // Siva boja kada je dugme onemogućeno
-              color: "light-gray", // Boja teksta kada je dugme onemogućeno
-            },
-          }}
-        >
-          Restartuj šifru
-        </Button>
-
-        <Button variant={"contained"} onClick={handleBackClick}>
+            <StyledTextField
+              type="text"
+              error={!!activationCode && !activationCodeValid}
+              fullWidth
+              helperText={!!activationCode && !activationCodeValid ? 'Unesite ispravan aktivacioni kod' : ''}
+              label="Aktivacioni kod"
+              id="activationCode"
+              value={activationCode}
+              onChange={(e) => setActivationCode(e.target.value)}
+              onBlur={validateActivationCode}
+            />
+            <StyledTextField
+              type="password"
+              error={!!newPassword && !passwordValid}
+              fullWidth
+              helperText={!!newPassword && !passwordValid ? 'Lozinka mora imati najmanje 8 karaktera, najviše 32 karaktera,najmanje 2 broja, najmanje 1 veliko slovo i najmanje 1 malo slovo' : ''}
+              label="Nova lozinka"
+              id="novaLozinka"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              onBlur={validatePassword}
+            />
+           <Button
+            disabled={!activationCodeValid || !passwordValid}
+            onClick={resetPassword}
+            sx={{
+              mt: 3,
+              mb: 2,
+              color: 'white',
+              backgroundColor: '#AC190C',
+              '&:hover': {
+                backgroundColor: '#EF2C1A',
+              },
+              '&.Mui-disabled': {
+                backgroundColor: '#DBCBCB', // Siva boja kada je dugme onemogućeno
+                color: 'light-gray', // Boja teksta kada je dugme onemogućeno
+              },
+            }}
+          >
+            Restartuj šifru
+          </Button>
+          <Button variant={"contained"} onClick={handleBackClick}>
           Nazad
-        </Button>
-      </PageWrapper>
+          </Button>
+          
+        </PageWrapper>
     </StyledContainerLogReg>
   );
 };

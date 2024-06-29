@@ -55,6 +55,7 @@ import HartijeOdVrednosti from "berza/pages/HartijeOdVrednosti";
 import ProfitPage from "profit/ProfitPage";
 import ATMPage from 'korisnici/pages/ATMPage';
 import OtcPage from 'berza/pages/OtcPage';
+import OtcPageKorisnik from 'berza/pages/OtcPageKorisnik';
 import {permissionMap} from 'utils/permissions';
 
 const fadeIn = keyframes`
@@ -267,6 +268,10 @@ function App() {
              <Route
               path="/otc"
               element={auth?.id ? <OtcPage /> : <LoginPage />}
+            />
+            <Route
+              path="/otcKorisnik"
+              element={auth?.id ? <OtcPageKorisnik /> : <LoginPage />}
             />
             <Route
               path="/detaljiAkcije"

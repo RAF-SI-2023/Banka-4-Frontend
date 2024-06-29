@@ -12,7 +12,8 @@ export const getApiUrl = (route: string) => {
         '/credit',
         '/cards',
         '/racuni',
-        '/marzniRacuni'
+        '/marzniRacuni',
+        '/dodajPravni'
     ]
     const isKoisnikRoute = koisnikRoutes.some(prefix => route.startsWith(prefix));
     if (isKoisnikRoute) {
