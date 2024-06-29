@@ -1,6 +1,8 @@
 import { getApiUrl } from "utils/apiUrl"
 import { UserRoutes } from "utils/types"
 
+const baseUrl = getApiUrl(UserRoutes.user_login) ?? 'localhost:8080/api'
+
 export function loginAdmin(cy: Cypress.cy) {
     cy.visit('http://localhost:3000')
     cy.get('body > div.MuiDialog-root.MuiModal-root.css-zw3mfo-MuiModal-root-MuiDialog-root > div.MuiDialog-container.MuiDialog-scrollPaper.css-hz1bth-MuiDialog-container > div > div > p')
@@ -14,7 +16,7 @@ export function loginAdmin(cy: Cypress.cy) {
 export function loginKorisnik(cy: Cypress.cy, korisnik?: number) {
     cy.request({
         method: 'POST',
-        url: `${getApiUrl(UserRoutes.user_login)}${UserRoutes.user_login}`,
+        url: `${baseUrl}${UserRoutes.user_login}`,
         body: korisnik === 2 ? 
         { username: "pstamenic7721rn@raf.rs", password: "123" } :
         { username: "stamenic.petar@gmail.rs", password: "123" }

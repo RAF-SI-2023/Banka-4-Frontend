@@ -12,11 +12,11 @@ describe("Menjacnica spec", () => {
     cy.get("#iznosTextField").type("1");
     cy.get("#saRacunaTextField").click();
 
-    cy.get('[role="option"]').contains("444000000910000033").click();
+    cy.get('[role="option"]').first().click()
 
     cy.get("#naRacunTextField").click();
 
-    cy.get('[role="option"]').contains("444000000910000033").click();
+    cy.get('[role="option"]').first().click()
     cy.get("#nastaviButton").click();
 
     cy.get("#potvrdiButton").click();
@@ -28,11 +28,11 @@ describe("Menjacnica spec", () => {
 
     cy.get("#saRacunaTextField").click();
 
-    cy.get('[role="option"]').contains("444000000910000033").click();
+    cy.get('[role="option"]').first().click()
 
     cy.get("#naRacunTextField").click();
 
-    cy.get('[role="option"]').contains("444000000910000033").click();
+    cy.get('[role="option"]').first().click()
     cy.get("#nastaviButton").click();
 
   });
@@ -44,7 +44,7 @@ describe("Menjacnica spec", () => {
     cy.get("#iznosTextField").type("1");
     cy.get("#naRacunTextField").click();
 
-    cy.get('[role="option"]').contains("444000000910000033").click();
+    cy.get('[role="option"]').first().click()
     cy.get("#nastaviButton").click();
 
   });
@@ -56,7 +56,7 @@ describe("Menjacnica spec", () => {
     cy.get("#iznosTextField").type("1");
     cy.get("#saRacunaTextField").click();
 
-    cy.get('[role="option"]').contains("444000000910000033").click();
+    cy.get('[role="option"]').first().click()
 
     cy.get("#nastaviButton").click();
 
@@ -69,11 +69,11 @@ describe("Menjacnica spec", () => {
     cy.get("#iznosTextField").type("Varam ti zenu");
     cy.get("#saRacunaTextField").click();
 
-    cy.get('[role="option"]').contains("444000000910000033").click();
+    cy.get('[role="option"]').first().click()
 
     cy.get("#naRacunTextField").click();
 
-    cy.get('[role="option"]').contains("444000000910000033").click();
+    cy.get('[role="option"]').first().click()
     cy.get("#nastaviButton").click();
 
   });

@@ -29,7 +29,7 @@ describe('Kredit spec', () => {
     cy.get('input[name="loanTerm"]').type('60')
     cy.get('#bankAccountNumber').click()
 
-    cy.get('[role="option"]').contains('444000000910000033').click()
+    cy.get('[role="option"]').first().click()
     cy.get('input[name="branchOffice"]').type('Beograd')
 
     cy.get("#kwiknimeUwU").click();
@@ -70,7 +70,7 @@ describe('Kredit spec', () => {
     cy.get('input[name="loanTerm"]').type('60')
     cy.get('#bankAccountNumber').click()
 
-    cy.get('[role="option"]').contains('444000000910000033').click()
+    cy.get('[role="option"]').first().click()
     cy.get('input[name="branchOffice"]').type('Beograd')
 
     cy.get("#kwiknimeUwU").click();
