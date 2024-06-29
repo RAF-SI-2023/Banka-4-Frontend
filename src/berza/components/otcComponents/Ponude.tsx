@@ -7,6 +7,7 @@ import {
 import styled from 'styled-components';
 import { getMe } from 'utils/getMe';
 import { makeGetRequest, makeApiRequest } from 'utils/apiRequest';
+import { Account, BankRoutes, Employee, UserRoutes } from "utils/types";
 
 const ButtonTab = styled(Button)`
   background-color: #AC190C !important;
@@ -21,6 +22,7 @@ interface Ponuda {
   otcId: number;
   ticker: string;
   quantity: number;
+  sellerId: number;
 }
 
 interface NewPonuda {
@@ -45,14 +47,34 @@ const Ponude: React.FC = () => {
   const [priceOffered, setPriceOffered] = useState(0);
   const [selectedPonuda, setSelectedPonuda] = useState<Ponuda | null>(null);
   const [offerQuantity, setOfferQuantity] = useState(0);
+  const [userId, setId] = useState(0);
 
   useEffect(() => {
+
+    
     const fetchTickers = async () => {
+
+      const me = getMe();
+      if (!me) return;
+
+      let data;
+      let prim =0;
+      if (me.permission !== 0) {
+        const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${me.sub}`) as Employee;
+        setId(worker.firmaId);
+        prim = worker.firmaId;
+       }
+       else
+       {
+        setId(me.id);
+        prim = me.id;
+       }
+
       try {
         const me = getMe();
         if (!me) return;
 
-        const response = await makeGetRequest(`/user-stocks/-1`);
+        const response = await makeGetRequest(`/user-stocks/${prim}`);
         
         setTickers(response.map((ticker: Ticker) => ({
           ticker: ticker.ticker,
@@ -113,7 +135,7 @@ const Ponude: React.FC = () => {
       }
   
       const data = {
-        userId: -1,
+        userId: userId,
         ticker: selectedTicker.ticker,
         quantity: newPonuda.quantity,
       };
@@ -158,8 +180,8 @@ const Ponude: React.FC = () => {
 
     const data = {
       otcId: selectedPonuda.otcId,
-      sellerId: -1,
-      buyerId: getMe()?.id,
+      sellerId: selectedPonuda.sellerId,
+      buyerId: userId,
       ticker: selectedPonuda.ticker,
       quantity: offerQuantity, // Use the user-specified quantity here
       priceOffered: priceOffered

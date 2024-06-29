@@ -47,7 +47,7 @@ const PrihvatanjePonuda: React.FC = () => {
     try {
       if (!firmaId) return; // Ako firmaId nije dostupan, ne nastavljaj
 
-      const response = await makeGetRequest(`/otc/pending-otc-offers/${firmaId}`);
+      const response = await makeGetRequest(`/otc/pending-otc-offers/bank`);
       setPonude(response);
     } catch (error) {
       console.error('Error fetching offers:', error);

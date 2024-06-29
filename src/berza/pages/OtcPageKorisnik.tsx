@@ -65,7 +65,7 @@ const OtcPage: React.FC = () => {
       <Navbar variant="contained">
         <ButtonTab onClick={() => handleButtonClick(<Ponude />)}>Ponude</ButtonTab>
         <ButtonTab onClick={() => handleButtonClick(<MojePonude />)}>Moje Ponude</ButtonTab>
-       {odobrenje && (<ButtonTab onClick={() => handleButtonClick(<PrihvatanjePonuda />)}>Prihvatanje Ponuda</ButtonTab>)}
+       {odobrenje && (<ButtonTab onClick={() => handleButtonClick(<PrihvatanjePonuda />)}>BANKA Ponude</ButtonTab>)}
       </Navbar>
       <TableContainer>
         {selectedComponent}
