@@ -98,6 +98,7 @@ const OptionsTable = ({ selectedStock }: Props) => {
             `/opcija/sve-opcije-korisnika/${auth?.id}`
           );
           optionsData && setOptions(optionsData);
+          findActions();
         } catch (error) {
           console.error("Error fetching user options:", error);
         }

@@ -78,9 +78,16 @@ const BuyStockPopup: React.FC<BuyStockPopupProps> = ({ ticker }) => {
   }, []);
 
   const handleBuy = async () => {
-
+    const auth = getMe();
+    let userId = 0;
+    if (auth?.permission !== 0) {
+      const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${auth?.sub}`) as Employee;
+      userId = worker.firmaId;
+    } else {
+      userId = auth.id
+    }
     const data = {
-      "userId": getMe()?.id,
+      "userId": userId,
       "ticker": ticker,
       "quantity": kolicina
     }
