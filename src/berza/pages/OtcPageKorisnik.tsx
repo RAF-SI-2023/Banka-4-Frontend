@@ -7,6 +7,7 @@ import PrihvatanjePonuda from 'berza/components/otcComponents/PrihvatanjePonuda'
 import { EmployeePermissionsV2 } from 'utils/types';  
 import { jwtDecode } from 'jwt-decode';
 import { hasPermission } from 'utils/permissions';
+import ObradjenePonude from 'berza/components/otcComponents/ObradjenePonude';
 
 const checkUserPermissions = (requiredPermissions: EmployeePermissionsV2[]) => {
   const token = localStorage.getItem('si_jwt');
@@ -17,7 +18,7 @@ const checkUserPermissions = (requiredPermissions: EmployeePermissionsV2[]) => {
   return false;
 };
 
-const odobrenje = checkUserPermissions([EmployeePermissionsV2.order_access]);
+const odobrenje = checkUserPermissions([EmployeePermissionsV2.list_orders]);
 
 const ButtonTab = styled(Button)`
   background-color: #AC190C!important;
@@ -65,6 +66,7 @@ const OtcPage: React.FC = () => {
       <Navbar variant="contained">
         <ButtonTab onClick={() => handleButtonClick(<Ponude />)}>Ponude</ButtonTab>
         <ButtonTab onClick={() => handleButtonClick(<MojePonude />)}>Moje Ponude</ButtonTab>
+        <ButtonTab onClick={() => handleButtonClick(<ObradjenePonude />)}>Obradjene Ponude</ButtonTab>
        {odobrenje && (<ButtonTab onClick={() => handleButtonClick(<PrihvatanjePonuda />)}>BANKA Ponude</ButtonTab>)}
       </Navbar>
       <TableContainer>

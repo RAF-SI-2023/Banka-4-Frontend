@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Table, TableBody, TableCell, TableHead, TableRow, Paper,
-  Button, Dialog, DialogActions, DialogContent, DialogContentText,
-  DialogTitle, TextField
-} from '@mui/material';
-import { getMe } from 'utils/getMe'; // Importujte getMe funkciju
-import { makeGetRequest, makeApiRequest } from 'utils/apiRequest'; // Importujte funkciju za API zahteve
-import { Account, BankRoutes, Employee, UserRoutes } from "utils/types";
+import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
+import { getMe } from 'utils/getMe';
+import { makeGetRequest, makeApiRequest } from 'utils/apiRequest';
+import { Employee, UserRoutes } from "utils/types";
 
 interface Ponuda {
-  otcId: number;
+  id: number;
+  sellerId: number;
   ticker: string;
-  quantity: number;
-  status: string | null;
-  reason?: string;
+  sellerApproval: boolean;
+  banksApproval: boolean;
+  buyerId: number;
+  quantityToBuy: number;
+  priceOffer: number;
+  razlogOdbijanja: string;
+  datumKreiranja: number;
+  datumRealizacije: number;
+  opis: string;
 }
 
 const MojePonude: React.FC = () => {
@@ -25,6 +28,8 @@ const MojePonude: React.FC = () => {
   const [userId, setId] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [opis, setOpis] = useState<string>("");
+  const [openAccept, setOpenAccept] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchPonude = async () => {
@@ -66,28 +71,35 @@ const MojePonude: React.FC = () => {
     fetchPonude();
   }, []);
 
-  const handleAccept = async (id: number) => {
+  const handleConfirmAccept = async () => {
     try {
       const me = getMe();
       if (!me) return;
 
       const data = {
         userId: userId,
-        otcId: id,
+        otcId: selectedPonuda,
         accept: true,
+        opis: opis
       };
 
       await makeApiRequest(`/otc/resolve-otc`, 'POST', data);
+      window.location.reload();
 
-      const updatedPonude = ponude.map((ponuda) =>
-        ponuda.otcId === id ? { ...ponuda, status: 'Prihvaćeno' } : ponuda
-      );
-      setPonude(updatedPonude);
-      setIstorija([...istorija, { ...ponude.find((ponuda) => ponuda.otcId === id)!, status: 'Prihvaćeno' }]);
+      // const updatedPonude = ponude.map((ponuda) =>
+      //   ponuda.id === selectedPonuda ? { ...ponuda, status: 'Prihvaćeno' } : ponuda
+      // );
+      // setPonude(updatedPonude);
+      // setIstorija([...istorija, { ...ponude.find((ponuda) => ponuda.id === id)!, status: 'Prihvaćeno' }]);
     } catch (error) {
       console.error('Greška prilikom prihvatanja ponude:', error);
       setError('Greška prilikom prihvatanja ponude');
     }
+  };
+
+  const handleAccept = (id: number) => {
+    setSelectedPonuda(id);
+    setOpenAccept(true);
   };
 
   const handleReject = (id: number) => {
@@ -99,6 +111,10 @@ const MojePonude: React.FC = () => {
     setOpen(false);
     setReason('');
   };
+  const handleCloseAccept = () => {
+    setOpenAccept(false);
+    setOpis("");
+  };
 
   const handleConfirmReject = async () => {
     try {
@@ -109,15 +125,16 @@ const MojePonude: React.FC = () => {
         userId: userId,
         otcId: selectedPonuda,
         accept: false,
+        razlog: reason 
       };
 
       await makeApiRequest(`/otc/resolve-otc`, 'POST', data);
 
-      const updatedPonude = ponude.map((ponuda) =>
-        ponuda.otcId === selectedPonuda ? { ...ponuda, status: 'Odbijeno', reason } : ponuda
-      );
-      setPonude(updatedPonude);
-      setIstorija([...istorija, { ...ponude.find((ponuda) => ponuda.otcId === selectedPonuda)!, status: 'Odbijeno', reason }]);
+      // const updatedPonude = ponude.map((ponuda) =>
+      //   ponuda.id === selectedPonuda ? { ...ponuda, status: 'Odbijeno', reason } : ponuda
+      // );
+      // setPonude(updatedPonude);
+      // setIstorija([...istorija, { ...ponude.find((ponuda) => ponuda.id === selectedPonuda)!, status: 'Odbijeno', reason }]);
       handleClose();
     } catch (error) {
       console.error('Greška prilikom odbijanja ponude:', error);
@@ -139,27 +156,64 @@ const MojePonude: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
+              <TableCell>Seller name</TableCell>
               <TableCell>Ticker</TableCell>
-              <TableCell>Količina</TableCell>
-              <TableCell>Akcije</TableCell>
+              <TableCell>Seller approval</TableCell>
+              <TableCell>Bank approval</TableCell>
+              <TableCell>Buyer name</TableCell>
+              <TableCell>Quantity to buy</TableCell>
+              <TableCell>Price offer</TableCell>
+              <TableCell>Creation date</TableCell>
+              <TableCell>Napomena</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {ponude.filter((ponuda) => !ponuda.status).map((ponuda) => (
-              <TableRow key={ponuda.otcId}>
-                <TableCell>{ponuda.otcId}</TableCell>
+            {ponude.map((ponuda) => (
+              <TableRow key={ponuda.id}>
+                <TableCell>{ponuda.sellerId}</TableCell>
                 <TableCell>{ponuda.ticker}</TableCell>
-                <TableCell>{ponuda.quantity}</TableCell>
+                <TableCell>{ponuda.sellerApproval ? "Prihvacen" : "Nije prihvacen"}</TableCell>
+                <TableCell>{ponuda.banksApproval ? "Prihvacen" : "Nije prihvacen"}</TableCell>
+                <TableCell>{ponuda.buyerId}</TableCell>
+                <TableCell>{ponuda.quantityToBuy}</TableCell>
+                <TableCell>{ponuda.priceOffer}</TableCell>
+                <TableCell>{new Date(ponuda.datumKreiranja).toLocaleTimeString("en-de")}</TableCell>
+                <TableCell>{ponuda.opis ?? ""}</TableCell>
                 <TableCell>
-                  <Button onClick={() => handleAccept(ponuda.otcId)}>Prihvati</Button>
-                  <Button onClick={() => handleReject(ponuda.otcId)}>Odbij</Button>
+                  {!ponuda.sellerApproval ?
+                    <Button onClick={() => handleAccept(ponuda.id)}>Prihvati</Button> : null
+                  }
+                  {!ponuda.sellerApproval ?
+                    <Button onClick={() => handleReject(ponuda.id)}>Odbij</Button> : null
+                  }
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </Paper>
+
+      <Dialog open={openAccept} onClose={handleCloseAccept}>
+        <DialogTitle>Prihvati Ponudu</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Unesite opis.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Opis"
+            type="text"
+            fullWidth
+            value={opis}
+            onChange={(e) => setOpis(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseAccept}>Odustani</Button>
+          <Button onClick={handleConfirmAccept}>Potvrdi</Button>
+        </DialogActions>
+      </Dialog>
 
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Odbij Ponudu</DialogTitle>
