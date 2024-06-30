@@ -10,7 +10,7 @@ export function loginAdmin(cy: Cypress.cy) {
     cy.get("#email").type("pera@gmail.rs")
     cy.get("#password").type("123")
     cy.get("#root > main > form > button").click()
-    cy.get('#root > div.sc-qZrbh.liNQxn > div.sc-kFCroH.pFNq > div').should('have.text', 'Lista Korisnika')
+    cy.get('#root > div.sc-GkLId.jtqrOV > div.sc-fnpiog.dEJczz').should('have.text', 'Lista Racuna')
 }
 
 export function loginKorisnik(cy: Cypress.cy, korisnik?: number) {
