@@ -12,66 +12,66 @@ describe('Akcije spec', () => {
         //logout(cy)
     })
     it('Kupovanje akcije', () => {
-        // cy.get('#racunId').click();
-        // cy.get('[data-testid="racun-0"]').click();
+        cy.get('#racunId').click();
+        cy.get('[data-testid="racun-0"]').click();
 
-        // cy.get('input[name="kolicina"]').type('10');
-        // cy.get('input[name="limit"]').type('100');
-        // cy.get('input[name="stop"]').type('90');
+        cy.get('input[name="kolicina"]').type('10');
+        cy.get('input[name="limit"]').type('100');
+        cy.get('input[name="stop"]').type('90');
 
-        // cy.get('input[type="checkbox"]').eq(0).check();
-        // cy.get('input[type="checkbox"]').eq(1).check();
+        cy.get('input[type="checkbox"]').eq(0).check();
+        cy.get('input[type="checkbox"]').eq(1).check();
 
-        // cy.get('button#kupi').click();
+        cy.get('button#kupi').click();
     });
 
     it('Kupovanje akcije bez biranja racuna', () => {
-        // cy.get('input[name="kolicina"]').type('10');
-        // cy.get('input[name="limit"]').type('100');
-        // cy.get('input[name="stop"]').type('90');
+        cy.get('input[name="kolicina"]').type('10');
+        cy.get('input[name="limit"]').type('100');
+        cy.get('input[name="stop"]').type('90');
 
-        // cy.get('input[type="checkbox"]').eq(0).check();
-        // cy.get('input[type="checkbox"]').eq(1).check();
+        cy.get('input[type="checkbox"]').eq(0).check();
+        cy.get('input[type="checkbox"]').eq(1).check();
 
-        // cy.get('button#kupi').click();
+        cy.get('button#kupi').click();
     });
 
     it('Kupovanje akcije bez biranja kolicine', () => {
-        // cy.get('#racunId').click();
-        // cy.get('[data-testid="racun-0"]').click();
+        cy.get('#racunId').click();
+        cy.get('[data-testid="racun-0"]').click();
 
-        // cy.get('input[name="limit"]').type('100');
-        // cy.get('input[name="stop"]').type('90');
+        cy.get('input[name="limit"]').type('100');
+        cy.get('input[name="stop"]').type('90');
 
-        // cy.get('input[type="checkbox"]').eq(0).check();
-        // cy.get('input[type="checkbox"]').eq(1).check();
+        cy.get('input[type="checkbox"]').eq(0).check();
+        cy.get('input[type="checkbox"]').eq(1).check();
 
-        // cy.get('button#kupi').click();
+        cy.get('button#kupi').click();
     });
 
     it('Kupovanje akcije bez biranja limita', () => {
-        // cy.get('#racunId').click();
-        // cy.get('[data-testid="racun-0"]').click();
+        cy.get('#racunId').click();
+        cy.get('[data-testid="racun-0"]').click();
 
-        // cy.get('input[name="kolicina"]').type('10');
-        // cy.get('input[name="stop"]').type('90');
+        cy.get('input[name="kolicina"]').type('10');
+        cy.get('input[name="stop"]').type('90');
 
-        // cy.get('input[type="checkbox"]').eq(0).check();
-        // cy.get('input[type="checkbox"]').eq(1).check();
+        cy.get('input[type="checkbox"]').eq(0).check();
+        cy.get('input[type="checkbox"]').eq(1).check();
 
-        // cy.get('button#kupi').click();
+        cy.get('button#kupi').click();
     });
 
     it('Kupovanje akcije bez biranja stopa', () => {
-        // cy.get('#racunId').click();
-        // cy.get('[data-testid="racun-0"]').click();
+        cy.get('#racunId').click();
+        cy.get('[data-testid="racun-0"]').click();
 
-        // cy.get('input[name="kolicina"]').type('10');
-        // cy.get('input[name="limit"]').type('100');
+        cy.get('input[name="kolicina"]').type('10');
+        cy.get('input[name="limit"]').type('100');
 
-        // cy.get('input[type="checkbox"]').eq(0).check();
-        // cy.get('input[type="checkbox"]').eq(1).check();
+        cy.get('input[type="checkbox"]').eq(0).check();
+        cy.get('input[type="checkbox"]').eq(1).check();
 
-        // cy.get('button#kupi').click();
+        cy.get('button#kupi').click();
     });
 })
