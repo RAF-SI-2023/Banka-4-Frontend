@@ -1,6 +1,6 @@
 import { loginAdmin, loginKorisnik, logout } from "../util/util"
 
-describe('Provera kursa spec', () => {
+describe('Korisnici spec', () => {
   beforeEach(() => {
     loginAdmin(cy);
   })
@@ -8,6 +8,7 @@ describe('Provera kursa spec', () => {
     //logout(cy)
   })
   it('Admin dodavanje korisnika', () => {
+    cy.visit("http://localhost:3000/listaKorisnika");
 
     cy.get('#dodajKorisnikaDugme').click();
 
@@ -37,7 +38,7 @@ describe('Provera kursa spec', () => {
   })
 
   it('Admin dodavanje korisnika greska no name', () => {
-
+    cy.visit("http://localhost:3000/listaKorisnika");
     cy.get('#dodajKorisnikaDugme').click();
 
 
@@ -65,7 +66,7 @@ describe('Provera kursa spec', () => {
   })
 
   it('Admin dodavanje korisnika no surname', () => {
-
+    cy.visit("http://localhost:3000/listaKorisnika");
     cy.get('#dodajKorisnikaDugme').click();
 
 
@@ -93,7 +94,7 @@ describe('Provera kursa spec', () => {
   })
 
   it('Admin dodavanje korisnika no jmbg', () => {
-
+    cy.visit("http://localhost:3000/listaKorisnika");
     cy.get('#dodajKorisnikaDugme').click();
 
 
@@ -121,7 +122,7 @@ describe('Provera kursa spec', () => {
   })
 
   it('Admin dodavanje korisnika no date', () => {
-
+    cy.visit("http://localhost:3000/listaKorisnika");
     cy.get('#dodajKorisnikaDugme').click();
 
 
@@ -150,7 +151,7 @@ describe('Provera kursa spec', () => {
   })
 
   it('Admin dodavanje korisnika no pol', () => {
-
+    cy.visit("http://localhost:3000/listaKorisnika");
     cy.get('#dodajKorisnikaDugme').click();
 
 
@@ -178,7 +179,7 @@ describe('Provera kursa spec', () => {
   })
 
   it('Admin dodavanje korisnika no adress', () => {
-
+    cy.visit("http://localhost:3000/listaKorisnika");
     cy.get('#dodajKorisnikaDugme').click();
 
 
@@ -206,7 +207,7 @@ describe('Provera kursa spec', () => {
   })
 
   it('Admin dodavanje korisnika no email', () => {
-
+    cy.visit("http://localhost:3000/listaKorisnika");
     cy.get('#dodajKorisnikaDugme').click();
 
 
@@ -234,7 +235,7 @@ describe('Provera kursa spec', () => {
 
 
   it('Admin dodavanje lose jmbg i esec', () => {
-
+    cy.visit("http://localhost:3000/listaKorisnika");
     cy.get('#dodajKorisnikaDugme').click();
 
 
@@ -258,7 +259,5 @@ describe('Provera kursa spec', () => {
     cy.get('input[name="brojTelefona"]').type(brojTelefona);
 
     cy.get('button').contains('Kreiraj').click();
-
-
   })
 })
