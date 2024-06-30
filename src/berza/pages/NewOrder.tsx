@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getMe } from "utils/getMe";
-import { makeApiRequest } from "utils/apiRequest"; // Funkcija za slanje POST zahteva
+import { makeApiRequest, makeGetRequest } from "utils/apiRequest"; // Funkcija za slanje POST zahteva
 import { TextField, Button, Alert, Typography, Container, FormControlLabel, Checkbox } from '@mui/material';
 import styled from 'styled-components';
+import { BankRoutes, Employee, UserRoutes } from 'utils/types';
 
 const ActionButton = styled(Button)`
 
@@ -48,8 +49,15 @@ const CreateOrderPage: React.FC = () => {
         }
 
         try {
+            let userId = 0;
+            if (auth?.permission !== 0) {
+                const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${auth?.sub}`) as Employee;
+                userId = worker.firmaId;
+              } else {
+                userId = auth.id
+              }
             const newOrder = {
-                userId: auth?.id || 0,
+                userId: userId || 0,
                 ticker,
                 quantity: Number(quantity),
                 limit: limit ? Number(limit) : undefined,
