@@ -223,7 +223,7 @@ const OrdersPage: React.FC = () => {
         </StyledTable>
       </Paper>
 
-      <StyledHeading variant="h4">Futures</StyledHeading>
+      <StyledHeading variant="h4">Terminski ugovori</StyledHeading>
       <Paper elevation={3}>
         <StyledTable>
           <TableHead>
@@ -257,7 +257,7 @@ const OrdersPage: React.FC = () => {
         </StyledTable>
       </Paper>
 
-      <StyledHeading variant="h4">Futures 2</StyledHeading>
+      <StyledHeading variant="h4">Zahtevi terminskih ugovora</StyledHeading>
       <Paper elevation={3}>
         <StyledTable>
           <TableHead>

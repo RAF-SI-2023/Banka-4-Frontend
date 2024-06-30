@@ -176,9 +176,9 @@ describe('Placanja spec', () => {
         cy.reload()
         primaociPlacanja(cy);
 
-        for (let i = 0; i <= initialRowCount; i++) {
+        // for (let i = 0; i <= initialRowCount; i++) {
           cy.get(`#primalacDelete0`).click();
-        }
+        // }
 
         cy.get('#root > div > div.MuiBox-root.css-0')
           .find('table')

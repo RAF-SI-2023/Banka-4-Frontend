@@ -53,27 +53,27 @@ const BuyStockPopup: React.FC<BuyStockPopupProps> = ({ ticker }) => {
 
         if (me.permission) {
           const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${me.sub}`) as Employee
-  
-        
+
+
           data = await makeGetRequest(`${BankRoutes.account_find_user_account}/${worker.firmaId}`);
-          
+
         } else {
           data = await makeGetRequest(`${BankRoutes.account_find_user_account}/${me.id}`);
-         
+
         }
 
-        
-        const accountNumbers = data.map(account => account.brojRacuna +" - " +account.raspolozivoStanje);
+
+        const accountNumbers = data.map(account => account.brojRacuna + " - " + account.raspolozivoStanje);
 
 
         console.log(accountNumbers);
-       setAccounts(accountNumbers);
+        setAccounts(accountNumbers);
 
       } catch (error) {
         console.error('Failed to fetch accounts:', error);
       }
     }
-    
+
     fetchAccounts();
   }, []);
 
@@ -110,24 +110,24 @@ const BuyStockPopup: React.FC<BuyStockPopupProps> = ({ ticker }) => {
         </DialogTitle>
         <DialogContent>
 
-            
-        <FormControl fullWidth sx={{ marginTop: 2, marginBottom: 1 }}>
-              <InputLabel id="racun">Račun</InputLabel>
-              <Select
-                labelId="racun"
-                name="racun"
-                id="racunId"
-                value={selectedAccount}
-                label="Račun"
-                onChange={(e) => setSelectedAccount(e.target.value as string)}
-              >
-                {accounts.map((account, index) => (
-                  <MenuItem key={index} value={account}>
-                    {account}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+
+          <FormControl fullWidth sx={{ marginTop: 2, marginBottom: 1 }}>
+            <InputLabel id="racun">Račun</InputLabel>
+            <Select
+              labelId="racun"
+              name="racun"
+              id="racunId"
+              value={selectedAccount}
+              label="Račun"
+              onChange={(e) => setSelectedAccount(e.target.value as string)}
+            >
+              {accounts.map((account, index) => (
+                <MenuItem key={index} data-testid={`racun-${index}`} value={account}>
+                  {account}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
           <TextField
             label="Kolicina"
@@ -165,16 +165,16 @@ const BuyStockPopup: React.FC<BuyStockPopupProps> = ({ ticker }) => {
           <FormGroup>
             <FormControlLabel control={<Checkbox checked={margin} onChange={(e) => setMargin(e.target.checked)} />} label="Marign" />
             <FormControlLabel control={<Checkbox checked={allOrNone} onChange={(e) => setAllOrNone(e.target.checked)} />} label="AllOrNone" />
-         
-      
+
+
           </FormGroup>
         </DialogContent>
 
-        
+
         <DialogActions>
 
           <Button onClick={handleClose}>Izlaz</Button>
-          <Button onClick={handleBuy} autoFocus>
+          <Button id="kupi" onClick={handleBuy} autoFocus>
             Kupi
           </Button>
         </DialogActions>

@@ -227,7 +227,7 @@ const ProfitHartijeTable = () => {
                         scope="row"
                         settlementDate={future.settlementDate}
                       >
-                        {future.settlementDate}
+                        {new Date(future.settlementDate).toLocaleDateString("en-de")}
                       </StyledTableCellDynamic>
                     </StyledTableRow>
                   ))

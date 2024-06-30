@@ -105,6 +105,7 @@ const AkcijePage: React.FC = () => {
             <StyledTabs value={selectedTab} onChange={handleChange}>
               <Tab label="Akcije" />
               <StyledTextField
+                id="pretraga"
                 label="Pretraga"
                 variant="standard"
                 value={filter}
@@ -114,7 +115,7 @@ const AkcijePage: React.FC = () => {
                 sx={{ marginTop: 0, marginBottom: 1 }}
               />
               <SearchWrapper onClick={findStock}>
-                <SearchIcon ></SearchIcon>
+                <SearchIcon id="search"></SearchIcon>
               </SearchWrapper>
             </StyledTabs>
           </AppBar>
