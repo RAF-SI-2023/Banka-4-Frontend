@@ -24,18 +24,25 @@ const PrihvatanjePonuda: React.FC = () => {
   const [selectedPonuda, setSelectedPonuda] = useState<number | null>(null);
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [firmaId, setFirmaId] = useState<number | null>(null); // Dodato za čuvanje firmaId
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchAccounts = async () => {
     try {
       const me = getMe();
-      if (!me) return;
+      if (!me) {
+        setError('Korisnik nije pronađen');
+        setLoading(false);
+        return;
+      }
 
       const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${me.sub}`) as Employee;
       if (worker) {
         setFirmaId(worker.firmaId); // Sačuvaj firmaId u stanju komponente
       }
     } catch (error) {
-      console.error(error);
+      console.error('Greška prilikom učitavanja naloga:', error);
+      setError('Greška prilikom učitavanja naloga');
     }
   };
 
@@ -45,12 +52,18 @@ const PrihvatanjePonuda: React.FC = () => {
 
   const fetchPonude = async () => {
     try {
-      if (!firmaId) return; // Ako firmaId nije dostupan, ne nastavljaj
+      if (!firmaId) {
+        setLoading(false);
+        return; // Ako firmaId nije dostupan, ne nastavljaj
+      }
 
       const response = await makeGetRequest(`/otc/pending-otc-offers/bank`);
       setPonude(response);
     } catch (error) {
-      console.error('Error fetching offers:', error);
+      console.error('Greška prilikom učitavanja ponuda:', error);
+      setError('Greška prilikom učitavanja ponuda');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -77,7 +90,8 @@ const PrihvatanjePonuda: React.FC = () => {
       setPonude(updatedPonude);
       setIstorija([...istorija, { ...ponude.find((ponuda) => ponuda.otcId === id)!, status: 'Prihvaćeno' }]);
     } catch (error) {
-      console.error('Error accepting offer:', error);
+      console.error('Greška prilikom prihvatanja ponude:', error);
+      setError('Greška prilikom prihvatanja ponude');
     }
   };
 
@@ -111,9 +125,18 @@ const PrihvatanjePonuda: React.FC = () => {
       setIstorija([...istorija, { ...ponude.find((ponuda) => ponuda.otcId === selectedPonuda)!, status: 'Odbijeno', reason }]);
       handleClose();
     } catch (error) {
-      console.error('Error rejecting offer:', error);
+      console.error('Greška prilikom odbijanja ponude:', error);
+      setError('Greška prilikom odbijanja ponude');
     }
   };
+
+  if (loading) {
+    return <p>Učitavanje ponuda...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   return (
     <div>

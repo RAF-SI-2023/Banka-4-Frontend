@@ -5,6 +5,7 @@ import {
   Select, MenuItem, InputLabel, FormControl, SelectChangeEvent, TextField
 } from '@mui/material';
 import styled from 'styled-components';
+import Swal from 'sweetalert2';
 import { getMe } from 'utils/getMe';
 import { makeGetRequest, makeApiRequest } from 'utils/apiRequest';
 import { Account, BankRoutes, Employee, UserRoutes } from "utils/types";
@@ -50,32 +51,23 @@ const Ponude: React.FC = () => {
   const [userId, setId] = useState(0);
 
   useEffect(() => {
-
-    
     const fetchTickers = async () => {
-
       const me = getMe();
       if (!me) return;
 
       let data;
-      let prim =0;
+      let prim = 0;
       if (me.permission !== 0) {
         const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${me.sub}`) as Employee;
         setId(worker.firmaId);
         prim = worker.firmaId;
-       }
-       else
-       {
+      } else {
         setId(me.id);
         prim = me.id;
-       }
+      }
 
       try {
-        const me = getMe();
-        if (!me) return;
-
         const response = await makeGetRequest(`/user-stocks/${prim}`);
-        
         setTickers(response.map((ticker: Ticker) => ({
           ticker: ticker.ticker,
           quantity: ticker.quantity,
@@ -130,7 +122,11 @@ const Ponude: React.FC = () => {
   const handleSubmit = async () => {
     try {
       if (!selectedTicker || !getMe()?.id || newPonuda.quantity <= 0) {
-        console.error('Selected ticker, user ID or quantity is not defined');
+        Swal.fire({
+          icon: 'error',
+          title: 'Greška',
+          text: 'Nisu svi podaci ispravno uneseni.'
+        });
         return;
       }
   
@@ -143,14 +139,28 @@ const Ponude: React.FC = () => {
       const response = await makeApiRequest(`/otc/place-otc-public`, "POST", data);
   
       if (response.status === 200) {
-        console.log('Offer successfully placed:', response.data);
-        window.location.reload();  // Refresh the page after successful submission
+        Swal.fire({
+          icon: 'success',
+          title: 'Uspeh',
+          text: 'Ponuda je uspešno postavljena.'
+        }).then(() => {
+          window.location.reload();  // Refresh the page after successful submission
+        });
       } else {
-        console.error('Failed to place offer:', response);
+        Swal.fire({
+          icon: 'error',
+          title: 'Greška',
+          text: 'Neuspešno postavljanje ponude.'
+        });
       }
   
       handleClose();
     } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Greška',
+        text: 'Došlo je do greške prilikom postavljanja ponude.'
+      });
       console.error('Error placing offer:', error);
     }
   };
@@ -174,6 +184,11 @@ const Ponude: React.FC = () => {
 
   const handleMakeOffer = async () => {
     if (!selectedPonuda || offerQuantity <= 0) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Greška',
+        text: 'Nisu svi podaci ispravno uneseni.'
+      });
       console.error('No selected ponuda or invalid offer quantity');
       return;
     }
@@ -191,14 +206,28 @@ const Ponude: React.FC = () => {
       const response = await makeApiRequest(`/otc/make-offer-for-otc`, "PUT", data);
 
       if (response.status === 200) {
-        console.log('Offer successfully made:', response.data);
-        window.location.reload();  // Refresh the page after successful submission
+        Swal.fire({
+          icon: 'success',
+          title: 'Uspeh',
+          text: 'Ponuda je uspešno postavljena.'
+        }).then(() => {
+          window.location.reload();  // Refresh the page after successful submission
+        });
       } else {
-        console.error('Failed to make offer:', response);
+        Swal.fire({
+          icon: 'error',
+          title: 'Greška',
+          text: 'Neuspešno postavljanje ponude.'
+        });
       }
 
       handleCloseOfferDialog();
     } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Greška',
+        text: 'Došlo je do greške prilikom postavljanja ponude.'
+      });
       console.error('Error making offer:', error);
     }
   };

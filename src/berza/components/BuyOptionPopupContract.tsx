@@ -12,18 +12,22 @@ interface BuyOptionPopupProps {
 
 export default function BuyOptionPopup({ contractId, price_d }: BuyOptionPopupProps) {
   const [open, setOpen] = useState(false);
-
   const [quantity, setQuantity] = useState<number>(5000);
   const [pricePerUnit, setPricePerUnit] = useState<number>(100); // Postavljena fiksna cena
-
   const [accounts, setAccounts] = useState<string[]>([]);
   const [selectedAccount, setSelectedAccount] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchAccounts() {
       try {
         const me = getMe();
-        if (!me) return;
+        if (!me) {
+          setError('Korisnik nije pronađen');
+          setLoading(false);
+          return;
+        }
 
         let data: Account[];
 
@@ -35,10 +39,12 @@ export default function BuyOptionPopup({ contractId, price_d }: BuyOptionPopupPr
         }
 
         const accountNumbers = data.map(account => account.brojRacuna);
-        console.log(accountNumbers);
         setAccounts(accountNumbers);
       } catch (error) {
         console.error('Failed to fetch accounts:', error);
+        setError('Greška prilikom učitavanja naloga');
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -51,25 +57,40 @@ export default function BuyOptionPopup({ contractId, price_d }: BuyOptionPopupPr
 
   const handleClose = () => {
     setOpen(false);
+    setError(null);
   };
 
   const handleBuy = async () => {
-    const response = await makeApiRequest(`/futures/buy/` + contractId + "/" + selectedAccount, 'POST');
-    console.log("DDD " + response);
-    if (response.status === "200") {
-      console.log("HGJ");
-      setOpen(false);
-      Swal.fire({
-        title: "Uspeh",
-        html: `
-          <p>Uspesno kupljeno sa sledećim detaljima:</p>
-          <p><strong>Cena po jedinici:</strong> ${pricePerUnit}</p>
-          <p><strong>Račun:</strong> ${selectedAccount}</p>
-        `,
-        icon: "success"
-      });
+    if (!selectedAccount) {
+      setError('Molimo odaberite račun');
+      return;
+    }
+
+    try {
+      const response = await makeApiRequest(`/futures/buy/${contractId}/${selectedAccount}`, 'POST');
+      if (response.status === 200) {
+        setOpen(false);
+        Swal.fire({
+          title: "Uspeh",
+          html: `
+            <p>Uspešno kupljeno sa sledećim detaljima:</p>
+            <p><strong>Cena po jedinici:</strong> ${pricePerUnit}</p>
+            <p><strong>Račun:</strong> ${selectedAccount}</p>
+          `,
+          icon: "success"
+        });
+      } else {
+        setError('Došlo je do greške prilikom kupovine');
+      }
+    } catch (error) {
+      console.error('Greška prilikom kupovine:', error);
+      setError('Greška prilikom kupovine');
     }
   };
+
+  if (loading) {
+    return <p>Učitavanje naloga...</p>;
+  }
 
   return (
     <Fragment>
@@ -85,6 +106,7 @@ export default function BuyOptionPopup({ contractId, price_d }: BuyOptionPopupPr
       >
         <DialogTitle id="alert-dialog-title">{"Kupi akciju"}</DialogTitle>
         <DialogContent>
+          {error && <p style={{ color: 'red' }}>{error}</p>}
           <TextField
             label="Cena"
             name="pricePerUnit"
