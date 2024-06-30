@@ -14,33 +14,33 @@ import { css } from '@emotion/react';
 
 
 
-  
+
 
 // const url = "http://api.stamenic.work:8080/api";
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
     width: '480px !important',
     '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: 'initial',
-      },
-      '&:hover fieldset': {
-        borderColor: '#EF2C1A', // Boja obruba prilikom hover-a
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: '#EF2C1A', // Boja obruba prilikom fokusa
-      },
-      '&.Mui-focused': {
-        backgroundColor: 'transparent', // Boja obruba prilikom fokusa
-    },
+        '& fieldset': {
+            borderColor: 'initial',
+        },
+        '&:hover fieldset': {
+            borderColor: '#EF2C1A', // Boja obruba prilikom hover-a
+        },
+        '&.Mui-focused fieldset': {
+            borderColor: '#EF2C1A', // Boja obruba prilikom fokusa
+        },
+        '&.Mui-focused': {
+            backgroundColor: 'transparent', // Boja obruba prilikom fokusa
+        },
     },
     '& .MuiInputLabel-root': {
-      color: 'initial',
+        color: 'initial',
     },
     '& .MuiInputLabel-root.Mui-focused': {
-      color: '#EF2C1A', // Boja label-e prilikom fokusa
+        color: '#EF2C1A', // Boja label-e prilikom fokusa
     },
-  }));
+}));
 
 const FieldContainer = styled.div`
     display: flex;
@@ -99,13 +99,7 @@ const LoginPage = () => {
         if (!isAuthenticated) {
             setError('Incorrect username or password');
         } else {
-            if (isEmployee) {
-                navigate("/");
-                window.location.reload()
-            } else {
-                navigate("/");
-                window.location.reload()
-            }
+            navigate("/");
         }
     };
 
@@ -121,7 +115,7 @@ const LoginPage = () => {
                     }
                 `}
             </style>
-            <Typography component="h1" variant="h5" sx={{ fontSize: '1.5rem', fontWeight: 'bold', margin: '20px 0', color:"red" }}>
+            <Typography component="h1" variant="h5" sx={{ fontSize: '1.5rem', fontWeight: 'bold', margin: '20px 0', color: "red" }}>
                 Login
             </Typography>
             <form onSubmit={authenticate}>
@@ -138,7 +132,7 @@ const LoginPage = () => {
                         autoFocus
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        sx={{ margin: '5px 0',color:'red' }} // Reduced margin
+                        sx={{ margin: '5px 0', color: 'red' }} // Reduced margin
                     />
                     <StyledTextField
                         variant="outlined"
@@ -151,7 +145,7 @@ const LoginPage = () => {
                         autoComplete="current-password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        sx={{  margin: '5px 0', color:'red' }} // Reduced margin
+                        sx={{ margin: '5px 0', color: 'red' }} // Reduced margin
                     />
                 </FieldContainer>
                 {error && (
@@ -164,20 +158,21 @@ const LoginPage = () => {
                     fullWidth
                     variant="contained"
                     disabled={!email || !password}
-                    sx={{ mt: 3, mb: 2, color:'white', backgroundColor:'#AC190C',
+                    sx={{
+                        mt: 3, mb: 2, color: 'white', backgroundColor: '#AC190C',
                         '&:hover': {
-                            backgroundColor: '#EF2C1A', 
-                          },
-                     }}
-                    
+                            backgroundColor: '#EF2C1A',
+                        },
+                    }}
+
                 >
                     Login
                 </Button>
-                <Link onClick={handleForgot} variant="body2" sx={{color:'red', textDecoration: 'none', '&:hover': { textDecoration: 'underline' }}}>
+                <Link onClick={handleForgot} variant="body2" sx={{ color: 'red', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>
                     {"Zaboravio si šifru?"}
                 </Link>
                 <br />
-                <Link onClick={handleRegister} variant="body2" sx={{color:'red', textDecoration: 'none', '&:hover': { textDecoration: 'underline' }}}>
+                <Link onClick={handleRegister} variant="body2" sx={{ color: 'red', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>
                     {"Nemaš nalog? Registruj se"}
                 </Link>
             </form>
