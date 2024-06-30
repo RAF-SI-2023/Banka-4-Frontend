@@ -5,8 +5,8 @@ import BuyOptionPopup from "./BuyOptionPopup";
 import { getMe } from "utils/getMe";
 import { useContext } from "react";
 import { Context } from "App";
-import { makeApiRequest } from "utils/apiRequest";
-import { UserRoutes } from "utils/types";
+import { makeApiRequest, makeGetRequest } from "utils/apiRequest";
+import { Employee, UserRoutes } from "utils/types";
 
 
 const PutsList: React.FC<OptionsList> = ({ options }) => {
@@ -51,10 +51,18 @@ const PutsList: React.FC<OptionsList> = ({ options }) => {
                             <StyledTableCell>{option.impliedVolatility}</StyledTableCell>
                             <StyledTableCell>
                                 <Button variant="outlined" onClick={async () => {
+                                    const auth = getMe();
+                                    let userId = 0;
+                                    if (auth?.permission !== 0) {
+                                        const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${auth?.sub}`) as Employee;
+                                        userId = worker.firmaId;
+                                    } else {
+                                        userId = auth.id
+                                    }
                                     const data = {
-                                        korisnikId: getMe()?.id,
+                                        korisnikId: userId,
                                         opcijaId: option.id,
-                                        akcijaId: 0,
+                                        akcijaId: option.ticker,
                                         akcijaTickerCenaPrilikomIskoriscenja: option.strikePrice
                                     }
                                     try {

@@ -1,8 +1,10 @@
-import { loginAdmin } from "../util/util"
+import { loginAdmin2 } from "../util/util"
 
 describe('Terminski ugovori spec', () => {
     beforeEach(() => {
-        loginAdmin(cy);
+        loginAdmin2(cy);
+        cy.visit("http://localhost:3000/contracts?type=Agriculture");
+        
     })
     after(() => {
         //logout(cy)

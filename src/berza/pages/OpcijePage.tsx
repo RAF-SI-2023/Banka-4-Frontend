@@ -77,15 +77,15 @@ const OpcijePage: React.FC = () => {
         const urlParams = new URLSearchParams(window.location.search);
         const allOptions = await makeGetRequest(`/opcija/sve-opcije`);
         // @ts-ignore
-        const filteredOptions = allOptions.filter(e => (e.ticker == ticker))
+        const filteredOptions = allOptions.filter(e => (e.ticker === ticker))
         setAkcijaId(urlParams?.get('id') ?? '')
         setTicker(urlParams?.get('ticker') ?? '')
         setName(urlParams?.get('name') ?? '')
         setPrice(urlParams?.get('price') ?? '')
         // @ts-ignore
-        const puts = filteredOptions.filter(e => (e.optionType == "PUT"))
+        const puts = filteredOptions.filter(e => (e.optionType === "PUT"))
         // @ts-ignore
-        const calls = filteredOptions.filter(e => (e.optionType == "CALL"))
+        const calls = filteredOptions.filter(e => (e.optionType === "CALL"))
         
         if (puts && calls) {
           setPuts(puts)

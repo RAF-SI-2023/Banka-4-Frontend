@@ -70,7 +70,7 @@ const OrdersTable = ({ selectedStock }: Props) => {
     const foundOrder = orders.find(
       (orders) => orders.ticker === selectedStock.ticker
     );
-
+    setFoundOrders([])
     foundOrder && setFoundOrders((prevOrders) => [...prevOrders, foundOrder]);
   };
 
@@ -93,6 +93,7 @@ const OrdersTable = ({ selectedStock }: Props) => {
         try {
           const ordersData = await makeGetRequest(`/orders/${auth?.id}`);
           ordersData && setOrders(ordersData);
+          findActions();
         } catch (error) {
           console.error("Error fetching user orders:", error);
         }
@@ -119,7 +120,7 @@ const OrdersTable = ({ selectedStock }: Props) => {
               <TableRow>
                 <StyledHeadTableCell>Oznaka</StyledHeadTableCell>
                 <StyledHeadTableCell>Kolicina</StyledHeadTableCell>
-                <StyledHeadTableCell>Ukupna cena</StyledHeadTableCell>
+                <StyledHeadTableCell>Limit</StyledHeadTableCell>
                 <StyledHeadTableCell>Status</StyledHeadTableCell>
               </TableRow>
             </StyledTableHead>
@@ -129,7 +130,7 @@ const OrdersTable = ({ selectedStock }: Props) => {
                   <StyledTableRow key={index}>
                     <StyledTableCell>{order.ticker}</StyledTableCell>
                     <StyledTableCell>{order.quantity}</StyledTableCell>
-                    <StyledTableCell>{order.totalPrice}</StyledTableCell>
+                    <StyledTableCell>{order.limit}</StyledTableCell>
                     <StyledTableCell>{order.status}</StyledTableCell>
                   </StyledTableRow>
                 ))

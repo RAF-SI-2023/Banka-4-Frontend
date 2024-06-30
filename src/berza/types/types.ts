@@ -102,6 +102,7 @@ export type Order = {
     quantity: number;
     pricePerUnit: number;
     totalPrice: number;
+    limit: number;
     createdBy: string;
     status: 'approved' | 'rejected' | 'pending';
     approvedBy?: string;

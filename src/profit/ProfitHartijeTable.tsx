@@ -86,7 +86,7 @@ const ProfitHartijeTable = () => {
 
   const calculateStocksSum = () => {
     let stocksSum = 0;
-    userStocks.map((userStock) => (stocksSum += userStock.currentBid));
+    userStocks.map((userStock) => (stocksSum += userStock.currentBid * userStock.quantity));
     return stocksSum;
   };
 
