@@ -36,7 +36,7 @@ const AkcijeList: React.FC<AkcijaList> = ({ stocks }) => {
                             <StyledTableCell>{stock.change}</StyledTableCell>
                             <StyledTableCell>{stock.dividendYield}</StyledTableCell>
                             <StyledTableCell>{stock.lastRefresh}</StyledTableCell>
-                            <StyledTableCell><BuyStockPopup ticker={stock.ticker} /></StyledTableCell>
+                            <StyledTableCell id="kupi"><BuyStockPopup ticker={stock.ticker} /></StyledTableCell>
                             <StyledTableCell>
                                 <Button onClick={() => {
                                     navigate(`/detaljiAkcije?ticker=${stock.ticker}`)

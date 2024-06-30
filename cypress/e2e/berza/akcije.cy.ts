@@ -3,28 +3,75 @@ import { loginAdmin } from "../util/util"
 describe('Akcije spec', () => {
     beforeEach(() => {
         loginAdmin(cy);
+        cy.visit('http://localhost:3000/akcije');
+        cy.get('#pretraga').type("AAPL");
+        cy.get('#search').click();
+        cy.get('tbody tr:nth-child(1) #kupi').click();
     })
     after(() => {
         //logout(cy)
     })
-
     it('Kupovanje akcije', () => {
-        //TODO implement
-    })
+        cy.get('#racunId').click();
+        cy.get('[data-testid="racun-0"]').click();
+
+        cy.get('input[name="kolicina"]').type('10');
+        cy.get('input[name="limit"]').type('100');
+        cy.get('input[name="stop"]').type('90');
+
+        cy.get('input[type="checkbox"]').eq(0).check();
+        cy.get('input[type="checkbox"]').eq(1).check();
+
+        cy.get('button#kupi').click();
+    });
 
     it('Kupovanje akcije bez biranja racuna', () => {
-        //TODO implement
-    })
+        cy.get('input[name="kolicina"]').type('10');
+        cy.get('input[name="limit"]').type('100');
+        cy.get('input[name="stop"]').type('90');
+
+        cy.get('input[type="checkbox"]').eq(0).check();
+        cy.get('input[type="checkbox"]').eq(1).check();
+
+        cy.get('button#kupi').click();
+    });
 
     it('Kupovanje akcije bez biranja kolicine', () => {
-        //TODO implement
-    })
+        cy.get('#racunId').click();
+        cy.get('[data-testid="racun-0"]').click();
+
+        cy.get('input[name="limit"]').type('100');
+        cy.get('input[name="stop"]').type('90');
+
+        cy.get('input[type="checkbox"]').eq(0).check();
+        cy.get('input[type="checkbox"]').eq(1).check();
+
+        cy.get('button#kupi').click();
+    });
 
     it('Kupovanje akcije bez biranja limita', () => {
-        //TODO implement
-    })
+        cy.get('#racunId').click();
+        cy.get('[data-testid="racun-0"]').click();
+
+        cy.get('input[name="kolicina"]').type('10');
+        cy.get('input[name="stop"]').type('90');
+
+        cy.get('input[type="checkbox"]').eq(0).check();
+        cy.get('input[type="checkbox"]').eq(1).check();
+
+        cy.get('button#kupi').click();
+    });
 
     it('Kupovanje akcije bez biranja stopa', () => {
-        //TODO implement
-    })
+        cy.get('#racunId').click();
+        cy.get('[data-testid="racun-0"]').click();
+
+        cy.get('input[name="kolicina"]').type('10');
+        cy.get('input[name="limit"]').type('100');
+
+        cy.get('input[type="checkbox"]').eq(0).check();
+        cy.get('input[type="checkbox"]').eq(1).check();
+
+        cy.get('button#kupi').click();
+    });
 })
