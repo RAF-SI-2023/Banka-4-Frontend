@@ -12,6 +12,10 @@ describe('Akcije spec', () => {
         //TODO implement
     })
 
+    it('Kupovanje akcije bez biranja racuna', () => {
+        //TODO implement
+    })
+
     it('Kupovanje akcije bez biranja kolicine', () => {
         //TODO implement
     })
