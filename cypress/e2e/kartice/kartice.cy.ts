@@ -6,6 +6,7 @@ describe('Kartice spec', () => {
         //Dodaj kartice
         loginAdmin(cy);
 
+        cy.visit("http://localhost:3000/listaKorisnika");
         cy.get('tbody > tr').first().click();
 
 

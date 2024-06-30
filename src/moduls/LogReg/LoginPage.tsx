@@ -100,7 +100,7 @@ const LoginPage = () => {
             setError('Incorrect username or password');
         } else {
             if (isEmployee) {
-                navigate("/listaKorisnika");
+                navigate("/");
                 window.location.reload()
             } else {
                 navigate("/");
