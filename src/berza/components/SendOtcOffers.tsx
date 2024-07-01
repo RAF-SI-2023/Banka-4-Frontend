@@ -2,7 +2,6 @@ import { Button, Table, TableBody, TableRow } from "@mui/material";
 import { OurOffer, OurOfferList } from "berza/types/types";
 import { ScrollContainer, StyledHeadTableCell, StyledTableCell, StyledTableHead, StyledTableRow } from '../../utils/tableStyles';
 import { useNavigate } from "react-router-dom";
-import { makeApiRequest } from "utils/apiRequest";
 
 const SendOtcOffers: React.FC<OurOfferList> = ({ offers }) => {
     const navigate = useNavigate();

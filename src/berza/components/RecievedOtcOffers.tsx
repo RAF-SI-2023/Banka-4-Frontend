@@ -7,25 +7,25 @@ import { makeApiRequest } from "utils/apiRequest";
 const RecievedOtcOffers: React.FC<ForeignOfferList> = ({ offers }) => {
     const navigate = useNavigate();
 
-    
+
     const handleAccept = async (offerId: string) => {
         try {
-            const response = await makeApiRequest(`/v1/otcTrade/acceptOffer`, 'POST', { offerId });
+            const response = await makeApiRequest(`/v1/otcTrade/acceptOffer/${offerId}`, 'POST');
             alert(`Offer accepted successfully: ${JSON.stringify(response)}`);
         } catch (error) {
             alert(`Error accepting offer: ${error}`);
         }
     };
-    
+
     const handleDecline = async (offerId: string) => {
         try {
-            const response = await makeApiRequest(`/v1/otcTrade/declineOffer`, 'POST', { offerId });
+            const response = await makeApiRequest(`/v1/otcTrade/declineOffer/${offerId}`, 'POST');
             alert(`Offer declined successfully: ${JSON.stringify(response)}`);
         } catch (error) {
             alert(`Error declining offer: ${error}`);
         }
     };
-    
+
 
     return (
         <ScrollContainer>
