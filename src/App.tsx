@@ -56,7 +56,8 @@ import ProfitPage from "profit/ProfitPage";
 import ATMPage from 'korisnici/pages/ATMPage';
 import OtcPage from 'berza/pages/OtcPage';
 import OtcPageKorisnik from 'berza/pages/OtcPageKorisnik';
-import {permissionMap} from 'utils/permissions';
+import { Employee, EmployeePermissionsV2, UserRoutes } from 'utils/types';
+import { makeGetRequest } from 'utils/apiRequest';
 
 const fadeIn = keyframes`
   from {
@@ -109,6 +110,7 @@ const VideoWrapper = styled.div`
 `;
 
 export interface ContextType {
+  pages: any;
   errors: Array<string>;
   setErrors: Dispatch<SetStateAction<Array<string>>>;
 }
@@ -117,6 +119,17 @@ export const Context = createContext<ContextType | null>(null);
 const auth = getMe();
 function App() {
   const [open, setOpen] = useState(true);
+  const [pages, setPages] = useState([
+    { name: 'Početna', path: '', permissions: [] },
+    { name: 'Korisnici', path: 'listaKorisnika', permissions: [EmployeePermissionsV2.list_users] },
+    { name: 'Zaposleni', path: 'listaZaposlenih', permissions: [EmployeePermissionsV2.list_workers] },
+    { name: 'Firme', path: 'listaFirmi', permissions: [EmployeePermissionsV2.list_firms] },
+    { name: 'Kartice', path: 'kartice', permissions: [EmployeePermissionsV2.list_cards] },
+    { name: 'Krediti', path: 'listaKredita', permissions: [EmployeePermissionsV2.list_credits] },
+    { name: 'Verifikacija', path: '/verifikacija', permissions: [EmployeePermissionsV2.payment_access] },
+    { name: 'Profit', path: '/profit', permissions: [EmployeePermissionsV2.profit_access] },
+    { name: "OTC-K", path: "otckorisnik", permissions: [] }
+  ]);
 
   const handleClose = () => {
     setOpen(false);
@@ -124,6 +137,18 @@ function App() {
   const [errors, setErrors] = useState([""]);
 
   useEffect(() => {
+    const me = getMe()
+
+    if (me) {
+      if (me.permission !== 0) {
+        (async () => {
+          const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${me.sub}`) as Employee;
+          if (worker.firmaId == -1)
+            setPages([...pages, { name: "OTC", path: "otc", permissions: [/*EmployeePermissionsV2.list_orders*/] }])
+        })()
+      }
+    }
+
     const timeoutId = setTimeout(() => {
       setErrors([]);
     }, 5000);
@@ -161,7 +186,7 @@ function App() {
       )}
       {/* <WSTest></WSTest> */}
 
-      <Context.Provider value={{ errors, setErrors }}>
+      <Context.Provider value={{ errors, setErrors, pages }}>
         <AlertWrapperWrapper>
           {errors.length > 0 &&
             errors[0] !== "" &&

@@ -16,22 +16,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { getMe } from '../../utils/getMe';
 import { hasPermission } from 'utils/permissions';
-import { EmployeePermissionsV2 } from 'utils/types';  
+import { EmployeePermissionsV2 } from 'utils/types';
 import { jwtDecode } from 'jwt-decode';
-
-const pages = [
-  { name: 'Početna', path: '', permissions: [] },
-  { name: 'Korisnici', path: 'listaKorisnika', permissions: [EmployeePermissionsV2.list_users] },
-  { name: 'Zaposleni', path: 'listaZaposlenih', permissions: [EmployeePermissionsV2.list_workers] },
-  { name: 'Firme', path: 'listaFirmi', permissions: [EmployeePermissionsV2.list_firms] },
-  { name: 'Kartice', path: 'kartice', permissions: [EmployeePermissionsV2.list_cards] },
-  { name: 'Krediti', path: 'listaKredita', permissions: [EmployeePermissionsV2.list_credits] },
-  { name: 'Verifikacija', path: '/verifikacija', permissions: [EmployeePermissionsV2.payment_access] },
-  { name: 'Profit', path: '/profit', permissions: [EmployeePermissionsV2.profit_access] },
-  {name: "OTC-K", path:"otckorisnik", permissions: []},
-  {name: "OTC", path:"otc", permissions: [EmployeePermissionsV2.list_workers]},
-
-];
+import { Context } from 'App';
 
 
 const checkUserPermissions = (requiredPermissions: EmployeePermissionsV2[]) => {
@@ -150,6 +137,7 @@ function ResponsiveAppBar() {
   const handleReset = () => {
     navigate('/resetPassword');
   };
+  const ctx = React.useContext(Context);
 
   const jwt = getMe();
 
@@ -215,15 +203,17 @@ function ResponsiveAppBar() {
                 },
               }}
             >
-              {pages.map((page) =>
-                jwt ? (
-                  checkUserPermissions(page.permissions) && (
-                    <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                      <StyledLink to={page.path}>{page.name}</StyledLink>
-                    </MenuItem>
-                  )
-                ) : null
-              )}
+              {
+                // @ts-ignore
+                ctx?.pages.map((page) =>
+                  jwt ? (
+                    checkUserPermissions(page.permissions) && (
+                      <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                        <StyledLink to={page.path}>{page.name}</StyledLink>
+                      </MenuItem>
+                    )
+                  ) : null
+                )}
             </Menu>
           </Box>
           <Typography
@@ -246,12 +236,14 @@ function ResponsiveAppBar() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {jwt
-              ? pages
-                  .filter((page) => checkUserPermissions(page.permissions))
-                  .map((page) => (
-                    <StyledLink
-                      key={page.name}
-                      onClick={handleCloseNavMenu}
+              ? ctx?.pages
+                //@ts-ignore
+                .filter((page) => checkUserPermissions(page.permissions))
+                //@ts-ignore
+                .map((page) => (
+                  <StyledLink
+                    key={page.name}
+                    onClick={handleCloseNavMenu}
 
 
                       to={page.path}
