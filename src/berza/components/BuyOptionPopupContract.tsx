@@ -8,9 +8,10 @@ import { Account, BankRoutes, Employee, UserRoutes } from "utils/types";
 interface BuyOptionPopupProps {
   contractId: string;
   price_d: number;
+  index: number;
 }
 
-export default function BuyOptionPopup({ contractId, price_d }: BuyOptionPopupProps) {
+export default function BuyOptionPopup({ index, contractId, price_d }: BuyOptionPopupProps) {
   const [open, setOpen] = useState(false);
   const [quantity, setQuantity] = useState<number>(5000);
   const [pricePerUnit, setPricePerUnit] = useState<number>(100); // Postavljena fiksna cena
@@ -94,7 +95,7 @@ export default function BuyOptionPopup({ contractId, price_d }: BuyOptionPopupPr
 
   return (
     <Fragment>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button data-testid={`termbuy-${index}`} variant="outlined" onClick={handleClickOpen}>
         Buy
       </Button>
 
@@ -128,7 +129,7 @@ export default function BuyOptionPopup({ contractId, price_d }: BuyOptionPopupPr
               onChange={(e) => setSelectedAccount(e.target.value as string)}
             >
               {accounts.map((account, index) => (
-                <MenuItem key={index} value={account}>
+                <MenuItem key={index} data-testid={`racun-${index}`} value={account}>
                   {account}
                 </MenuItem>
               ))}
@@ -137,7 +138,7 @@ export default function BuyOptionPopup({ contractId, price_d }: BuyOptionPopupPr
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Izlaz</Button>
-          <Button onClick={handleBuy} autoFocus>
+          <Button id="kupi" onClick={handleBuy} autoFocus>
             Kupi
           </Button>
         </DialogActions>

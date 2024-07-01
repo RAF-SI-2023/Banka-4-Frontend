@@ -4,7 +4,7 @@ import { Button, ButtonGroup } from '@mui/material';
 import Ponude from 'berza/components/otcComponents/Ponude';
 import MojePonude from 'berza/components/otcComponents/MojePonude';
 import PrihvatanjePonuda from 'berza/components/otcComponents/PrihvatanjePonuda';
-import { EmployeePermissionsV2 } from 'utils/types';  
+import { EmployeePermissionsV2 } from 'utils/types';
 import { jwtDecode } from 'jwt-decode';
 import { hasPermission } from 'utils/permissions';
 import ObradjenePonude from 'berza/components/otcComponents/ObradjenePonude';
@@ -64,10 +64,10 @@ const OtcPage: React.FC = () => {
   return (
     <PageWrapper>
       <Navbar variant="contained">
-        <ButtonTab onClick={() => handleButtonClick(<Ponude />)}>Ponude</ButtonTab>
-        <ButtonTab onClick={() => handleButtonClick(<MojePonude />)}>Moje Ponude</ButtonTab>
-        <ButtonTab onClick={() => handleButtonClick(<ObradjenePonude />)}>Obradjene Ponude</ButtonTab>
-       {odobrenje && (<ButtonTab onClick={() => handleButtonClick(<PrihvatanjePonuda />)}>BANKA Ponude</ButtonTab>)}
+        <ButtonTab id="ponude" onClick={() => handleButtonClick(<Ponude />)}>Ponude</ButtonTab>
+        <ButtonTab id="mojeponude" onClick={() => handleButtonClick(<MojePonude />)}>Moje Ponude</ButtonTab>
+        <ButtonTab id="obradjeneponude" onClick={() => handleButtonClick(<ObradjenePonude />)}>Obradjene Ponude</ButtonTab>
+        {odobrenje && (<ButtonTab id="bankaponude" onClick={() => handleButtonClick(<PrihvatanjePonuda />)}>BANKA Ponude</ButtonTab>)}
       </Navbar>
       <TableContainer>
         {selectedComponent}

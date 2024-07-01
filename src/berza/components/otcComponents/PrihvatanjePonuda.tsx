@@ -125,7 +125,7 @@ const PrihvatanjePonuda: React.FC = () => {
         userId: -1,
         otcId: selectedPonuda,
         accept: false,
-        razlog: reason 
+        razlog: reason
       };
 
       await makeApiRequest(`/otc/resolve-otc`, 'POST', data);
@@ -168,7 +168,7 @@ const PrihvatanjePonuda: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {ponude.map((ponuda) => (
+            {ponude.map((ponuda, index) => (
               <TableRow key={ponuda.id}>
                 <TableCell>{ponuda.sellerId}</TableCell>
                 <TableCell>{ponuda.ticker}</TableCell>
@@ -181,10 +181,10 @@ const PrihvatanjePonuda: React.FC = () => {
                 <TableCell>{ponuda.opis ?? ""}</TableCell>
                 <TableCell>
                   {!ponuda.banksApproval ?
-                    <Button onClick={() => handleAccept(ponuda.id)}>Prihvati</Button> : null
+                    <Button id={`prihvati-${index}`} onClick={() => handleAccept(ponuda.id)}>Prihvati</Button> : null
                   }
                   {!ponuda.banksApproval ?
-                    <Button onClick={() => handleReject(ponuda.id)}>Odbij</Button> : null
+                    <Button id={`odbij-${index}`} onClick={() => handleReject(ponuda.id)}>Odbij</Button> : null
                   }
                 </TableCell>
               </TableRow>
@@ -200,6 +200,7 @@ const PrihvatanjePonuda: React.FC = () => {
             Unesite opis.
           </DialogContentText>
           <TextField
+            id="opis"
             autoFocus
             margin="dense"
             label="Opis"
@@ -211,7 +212,7 @@ const PrihvatanjePonuda: React.FC = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseAccept}>Odustani</Button>
-          <Button onClick={handleConfirmAccept}>Potvrdi</Button>
+          <Button id="accept" onClick={handleConfirmAccept}>Potvrdi</Button>
         </DialogActions>
       </Dialog>
 
@@ -222,6 +223,7 @@ const PrihvatanjePonuda: React.FC = () => {
             Unesite razlog za odbijanje ponude.
           </DialogContentText>
           <TextField
+            id="razlog"
             autoFocus
             margin="dense"
             label="Razlog"
@@ -233,10 +235,10 @@ const PrihvatanjePonuda: React.FC = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Odustani</Button>
-          <Button onClick={handleConfirmReject}>Potvrdi</Button>
+          <Button id="reject" onClick={handleConfirmReject}>Potvrdi</Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </div >
   );
 };
 
