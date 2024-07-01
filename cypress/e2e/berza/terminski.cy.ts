@@ -11,7 +11,8 @@ describe('Terminski ugovori spec', () => {
     })
 
     it('Kupovanje terminskog ugovora', () => {
-        //TODO implement
+        cy.visit("http://localhost:3000/contracts?type=Agriculture");
+        cy.get('[data-testid="racun-0"]').click();
     })
 
     it('Kupovanje terminskog ugovora bez racuna', () => {

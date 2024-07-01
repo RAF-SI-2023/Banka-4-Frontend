@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { TextField, Button, FormControl, InputLabel, Select, MenuItem, Grid, FormControlLabel, Checkbox } from '@mui/material';
 import styled from 'styled-components';
-import { EmployeePermissionsV2, UserRoutes } from '../../utils/types';
+import { Company, EmployeePermissionsV2, UserRoutes } from '../../utils/types';
 import { useNavigate } from 'react-router-dom';
 import { encodePermissions } from '../../utils/permissions';
-import { makeApiRequest } from '../../utils/apiRequest';
+import { makeApiRequest, makeGetRequest } from '../../utils/apiRequest';
 import { Context } from 'App';
 
 const PageWrapper = styled.div`
@@ -78,6 +78,7 @@ interface createEmployeeData {
   username: string;
   departman: string;
   permisije: number;
+  firmaId: number;
 }
 
 const CreateEmployeePage: React.FC = () => {
@@ -96,6 +97,7 @@ const CreateEmployeePage: React.FC = () => {
     saltPassword: '',
     departman: '',
     permisije: 0,
+    firmaId: 0
   });
   const [permissionCheckboxes, setPermissionCheckboxes] = useState<Permisije[]>([
     { naziv: EmployeePermissionsV2.list_users, vrednost: false },
@@ -128,15 +130,17 @@ const CreateEmployeePage: React.FC = () => {
     { naziv: EmployeePermissionsV2.action_access, vrednost: false },
     { naziv: EmployeePermissionsV2.option_access, vrednost: false },
     { naziv: EmployeePermissionsV2.order_access, vrednost: false },
-    { naziv: EmployeePermissionsV2.termin_access, vrednost: false },
-    { naziv: EmployeePermissionsV2.profit_access, vrednost: false }
+    { naziv: EmployeePermissionsV2.termin_access, vrednost: false }
   ]);
   const [groupedPermissions, setGroupedPermissions] = useState<{ [key: string]: Permisije[] }>({});
   const [supervizorCb, setSupervizorCb] = useState(false);
+  const [companies, setCompanies] = useState([])
   const navigate = useNavigate();
   const ctx = useContext(Context);
 
   useEffect(() => {
+    fetchData();
+
     const grouped = permissionCheckboxes.reduce((acc: { [key: string]: Permisije[] }, perm) => {
       const lastWord = perm.naziv.split('_').pop();
       if (lastWord) {
@@ -147,6 +151,11 @@ const CreateEmployeePage: React.FC = () => {
     }, {});
     setGroupedPermissions(grouped);
   }, [permissionCheckboxes]);
+
+  const fetchData = async () => {
+    const companies = await makeGetRequest('/racuni/izlistajSveFirme', ctx);
+    setCompanies(companies);
+  }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | { name?: string; value: unknown }>) => {
     const { name, value } = event.target;
@@ -165,6 +174,11 @@ const CreateEmployeePage: React.FC = () => {
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, datumRodjenja: event.target.value });
+  };
+
+  const handleFirmaChange = (event: any) => {
+    console.log(event.target.value);
+    setFormData({ ...formData, firmaId: parseInt(event.target.value) as number });
   };
 
   const handleSexChange = (event: any) => {
@@ -369,6 +383,22 @@ const CreateEmployeePage: React.FC = () => {
               fullWidth
               margin="normal"
             />
+
+            <FormControl variant="outlined" fullWidth margin="normal">
+            <InputLabel id="firma-label">Firma</InputLabel>
+              <StyledSelect
+                labelId="firma-label"
+                id="firmaselect"
+                label="Firma"
+                name="Firma"
+                value={formData.firmaId}
+                onChange={handleFirmaChange}
+              >
+                {companies?.map((company: Company) => (
+                  <MenuItem id={company.id} key={company.id} value={company.id}>{company.nazivPreduzeca}</MenuItem>
+                ))}
+              </StyledSelect>
+            </FormControl>
           </FormSeparatorRow>
         </FormSeparator>
 
@@ -421,7 +451,7 @@ const CreateEmployeePage: React.FC = () => {
           </StyledButton>
         </ButtonContainer>
       </FormWrapper>
-    </PageWrapper>
+    </PageWrapper >
   );
 };
 

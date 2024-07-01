@@ -98,7 +98,7 @@ const OtcPageKorisnik: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const stocks = await makeGetRequest('/user-stocks/get-our-banks-stocks');
+        const stocks = await makeGetRequest('/v1/otcTrade/getOurStocks');
         await fetchBanka3Stocks();
         await fetchBanka3Offers();
         await fetchOurOffers();

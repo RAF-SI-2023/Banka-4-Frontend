@@ -67,11 +67,11 @@ const OrdersTable = ({ selectedStock }: Props) => {
   const auth = getMe();
 
   const findActions = () => {
-    const foundOrder = orders.find(
+    const foundOrder = orders.filter(
       (orders) => orders.ticker === selectedStock.ticker
     );
-    setFoundOrders([])
-    foundOrder && setFoundOrders((prevOrders) => [...prevOrders, foundOrder]);
+
+    foundOrder && setFoundOrders(foundOrder);
   };
 
   useEffect(() => {

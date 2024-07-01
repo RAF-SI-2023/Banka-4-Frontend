@@ -46,7 +46,7 @@ export type AkcijaList = {
 
 export type IOTC = {
     ticker: string,
-    amount: number,
+    amount: number
 }
 
 export type IOtcList = {
@@ -120,14 +120,14 @@ export type UserStock2 = {
 export type Option2 = {
     korisnikId: number;
     opcijaId: number;
-    akcijaId: number;
+    ticker:string;
     akcijaTickerCenaPrilikomIskoriscenja: number;
 };
 
 export type Option = {
     korisnikId: number;
     opcijaId: number;
-    akcijaId: number;
+    ticker: string;
     akcijaTickerCenaPrilikomIskoriscenja: number;
 };
 

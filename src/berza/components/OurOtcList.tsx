@@ -29,7 +29,6 @@ const OurOtcList: React.FC<IOtcList> = ({ otcs }) => {
                             <StyledHeadTableCell>Oznaka</StyledHeadTableCell>
                             <StyledHeadTableCell>Kolicina</StyledHeadTableCell>
                             <StyledHeadTableCell>Postavi javno</StyledHeadTableCell>
-                            <StyledHeadTableCell>Detaljniji prikaz</StyledHeadTableCell>  
                         </TableRow>
                     </StyledTableHead>
                     <TableBody>
@@ -40,11 +39,6 @@ const OurOtcList: React.FC<IOtcList> = ({ otcs }) => {
                                 <StyledTableCell>
                                     <Button onClick={() => handleSellClick(stock)}>
                                         Sell
-                                    </Button>
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    <Button onClick={() => navigate(`/detaljiAkcije?ticker=${stock.ticker}`)}>
-                                        Detaljni prikaz
                                     </Button>
                                 </StyledTableCell>
                             </StyledTableRow>

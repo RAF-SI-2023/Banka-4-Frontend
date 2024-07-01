@@ -87,7 +87,7 @@ const ContractsPage = () => {
                                     <StyledHeadTableCell>Name</StyledHeadTableCell>
                                     <StyledHeadTableCell>Contract unit</StyledHeadTableCell>
                                     <StyledHeadTableCell>Contract Size</StyledHeadTableCell>
-                                    <StyledHeadTableCell>Maintenance Margin</StyledHeadTableCell>
+                                    <StyledHeadTableCell>Price</StyledHeadTableCell>
                                     <StyledHeadTableCell>Buy</StyledHeadTableCell>
 
                                 </TableRow>
@@ -98,9 +98,9 @@ const ContractsPage = () => {
                                         <StyledTableCell>{contract.name}</StyledTableCell>
                                         <StyledTableCell>{contract.contractUnit}</StyledTableCell>
                                         <StyledTableCell>{contract.contractSize}</StyledTableCell>
-                                        <StyledTableCell>{contract.maintenanceMargin}</StyledTableCell>
+                                        <StyledTableCell>{contract.price}</StyledTableCell>
                                         <StyledTableCell>
-                                            <BuyOptionPopup contractId={contract.id || contract.name} price_d={contract.price} />
+                                            <BuyOptionPopup data-testid="termbuy" contractId={contract.id || contract.name} price_d={contract.price} />
                                         </StyledTableCell>
 
                                     </StyledTableRow>
