@@ -59,7 +59,7 @@ const CallsList: React.FC<OptionsList> = ({ options }) => {
                                     const data = {
                                         korisnikId: userId,
                                         opcijaId: option.id,
-                                        akcijaId: option.ticker,
+                                        ticker: option.ticker,
                                         akcijaTickerCenaPrilikomIskoriscenja: option.strikePrice
                                     }
                                     try {

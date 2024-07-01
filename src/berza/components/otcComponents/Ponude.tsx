@@ -36,6 +36,7 @@ interface Ticker {
   quantity: number;
   currentBid: number;
   currentAsk: number;
+  publicQuantity: number;
 }
 
 const Ponude: React.FC = () => {
@@ -95,8 +96,24 @@ const Ponude: React.FC = () => {
     };
 
     fetchTickers();
-    fetchAllPublicOTC();
+    // fetchAllPublicOTC();
   }, []);
+
+  useEffect(() => {
+    const fetchAllPublicOTC = async () => {
+      try {
+        const response = await makeGetRequest(`/otc/all-public-otc/${userId}`);
+        if (!response) {
+          return;
+        }
+        setOtcData(response);
+      } catch (error) {
+        console.error('Error fetching all public OTC data:', error);
+      }
+    };
+
+    fetchAllPublicOTC();
+  }, [userId])
 
   const handleOpen = (ticker: string = '') => {
     setNewPonuda({ ticker, quantity: 0 });
@@ -293,6 +310,7 @@ const Ponude: React.FC = () => {
             <div style={{ marginTop: '20px' }}>
               <p>Ticker: {selectedTicker.ticker}</p>
               <p>Quantity: {selectedTicker.quantity}</p>
+              <p>Public Quantity: {selectedTicker.publicQuantity}</p>
               <p>Current Bid: {selectedTicker.currentBid}</p>
               <p>Current Ask: {selectedTicker.currentAsk}</p>
               <TextField

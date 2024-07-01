@@ -66,13 +66,12 @@ const OptionsTable = ({ selectedStock }: Props) => {
   const [foundOptions, setFoundOptions] = useState<Option2[]>([]);
   const auth = getMe();
 
-  const findActions = () => {
-    const foundOption = options.find(
-      (option) => option.akcijaId === selectedStock.id
+  const findActions = (op: Option2[]) => {
+    const foundOption = op.filter(
+      (option) => option.ticker === selectedStock.ticker
     );
 
-    foundOption &&
-      setFoundOptions((prevOptions) => [...prevOptions, foundOption]);
+    foundOption && setFoundOptions(foundOption);
   };
 
   useEffect(() => {
@@ -87,7 +86,7 @@ const OptionsTable = ({ selectedStock }: Props) => {
           );
           if (optionsData) {
             setOptions(optionsData);
-            findActions();
+            findActions(optionsData);
           }
         } catch (error) {
           console.error("Error fetching user options:", error);
@@ -98,7 +97,7 @@ const OptionsTable = ({ selectedStock }: Props) => {
             `/opcija/sve-opcije-korisnika/${auth?.id}`
           );
           optionsData && setOptions(optionsData);
-          findActions();
+          findActions(optionsData);
         } catch (error) {
           console.error("Error fetching user options:", error);
         }
@@ -114,6 +113,7 @@ const OptionsTable = ({ selectedStock }: Props) => {
       </Typography>
     );
   }
+
   return (
     <PageWrapper>
       <EnhancedTableToolbar />

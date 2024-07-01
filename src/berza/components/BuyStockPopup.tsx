@@ -9,30 +9,32 @@ import styled from 'styled-components';
 import { Context } from 'App';
 import { getMe } from 'utils/getMe';
 import { makeGetRequest, makeApiRequest } from 'utils/apiRequest';
-import { Account, AccountListProps, BankRoutes, Employee, UserRoutes } from "utils/types";
+import { Account, BankRoutes, Employee, UserRoutes } from "utils/types";
 
 const TipWrapper = styled.div`
   display: flex;
   flex-direction: column;
   font-size: 14px;
   line-height: 2px;
-`
+`;
+
 interface BuyStockPopupProps {
   ticker?: string; // Optional string prop
 }
 
-
 const BuyStockPopup: React.FC<BuyStockPopupProps> = ({ ticker }) => {
   const [open, setOpen] = useState(false);
-  const [kolicina, setKolicina] = useState('')
-  const [limit, setLimit] = useState('')
-  const [stop, setStop] = useState('')
-  const [margin, setMargin] = useState(false)
-  const [allOrNone, setAllOrNone] = useState(false)
+  const [kolicina, setKolicina] = useState('');
+  const [limit, setLimit] = useState('');
+  const [stop, setStop] = useState('');
+  const [margin, setMargin] = useState(false);
+  const [allOrNone, setAllOrNone] = useState(false);
   const [accounts, setAccounts] = useState<string[]>([]);
   const [selectedAccount, setSelectedAccount] = useState<string>('');
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const ctx = useContext(Context);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -44,31 +46,20 @@ const BuyStockPopup: React.FC<BuyStockPopupProps> = ({ ticker }) => {
   useEffect(() => {
     async function fetchAccounts() {
       try {
-
         const me = getMe();
-        if (!me)
-          return;
+        if (!me) return;
 
         let data: Account[];
 
         if (me.permission) {
-          const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${me.sub}`) as Employee
-
-
+          const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${me.sub}`) as Employee;
           data = await makeGetRequest(`${BankRoutes.account_find_user_account}/${worker.firmaId}`);
-
         } else {
           data = await makeGetRequest(`${BankRoutes.account_find_user_account}/${me.id}`);
-
         }
 
-
         const accountNumbers = data.map(account => account.brojRacuna + " - " + account.raspolozivoStanje);
-
-
-        console.log(accountNumbers);
         setAccounts(accountNumbers);
-
       } catch (error) {
         console.error('Failed to fetch accounts:', error);
       }
@@ -78,26 +69,49 @@ const BuyStockPopup: React.FC<BuyStockPopupProps> = ({ ticker }) => {
   }, []);
 
   const handleBuy = async () => {
+    const validationErrors: { [key: string]: string } = {};
+
+    if (!selectedAccount) {
+      validationErrors.selectedAccount = 'Odaberite račun.';
+    }
+    if (!kolicina || isNaN(Number(kolicina))) {
+      validationErrors.kolicina = 'Unesite validnu količinu.';
+    }
+    if (limit && isNaN(Number(limit))) {
+      validationErrors.limit = 'Unesite validan limit.';
+    }
+    if (stop && isNaN(Number(stop))) {
+      validationErrors.stop = 'Unesite validan stop.';
+    }
+
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length > 0) {
+      return;
+    }
+
     const auth = getMe();
     let userId = 0;
     if (auth?.permission !== 0) {
       const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${auth?.sub}`) as Employee;
       userId = worker.firmaId;
     } else {
-      userId = auth.id
+      userId = auth.id;
     }
+
     const data = {
       "userId": userId,
       "ticker": ticker,
       "quantity": kolicina
-    }
+    };
+
     try {
       const result = await makeApiRequest("/user-stocks", 'PUT', data, false, false, ctx);
-      ctx?.setErrors(["Our Success: Uspesno kupljeno"])
+      ctx?.setErrors(["Our Success: Uspesno kupljeno"]);
+    } catch (e) {
+      ctx?.setErrors(["Our Error: Neuspesno kupljeno"]);
     }
-    catch (e) {
-      ctx?.setErrors(["Our Error: Neuspesno kupljeno"])
-    }
+
     setOpen(false);
   };
 
@@ -116,8 +130,6 @@ const BuyStockPopup: React.FC<BuyStockPopupProps> = ({ ticker }) => {
           {"Kupi akciju " + (ticker || "")}
         </DialogTitle>
         <DialogContent>
-
-
           <FormControl fullWidth sx={{ marginTop: 2, marginBottom: 1 }}>
             <InputLabel id="racun">Račun</InputLabel>
             <Select
@@ -127,6 +139,7 @@ const BuyStockPopup: React.FC<BuyStockPopupProps> = ({ ticker }) => {
               value={selectedAccount}
               label="Račun"
               onChange={(e) => setSelectedAccount(e.target.value as string)}
+              error={!!errors.selectedAccount}
             >
               {accounts.map((account, index) => (
                 <MenuItem key={index} data-testid={`racun-${index}`} value={account}>
@@ -134,6 +147,7 @@ const BuyStockPopup: React.FC<BuyStockPopupProps> = ({ ticker }) => {
                 </MenuItem>
               ))}
             </Select>
+            {errors.selectedAccount && <Typography color="error">{errors.selectedAccount}</Typography>}
           </FormControl>
 
           <TextField
@@ -144,6 +158,8 @@ const BuyStockPopup: React.FC<BuyStockPopupProps> = ({ ticker }) => {
             onChange={(e) => { setKolicina(e.target.value) }}
             fullWidth
             margin="normal"
+            error={!!errors.kolicina}
+            helperText={errors.kolicina}
           />
           <TextField
             label="Limit"
@@ -153,6 +169,8 @@ const BuyStockPopup: React.FC<BuyStockPopupProps> = ({ ticker }) => {
             onChange={(e) => { setLimit(e.target.value) }}
             fullWidth
             margin="normal"
+            error={!!errors.limit}
+            helperText={errors.limit}
           />
           <TextField
             label="Stop"
@@ -162,6 +180,8 @@ const BuyStockPopup: React.FC<BuyStockPopupProps> = ({ ticker }) => {
             onChange={(e) => { setStop(e.target.value) }}
             fullWidth
             margin="normal"
+            error={!!errors.stop}
+            helperText={errors.stop}
           />
 
           <TipWrapper>
@@ -172,14 +192,9 @@ const BuyStockPopup: React.FC<BuyStockPopupProps> = ({ ticker }) => {
           <FormGroup>
             <FormControlLabel control={<Checkbox checked={margin} onChange={(e) => setMargin(e.target.checked)} />} label="Marign" />
             <FormControlLabel control={<Checkbox checked={allOrNone} onChange={(e) => setAllOrNone(e.target.checked)} />} label="AllOrNone" />
-
-
           </FormGroup>
         </DialogContent>
-
-
         <DialogActions>
-
           <Button onClick={handleClose}>Izlaz</Button>
           <Button id="kupi" onClick={handleBuy} autoFocus>
             Kupi
@@ -190,4 +205,4 @@ const BuyStockPopup: React.FC<BuyStockPopupProps> = ({ ticker }) => {
   );
 }
 
-export default BuyStockPopup
+export default BuyStockPopup;

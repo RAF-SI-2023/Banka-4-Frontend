@@ -117,8 +117,7 @@ const EditEmployeePage: React.FC = () => {
     { naziv: EmployeePermissionsV2.action_access, vrednost: false },
     { naziv: EmployeePermissionsV2.option_access, vrednost: false },
     { naziv: EmployeePermissionsV2.order_access, vrednost: false },
-    { naziv: EmployeePermissionsV2.termin_access, vrednost: false },
-    { naziv: EmployeePermissionsV2.profit_access, vrednost: false }
+    { naziv: EmployeePermissionsV2.termin_access, vrednost: false }
   ])
   const ctx = useContext(Context);
 

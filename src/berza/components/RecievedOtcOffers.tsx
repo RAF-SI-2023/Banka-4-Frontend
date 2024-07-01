@@ -37,7 +37,6 @@ const RecievedOtcOffers: React.FC<ForeignOfferList> = ({ offers }) => {
                         <StyledHeadTableCell>Iznos Ponude</StyledHeadTableCell>
                         <StyledHeadTableCell>Prihvati</StyledHeadTableCell>
                         <StyledHeadTableCell>Odbij</StyledHeadTableCell>
-                        <StyledHeadTableCell>Detaljniji prikaz</StyledHeadTableCell>
                     </TableRow>
                 </StyledTableHead>
                 <TableBody>
@@ -54,11 +53,6 @@ const RecievedOtcOffers: React.FC<ForeignOfferList> = ({ offers }) => {
                             <StyledTableCell>
                                 <Button onClick={() => handleDecline(offer.offerId)}>
                                     Odbij
-                                </Button>
-                            </StyledTableCell>
-                            <StyledTableCell>
-                                <Button onClick={() => navigate(`/detaljiAkcije?ticker=${offer.ticker}`)}>
-                                    Detaljni prikaz
                                 </Button>
                             </StyledTableCell>
                         </StyledTableRow>

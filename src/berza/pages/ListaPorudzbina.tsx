@@ -233,9 +233,7 @@ const OrdersPage: React.FC = () => {
               <StyledTableCell>Price</StyledTableCell>
               <StyledTableCell>Contract Size</StyledTableCell>
               <StyledTableCell>Contract Unit</StyledTableCell>
-              <StyledTableCell>Open Interest</StyledTableCell>
               <StyledTableCell>Settlement Date</StyledTableCell>
-              <StyledTableCell>Maintenance Margin</StyledTableCell>
               <StyledTableCell></StyledTableCell>
             </TableRow>
           </TableHead>
@@ -247,9 +245,7 @@ const OrdersPage: React.FC = () => {
                 <TableCell>{future.price}</TableCell>
                 <TableCell>{future.contractSize}</TableCell>
                 <TableCell>{future.contractUnit}</TableCell>
-                <TableCell>{future.openInterest}</TableCell>
                 <TableCell>{new Date(future.settlementDate).toLocaleDateString()}</TableCell>
-                <TableCell>{future.maintenanceMargin}</TableCell>
         
               </StyledTableRow>
             ))}
@@ -267,9 +263,7 @@ const OrdersPage: React.FC = () => {
               <StyledTableCell>Price</StyledTableCell>
               <StyledTableCell>Contract Size</StyledTableCell>
               <StyledTableCell>Contract Unit</StyledTableCell>
-              <StyledTableCell>Open Interest</StyledTableCell>
               <StyledTableCell>Settlement Date</StyledTableCell>
-              <StyledTableCell>Maintenance Margin</StyledTableCell>
               <StyledTableCell>Status</StyledTableCell>
               <StyledTableCell></StyledTableCell>
             </TableRow>
@@ -282,9 +276,7 @@ const OrdersPage: React.FC = () => {
                 <TableCell>{future.futuresContractDto.price}</TableCell>
                 <TableCell>{future.futuresContractDto.contractSize}</TableCell>
                 <TableCell>{future.futuresContractDto.contractUnit}</TableCell>
-                <TableCell>{future.futuresContractDto.openInterest}</TableCell>
                 <TableCell>{new Date(future.futuresContractDto.settlementDate).toLocaleDateString()}</TableCell>
-                <TableCell>{future.futuresContractDto.maintenanceMargin}</TableCell>
                 <TableCell>{future.status}</TableCell>
                 <TableCell>
                   {future.status.toLowerCase() === 'not_approved' && (
