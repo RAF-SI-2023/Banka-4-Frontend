@@ -20,10 +20,9 @@ const ButtonTab = styled(Button)`
 `;
 
 interface Ponuda {
-  otcId: number;
+  stockId: number;
   ticker: string;
   quantity: number;
-  sellerId: number;
 }
 
 interface NewPonuda {
@@ -32,6 +31,7 @@ interface NewPonuda {
 }
 
 interface Ticker {
+  id: number;
   ticker: string;
   quantity: number;
   currentBid: number;
@@ -51,12 +51,11 @@ const Ponude: React.FC = () => {
   const [userId, setId] = useState(0);
 
   useEffect(() => {
+    let prim = 0;
     const fetchTickers = async () => {
       const me = getMe();
       if (!me) return;
 
-      let data;
-      let prim = 0;
       if (me.permission !== 0) {
         const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${me.sub}`) as Employee;
         setId(worker.firmaId);
@@ -68,7 +67,11 @@ const Ponude: React.FC = () => {
 
       try {
         const response = await makeGetRequest(`/user-stocks/${prim}`);
+        if (!response) {
+          return;
+        }
         setTickers(response.map((ticker: Ticker) => ({
+          id: ticker.id,
           ticker: ticker.ticker,
           quantity: ticker.quantity,
           currentBid: ticker.currentBid,
@@ -81,7 +84,10 @@ const Ponude: React.FC = () => {
 
     const fetchAllPublicOTC = async () => {
       try {
-        const response = await makeGetRequest(`/otc/all-public-otc`);
+        const response = await makeGetRequest(`/otc/all-public-otc/${prim}`);
+        if (!response) {
+          return;
+        }
         setOtcData(response);
       } catch (error) {
         console.error('Error fetching all public OTC data:', error);
@@ -129,15 +135,15 @@ const Ponude: React.FC = () => {
         });
         return;
       }
-  
+
       const data = {
         userId: userId,
-        ticker: selectedTicker.ticker,
+        stockId: selectedTicker.id,
         quantity: newPonuda.quantity,
       };
-  
+
       const response = await makeApiRequest(`/otc/place-otc-public`, "POST", data);
-  
+
       if (response.status === 200) {
         Swal.fire({
           icon: 'success',
@@ -153,7 +159,7 @@ const Ponude: React.FC = () => {
           text: 'Neuspešno postavljanje ponude.'
         });
       }
-  
+
       handleClose();
     } catch (error) {
       Swal.fire({
@@ -194,11 +200,10 @@ const Ponude: React.FC = () => {
     }
 
     const data = {
-      otcId: selectedPonuda.otcId,
-      sellerId: selectedPonuda.sellerId,
+      stockId: selectedPonuda.stockId,
       buyerId: userId,
       ticker: selectedPonuda.ticker,
-      quantity: offerQuantity, // Use the user-specified quantity here
+      quantity: offerQuantity,
       priceOffered: priceOffered
     };
 
@@ -241,7 +246,6 @@ const Ponude: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
               <TableCell>Ticker</TableCell>
               <TableCell>Količina</TableCell>
               <TableCell>Akcija</TableCell>
@@ -249,8 +253,7 @@ const Ponude: React.FC = () => {
           </TableHead>
           <TableBody>
             {otcData.map((ponuda) => (
-              <TableRow key={ponuda.otcId}>
-                <TableCell>{ponuda.otcId}</TableCell>
+              <TableRow key={ponuda.stockId}>
                 <TableCell>{ponuda.ticker}</TableCell>
                 <TableCell>{ponuda.quantity}</TableCell>
                 <TableCell>
