@@ -151,7 +151,7 @@ describe('Porudzbine spec', () => {
         loginAdmin(cy);
 
         cy.visit("http://localhost:3000/listaPorudzbina");
-        cy.get('[data-testid="orderaccept-2"]').click();
+        cy.get('[data-testid="orderaccept-1"]').click();
 
         logout(cy);
     })
