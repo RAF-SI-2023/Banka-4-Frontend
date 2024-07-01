@@ -256,7 +256,7 @@ const Ponude: React.FC = () => {
 
   return (
     <div>
-      <ButtonTab variant="contained" color="primary" onClick={() => handleOpen()} style={{ margin: '20px 0' }}>
+      <ButtonTab id="dodajponudu" variant="contained" color="primary" onClick={() => handleOpen()} style={{ margin: '20px 0' }}>
         Dodaj ponudu
       </ButtonTab>
       <Paper>
@@ -269,12 +269,12 @@ const Ponude: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {otcData.map((ponuda) => (
+            {otcData.map((ponuda, index) => (
               <TableRow key={ponuda.stockId}>
                 <TableCell>{ponuda.ticker}</TableCell>
                 <TableCell>{ponuda.quantity}</TableCell>
                 <TableCell>
-                  <ButtonTab
+                  <ButtonTab id={`postaviponudu-${index}`}
                     variant="contained"
                     onClick={() => handleOpenOfferDialog(ponuda)}
                     style={{ marginRight: '10px' }}
@@ -294,13 +294,14 @@ const Ponude: React.FC = () => {
           <FormControl fullWidth margin="dense">
             <InputLabel id="ticker-label">Ticker</InputLabel>
             <Select
+              id="ticker"
               labelId="ticker-label"
               name="ticker"
               value={newPonuda.ticker}
               onChange={handleSelectChange}
             >
-              {tickers.map((ticker) => (
-                <MenuItem key={ticker.ticker} value={ticker.ticker}>
+              {tickers.map((ticker, index) => (
+                <MenuItem data-testid={`ticker-${index}`} key={ticker.ticker} value={ticker.ticker}>
                   {ticker.ticker}
                 </MenuItem>
               ))}
@@ -314,6 +315,7 @@ const Ponude: React.FC = () => {
               <p>Current Bid: {selectedTicker.currentBid}</p>
               <p>Current Ask: {selectedTicker.currentAsk}</p>
               <TextField
+                id="amount"
                 margin="dense"
                 label="Količina"
                 type="number"
@@ -333,7 +335,7 @@ const Ponude: React.FC = () => {
           <ButtonTab onClick={handleClose} color="secondary">
             Odustani
           </ButtonTab>
-          <ButtonTab onClick={handleSubmit} color="primary">
+          <ButtonTab id="submit" onClick={handleSubmit} color="primary">
             Napravi
           </ButtonTab>
         </DialogActions>
@@ -344,6 +346,7 @@ const Ponude: React.FC = () => {
         <DialogContent>
           <TextField
             autoFocus
+            id="price"
             margin="dense"
             label="Cena"
             type="number"
@@ -352,6 +355,7 @@ const Ponude: React.FC = () => {
             onChange={handlePriceChange}
           />
           <TextField
+            id="quantity"
             margin="dense"
             label="Količina"
             type="number"
@@ -369,7 +373,7 @@ const Ponude: React.FC = () => {
           <ButtonTab onClick={handleCloseOfferDialog} color="secondary">
             Odustani
           </ButtonTab>
-          <ButtonTab onClick={handleMakeOffer} color="primary">
+          <ButtonTab id="ponudi" onClick={handleMakeOffer} color="primary">
             Završi
           </ButtonTab>
         </DialogActions>

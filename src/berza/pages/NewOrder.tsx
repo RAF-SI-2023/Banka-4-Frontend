@@ -86,6 +86,7 @@ const CreateOrderPage: React.FC = () => {
             {success && <Alert severity="success">{success}</Alert>}
             <form noValidate autoComplete="off">
                 <TextField
+                    id="ticker"
                     label="Ticker"
                     value={ticker}
                     onChange={(e) => setTicker(e.target.value)}
@@ -94,6 +95,7 @@ const CreateOrderPage: React.FC = () => {
                     required
                 />
                 <TextField
+                    id="quantity"
                     label="Quantity"
                     value={quantity}
                     onChange={(e) => setQuantity(e.target.value)}
@@ -103,6 +105,7 @@ const CreateOrderPage: React.FC = () => {
                     required
                 />
                 <TextField
+                    id="limit"
                     label="Limit"
                     value={limit}
                     onChange={(e) => setLimit(e.target.value)}
@@ -137,6 +140,7 @@ const CreateOrderPage: React.FC = () => {
                     label="Margin"
                 />
                 <TextField
+                    id="action"
                     label="Action"
                     value={action}
                     onChange={(e) => setAction(e.target.value)}
@@ -144,7 +148,7 @@ const CreateOrderPage: React.FC = () => {
                     margin="normal"
                     required
                 />
-                <ActionButton variant="contained" color="primary" onClick={handleCreateOrder}>
+                <ActionButton id="create" variant="contained" color="primary" onClick={handleCreateOrder}>
                     Create Order
                 </ActionButton>
             </form>

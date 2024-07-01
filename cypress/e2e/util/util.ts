@@ -27,9 +27,9 @@ export function loginKorisnik(cy: Cypress.cy, korisnik?: number) {
     cy.request({
         method: 'POST',
         url: `${baseUrl}${UserRoutes.user_login}`,
-        body: korisnik === 2 ? 
-        { username: "pstamenic7721rn@raf.rs", password: "123" } :
-        { username: "stamenic.petar@gmail.rs", password: "123" }
+        body: korisnik === 2 ?
+            { username: "pstamenic7721rn@raf.rs", password: "123" } :
+            { username: "stamenic.petar@gmail.rs", password: "123" }
     }).then((response) => {
         expect(response.status).to.eq(200);
         const token = response.body
@@ -44,3 +44,18 @@ export function logout(cy: Cypress.cy) {
     cy.get(".MuiList-root.MuiList-padding.MuiMenu-list").children().last().click()
 }
 
+export function kupiTerminski(cy: Cypress.cy, index: number) {
+    cy.get(`[data-testid="termbuy-${index}"]`).click();
+    cy.get('#racunId').click();
+    cy.get(`[data-testid="racun-0"]`).click();
+    cy.get("#kupi").click();
+    cy.contains("OK").click();
+}
+
+export function odobriTerminski(cy: Cypress.cy, index: number) {
+    cy.get(`[data-testid="odobri-0"]`).click();
+}
+
+export function odbijTerminski(cy: Cypress.cy, index: number) {
+    cy.get(`#odbij-1}`).click();
+}

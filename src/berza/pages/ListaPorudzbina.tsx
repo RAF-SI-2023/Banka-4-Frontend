@@ -198,7 +198,7 @@ const OrdersPage: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {orders.map(order => (
+            {orders.map((order, index) => (
               <StyledTableRow key={order.id}>
                 <TableCell>{order.action}</TableCell>
                 <TableCell>{order.ticker}</TableCell>
@@ -209,10 +209,10 @@ const OrdersPage: React.FC = () => {
                   {order.status.toLowerCase() === 'pending' && (
                     <>
                       {permission_odobri && (
-                        <ActionButton variant="contained" color="primary" onClick={() => handleApproveOrder(order.id)}>Odobri</ActionButton>
+                        <ActionButton data-testid={`orderaccept-${index}`} variant="contained" color="primary" onClick={() => handleApproveOrder(order.id)}>Odobri</ActionButton>
                       )}
                       {permission_odbij && (
-                        <ActionButton variant="contained" color="error" onClick={() => handleRejectOrder(order.id)}>Poništi</ActionButton>
+                        <ActionButton data-testid={`orderdeny-${index}`} variant="contained" color="error" onClick={() => handleRejectOrder(order.id)}>Poništi</ActionButton>
                       )}
                     </>
                   )}
@@ -246,7 +246,7 @@ const OrdersPage: React.FC = () => {
                 <TableCell>{future.contractSize}</TableCell>
                 <TableCell>{future.contractUnit}</TableCell>
                 <TableCell>{new Date(future.settlementDate).toLocaleDateString()}</TableCell>
-        
+
               </StyledTableRow>
             ))}
           </TableBody>
@@ -269,7 +269,7 @@ const OrdersPage: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {futures2.map(future => (
+            {futures2.map((future, index) => (
               <StyledTableRow key={future.futuresContractDto.id}>
                 <TableCell>{future.futuresContractDto.type}</TableCell>
                 <TableCell>{future.futuresContractDto.name}</TableCell>
@@ -282,10 +282,10 @@ const OrdersPage: React.FC = () => {
                   {future.status.toLowerCase() === 'not_approved' && (
                     <>
                       {permission_odobri && (
-                        <ActionButton variant="contained" color="primary" onClick={() => handleApproveFuture(future.id)}>Odobri</ActionButton>
+                        <ActionButton data-testid={`odobri-${index}`} variant="contained" color="primary" onClick={() => handleApproveFuture(future.id)}>Odobri</ActionButton>
                       )}
                       {permission_odbij && (
-                        <ActionButton variant="contained" color="error" onClick={() => handleRejectFuture(future.id)}>Poništi</ActionButton>
+                        <ActionButton data-testid={`odbij-${index}`} variant="contained" color="error" onClick={() => handleRejectFuture(future.id)}>Poništi</ActionButton>
                       )}
                     </>
                   )}

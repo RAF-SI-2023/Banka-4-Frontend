@@ -93,16 +93,15 @@ const ContractsPage = () => {
                                 </TableRow>
                             </StyledTableHead>
                             <TableBody>
-                                {contracts?.map((contract: any) => (
+                                {contracts?.map((contract: any, index) => (
                                     <StyledTableRow key={contract.name} id={contract.name}>
                                         <StyledTableCell>{contract.name}</StyledTableCell>
                                         <StyledTableCell>{contract.contractUnit}</StyledTableCell>
                                         <StyledTableCell>{contract.contractSize}</StyledTableCell>
                                         <StyledTableCell>{contract.price}</StyledTableCell>
                                         <StyledTableCell>
-                                            <BuyOptionPopup data-testid="termbuy" contractId={contract.id || contract.name} price_d={contract.price} />
+                                            <BuyOptionPopup index={index} contractId={contract.id || contract.name} price_d={contract.price} />
                                         </StyledTableCell>
-
                                     </StyledTableRow>
                                 ))}
                             </TableBody>
