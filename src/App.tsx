@@ -143,12 +143,23 @@ function App() {
       if (me.permission !== 0) {
         (async () => {
           const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${me.sub}`) as Employee;
-          if (worker.firmaId == -1)
-            setPages([...pages, { name: "OTC", path: "otc", permissions: [/*EmployeePermissionsV2.list_orders*/] }])
+          if (worker.firmaId == -1) {
+
+            let ima = false;
+
+            for (const page of pages) {
+              if (page.name === "OTC")
+                ima = true;
+            }
+
+            if (!ima)
+              setPages([...pages, { name: "OTC", path: "otc", permissions: [/*EmployeePermissionsV2.list_orders*/] }])
+          }
         })()
       }
     }
-
+  }, [])
+  useEffect(() => {
     const timeoutId = setTimeout(() => {
       setErrors([]);
     }, 5000);
@@ -165,7 +176,7 @@ function App() {
             <VideoWrapper>
               <video autoPlay muted height="300" controls>
                 <source
-                
+
                   src="https://imgur.com/sqCNZHS.mp4"
                   type="video/mp4"
                 />
@@ -178,7 +189,7 @@ function App() {
             >
               JWT STOP
             </Typography>
-            <Button id="exitPosionPill" onClick={handleClose} sx={{color:'red', textDecoration: 'none', '&:hover': {  backgroundColor: '#FFDDDD', }}}>
+            <Button id="exitPosionPill" onClick={handleClose} sx={{ color: 'red', textDecoration: 'none', '&:hover': { backgroundColor: '#FFDDDD', } }}>
               Exit
             </Button>
           </Box>
@@ -214,12 +225,12 @@ function App() {
             <Route path="/listaKorisnika" element={auth?.id ? <UserListPage /> : <LoginPage />} />
             <Route path="/listaZaposlenih" element={auth?.id ? <EmployeeListPage /> : <LoginPage />} />
             <Route path="/listaFirmi" element={auth?.id ? <CompanyListPage /> : <LoginPage />} />
-            <Route path="/firma" element={auth?.id ? <CompanyInfoTable /> : <LoginPage/>}/>
+            <Route path="/firma" element={auth?.id ? <CompanyInfoTable /> : <LoginPage />} />
             <Route path="/korisnik" element={auth?.id ? <UserInfoTable /> : <LoginPage />} />
             <Route path="/kreirajKorisnika" element={auth?.id ? <CreateUserPage /> : <LoginPage />} />
             <Route path="/listaPorudzbina" element={auth?.id ? <OrdersPage /> : <LoginPage />} />
             <Route path="/listaPorudzbinaKorisnici" element={auth?.id ? <OrdersPageKorisnici /> : <LoginPage />} />
-            <Route path="/NewOrder" element={auth?.id ? <NewOrder/> : <LoginPage />} />
+            <Route path="/NewOrder" element={auth?.id ? <NewOrder /> : <LoginPage />} />
             <Route path="/izmeniKorisnika" element={auth?.id ? <EditUserPage /> : <LoginPage />} />
             <Route path="/racun" element={auth?.id ? <AccountInfoPage /> : <LoginPage />} />
             <Route path="/kreirajRacun" element={auth?.id ? <CreateAccountPage /> : <LoginPage />} />
@@ -290,7 +301,7 @@ function App() {
               path="/akcije"
               element={auth?.id ? <AkcijePage /> : <LoginPage />}
             />
-             <Route
+            <Route
               path="/otc"
               element={auth?.id ? <OtcPage /> : <LoginPage />}
             />
