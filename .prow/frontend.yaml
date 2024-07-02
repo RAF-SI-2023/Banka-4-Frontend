@@ -83,6 +83,7 @@ presubmits:
 
               # Downloaduje dependency-e potrebne za testove.
               npm i
+              sleep 120
               mkdir -p ./cypress/screenshots ./cypress/videos
               trap collectCypressRecordings EXIT
               npm run ci
