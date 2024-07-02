@@ -58,6 +58,7 @@ import OtcPage from 'berza/pages/OtcPage';
 import OtcPageKorisnik from 'berza/pages/OtcPageKorisnik';
 import { Employee, EmployeePermissionsV2, UserRoutes } from 'utils/types';
 import { makeGetRequest } from 'utils/apiRequest';
+import CreateAccountPageFirma from 'zaposleni/pages/createAccountPageFirma';
 
 const fadeIn = keyframes`
   from {
@@ -234,6 +235,7 @@ function App() {
             <Route path="/izmeniKorisnika" element={auth?.id ? <EditUserPage /> : <LoginPage />} />
             <Route path="/racun" element={auth?.id ? <AccountInfoPage /> : <LoginPage />} />
             <Route path="/kreirajRacun" element={auth?.id ? <CreateAccountPage /> : <LoginPage />} />
+            <Route path="/kreirajRacunFirma" element={auth?.id ? <CreateAccountPageFirma /> : <LoginPage />} />
             <Route path="/kreirajZaposlenog" element={auth?.id ? <CreateEmployeePage /> : <LoginPage />} />
             <Route path="/izmeniZaposlenog" element={auth?.id ? <EditEmployeePage /> : <LoginPage />} />
             <Route path="/kreirajFirmu" element={auth?.id ? <CreateCompanyPage /> : <LoginPage />} />

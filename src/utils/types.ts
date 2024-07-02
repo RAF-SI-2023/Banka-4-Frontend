@@ -273,6 +273,7 @@ export enum BankRoutes {
   credit_detailed = "/credit/detailed-credit/creditRequestId",
   account_add_tekuci = "/racuni/dodajTekuci",
   account_add_devizni = "/racuni/dodajDevizni",
+  account_add_pravni = "/racuni/dodajPravni",
   account_find_by_number = "/racuni/deleteRacunPoBroju",
   account_find_user_account = "/racuni/nadjiRacuneKorisnika",
   account_find_firm_user = "",
