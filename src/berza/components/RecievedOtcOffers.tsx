@@ -35,6 +35,7 @@ const RecievedOtcOffers: React.FC<ForeignOfferList> = ({ offers }) => {
                         <StyledHeadTableCell>Oznaka</StyledHeadTableCell>
                         <StyledHeadTableCell>Kolicina</StyledHeadTableCell>
                         <StyledHeadTableCell>Iznos Ponude</StyledHeadTableCell>
+                        <StyledHeadTableCell>Status</StyledHeadTableCell>
                         <StyledHeadTableCell>Prihvati</StyledHeadTableCell>
                         <StyledHeadTableCell>Odbij</StyledHeadTableCell>
                     </TableRow>
@@ -45,15 +46,20 @@ const RecievedOtcOffers: React.FC<ForeignOfferList> = ({ offers }) => {
                             <StyledTableCell>{offer.ticker}</StyledTableCell>
                             <StyledTableCell>{offer.amount}</StyledTableCell>
                             <StyledTableCell>{offer.price}</StyledTableCell>
+                            <StyledHeadTableCell>{offer.offerStatus}</StyledHeadTableCell>
                             <StyledTableCell>
-                                <Button onClick={() => handleAccept(offer.offerId)}>
-                                    Prihvati
-                                </Button>
+                                {offer.offerStatus === "PROCESSING" ?
+                                    <Button onClick={() => handleAccept(offer.offerId)}>
+                                        Prihvati
+                                    </Button> : null
+                                }
                             </StyledTableCell>
                             <StyledTableCell>
-                                <Button onClick={() => handleDecline(offer.offerId)}>
-                                    Odbij
-                                </Button>
+                                {offer.offerStatus === "PROCESSING" ?
+                                    <Button onClick={() => handleDecline(offer.offerId)}>
+                                        Odbij
+                                    </Button> : null
+                                }
                             </StyledTableCell>
                         </StyledTableRow>
                     ))}
