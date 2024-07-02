@@ -109,7 +109,6 @@ const CompanyInfoTable: React.FC = () => {
         
         const marzniData = await makeGetRequest(`/marzniRacuni/${company.id}`, ctx);
         setMarzniRacuni(marzniData);
-       
       }
     };
     fetchData();
@@ -168,7 +167,7 @@ const CompanyInfoTable: React.FC = () => {
                 <StyledTableCentered>Broj racuna</StyledTableCentered>
                 <StyledTableCentered>Stanje</StyledTableCentered>
                 <StyledTableCentered colSpan={2}>
-                  <Button onClick={handleAddAccount} color='success'>Dodaj racun</Button>
+                  <Button id="dodaj" onClick={handleAddAccount} color='success'>Dodaj racun</Button>
                 </StyledTableCentered>
               </TableRow>
             </TableHead>

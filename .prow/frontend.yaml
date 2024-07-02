@@ -70,6 +70,7 @@ presubmits:
               # docker compose up -d <naziv-servisa>
               # Takođe po potrebi dodati --build flag.
               docker compose up -d
+              sleep 120
               # popd
 
               ###########################################

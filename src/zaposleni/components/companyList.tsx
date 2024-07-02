@@ -26,8 +26,8 @@ const CompanyList: React.FC<CompanyListProps> = ({ companies }) => {
                     </TableRow>
                 </StyledTableHead>
                 <TableBody>
-                    {companies?.map((company: Company) => (
-                        <StyledTableRow key={company.maticniBroj} id={company.maticniBroj} onClick={() => handleSelect(company)}>
+                    {companies?.map((company: Company, index) => (
+                        <StyledTableRow data-testid={`firma-${index}`} key={company.maticniBroj} id={company.maticniBroj} onClick={() => handleSelect(company)}>
                             <StyledTableCell>{company.nazivPreduzeca}</StyledTableCell>
                             <StyledTableCell>{company.brojTelefona}</StyledTableCell>
                             <StyledTableCell>{company.brojFaksa}</StyledTableCell>

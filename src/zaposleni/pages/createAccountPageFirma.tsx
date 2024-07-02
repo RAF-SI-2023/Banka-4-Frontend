@@ -88,8 +88,7 @@ const CreateAccountPageFirma: React.FC = () => {
   const ctx = useContext(Context);
 
   useEffect(() => {
-    const id = getQueryParam('id');
-    //@ts-ignore
+    const id = getQueryParam('id') as string;
     setIdVlasnika(id);
 
 
@@ -142,7 +141,7 @@ const CreateAccountPageFirma: React.FC = () => {
       }
       const res = await makeApiRequest(BankRoutes.account_add_pravni, 'POST', data, false, false, ctx);
 
-      setRacuni([...racuni, {raspolozivo: res.raspolozivoStanje, naziv: "Racun", broj: res.brojRacuna}])
+      setRacuni([...racuni, { raspolozivo: res.raspolozivoStanje, naziv: "Racun", broj: res.brojRacuna }])
 
       if (res) {
         setSucessPopup(true)
@@ -210,14 +209,15 @@ const CreateAccountPageFirma: React.FC = () => {
         <FormControl variant="outlined" fullWidth margin="normal">
           <InputLabel id="tip-label">Tip</InputLabel>
           <StyledSelect
+            id="tip"
             labelId="tip-label"
             name="Tip"
             value={formData.tip}
             onChange={handleTipChange}
             label="Tip"
           >
-            <MenuItem value="pravni">Pravni</MenuItem>
-            <MenuItem value="marzni">Marzni</MenuItem>
+            <MenuItem id="pravni" value="pravni">Pravni</MenuItem>
+            <MenuItem id="marzni" value="marzni">Marzni</MenuItem>
           </StyledSelect>
         </FormControl>
         {formData?.tip === 'tekuci' && <FormControl variant="outlined" fullWidth margin="normal">
@@ -304,7 +304,7 @@ const CreateAccountPageFirma: React.FC = () => {
         }
 
         <ButtonContainer>
-          <StyledButton disabled={!idVlasnika} variant="contained" color="primary" onClick={handleSumbit}>
+          <StyledButton id="kreiraj" disabled={!idVlasnika} variant="contained" color="primary" onClick={handleSumbit}>
             Kreiraj
           </StyledButton>
         </ButtonContainer>
