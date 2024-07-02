@@ -149,6 +149,8 @@ describe('Provera firme spec', () => {
   it('Dodavanje pravnog racuna firmi', () => {
     cy.visit('http://localhost:3000/listaFirmi');
     cy.get('[data-testid="firma-1"]').click();
+    cy.visit('http://localhost:3000/listaFirmi');
+    cy.get('[data-testid="firma-1"]').click();
     cy.get("#dodaj").click();
     cy.get("#tip").click();
     cy.get("#pravni").click();
@@ -156,6 +158,8 @@ describe('Provera firme spec', () => {
   })
 
   it('Dodavanje marznog racuna firmi', () => {
+    cy.visit('http://localhost:3000/listaFirmi');
+    cy.get('[data-testid="firma-1"]').click();
     cy.visit('http://localhost:3000/listaFirmi');
     cy.get('[data-testid="firma-1"]').click();
     cy.get("#dodaj").click();

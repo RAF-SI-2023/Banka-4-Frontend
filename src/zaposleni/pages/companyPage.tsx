@@ -109,7 +109,6 @@ const CompanyInfoTable: React.FC = () => {
         
         const marzniData = await makeGetRequest(`/marzniRacuni/${company.id}`, ctx);
         setMarzniRacuni(marzniData);
-        window.location.reload();
       }
     };
     fetchData();
