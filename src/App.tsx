@@ -56,7 +56,9 @@ import ProfitPage from "profit/ProfitPage";
 import ATMPage from 'korisnici/pages/ATMPage';
 import OtcPage from 'berza/pages/OtcPage';
 import OtcPageKorisnik from 'berza/pages/OtcPageKorisnik';
-import {permissionMap} from 'utils/permissions';
+import { Employee, EmployeePermissionsV2, UserRoutes } from 'utils/types';
+import { makeGetRequest } from 'utils/apiRequest';
+import CreateAccountPageFirma from 'zaposleni/pages/createAccountPageFirma';
 
 const fadeIn = keyframes`
   from {
@@ -109,6 +111,7 @@ const VideoWrapper = styled.div`
 `;
 
 export interface ContextType {
+  pages: any;
   errors: Array<string>;
   setErrors: Dispatch<SetStateAction<Array<string>>>;
 }
@@ -117,12 +120,46 @@ export const Context = createContext<ContextType | null>(null);
 const auth = getMe();
 function App() {
   const [open, setOpen] = useState(true);
+  const [pages, setPages] = useState([
+    { name: 'Početna', path: '', permissions: [] },
+    { name: 'Korisnici', path: 'listaKorisnika', permissions: [EmployeePermissionsV2.list_users] },
+    { name: 'Zaposleni', path: 'listaZaposlenih', permissions: [EmployeePermissionsV2.list_workers] },
+    { name: 'Firme', path: 'listaFirmi', permissions: [EmployeePermissionsV2.list_firms] },
+    { name: 'Kartice', path: 'kartice', permissions: [EmployeePermissionsV2.list_cards] },
+    { name: 'Krediti', path: 'listaKredita', permissions: [EmployeePermissionsV2.list_credits] },
+    { name: 'Verifikacija', path: '/verifikacija', permissions: [EmployeePermissionsV2.payment_access] },
+    { name: 'Profit', path: '/profit', permissions: [EmployeePermissionsV2.profit_access] },
+    { name: "OTC-K", path: "otckorisnik", permissions: [] }
+  ]);
 
   const handleClose = () => {
     setOpen(false);
   };
   const [errors, setErrors] = useState([""]);
 
+  useEffect(() => {
+    const me = getMe()
+
+    if (me) {
+      if (me.permission !== 0) {
+        (async () => {
+          const worker = await makeGetRequest(`${UserRoutes.worker_by_email}/${me.sub}`) as Employee;
+          if (worker.firmaId == -1) {
+
+            let ima = false;
+
+            for (const page of pages) {
+              if (page.name === "OTC")
+                ima = true;
+            }
+
+            if (!ima)
+              setPages([...pages, { name: "OTC", path: "otc", permissions: [/*EmployeePermissionsV2.list_orders*/] }])
+          }
+        })()
+      }
+    }
+  }, [])
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setErrors([]);
@@ -140,7 +177,7 @@ function App() {
             <VideoWrapper>
               <video autoPlay muted height="300" controls>
                 <source
-                
+
                   src="https://imgur.com/sqCNZHS.mp4"
                   type="video/mp4"
                 />
@@ -153,7 +190,7 @@ function App() {
             >
               JWT STOP
             </Typography>
-            <Button id="exitPosionPill" onClick={handleClose} sx={{color:'red', textDecoration: 'none', '&:hover': {  backgroundColor: '#FFDDDD', }}}>
+            <Button id="exitPosionPill" onClick={handleClose} sx={{ color: 'red', textDecoration: 'none', '&:hover': { backgroundColor: '#FFDDDD', } }}>
               Exit
             </Button>
           </Box>
@@ -161,7 +198,7 @@ function App() {
       )}
       {/* <WSTest></WSTest> */}
 
-      <Context.Provider value={{ errors, setErrors }}>
+      <Context.Provider value={{ errors, setErrors, pages }}>
         <AlertWrapperWrapper>
           {errors.length > 0 &&
             errors[0] !== "" &&
@@ -189,15 +226,16 @@ function App() {
             <Route path="/listaKorisnika" element={auth?.id ? <UserListPage /> : <LoginPage />} />
             <Route path="/listaZaposlenih" element={auth?.id ? <EmployeeListPage /> : <LoginPage />} />
             <Route path="/listaFirmi" element={auth?.id ? <CompanyListPage /> : <LoginPage />} />
-            <Route path="/firma" element={auth?.id ? <CompanyInfoTable /> : <LoginPage/>}/>
+            <Route path="/firma" element={auth?.id ? <CompanyInfoTable /> : <LoginPage />} />
             <Route path="/korisnik" element={auth?.id ? <UserInfoTable /> : <LoginPage />} />
             <Route path="/kreirajKorisnika" element={auth?.id ? <CreateUserPage /> : <LoginPage />} />
             <Route path="/listaPorudzbina" element={auth?.id ? <OrdersPage /> : <LoginPage />} />
             <Route path="/listaPorudzbinaKorisnici" element={auth?.id ? <OrdersPageKorisnici /> : <LoginPage />} />
-            <Route path="/NewOrder" element={auth?.id ? <NewOrder/> : <LoginPage />} />
+            <Route path="/NewOrder" element={auth?.id ? <NewOrder /> : <LoginPage />} />
             <Route path="/izmeniKorisnika" element={auth?.id ? <EditUserPage /> : <LoginPage />} />
             <Route path="/racun" element={auth?.id ? <AccountInfoPage /> : <LoginPage />} />
             <Route path="/kreirajRacun" element={auth?.id ? <CreateAccountPage /> : <LoginPage />} />
+            <Route path="/kreirajRacunFirma" element={auth?.id ? <CreateAccountPageFirma /> : <LoginPage />} />
             <Route path="/kreirajZaposlenog" element={auth?.id ? <CreateEmployeePage /> : <LoginPage />} />
             <Route path="/izmeniZaposlenog" element={auth?.id ? <EditEmployeePage /> : <LoginPage />} />
             <Route path="/kreirajFirmu" element={auth?.id ? <CreateCompanyPage /> : <LoginPage />} />
@@ -265,7 +303,7 @@ function App() {
               path="/akcije"
               element={auth?.id ? <AkcijePage /> : <LoginPage />}
             />
-             <Route
+            <Route
               path="/otc"
               element={auth?.id ? <OtcPage /> : <LoginPage />}
             />

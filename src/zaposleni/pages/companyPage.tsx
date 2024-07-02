@@ -123,15 +123,7 @@ const CompanyInfoTable: React.FC = () => {
 
   const handleAddAccount = async () => {
     if (company?.id && auth?.id) {
-      const data = {
-        firma: company.id,
-        zaposleni: auth.id
-      };
-      const res = await makeApiRequest(`/racuni/dodajPravni`, 'POST', data, false, false, ctx);
-      if (res && company.id) {
-        const accs = await makeGetRequest(`${BankRoutes.account_find_user_account}/${company.id}`, ctx);
-        setAccounts(accs);
-      }
+      navigate(`/kreirajRacunFirma?id=${company.id}`)
     }
   };
 
